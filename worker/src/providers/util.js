@@ -6,7 +6,9 @@ import { Readable } from "node:stream";
 /** Run a binary without a shell (no injection surface). Never throws; returns {code, stdout, stderr}. */
 export function run(bin, args, { timeoutMs = 600000, env } = {}) {
   return new Promise(resolve => {
-    execFile(bin, args, { timeout: timeoutMs, maxBuffer: 20 * 1024 * 1024, env: { ...process.env, ...env } }, (err, stdout, stderr) => {
+    // A JavaScript test double may not retain its executable bit across checkouts.
+    const jsEntry = bin.endsWith(".mjs");
+    execFile(jsEntry ? process.execPath : bin, jsEntry ? [bin, ...args] : args, { timeout: timeoutMs, maxBuffer: 20 * 1024 * 1024, env: { ...process.env, ...env } }, (err, stdout, stderr) => {
       if (err && err.code === "ENOENT") return resolve({ code: -1, stdout: "", stderr: "ENOENT", notFound: true });
       if (err && err.killed) return resolve({ code: -2, stdout: stdout || "", stderr: (stderr || "") + "\nTIMEOUT", timedOut: true });
       resolve({ code: err ? (typeof err.code === "number" ? err.code : 1) : 0, stdout: stdout || "", stderr: stderr || "" });
