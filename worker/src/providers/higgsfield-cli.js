@@ -51,10 +51,29 @@ export class HiggsfieldCliProvider {
   }
   async estimate(model, req) { try { return pickCredits(await this.exec(this.buildArgs("cost", model, req), 60000)); } catch { return null; } }
   async generateImage(model, req) {
+    const submittedAfter = Date.now() - 10000;
     const out = await this.exec(this.buildArgs("create", model, req), 120000);
-    const id = pickId(out); if (!id) throw new ProviderError("PROVIDER_ERROR", "CLI did not return a job id");
+    let id = pickId(out);
+    if (!id) {
+      // The CLI create JSON schema is not documented. A read-only history lookup
+      // recovers a unique match without issuing another billable create request.
+      for (let attempt = 0; attempt < 3 && !id; attempt++) {
+        try {
+          const history = await this.listJobs();
+          const entries = Array.isArray(history) ? history : history.jobs || history.data || [];
+          const matches = Array.isArray(entries) ? entries.filter(x => x.job_type === model.id &&
+            x.params?.prompt === req.prompt && Number.isFinite(Date.parse(x.created_at)) &&
+            Date.parse(x.created_at) >= submittedAfter) : [];
+          if (matches.length === 1) id = matches[0].id;
+          if (matches.length > 1) break;
+        } catch { /* The submission may still have succeeded; never retry create here. */ }
+        if (!id && attempt < 2) await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+    if (!id) throw new ProviderError("SUBMISSION_UNCONFIRMED", "CLI accepted the request but did not return a recognized job id. Check Higgsfield history before generating again.");
     return { providerJobId: id, raw: out };
   }
+  async listJobs() { return this.exec(["generate", "list"], 30000); }
   async generateVideo(model, req) {
     if (!this.capabilities.video) throw new ProviderError("VIDEO_DISABLED", "Video generation is Phase 3 and disabled (ENABLE_VIDEO=false).");
     return this.generateImage(model, req);
