@@ -27,6 +27,7 @@ export class Runner {
   }
 
   async execute(job) {
+    if (job.status !== JobStatus.QUEUED || job.submission_started_at || job.provider_job_id) return;
     const S = (status, patch = {}) => this.store.update(job.id, { status, ...patch });
     const provider = this.registry[job.provider];
     try {
@@ -34,19 +35,22 @@ export class Runner {
       if (provider.manual) { S(JobStatus.MANUAL_REQUIRED, { failure_code: "MANUAL_SELECTED", failure_message: "Manual generation selected." }); return; }
       S(JobStatus.PREPARING, { started_at: new Date().toISOString() });
       const refs = this.writeReferences(job);
-      const model = chooseModel({ type: job.generation_type, aspectRatio: job.parameters.aspectRatio, refs: refs.length, preferred: this.config.imageModels });
+      const model = job.approved_model ? { id: job.approved_model, params: job.approved_model_params || {} } : chooseModel({ type: job.generation_type, aspectRatio: job.parameters.aspectRatio, refs: refs.length, preferred: this.config.imageModels });
       if (!model) throw Object.assign(new Error(`No model supports ${job.generation_type} ${job.parameters.aspectRatio} with ${refs.length} refs`), { code: "MODEL_UNAVAILABLE" });
       const limitations = [];
       if (job.character_asset_id && !refs.length) limitations.push("Character reference not attached; consistency not guaranteed.");
       const req = { prompt: job.prompt_text, aspectRatio: job.parameters.aspectRatio, referencePaths: refs };
       const before = provider.capabilities.creditsBalance ? await provider.credits() : null;
       const estimated = this.config.estimateCost && provider.capabilities.costEstimate ? await provider.estimate(model, req) : null;
+      if (job.quote_id && job.estimated_cost?.credits != null && (estimated == null || estimated > job.estimated_cost.credits))
+        throw Object.assign(new Error('Credit estimate changed or became unavailable. Review a new quote before submission.'), { code: 'COST_CHANGED' });
       S(JobStatus.PREPARING, { model: model.id, limitations, estimated_cost: estimated != null ? { credits: estimated * job.parameters.variations } : null, parameters: { ...job.parameters, model: model.id, modelParams: model.params } });
 
       const outputs = [];
       for (let v = 1; v <= job.parameters.variations; v++) {
         if (this.store.get(job.id).status === JobStatus.CANCELLED) return;
-        S(JobStatus.SUBMITTED);
+        // Durable marker precedes the charged call, including timeout/crash paths.
+        S(JobStatus.SUBMITTED, { submission_started_at: new Date().toISOString() });
         const sub = job.generation_type === "video" ? await provider.generateVideo(model, req) : await provider.generateImage(model, req);
         const ids = [...this.store.get(job.id).provider_job_ids, sub.providerJobId];
         S(JobStatus.GENERATING, { provider_job_id: ids[0], provider_job_ids: ids });

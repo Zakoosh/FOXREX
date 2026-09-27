@@ -6,7 +6,13 @@ async function boot(mode, extra) {
   const w = createServer({ config: cfg(dir, extra), autoRun: false });
   await new Promise(r => w.server.listen(0, "127.0.0.1", r));
   const base = `http://127.0.0.1:${w.server.address().port}`;
-  const api = (p, o = {}) => fetch(base + p, { ...o, headers: { Authorization: "Bearer t0k", "Content-Type": "application/json", ...(o.headers || {}) } });
+  const api = async (p, o = {}) => {
+    if (p === '/jobs' && o.method === 'POST') {
+      const quoted = await api('/jobs/quote', o); if (!quoted.ok) return quoted;
+      const q = await quoted.json(); o = { ...o, body: JSON.stringify({ quoteId: q.id, approved: true }) };
+    }
+    return fetch(base + p, { ...o, headers: { Authorization: "Bearer t0k", "Content-Type": "application/json", ...(o.headers || {}) } });
+  };
   return { dir, w, base, api, close: () => { w.server.closeAllConnections(); w.server.close(); } };
 }
 const drain = async w => { while (w.store.next()) await w.runner.tick(); };
@@ -25,9 +31,9 @@ test("happy path: CLI job with character reference → outputs, lineage, credits
   assert.ok(!JSON.stringify(created).includes("base64"), "reference bytes never echoed");
   await drain(t.w);
   const done = await (await t.api(`/jobs/${created.id}`)).json();
-  assert.equal(done.status, "COMPLETED"); assert.equal(done.output_assets.length, 2); assert.equal(done.model, "nano_banana_2");
-  assert.equal(done.credits_used, 4); assert.deepEqual(done.estimated_cost, { credits: 4 }); assert.equal(done.actual_cost, 0);
-  assert.equal(done.prompt_version_id, "c1:v1"); assert.equal(done.character_asset_id, "master"); assert.equal(done.provider_job_ids.length, 2);
+  assert.equal(done.status, "COMPLETED"); assert.equal(done.output_assets.length, 1); assert.equal(done.model, "nano_banana_2");
+  assert.equal(done.credits_used, 2); assert.deepEqual(done.estimated_cost, { credits: 2 }); assert.equal(done.actual_cost, 0);
+  assert.equal(done.prompt_version_id, "c1:v1"); assert.equal(done.character_asset_id, "master"); assert.equal(done.provider_job_ids.length, 1);
   const calls = fs.readFileSync(path.join(t.dir, "calls.log"), "utf8");
   assert.match(calls, /"--image-references"/); assert.match(calls, /"--aspect_ratio","4:5"/);
   const img = await fetch(t.base + done.output_assets[0].url); assert.equal(img.status, 200); assert.equal(img.headers.get("content-type"), "image/png");
@@ -50,14 +56,14 @@ test("insufficient credits mid-job → MANUAL_REQUIRED with explicit failure cod
   const d = await (await t.api(`/jobs/${j.id}`)).json();
   assert.equal(d.status, "MANUAL_REQUIRED"); assert.equal(d.failure_code, "INSUFFICIENT_CREDITS"); t.close();
 });
-test("provider rejects generation → FAILED (retryable), not stuck", async () => {
+test("provider rejection after submission blocks charged retry", async () => {
   const t = await boot("ok");
   const j = await (await t.api("/jobs", { method: "POST", body: JSON.stringify({ ...job, variations: 1 }) })).json();
   process.env.FAKE_HF_MODE = "reject"; await t.w.runner.tick();
   const d = await (await t.api(`/jobs/${j.id}`)).json(); assert.equal(d.status, "FAILED"); assert.equal(d.failure_code, "GENERATION_REJECTED");
   process.env.FAKE_HF_MODE = "ok";
-  const r = await (await t.api(`/jobs/${j.id}/retry`, { method: "POST" })).json(); assert.equal(r.retry_of, j.id); assert.equal(r.status, "QUEUED"); assert.notEqual(r.id, j.id);
-  await drain(t.w); assert.equal((await (await t.api(`/jobs/${r.id}`)).json()).status, "COMPLETED"); t.close();
+  const r = await t.api(`/jobs/${j.id}/retry`, { method: "POST" }); assert.equal(r.status, 409);
+  assert.equal(fs.readFileSync(path.join(t.dir, 'calls.log'), 'utf8').match(/"create"/g)?.length, 1); t.close();
 });
 test("missing create id is recovered from read-only CLI history", async () => {
   const t = await boot("noid");
@@ -106,10 +112,10 @@ test("input validation", async () => {
   const r = await t.api("/jobs", { method: "POST", body: JSON.stringify({ prompt: "", aspectRatio: "x", variations: 9 }) });
   assert.equal(r.status, 400); assert.deepEqual((await r.json()).fields, ["prompt", "aspectRatio", "variations"]); t.close();
 });
-test("video is disabled in phase 1 → MANUAL_REQUIRED", async () => {
+test("unverified video generation cannot be quoted", async () => {
   const t = await boot("ok");
   const j = await (await t.api("/jobs", { method: "POST", body: JSON.stringify({ ...job, type: "video", aspectRatio: "9:16" }) })).json();
-  assert.equal(j.status, "MANUAL_REQUIRED"); t.close();
+  assert.match(j.error, /rendered video is unavailable/); t.close();
 });
 test("worker restart never leaves a job stuck in GENERATING", async () => {
   const t = await boot("ok");
