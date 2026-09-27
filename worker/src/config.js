@@ -1,5 +1,17 @@
+import fs from "node:fs";
 import path from "node:path";
-const env = process.env;
+
+// Load the local worker settings without requiring an additional dependency.
+// Explicit process environment values take precedence over .env.
+const envFile = path.resolve(process.cwd(), ".env");
+const fileEnv = {};
+if (fs.existsSync(envFile)) {
+  for (const line of fs.readFileSync(envFile, "utf8").split(/\r?\n/)) {
+    const match = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/.exec(line);
+    if (match) fileEnv[match[1]] = match[2].replace(/^(["'])(.*)\1$/, "$2");
+  }
+}
+const env = { ...fileEnv, ...process.env };
 export const CONFIG = Object.freeze({
   port: +(env.PORT || 8787),
   host: env.HOST || "127.0.0.1",
