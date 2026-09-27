@@ -40,5 +40,5 @@ export class JobStore {
   list(limit = 50) { return Object.values(this.jobs).sort((a, b) => b.created_at.localeCompare(a.created_at)).slice(0, limit); }
   /** On restart, jobs interrupted mid-flight must not stay "GENERATING" forever. */
   recover() { for (const j of Object.values(this.jobs)) if (!TERMINAL.has(j.status) && j.status !== "QUEUED")
-    Object.assign(j, { status: "FAILED", failure_code: "WORKER_RESTARTED", failure_message: "Worker restarted during the job. Retry it.", failed_at: new Date().toISOString() }); this.persist(); }
+    Object.assign(j, { status: "FAILED", failure_code: "WORKER_RESTARTED", failure_message: "Worker restarted during the job. Reconcile the existing provider submission before another generation.", failed_at: new Date().toISOString() }); this.persist(); }
 }

@@ -1,125 +1,106 @@
-# FOXREX Studio — Direct Generation Architecture
+# FOXREX Studio: creative direction and asset production
 
-Status date: 2026-09-27 · Studio v4 · Worker v0.1.0 · Verified against Higgsfield CLI v1.1.26
+Status: 2026-09-28. Static browser app plus persistent Node worker. Paid APIs, automatic publishing and rendered video remain disabled.
 
-## 1. What changed
+## Workflow
 
-Before: Brief → Prompt → **Copy** → Claude → Download → **Upload**.
-Now: Brief → **إنشاء المحتوى** → Preview → Approve / Regenerate → Asset Library.
-The prompt compiler still runs (every version is stored); it just moved under *التفاصيل المتقدمة*. Manual Copy/Upload remains as the fallback.
+1. Create a draft: objective, audience, platform, format, message, tone, brand assets, references and approved facts.
+2. **AI-directed:** a separately configured local Ollama model proposes 3–5 concepts with hooks, angles, narratives, visual directions, recommendation and rationale. Select/edit a concept and request a production plan: caption, composition, asset requirements, cover, editing instructions and per-scene copy, voiceover, on-screen text and image prompts.
+3. **Manual:** write a ready image prompt, optionally enter a structured plan, or import an external image. Manual prompt submission can use Higgsfield CLI without any reasoning model. If no automatic asset provider is available, copy the prompt and import the result.
+4. Edit and save concepts, facts or plans using JSON editors. Audience, tone, references, manual prompt and feedback have separate fields. Version history retains AI/operator revisions. Invalid model responses are rejected; local inference can make one corrective attempt. There is no hardcoded creative fallback.
+5. Review factual accuracy, then preview the exact prompt, references, creative snapshot, provider, model, parameters and estimated credits when available. Approve **one image** separately. Each additional image/scene needs a new preview and approval.
+6. Review generated assets. Text-based critique evaluates the plan and operator observations; it cannot inspect pixels. Existing automatic image checks are heuristics; human approval is required. Feedback does not automatically spend credits: revise, preview and approve again.
+7. Draft → review → approved → scheduled → published are local editorial states. Marking published records an operator action; no social post is sent.
 
-## 2. Architecture
+New production no longer uses the old fixed prompt/caption/storyboard compiler. Legacy records and historical prompts remain intact. Historical helper code remains in the original HTML for compatibility; creative-studio.js replaces production entry points. Fresh storage starts with brand assets and no fabricated campaign records.
 
-```
-FOXREX Studio (browser)                          studio-generation-worker (Node ≥18, zero deps)
- Content Request                                   HTTP API  /providers /jobs /jobs/:id /assets/:file
- ├ Brand rules + Character Director                ├ Policy (server-side, frozen)  ← authoritative
- ├ Data validation (missing = blocked)             ├ Provider Router (capability + availability)
- ├ Prompt Compiler (versioned)                     ├ Job Store  (jobs.json → Postgres later)
- ├ Character reuse check (before spending credits) ├ Runner: PREPARING→SUBMITTED→GENERATING→RETRIEVING→VALIDATING
- └ POST /jobs  ───────────────────────────────▶    └ Providers
-      poll GET /jobs/:id                              HIGGSFIELD_MCP  (not configured in worker)
-      ingest outputs → Asset Library + lineage        HIGGSFIELD_CLI  → official CLI → plan credits
-                                                      MANUAL_CLAUDE   → MANUAL_REQUIRED
-                                                      HIGGSFIELD_API / CLAUDE_API → disabled stubs (no network code)
-```
+## Separate providers
 
-## 3. Provider interface
-
-Every adapter exposes: `id, name, costMode, implemented, capabilities, healthCheck(), generateImage(), generateVideo(), getJobStatus(), waitJob(), cancelJob(), estimate(), credits()`.
-Provider-specific logic lives only in `worker/src/providers/*`.
-
-| Provider | Cost mode | State |
+| Integration | Purpose | Availability/cost |
 |---|---|---|
-| HIGGSFIELD_MCP | SUBSCRIPTION_CREDITS | Adapter stub. Official hosted MCP uses OAuth 2.0 PKCE + dynamic registration; built for agent clients. Not configured inside the worker. |
-| HIGGSFIELD_CLI | SUBSCRIPTION_CREDITS | **Implemented + tested with a CLI test double.** Official `@higgsfield/cli`, OAuth PKCE login, credentials stored locally by the CLI. |
-| MANUAL_CLAUDE | EXISTING_SUBSCRIPTION_MANUAL | Implemented. Copy prompt + upload. |
-| HIGGSFIELD_API | PAID_API | Disabled placeholder. Every method throws. |
-| CLAUDE_API | PAID_API | Disabled placeholder. Every method throws. |
+| OLLAMA_LOCAL | Ideas, plans, text critique | Implemented; explicitly configured local model; local compute |
+| HIGGSFIELD_CLI | Image assets | Official CLI/OAuth; consumes subscription credits |
+| HIGGSFIELD_MCP | Image assets | Existing unconfigured stub |
+| MANUAL_CLAUDE | External generation/import | Legacy ID; use any external tool; no worker generation call |
+| HIGGSFIELD_API, CLAUDE_API | Paid APIs | Disabled stubs, no network code |
 
-## 4. Routing
+Creative adapter contract: id, model, costMode, health(), generate({stage,input,schema}). CreativeService validates and persists successful revisions. Only LOCAL_COMPUTE is currently accepted. New providers require explicit integration, never automatic paid fallback. Existing chat subscription credentials are not treated as API authorization or copied into the worker.
 
-Order: `HIGGSFIELD_MCP → HIGGSFIELD_CLI → MANUAL_CLAUDE`. A provider is skipped if paid, not implemented, missing the capability, or unhealthy (health cached 30 s). The skip reasons are stored on the job (`routing`). Model choice is capability-based (`worker/src/models.js`): first configured model supporting the aspect ratio and reference count — default `nano_banana_2` (4:5 + 9:16, up to 14 references), then `gpt_image_2_5`.
+Ollama uses its [documented chat API](https://docs.ollama.com/api/chat) with a JSON schema, non-streamed output and disabled thinking. The adapter accepts loopback HTTP only, rejects redirects, cloud model names and remote model metadata, checks installed models, and times out after 180 seconds per call. A validation repair can add one more call. Models are never downloaded automatically. Small local models can produce weak or invalid drafts; human review is essential.
 
-## 5. Cost policy (hard requirement)
+## Configuration
 
-- `allowPaidApi=false`, `monthlyApiBudget=0`, `paidFallback=false` — frozen, server-side, not changeable over HTTP.
-- `assertCostSafe()` runs in the router **and** again in the runner.
-- Paid adapters contain no network code (a test greps the file).
-- Client mirror (`@@ROUTER_START` block in the HTML) ignores paid providers even if a worker reports them available, and job requests can only name `MANUAL_CLAUDE`.
-- When no subscription provider is available: job → `MANUAL_REQUIRED`, UI shows Retry / Copy Prompt / Upload, API spend stays `$0.00`.
-- **Credits note:** Higgsfield states MCP/CLI generations always consume plan credits at standard rates; "unlimited" plan generations apply on higgsfield.ai only.
+Run from worker/ so .env and relative DATA_DIR resolve correctly. Defaults:
 
-## 6. Job lifecycle
+```dotenv
+CREATIVE_PROVIDER=disabled
+CREATIVE_MODEL=
+CREATIVE_URL=http://127.0.0.1:11434
+```
 
-`QUEUED → PREPARING → SUBMITTED → GENERATING → RETRIEVING → VALIDATING → COMPLETED`
-Terminal: `COMPLETED | FAILED | CANCELLED | MANUAL_REQUIRED`.
-Job fields match the requested `studio_generation_jobs` entity (id, content_id, provider, provider_job_id(s), generation_type, model, status, prompt_version_id, character_asset_id, input_assets, output_assets, parameters, cost_mode, estimated_cost, actual_cost, credits_used, started/completed/failed_at, failure_code/message, created_by/at, updated_at) plus `routing`, `limitations`, `retry_of`.
-Credits: estimated via `higgsfield generate cost`; actual = balance before − after (`account status`). Shown only when the CLI returns them.
-On restart, in-flight jobs become `FAILED / WORKER_RESTARTED` — never stuck at "Generating…".
+To opt into an installed model:
 
-## 7. Failure handling
+```dotenv
+CREATIVE_PROVIDER=ollama
+CREATIVE_MODEL=qwen3:4b
+CREATIVE_URL=http://127.0.0.1:11434
+```
 
-| Code | Result |
-|---|---|
-| CLI_NOT_INSTALLED, AUTH_EXPIRED, WORKSPACE_NOT_SELECTED, INSUFFICIENT_CREDITS, RATE_LIMITED, NOT_CONFIGURED | MANUAL_REQUIRED |
-| GENERATION_REJECTED, GENERATION_TIMEOUT, DOWNLOAD_FAILED, INVALID_OUTPUT, MODEL_UNAVAILABLE, PROVIDER_ERROR | FAILED (Retry) |
-| Worker unreachable from the Studio | MANUAL_REQUIRED (WORKER_OFFLINE) |
+Check installation with ollama list. On another machine, install Ollama from its official distribution, run ollama pull qwen3:4b, and run ollama serve if the service is not running. Downloads consume disk/network resources. Restart the worker after configuration changes. Browser Settings holds its worker URL/token. Check reasoning provider reports availability. Disabled/offline reasoning leaves manual editing and import available.
 
-## 8. Character reference flow
+## Cost and submission safety
 
-1. Character required → Studio searches the approved Character Library for the same expression + pose → offers **reuse** (zero credits) before generating.
-2. Otherwise attaches the **master reference** (Settings → set from Character Library) + the approved pose reference → sent to the worker → written to `data/inputs/` → passed as `--image-references` (CLI auto-uploads).
-3. If no reference could be attached, the job records the limitation: *consistency not guaranteed*.
-4. Approved character outputs are promoted to the Character Library with lineage.
+- Frozen server policy: allowPaidApi=false, monthlyApiBudget=0, paidFallback=false. HTTP requests cannot enable paid APIs.
+- Asset routing stays MCP → CLI → manual. Preview pins the provider/model instead of rerouting after approval.
+- POST /jobs/quote validates and performs a read-only CLI estimate; it never calls generate create. It persists a 15-minute preview. Unknown credits are displayed as unknown, never zero.
+- POST /jobs accepts only {quoteId, approved:true}. Replacement prompt/provider fields are ignored. Repeated or concurrent approvals return the same job, including after restart. Existing jobs remain recoverable after quote expiry.
+- One image per approved request. The runner rechecks cost; a higher or newly unavailable estimate stops before submission with COST_CHANGED.
+- submission_started_at is persisted before the charged call. Restarts, timeouts and missing IDs never silently replay it. /retry creates no replacement job. An unresolved submission blocks another quote/job for that content.
+- Only queued jobs can be cancelled; remote CLI cancellation is not verified. A running request may already have consumed credits.
+- Do not delete jobs/quotes to retry. Run one worker process per data directory: JSON storage is not a distributed transaction system.
 
-## 9. Asset lineage
+Reported credits_used is the before/after account balance delta, not an invoice; concurrent external activity can affect it. API dollar spend stays zero. Paid integration would require deliberate policy changes and real spend accounting.
 
-Every generated asset stores: `jobId, providerJobId, promptVersion, contentId, characterRef, provider, model, costMode, variation, scene`. Visible in Asset Library → *السلالة*.
+## Recovery
 
-## 10. Review
+Existing completed jobs retain their local/provider IDs, PNG outputs and lineage. Studio refreshes stored failed jobs too, so recovered outputs can be ingested after reload. Private job identifiers and verification responses belong in ignored storage, not this document.
 
-- Automatic pixel checks (not final): aspect ratio, resolution, dark-background share, neon share, teal accent share, text-safe-zone detail.
-- Human confirmation required: identity, expression/pose, no fake logo, no AI text/numbers, brand feel.
-- Regenerate asks *why* (11 reasons) → reasons become corrections in the next prompt version automatically.
-- Logo, Arabic copy, prices, Entry/SL/TP, dates, stats are never generated — added in the composition layer from verified data.
+POST /jobs/:id/reconcile accepts {providerJobId}. Known IDs can be retrieved directly. For an unknown ID, history must contain one unique job within 30 seconds of persisted submission time (legacy jobs use start time). Ambiguous candidates and IDs linked elsewhere are rejected. Concurrent reconciliation is locked inside the worker; repeating a completed reconciliation returns the existing job. Provider-confirmed failed/cancelled/rejected output permits a new separately approved request, never an automatic retry.
 
-## 11. Reels
+## Data and migration
 
-Reel = scenes. The production board tracks Script, Scenes 1–5, Voiceover, Cover, Final Edit. Phase 1 generates **9:16 reference frames per scene** (image jobs). Video generation (`kling3_0` start-image) is coded but gated behind `ENABLE_VIDEO=false` → Phase 3.
+- Storage key remains foxrex-studio-v4. Browser schema v5 adds item.creative without replacing existing items, assets, custom fields, prompts, jobs or statuses. A :before-creative-v5 backup is written first. If backup storage is unavailable, migration stops rather than discarding data. Export JSON regularly.
+- Existing worker/data/jobs.json, assets/ and inputs/ remain in place. Job fields are additive. creative.json stores reasoning revisions and immutable previews.
+- Jobs retain approved request, brief, selected concept, plan, facts/sources, revisions, provider/model, prompt version, job IDs, estimates, balance delta and outputs. Assets retain job lineage. Human review/editorial state remains in browser records.
+- Operator edits and imported images are browser-local. This is not a multi-user database or cross-device synchronization system. Large reference images/histories can exhaust localStorage; export before major changes.
+- Provider credentials stay on the worker host. The local Studio stores its worker bearer token; production needs a same-origin authenticated backend. Asset URLs are unguessable but not independently bearer-authenticated. Do not expose this preview as a hardened public service.
 
-## 12. Security
+## Facts, overlays and reels
 
-- Higgsfield credentials never leave the worker host (CLI's own credentials file). No provider secret in DB, frontend, logs or job metadata.
-- Studio → worker uses an internal bearer token (`STUDIO_WORKER_TOKEN`). In production, proxy the worker behind the FOXREX backend on the same origin and inject the token server-side, so the browser never holds it.
-- Worker refuses to bind a public interface without a token; CLI invoked with `execFile` (no shell); reference bytes never echoed back; output files validated by magic bytes; asset names are random UUIDs.
+Facts require {id,text,source,approved:true}; claim/scene factIds must refer only to those approved facts. Financial content requires verified source data and required fields before preview. Structural validation cannot prove prose true or catch every unstated claim. Human fact checking is mandatory; never invent prices, Entry/SL/TP, signals, results or performance figures.
 
-## 13. Deploying the worker
+Copy/on-screen text and the official logo stay separate from generated image pixels. Studio has editable copy/plan fields and overlay review checks; final graphic layout/export composition is performed in an external editor. Image-model Arabic typography and financial numbers are not trusted.
+
+Reels support storyboards, voiceover text, on-screen copy, cover direction, editing instructions and reference images. Rendered video, synthesized voice and final reel assembly are unavailable. /jobs/quote rejects video even if legacy ENABLE_VIDEO is set. Carousel slides have independent image approvals.
+
+## Verification and future work
 
 ```bash
-npm i -g @higgsfield/cli            # official CLI
-higgsfield auth login               # once, on the worker host (browser OAuth)
-higgsfield workspace list && higgsfield workspace set <id>
-higgsfield account status           # confirm plan + credits
-cd worker && cp .env.example .env && npm test && npm start
+cd worker
+npm test
+npm run check
+# Explicit real local inference, never Higgsfield:
+node scripts/verify-local.mjs
+# Temporary browser origin, Ollama plus manual-only asset provider:
+node scripts/verify-local.mjs --serve
 ```
-Needs a persistent Node process (VPS / container / always-on machine). **Not** a serverless function: the CLI keeps local credentials and jobs run minutes.
 
-## 14. Status matrix
+Isolated browser URL: http://127.0.0.1:5174/foxrex-studio.html. Set its worker URL to http://127.0.0.1:5174 with an empty token. This helper uses temporary data and never loads a Higgsfield adapter. Live response evidence is saved under ignored worker/data/verification/ollama-live.json. It fails honestly when local inference or output validation fails.
 
-| Area | Status |
-|---|---|
-| Provider abstraction, router, policy, job model, runner, HTTP API | CODE-COMPLETE, 25 automated tests passing |
-| Cost safety (no paid path) | CODE-COMPLETE + tested (worker + client) |
-| Studio UX (Simple/Advanced, Generate, variations, results, feedback regen, reuse, reel board, settings, lineage) | CODE-COMPLETE, E2E-tested in Chromium against the worker with a CLI test double |
-| Manual fallback | PRODUCTION-READY (no external dependency) |
-| Real Higgsfield generation | **NOT VERIFIED LIVE** — requires `higgsfield auth login` on a real host with the FOXREX account |
-| CLI JSON response schema | Not formally documented; parsed defensively. Confirm on the first live run |
-| CLI token refresh for unattended use | Unverified. CLI docs: tokens are short-lived; on `AUTH_EXPIRED` the Studio falls back to manual |
-| HIGGSFIELD_MCP inside the worker | Not implemented (needs an MCP OAuth client with refresh token) |
-| Postgres tables / object storage | Not created — no FOXREX backend repo was available. JSON store + local `data/assets` stand in |
-| Video / reel scene video | Phase 3, disabled |
+Automated tests use mocked reasoning and a CLI test double. They cover schema/fact validation, manual requests, cost controls, idempotency, lost IDs, restarts, retries, cancellation, reconciliation, migration and Windows CLI resolution. There is no bundler build; npm run check validates executable and inline JavaScript syntax. See VERIFICATION.md for live/browser evidence.
 
-## 15. Future provider integration
+Future work: separately approved social publishing/account connections, rendered video/audio, visual-model critique, final composition/export renderer, shared database/object storage, multi-user access controls and distributed job locking. No new live Higgsfield generation was used to test this refactor.
 
-Add an adapter in `worker/src/providers/`, register it in `buildRegistry()`, add it to `providerOrder`. A paid adapter additionally requires an administrator to change the server-side policy (`allowPaidApi=true` **and** a positive `monthlyApiBudget`) and a spend tracker; the tests in `cost-safety.test.mjs` must be updated deliberately.
+## Connection and setup
+
+Follow the Windows procedure in README.md. Use `npm run setup` to preserve existing configuration. Port 8787 is the API; Studio is a separate static page. Settings checks health, authenticated policy and providers, with actionable 401 and browser-network errors. Keep exact-origin CORS and loopback binding. Manual request preview explicitly bypasses subscription generation without bypassing approval or validation.

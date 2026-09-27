@@ -220,6 +220,7 @@ table.t tr.click{cursor:pointer} table.t tr.click:hover td{background:rgba(229,2
 </div>
 <div class="toast" id="toast" role="status"></div>
 
+<script src="creative-studio.js"></script>
 <script>
 /* =====================================================================
    FOXREX Studio — Content Operating System (v3)
@@ -560,8 +561,8 @@ const wurl=p=>DB.settings.workerUrl.replace(/\/$/,"")+p;
 async function wapi(path,opts={}){
   if(!DB.settings.workerUrl) throw Object.assign(new Error("worker not configured"),{code:"WORKER_NOT_CONFIGURED"});
   let r; try{ r=await fetch(wurl(path),{...opts,headers:{"Content-Type":"application/json",...(DB.settings.workerToken?{Authorization:"Bearer "+DB.settings.workerToken}:{}),...(opts.headers||{})}}); }
-  catch(e){ throw Object.assign(new Error("worker offline"),{code:"WORKER_OFFLINE"}); }
-  if(r.status===401) throw Object.assign(new Error("unauthorized"),{code:"WORKER_UNAUTHORIZED"});
+  catch(e){ throw Object.assign(new Error("Browser could not reach the worker. Open /health to check the process; check the exact ALLOWED_ORIGIN, browser Console and local-network permissions. A fetch failure alone cannot distinguish CORS, a stopped worker or browser blocking. Do not disable browser security."),{code:"WORKER_OFFLINE"}); }
+  if(r.status===401) throw Object.assign(new Error("HTTP 401: the worker is reachable, but its bearer token is missing or different. Copy STUDIO_WORKER_TOKEN from the existing worker/.env privately into Settings; do not overwrite .env."),{code:"WORKER_UNAUTHORIZED"});
   if(!r.ok){ const detail=await r.json().catch(()=>({})); throw Object.assign(new Error(detail.error||detail.message||"HTTP "+r.status),{code:"WORKER_ERROR"}); }
   return r.json();
 }
@@ -569,7 +570,7 @@ async function refreshProviders(force){
   if(!DB.settings.workerUrl){ DB.providers={at:Date.now(),list:[],error:"WORKER_NOT_CONFIGURED"}; return DB.providers; }
   if(!force&&DB.providers&&Date.now()-DB.providers.at<30000&&!DB.providers.error) return DB.providers;
   try{ DB.providers={at:Date.now(),list:await wapi("/providers"+(force?"?refresh=1":"")),error:null}; }
-  catch(e){ DB.providers={at:Date.now(),list:[],error:e.code||"WORKER_OFFLINE"}; }
+  catch(e){ DB.providers={at:Date.now(),list:[],error:e.code||"WORKER_OFFLINE",message:e.message}; }
   save(); return DB.providers;
 }
 function compilePrompt(it,scene){
@@ -764,7 +765,7 @@ VIEWS.item=()=>{
     <section class="panel"><h2>المحتوى</h2>
       <div class="field"><label class="f">الخطّاف</label><input type="text" data-p="brief.hook" data-be="1" value="${esc(it.brief.hook)}"></div>
       <div class="field"><label class="f">الرسالة الرئيسية</label><input type="text" data-p="brief.key" data-be="1" value="${esc(it.brief.key)}"></div>
-      <div class="field"><label class="f">الدعوة (CTA)</label><select data-p="brief.cta">${CTAS.map(x=>`<option ${x===it.brief.cta?"selected":""}>${x}</option>`).join("")}</select></div>
+      <div class="field"><label class="f">الدعوة (CTA)</label><input data-p="brief.cta" value="${esc(it.brief.cta)}" placeholder="دعوة يكتبها المشغّل أو يختارها من خطة AI"></div>
       <details ${miss.length?"open":""}><summary style="cursor:pointer;font-size:14px;margin-bottom:8px">البيانات ${miss.length?`<span class="miss">(${miss.length} ناقص)</span>`:'<span class="ok">✓</span>'}</summary>
         <div class="fg">${fieldsHtml(it,"data-p")}</div>
         <label class="row" style="margin-top:10px;font-size:13.5px;cursor:pointer"><input type="checkbox" data-p="verified" ${it.verified?"checked":""} style="accent-color:var(--teal)"> البيانات متحقق منها من مصدر موثّق</label></details>
@@ -863,9 +864,9 @@ function reelBoard(it){
   const cover=it.generations.find(g=>g.status==="approved")?"APPROVED":it.status==="IN_REVIEW"?"GENERATED":it.status==="GENERATING"?"GENERATING":"NOT_STARTED";
   const row=(label,st,extra="")=>`<div class="shot" style="grid-template-columns:130px 110px 1fr;align-items:center"><b style="font-family:var(--ar);color:var(--text)">${label}</b><span class="pill st-${{APPROVED:"APPROVED",GENERATED:"IN_REVIEW",GENERATING:"WAITING_FOR_EXTERNAL_GENERATION",REJECTED:"DRAFT",FAILED:"DRAFT",MANUAL_REQUIRED:"WAITING_FOR_EXTERNAL_GENERATION",READY:"APPROVED",PENDING:"DRAFT",NOT_STARTED:"DRAFT"}[st]}">${ST_AR[st]||{READY:"جاهز",PENDING:"معلّق"}[st]}</span><span>${extra}</span></div>`;
   return `<section class="panel" style="margin-bottom:16px"><h2>لوحة إنتاج الريل</h2><p class="hint">الريل ليس طلب توليد واحداً: كل مشهد مهمة مستقلة. هنا تُولَّد الإطارات المرجعية للمشاهد؛ توليد الفيديو من هذه الإطارات هو المرحلة 3 (معطّل الآن).</p>
-    ${row("السكربت","READY",`<span class="hint">${it.duration} ثانية · ${sh.length} مشاهد</span>`)}
+    ${row("السكربت",sh.length?"READY":"PENDING",`<span class="hint">${it.duration} ثانية · ${sh.length} مشاهد</span>`)}
     ${sh.map((s,i)=>{const sc=it.scenes[i]||{status:"NOT_STARTED"},a=sc.assetId&&assetById(sc.assetId);
-      return row(`المشهد ${String(i+1).padStart(2,"0")} · ${s.ar}`,sc.status,`<span class="row">${a?`<img src="${srcOf(a)}" alt="" style="width:36px;height:64px;object-fit:cover;border-radius:5px">`:""}<span class="hint ltr" style="margin:0">${esc(s.t)}</span>
+      return row(`المشهد ${String(i+1).padStart(2,"0")} · ${esc(s.ar)}`,sc.status,`<span class="row">${a?`<img src="${srcOf(a)}" alt="" style="width:36px;height:64px;object-fit:cover;border-radius:5px">`:""}<span class="hint ltr" style="margin:0">${esc(s.t)}</span>
         ${sc.status==="GENERATING"?"":`<button class="btn" style="padding:3px 10px;font-size:12px" data-act="scene-gen" data-i="${i}">${a?"إعادة توليد الإطار":"توليد إطار مرجعي"}</button>`}
         ${sc.status==="GENERATED"?`<button class="btn pri" style="padding:3px 10px;font-size:12px" data-act="scene-ok" data-i="${i}">اعتماد</button><button class="btn bad" style="padding:3px 10px;font-size:12px" data-act="scene-no" data-i="${i}">رفض</button>`:""}
         <label class="btn" style="padding:3px 10px;font-size:12px">رفع<input type="file" accept="image/*,video/*" data-act-file="scene" data-i="${i}" hidden></label></span>`);}).join("")}
@@ -881,7 +882,7 @@ function advancedHtml(it){
     <section><h3>موجز المحتوى</h3><dl class="kv"><dt>نوع المحتوى</dt><dd>${C.ar}</dd><dt>الصيغة</dt><dd>${FORMATS[it.format].ar} <span class="num">${FORMATS[it.format].dim}</span></dd><dt>الهدف</dt><dd>${OBJECTIVES[it.objective]}</dd><dt>الهيكل</dt><dd>${F.struct.join(" ← ")}</dd><dt>المصدر</dt><dd>${SOURCES[it.source.kind]}${it.source.notes?`: ${esc(it.source.notes)}`:""}</dd>
       ${it.format==="reel"?`<dt>المدة</dt><dd><input type="number" data-p="duration" data-rr="1" value="${it.duration}" style="width:90px"> ثانية</dd>`:""}</dl>
       <h3 style="margin-top:14px">الموجز البصري</h3><dl class="kv"><dt>العنصر الرئيسي</dt><dd class="ltr" style="text-align:right">${esc(F.scene(it.data))}</dd><dt>الشخصية</dt><dd>${c.required?`FOXREX على ${POSITIONS[c.position]}، ${EXPR[c.exp].ar}، ${POSES[c.pose].ar}`:"بدون شخصية"}</dd><dt>مساحة النص</dt><dd>${freeSide(it)}</dd><dt>تجنّب</dt><dd>كازينو، أموال، سيارات، نيون مفرط، نص أو أسعار مزيفة، شعار مولّد</dd></dl>
-      ${it.format==="carousel"?`<h3 style="margin-top:14px">خطة الشرائح</h3>${carouselPlan(it).map(s=>`<div class="shot"><b>${s.n}</b><span>${s.ar} — <span class="ltr">${esc(s.d)}</span></span></div>`).join("")}`:""}
+      ${it.format==="carousel"?`<h3 style="margin-top:14px">خطة الشرائح</h3>${carouselPlan(it).map(s=>`<div class="shot"><b>${s.n}</b><span>${esc(s.ar)} — <span class="ltr">${esc(s.d)}</span></span></div>`).join("")}`:""}
       <h3 style="margin-top:14px">يُضاف في طبقة التركيب</h3><ul class="hint" style="margin:0;padding-inline-start:18px">${postProd(it).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>
     <section><h3>مدير الشخصية</h3><div class="char">${c.required?`<img src="${FOX[POSES[c.pose].img]}" alt="">`:`<span class="th" style="width:96px;height:88px">بدون</span>`}
       <div class="fg" style="grid-template-columns:1fr 1fr">${sel("char.required","مطلوبة",[["true","نعم"],["false","لا"]],String(c.required))}${sel("char.exp","التعبير",Object.keys(EXPR).map(k=>[k,`${k} — ${EXPR[k].ar}`]),c.exp)}${sel("char.pose","الوضعية",Object.keys(POSES).map(k=>[k,POSES[k].ar]),c.pose)}${sel("char.prop","الأداة",Object.keys(PROPS).map(k=>[k,PROPS[k]]),c.prop)}${sel("char.prom","الحجم",PROMS.map(p=>[p,p+"%"]),c.prom)}${sel("char.position","الموقع",Object.entries(POSITIONS),c.position)}</div></div>
@@ -1029,13 +1030,15 @@ VIEWS.settings=()=>{
     <dt>API مدفوع</dt><dd><span class="tag">معطّل</span> <span class="hint">مقفل — لا يوجد مسار كود مدفوع</span></dd><dt>ميزانية API الشهرية</dt><dd class="num">$${CLIENT_POLICY.monthlyApiBudget.toFixed(2)}</dd>
     <dt>إنفاق API الحالي</dt><dd class="num">$${CLIENT_POLICY.currentApiSpend.toFixed(2)}</dd><dt>تحويل تلقائي للمدفوع</dt><dd><span class="tag">معطّل</span></dd></dl>
     <div class="warnbox" style="margin-top:12px">التوليد عبر Higgsfield MCP/CLI يستهلك رصيد الخطة بالأسعار القياسية دائماً. التوليد غير المحدود في خطط Higgsfield ينطبق على موقع higgsfield.ai فقط، لا على MCP/CLI.</div>
-    <label class="f" style="margin-top:14px">عدد النسخ الافتراضي</label><div class="chips">${[1,2,3].map(n=>`<button class="chip" data-act="vars" data-v="${n}" aria-pressed="${DB.settings.variations==n}">${n}</button>`).join("")}</div>
+    <p class="hint" style="margin-top:14px">كل موافقة ترسل طلب صورة واحدة. لكل مشهد أو نسخة جديدة مراجعة وتكلفة مستقلة.</p>
     <label class="f" style="margin-top:14px">وضع الاستوديو</label><div class="chips"><button class="chip" data-act="mode" data-v="simple" aria-pressed="${DB.settings.mode!=="advanced"}">بسيط</button><button class="chip" data-act="mode" data-v="advanced" aria-pressed="${DB.settings.mode==="advanced"}">متقدم</button></div></section>
   <section class="panel"><h2>عامل التوليد</h2><p class="hint">خدمة خلفية تشغّل Higgsfield CLI الرسمي بحساب FOXREX. بيانات دخول Higgsfield تبقى على الخادم ولا تصل للمتصفح. في الإنتاج اجعلها خلف خادم موقع FOXREX (نفس النطاق).</p>
-    <label class="f">عنوان العامل</label><input type="text" id="w-url" class="ltr" placeholder="https://foxrex.example/api/studio-gen" value="${esc(DB.settings.workerUrl)}">
+    <p class="hint">Port 8787 is the worker API, not the Studio page. Use the base URL below, without /health. Health HTTP 200 only confirms the process; Save and test also checks authentication and providers. For GitHub Pages set ALLOWED_ORIGIN=https://zakoosh.github.io (no path), then restart the worker. Keep HOST=127.0.0.1.</p>
+    <label class="f">عنوان العامل</label><input type="text" id="w-url" class="ltr" placeholder="http://127.0.0.1:8787" value="${esc(DB.settings.workerUrl)}">
     <label class="f" style="margin-top:10px">رمز الوصول للعامل <span class="hint">(رمز داخلي للاستوديو، ليس مفتاح مزوّد)</span></label><input type="password" id="w-tok" class="ltr" value="${esc(DB.settings.workerToken)}" autocomplete="off">
     <div class="row" style="margin-top:10px"><button class="btn pri" data-act="testworker">حفظ واختبار الاتصال</button>${pr.at?`<span class="hint" style="margin:0">آخر فحص: ${fmtDate(pr.at)}</span>`:""}</div>
-    ${pr.error&&pr.error!=="WORKER_NOT_CONFIGURED"?`<div class="errbox">${esc(FAIL_AR[pr.error]||pr.error)}</div>`:""}</section></div>
+    <button class="btn" data-act="worker-health">Check API health and authentication</button><p class="hint">${esc(S.workerDiagnostic||'A browser block or CORS failure needs browser Console details; it does not prove the worker is stopped.')}</p>
+    ${pr.error&&pr.error!=="WORKER_NOT_CONFIGURED"?`<div class="errbox">${esc(pr.message||FAIL_AR[pr.error]||pr.error)}</div>`:""}</section></div>
   <section class="panel" style="margin-bottom:16px"><h2>مزوّدو التوليد</h2><div class="scroll"><table class="t"><thead><tr><th>المزوّد</th><th>الحالة</th><th>نمط التكلفة</th><th>الأولوية</th><th>ملاحظة</th></tr></thead><tbody>
     ${PROVIDER_DEFS.map(p=>`<tr><td>${esc(p.name)}</td><td>${stat(p)}</td><td>${cm[p.costMode]}</td><td class="num">${p.priority??"—"}</td><td class="hint">${{HIGGSFIELD_MCP:"للوكلاء (Claude). غير مُعدّ داخل العامل — CLI هو المسار الخلفي المُتحقَّق منه",HIGGSFIELD_CLI:"CLI رسمي، OAuth PKCE، رصيد الخطة",MANUAL_CLAUDE:"نسخ البرومبت ورفع النتيجة",HIGGSFIELD_API:"عنصر معماري فقط، بلا كود شبكة",CLAUDE_API:"عنصر معماري فقط، بلا كود شبكة"}[p.id]}</td></tr>`).join("")}</tbody></table></div></section>
   <div class="grid2"><section class="panel"><h2>الحساب</h2><label class="f">المعرّف في خاتمة الريلز</label><input type="text" data-set="handle" value="${esc(DB.settings.handle)}" class="ltr">
@@ -1168,7 +1171,7 @@ async function onFile(e){
     const pv=it.prompts.slice(-1)[0];
     const a={id:uid(),cat:"GENERATED",source:"generated",approval:"pending",tags:[FAM[it.family].ar,FORMATS[it.format].ar,it.char.required?it.char.exp:"بدون شخصية"],prompt:pv.text,created:Date.now(),...r};
     it.jobs=it.jobs||[]; const job={localId:uid(),id:"manual-"+uid(),status:"COMPLETED",provider:"MANUAL_CLAUDE",cost_mode:"EXISTING_SUBSCRIPTION_MANUAL",promptV:pv.v,prompt_version_id:`${it.id}:v${pv.v}`,scene:null,parameters:{aspectRatio:FORMATS[it.format].ar_,variations:1},created_at:new Date().toISOString(),completed_at:new Date().toISOString(),ingested:true,output_assets:[]};
-    it.jobs.push(job); a.lineage={jobId:job.id,promptVersion:pv.v,contentId:it.id,provider:"MANUAL_CLAUDE",model:"external",costMode:job.cost_mode,characterRef:null};
+    job.creative=creativeSnapshot(it); it.jobs.push(job); a.lineage={jobId:job.id,promptVersion:pv.v,contentId:it.id,provider:"MANUAL_CLAUDE",model:"external",costMode:job.cost_mode,characterRef:null,creative:job.creative};
     DB.assets.push(a); it.generations.push({n:it.generations.length+1,promptV:pv.v,assetId:a.id,status:"review",feedback:[],checks:{},date:Date.now(),jobId:job.id,variation:1});
     it.status="IN_REVIEW"; save(); render(); toast(r.volatile?"رُفع الفيديو (لن يُحفظ بعد إعادة التحميل)":"رُفع الأصل. ابدأ المراجعة"); }
 }
@@ -1193,7 +1196,8 @@ function seed(){
   DB.items=[a,b,c,d,e];
 }
 
-if(!load()||!DB.items.length) { seed(); save(); }
+if(!load()) { seed(); DB.items=[]; save(); }
+installCreativeStudio();
 DB.items.forEach(it=>{ it.jobs=it.jobs||[]; if(it.status==="GENERATING"&&!activeJob(it)) it.status="PROMPT_READY"; });
 refreshProviders().then(()=>{ if(["item","settings","home"].includes(S.view)) render(); }); resumePolling();
 render();

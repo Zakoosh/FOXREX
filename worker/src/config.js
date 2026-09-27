@@ -1,9 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from 'node:url';
 
 // Load the local worker settings without requiring an additional dependency.
 // Explicit process environment values take precedence over .env.
-const envFile = path.resolve(process.cwd(), ".env");
+const workerDir = fileURLToPath(new URL('../', import.meta.url));
+const envFile = path.join(workerDir, '.env');
 const fileEnv = {};
 if (fs.existsSync(envFile)) {
   for (const line of fs.readFileSync(envFile, "utf8").split(/\r?\n/)) {
@@ -26,11 +28,14 @@ export function findWindowsHiggsfield(pathValue = "") {
 }
 const configuredBin = env.HIGGSFIELD_BIN && env.HIGGSFIELD_BIN !== "higgsfield" ? env.HIGGSFIELD_BIN : null;
 export const CONFIG = Object.freeze({
+  creativeProvider: env.CREATIVE_PROVIDER || 'disabled',
+  creativeModel: env.CREATIVE_MODEL || '',
+  creativeUrl: env.CREATIVE_URL || 'http://127.0.0.1:11434',
   port: +(env.PORT || 8787),
   host: env.HOST || "127.0.0.1",
   token: env.STUDIO_WORKER_TOKEN || "",
   allowedOrigin: env.ALLOWED_ORIGIN || "",
-  dataDir: path.resolve(env.DATA_DIR || "./data"),
+  dataDir: path.resolve(workerDir, env.DATA_DIR || "./data"),
   higgsfieldBin: configuredBin || (process.platform === "win32" ? findWindowsHiggsfield(env.Path || env.PATH || "") : null) || "higgsfield",
   imageModels: (env.HF_IMAGE_MODELS || "nano_banana_2,gpt_image_2_5").split(",").map(s => s.trim()).filter(Boolean),
   enableVideo: env.ENABLE_VIDEO === "true",
