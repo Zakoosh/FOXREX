@@ -1,0 +1,13 @@
+{
+  "name": "foxrex-studio-generation-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Provider-agnostic generation worker for FOXREX Studio. Subscription-credit providers only; paid APIs disabled by design.",
+  "type": "module",
+  "engines": { "node": ">=18.17" },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test --test-concurrency=1 test/*.test.mjs"
+  },
+  "license": "UNLICENSED"
+}
