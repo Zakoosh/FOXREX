@@ -2,6 +2,7 @@
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { CONFIG } from "./config.js";
 import { DEFAULT_POLICY } from "./policy.js";
@@ -12,6 +13,7 @@ import { HiggsfieldCliProvider } from "./providers/higgsfield-cli.js";
 import { HiggsfieldMcpProvider } from "./providers/higgsfield-mcp.js";
 import { ManualClaudeProvider } from "./providers/manual-claude.js";
 import { HiggsfieldApiProvider, ClaudeApiProvider } from "./providers/paid-disabled.js";
+import { download, sniff } from "./providers/util.js";
 
 export function buildRegistry(config = CONFIG) {
   return {
@@ -80,12 +82,49 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
           failure_message: "Automatic generation is unavailable through the current subscription provider." });
         return send(res, 201, publicJob(store.get(job.id)));
       }
-      const m = /^\/jobs\/([a-f0-9-]{36})(\/(cancel|retry))?$/.exec(p);
+      const m = /^\/jobs\/([a-f0-9-]{36})(\/(cancel|retry|reconcile))?$/.exec(p);
       if (m) {
         const job = store.get(m[1]); if (!job) return send(res, 404, { error: "not found" });
         if (!m[3] && req.method === "GET") return send(res, 200, publicJob(job));
         if (m[3] === "cancel" && req.method === "POST") { if (!TERMINAL.has(job.status)) store.update(job.id, { status: "CANCELLED" }); return send(res, 200, publicJob(store.get(job.id))); }
+        if (m[3] === "reconcile" && req.method === "POST") {
+          const uncertain = job.failure_code === "SUBMISSION_UNCONFIRMED" ||
+            (job.failure_code === "PROVIDER_ERROR" && job.failure_message === "CLI did not return a job id");
+          if (!uncertain || job.status !== "FAILED" || job.provider !== "HIGGSFIELD_CLI") return send(res, 409, { error: "not an uncertain CLI submission" });
+          const { providerJobId } = await body(req);
+          if (!/^[a-f0-9-]{36}$/i.test(providerJobId || "")) return send(res, 400, { error: "invalid provider job id" });
+          // Confirm identity against read-only CLI history before attaching an asset to this Studio job.
+          const history = await registry.HIGGSFIELD_CLI.listJobs();
+          const entries = Array.isArray(history) ? history : history.jobs || history.data || [];
+          const match = Array.isArray(entries) ? entries.find(x => x.id === providerJobId) : null;
+          const createdAt = Date.parse(match?.created_at);
+          if (!match || match.job_type !== job.model || match.params?.prompt !== job.prompt_text ||
+              !Number.isFinite(createdAt) || Math.abs(createdAt - Date.parse(job.started_at || job.created_at)) > 15 * 60 * 1000)
+            return send(res, 409, { error: "CLI job does not match the Studio request" });
+          const remote = await registry.HIGGSFIELD_CLI.getJobStatus(providerJobId);
+          if (remote.status !== "completed" || !remote.urls.length) return send(res, 409, { error: "CLI job has no completed output" });
+          const outputs = [];
+          for (const url of remote.urls) {
+            const temporary = path.join(runner.assetsDir, `${crypto.randomUUID()}.tmp`);
+            try {
+              await download(url, temporary);
+              const kind = sniff(temporary);
+              if (!kind || !kind.mime.startsWith("image/")) return send(res, 409, { error: "CLI output is not a valid image" });
+              const name = `${crypto.randomUUID()}.${kind.ext}`;
+              fs.renameSync(temporary, path.join(runner.assetsDir, name));
+              outputs.push({ file: name, url: `/assets/${name}`, mime: kind.mime, bytes: fs.statSync(path.join(runner.assetsDir, name)).size,
+                variation: 1, provider_job_id: providerJobId, source_url: url });
+            } finally { fs.rmSync(temporary, { force: true }); }
+          }
+          const repaired = store.update(job.id, { status: "COMPLETED", provider_job_id: providerJobId, provider_job_ids: [providerJobId],
+            output_assets: outputs, completed_at: new Date().toISOString(), failure_code: null, failure_message: null,
+            reconciled_at: new Date().toISOString() });
+          return send(res, 200, publicJob(repaired));
+        }
         if (m[3] === "retry" && req.method === "POST") {
+          if (job.failure_code === "SUBMISSION_UNCONFIRMED" ||
+              (job.failure_code === "PROVIDER_ERROR" && job.failure_message === "CLI did not return a job id"))
+            return send(res, 409, { error: "Reconcile the existing Higgsfield job before creating another" });
           healthCache.at = 0; const h = await health(true);
           const pick = selectProvider({ registry, health: h, policy, type: job.generation_type });
           const { id: _i, created_at: _c, updated_at: _u, ...prev } = job;
