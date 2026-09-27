@@ -13,7 +13,7 @@ import { HiggsfieldCliProvider } from "./providers/higgsfield-cli.js";
 import { HiggsfieldMcpProvider } from "./providers/higgsfield-mcp.js";
 import { ManualClaudeProvider } from "./providers/manual-claude.js";
 import { HiggsfieldApiProvider, ClaudeApiProvider } from "./providers/paid-disabled.js";
-import { download, sniff } from "./providers/util.js";
+import { download, sniff, pickUrls } from "./providers/util.js";
 
 export function buildRegistry(config = CONFIG) {
   return {
@@ -102,10 +102,17 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
             Math.abs(Date.parse(x.created_at) - startedAt) <= 30 * 1000) : [];
           if (!Number.isFinite(startedAt) || nearby.length !== 1 || nearby[0].id !== providerJobId)
             return send(res, 409, { error: "CLI job does not match the Studio request" });
-          const remote = await registry.HIGGSFIELD_CLI.getJobStatus(providerJobId);
-          if (remote.status !== "completed" || !remote.urls.length) return send(res, 409, { error: "CLI job has no completed output" });
+          // The list response already includes result_url on CLI v1.1.26.
+          // Fall back to get only if that read-only history entry lacks a URL.
+          const listed = nearby[0];
+          let urls = String(listed.status).toLowerCase() === "completed" ? pickUrls({ result_url: listed.result_url }) : [];
+          if (!urls.length) {
+            const remote = await registry.HIGGSFIELD_CLI.getJobStatus(providerJobId);
+            if (remote.status === "completed") urls = remote.urls;
+          }
+          if (!urls.length) return send(res, 409, { error: "CLI job has no completed output" });
           const outputs = [];
-          for (const url of remote.urls) {
+          for (const url of urls) {
             const temporary = path.join(runner.assetsDir, `${crypto.randomUUID()}.tmp`);
             try {
               await download(url, temporary);
