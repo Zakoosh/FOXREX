@@ -16,8 +16,12 @@ if (a === "account" && b === "status") out({ email: "owner@foxrex.test", plan: "
 if (a === "generate" && b === "cost") out({ credits: 2 });
 if (a === "generate" && b === "create") {
   if (mode === "nocredits") fail("Error: Insufficient credits for this generation.");
-  const id = crypto.randomUUID(); st.credits -= 2; save(); out({ id, status: "queued" });
+  const id = crypto.randomUUID(); st.credits -= 2;
+  st.jobs = [...(st.jobs || []), { id, status: "completed", job_type: args[2],
+    params: { prompt: args[args.indexOf("--prompt") + 1] }, created_at: new Date().toISOString() }];
+  save(); out(mode === "noid" || mode === "noid-unlisted" ? { submitted: true } : { id, status: "queued" });
 }
+if (a === "generate" && b === "list") out(mode === "noid-unlisted" ? [] : st.jobs || []);
 if (a === "generate" && (b === "wait" || b === "get")) {
   if (mode === "reject") out({ id: args[2], status: "failed" });
   // 1x1 PNG
