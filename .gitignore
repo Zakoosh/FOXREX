@@ -1,0 +1,19 @@
+# Local secrets and environment settings
+**/.env
+**/.env.*
+!**/.env.example
+
+# Node.js dependencies and logs
+**/node_modules/
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+*.log
+
+# Worker output and generated assets
+worker/data/
+
+# Editor and operating system files
+.DS_Store
+Thumbs.db
+.vscode/
