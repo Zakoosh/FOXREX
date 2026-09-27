@@ -51,7 +51,7 @@ export class HiggsfieldCliProvider {
   }
   async estimate(model, req) { try { return pickCredits(await this.exec(this.buildArgs("cost", model, req), 60000)); } catch { return null; } }
   async generateImage(model, req) {
-    const submittedAfter = Date.now() - 10000;
+    const submittedAt = Date.now();
     const out = await this.exec(this.buildArgs("create", model, req), 120000);
     let id = pickId(out);
     if (!id) {
@@ -61,9 +61,10 @@ export class HiggsfieldCliProvider {
         try {
           const history = await this.listJobs();
           const entries = Array.isArray(history) ? history : history.jobs || history.data || [];
-          const matches = Array.isArray(entries) ? entries.filter(x => x.job_type === model.id &&
-            x.params?.prompt === req.prompt && Number.isFinite(Date.parse(x.created_at)) &&
-            Date.parse(x.created_at) >= submittedAfter) : [];
+          // History may normalize both job_type and params.prompt. Require a
+          // single new job in the tightly bounded submission window instead.
+          const matches = Array.isArray(entries) ? entries.filter(x => Number.isFinite(Date.parse(x.created_at)) &&
+            Date.parse(x.created_at) >= submittedAt - 5000 && Date.parse(x.created_at) <= Date.now() + 5000) : [];
           if (matches.length === 1) id = matches[0].id;
           if (matches.length > 1) break;
         } catch { /* The submission may still have succeeded; never retry create here. */ }
