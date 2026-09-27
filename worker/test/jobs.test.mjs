@@ -1,4 +1,4 @@
-import test from "node:test"; import assert from "node:assert/strict"; import fs from "node:fs"; import path from "node:path";
+import test from "node:test"; import assert from "node:assert/strict"; import fs from "node:fs"; import path from "node:path"; import crypto from "node:crypto";
 import { createServer } from "../src/server.js"; import { tmp, cfg, REF } from "./helpers.mjs";
 
 async function boot(mode, extra) {
@@ -58,6 +58,34 @@ test("provider rejects generation → FAILED (retryable), not stuck", async () =
   process.env.FAKE_HF_MODE = "ok";
   const r = await (await t.api(`/jobs/${j.id}/retry`, { method: "POST" })).json(); assert.equal(r.retry_of, j.id); assert.equal(r.status, "QUEUED"); assert.notEqual(r.id, j.id);
   await drain(t.w); assert.equal((await (await t.api(`/jobs/${r.id}`)).json()).status, "COMPLETED"); t.close();
+});
+test("missing create id is recovered from read-only CLI history", async () => {
+  const t = await boot("noid");
+  const j = await (await t.api("/jobs", { method: "POST", body: JSON.stringify({ ...job, variations: 1 }) })).json();
+  await drain(t.w);
+  const done = await (await t.api(`/jobs/${j.id}`)).json();
+  assert.equal(done.status, "COMPLETED"); assert.equal(done.output_assets.length, 1);
+  assert.equal(fs.readFileSync(path.join(t.dir, "calls.log"), "utf8").match(/"create"/g)?.length, 1);
+  t.close();
+});
+test("unconfirmed submission can be reconciled without creating another billable job", async () => {
+  const t = await boot("noid-unlisted");
+  const j = await (await t.api("/jobs", { method: "POST", body: JSON.stringify({ ...job, variations: 1 }) })).json();
+  await drain(t.w);
+  const failed = await (await t.api(`/jobs/${j.id}`)).json();
+  assert.equal(failed.status, "FAILED"); assert.equal(failed.failure_code, "SUBMISSION_UNCONFIRMED");
+  const cliJob = JSON.parse(fs.readFileSync(path.join(t.dir, "state.json"), "utf8")).jobs[0];
+  process.env.FAKE_HF_MODE = "ok";
+  assert.equal((await t.api(`/jobs/${j.id}/retry`, { method: "POST" })).status, 409);
+  assert.equal((await t.api(`/jobs/${j.id}/reconcile`, { method: "POST", body: JSON.stringify({ providerJobId: crypto.randomUUID() }) })).status, 409);
+  const response = await t.api(`/jobs/${j.id}/reconcile`, { method: "POST", body: JSON.stringify({ providerJobId: cliJob.id }) });
+  assert.equal(response.status, 200);
+  const repaired = await response.json();
+  assert.equal(repaired.status, "COMPLETED"); assert.equal(repaired.provider_job_id, cliJob.id);
+  assert.equal(repaired.output_assets.length, 1);
+  const calls = fs.readFileSync(path.join(t.dir, "calls.log"), "utf8");
+  assert.equal(calls.match(/"create"/g)?.length, 1);
+  t.close();
 });
 test("explicit manual provider request → MANUAL_REQUIRED without calling the CLI generate", async () => {
   const t = await boot("ok");
