@@ -12,13 +12,26 @@ if (fs.existsSync(envFile)) {
   }
 }
 const env = { ...fileEnv, ...process.env };
+
+// npm installs the Higgsfield CLI as a .cmd shim on Windows. execFile cannot
+// launch that shim without a shell, so use the package's native binary.
+export function findWindowsHiggsfield(pathValue = "") {
+  for (const dir of pathValue.split(";")) {
+    if (!dir) continue;
+    const shim = path.join(dir, "higgsfield.cmd");
+    const binary = path.join(dir, "node_modules", "@higgsfield", "cli", "vendor", "hf.exe");
+    if (fs.existsSync(shim) && fs.existsSync(binary)) return binary;
+  }
+  return null;
+}
+const configuredBin = env.HIGGSFIELD_BIN && env.HIGGSFIELD_BIN !== "higgsfield" ? env.HIGGSFIELD_BIN : null;
 export const CONFIG = Object.freeze({
   port: +(env.PORT || 8787),
   host: env.HOST || "127.0.0.1",
   token: env.STUDIO_WORKER_TOKEN || "",
   allowedOrigin: env.ALLOWED_ORIGIN || "",
   dataDir: path.resolve(env.DATA_DIR || "./data"),
-  higgsfieldBin: env.HIGGSFIELD_BIN || "higgsfield",
+  higgsfieldBin: configuredBin || (process.platform === "win32" ? findWindowsHiggsfield(env.Path || env.PATH || "") : null) || "higgsfield",
   imageModels: (env.HF_IMAGE_MODELS || "nano_banana_2,gpt_image_2_5").split(",").map(s => s.trim()).filter(Boolean),
   enableVideo: env.ENABLE_VIDEO === "true",
   estimateCost: env.ESTIMATE_COST !== "false",
