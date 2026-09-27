@@ -92,6 +92,7 @@ test("unconfirmed submission can be reconciled without creating another billable
   assert.equal(repaired.output_assets.length, 1);
   const calls = fs.readFileSync(path.join(t.dir, "calls.log"), "utf8");
   assert.equal(calls.match(/"create"/g)?.length, 1);
+  assert.ok(!calls.includes('"get"'), "completed list entry should supply the output URL");
   t.close();
 });
 test("explicit manual provider request → MANUAL_REQUIRED without calling the CLI generate", async () => {
