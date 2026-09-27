@@ -818,11 +818,15 @@ function genPanel(it){
     const g=it.generations.find(x=>x.status==="approved"), a=g&&assetById(g.assetId);
     return `<h2>${g?"الأصل المعتمد":"نتائج التوليد جاهزة"}</h2>${a?`<div class="asset-view" style="min-height:0">${assetTag(a)}</div>`:`<p class="hint">راجع النسخ أدناه واعتمد واحدة.</p>`}`; }
   const failed=job&&job.scene==null&&job.status==="FAILED"?job:null;
+  const uncertain=failed&&(failed.failure_code==="SUBMISSION_UNCONFIRMED"||
+    (failed.failure_code==="PROVIDER_ERROR"&&failed.failure_message==="CLI did not return a job id"));
   return `<h2>التوليد</h2>
     ${failed?`<div class="errbox">فشلت المحاولة الأخيرة: ${esc(FAIL_AR[failed.failure_code]||failed.failure_code)}${failed.failure_message?` — <span class="ltr">${esc(failed.failure_message)}</span>`:""}</div>`:""}
+    ${uncertain?`<div class="warnbox">قد يكون التوليد اكتمل واستهلك رصيداً. راجع سجل Higgsfield ثم اربط المهمة الحالية بمعرّفها. لا تنشئ نسخة جديدة قبل الاستعادة.</div>
+      <button class="btn pri" data-act="recoverjob">استعادة الصورة من Higgsfield</button>`:""}
     <p class="hint" style="margin-top:8px">يبني الاستوديو الموجز والتوجيه البصري والبرومبت تلقائياً، ويرفق مرجع الشخصية الرئيسي${c.required?"":" (غير مطلوب هنا)"}.</p>
     <div class="row" style="margin-bottom:12px"><label class="f" style="margin:0">عدد النسخ</label>${[1,2,3].map(n=>`<button class="chip" data-act="vars" data-v="${n}" aria-pressed="${DB.settings.variations==n}">${n}</button>`).join("")}</div>
-    <button class="btn pri big" data-act="gen" style="width:100%" ${miss(it)?"disabled":""}>${failed?"إعادة المحاولة":"إنشاء المحتوى"}</button>
+    <button class="btn pri big" data-act="gen" style="width:100%" ${miss(it)||uncertain?"disabled":""}>${failed?"إعادة المحاولة":"إنشاء المحتوى"}</button>
     <p class="hint" style="margin-top:10px">${route.mode==="auto"?`سيُستخدم <b>${route.provider==="HIGGSFIELD_CLI"?"Higgsfield CLI":route.provider}</b> برصيد الاشتراك${route.credits!=null?` · الرصيد المتاح <span class="num">${route.credits}</span>`:""}. قد يستهلك التوليد رصيد الاشتراك.`:`التوليد التلقائي غير متاح (${esc(FAIL_AR[pr&&pr.error]||"لا يوجد مزوّد اشتراك متصل")}). سيتحول إلى التوليد اليدوي — بلا أي تكلفة API.`}</p>`;
 }
 const miss=it=>missing(it).length>0;
@@ -1061,6 +1065,11 @@ const ACT={
   reuse:el=>{ const it=cur(); S.reuseOffer=null; it.generations.push({n:it.generations.length+1,promptV:null,assetId:el.dataset.a,status:"review",feedback:[],checks:{},date:Date.now(),reused:true}); it.status="IN_REVIEW"; save(); render(); toast("أُعيد استخدام أصل معتمد — لم يُستهلك أي رصيد"); },
   "reuse-cancel":()=>{ S.reuseOffer=null; render(); },
   gen:el=>{ const it=cur(); generate(it,{skipReuse:!!el.dataset.skip,manual:!!el.dataset.manual,variations:el.dataset.one?1:undefined}); },
+  recoverjob:async()=>{ const it=cur(),j=lastJob(it); if(!j?.id) return;
+    const providerJobId=prompt("ألصق معرّف المهمة المكتملة من higgsfield generate list:"); if(!providerJobId) return;
+    try{ Object.assign(j,await wapi(`/jobs/${j.id}/reconcile`,{method:"POST",body:JSON.stringify({providerJobId:providerJobId.trim()})})); onJobUpdate(it,j); toast("استُعيدت الصورة وربطت بالمهمة الأصلية"); }
+    catch(e){ toast("تعذرت الاستعادة: "+(FAIL_AR[e.code]||e.message)); }
+  },
   mode:el=>{ DB.settings.mode=el.dataset.v; S.showDetails=false; save(); render(); },
   vars:el=>{ DB.settings.variations=+el.dataset.v; save(); render(); },
   opendetails:(el,e)=>{ e&&e.preventDefault(); S.showDetails=true; render(); const d=$("#adv"); d&&d.scrollIntoView({behavior:"smooth"}); },
