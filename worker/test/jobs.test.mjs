@@ -74,10 +74,17 @@ test("unconfirmed submission can be reconciled without creating another billable
   await drain(t.w);
   const failed = await (await t.api(`/jobs/${j.id}`)).json();
   assert.equal(failed.status, "FAILED"); assert.equal(failed.failure_code, "SUBMISSION_UNCONFIRMED");
-  const cliJob = JSON.parse(fs.readFileSync(path.join(t.dir, "state.json"), "utf8")).jobs[0];
+  const stateFile = path.join(t.dir, "state.json");
+  const state = JSON.parse(fs.readFileSync(stateFile, "utf8"));
+  const cliJob = state.jobs[0];
   process.env.FAKE_HF_MODE = "ok";
   assert.equal((await t.api(`/jobs/${j.id}/retry`, { method: "POST" })).status, 409);
   assert.equal((await t.api(`/jobs/${j.id}/reconcile`, { method: "POST", body: JSON.stringify({ providerJobId: crypto.randomUUID() }) })).status, 409);
+  state.jobs.push({ ...cliJob, id: crypto.randomUUID() });
+  fs.writeFileSync(stateFile, JSON.stringify(state));
+  assert.equal((await t.api(`/jobs/${j.id}/reconcile`, { method: "POST", body: JSON.stringify({ providerJobId: cliJob.id }) })).status, 409,
+    "ambiguous same-window jobs must not be linked");
+  state.jobs.pop(); fs.writeFileSync(stateFile, JSON.stringify(state));
   const response = await t.api(`/jobs/${j.id}/reconcile`, { method: "POST", body: JSON.stringify({ providerJobId: cliJob.id }) });
   assert.equal(response.status, 200);
   const repaired = await response.json();
