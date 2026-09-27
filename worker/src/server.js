@@ -93,13 +93,14 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
           if (!uncertain || job.status !== "FAILED" || job.provider !== "HIGGSFIELD_CLI") return send(res, 409, { error: "not an uncertain CLI submission" });
           const { providerJobId } = await body(req);
           if (!/^[a-f0-9-]{36}$/i.test(providerJobId || "")) return send(res, 400, { error: "invalid provider job id" });
-          // Confirm identity against read-only CLI history before attaching an asset to this Studio job.
+          // The CLI history normalizes job_type and params.prompt. Require the
+          // supplied id to be the only CLI job near this Studio submission.
           const history = await registry.HIGGSFIELD_CLI.listJobs();
           const entries = Array.isArray(history) ? history : history.jobs || history.data || [];
-          const match = Array.isArray(entries) ? entries.find(x => x.id === providerJobId) : null;
-          const createdAt = Date.parse(match?.created_at);
-          if (!match || match.job_type !== job.model || match.params?.prompt !== job.prompt_text ||
-              !Number.isFinite(createdAt) || Math.abs(createdAt - Date.parse(job.started_at || job.created_at)) > 15 * 60 * 1000)
+          const startedAt = Date.parse(job.started_at || job.created_at);
+          const nearby = Array.isArray(entries) ? entries.filter(x => Number.isFinite(Date.parse(x.created_at)) &&
+            Math.abs(Date.parse(x.created_at) - startedAt) <= 30 * 1000) : [];
+          if (!Number.isFinite(startedAt) || nearby.length !== 1 || nearby[0].id !== providerJobId)
             return send(res, 409, { error: "CLI job does not match the Studio request" });
           const remote = await registry.HIGGSFIELD_CLI.getJobStatus(providerJobId);
           if (remote.status !== "completed" || !remote.urls.length) return send(res, 409, { error: "CLI job has no completed output" });
@@ -118,7 +119,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
           }
           const repaired = store.update(job.id, { status: "COMPLETED", provider_job_id: providerJobId, provider_job_ids: [providerJobId],
             output_assets: outputs, completed_at: new Date().toISOString(), failure_code: null, failure_message: null,
-            reconciled_at: new Date().toISOString() });
+            reconciled_at: new Date().toISOString(), reconciliation_method: "unique_job_within_30_seconds" });
           return send(res, 200, publicJob(repaired));
         }
         if (m[3] === "retry" && req.method === "POST") {
