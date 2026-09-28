@@ -16,6 +16,7 @@ import { HiggsfieldApiProvider, ClaudeApiProvider } from "./providers/paid-disab
 import { download, sniff, pickUrls } from "./providers/util.js";
 import { CreativeService, validateCreativeRequest, validateOutput, validateBrief } from './creative.js';
 import { chooseModel } from './models.js';
+import { buildGuard } from './guard.js';
 
 export function buildRegistry(config = CONFIG) {
   return {
@@ -27,13 +28,14 @@ export function buildRegistry(config = CONFIG) {
   };
 }
 
-export function createServer({ config = CONFIG, registry = buildRegistry(config), policy = DEFAULT_POLICY, autoRun = true, creativeProvider } = {}) {
+export function createServer({ config = CONFIG, registry = buildRegistry(config), policy = DEFAULT_POLICY, autoRun = true, creativeProvider, guard = buildGuard(config) } = {}) {
   const store = new JobStore(config.dataDir); store.recover();
-  const creative = new CreativeService(config, creativeProvider);
+  // One resource guard (D45) for every path that starts heavy local work: creative reasoning and generation jobs.
+  const creative = new CreativeService(config, creativeProvider, { guard, autoRetry: autoRun });
   const reconciling = new Set();
   const blockingJob = contentId => contentId && Object.values(store.jobs).find(j => j.content_id === contentId && j.status !== 'COMPLETED' && !j.reconciled_no_output &&
     (!TERMINAL.has(j.status) || j.submission_started_at || j.provider_job_id || ['SUBMISSION_UNCONFIRMED', 'WORKER_RESTARTED'].includes(j.failure_code) || j.failure_message === 'CLI did not return a job id'));
-  const runner = new Runner({ store, registry, config, policy }); if (autoRun) runner.start();
+  const runner = new Runner({ store, registry, config, policy, guard }); if (autoRun) runner.start();
   let healthCache = { at: 0, data: {} };
   async function health(force) {
     if (!force && Date.now() - healthCache.at < 30000) return healthCache.data;
@@ -68,7 +70,14 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
       if (p === '/' && req.method === 'GET') return send(res, 200, { service: 'foxrex-studio-generation-worker', message: 'This port is the worker API, not the Studio UI.', health: '/health', studio: 'https://zakoosh.github.io/FOXREX/foxrex-studio.html' });
       if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.1.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
       if (!authed(req)) return send(res, 401, { error: "unauthorized" });
+      if (p === '/guard' && req.method === 'GET') return send(res, 200, guard.snapshot());
       if (p === '/creative/status' && req.method === 'GET') return send(res, 200, await creative.status());
+      if (p === '/creative/queue' && req.method === 'GET') return send(res, 200, creative.listQueue());
+      const cq = /^\/creative\/queue\/([a-f0-9-]{36})(\/cancel)?$/.exec(p);
+      if (cq && (cq[2] ? req.method === 'POST' : req.method === 'GET')) {
+        const q = cq[2] ? creative.cancelQueued(cq[1]) : creative.listQueue().find(x => x.id === cq[1]);
+        return q ? send(res, 200, q) : send(res, 404, { error: 'not found' });
+      }
       if (p === '/creative/revisions' && req.method === 'GET') return send(res, 200, creative.data.revisions.filter(r => r.contentId === url.searchParams.get('contentId')));
       if (/^\/creative\/(ideate|plan|critique)$/.test(p) && req.method === 'POST') return send(res, 200, await creative.run(p.split('/')[2], await body(req)));
       if (p === '/creative/validate' && req.method === 'POST') {
@@ -203,9 +212,9 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
       }
       if (p === "/jobs" && req.method === "GET") return send(res, 200, store.list(Infinity).filter(j => (!url.searchParams.get("content_id") || j.content_id === url.searchParams.get("content_id")) && (!url.searchParams.get('quote_id') || j.quote_id === url.searchParams.get('quote_id'))).map(publicJob));
       send(res, 404, { error: "not found" });
-    } catch (e) { send(res, e.status || 500, { error: e.status ? e.message : 'internal', message: e.message }); }
+    } catch (e) { send(res, e.status || 500, { error: e.status ? e.message : 'internal', message: e.message, ...(e.body || {}) }, e.retryAfterSec ? { 'Retry-After': String(e.retryAfterSec) } : {}); }
   });
-  return { server, store, runner, registry, health, creative };
+  return { server, store, runner, registry, health, creative, guard };
 }
 /** Never return reference image bytes or internals to the client. */
 const publicJob = j => { const { input_assets, ...rest } = j; return { ...rest, input_assets: (input_assets || []).map(({ dataUrl, ...a }) => a) }; };

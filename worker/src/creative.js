@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { buildGuard, GuardState, retryDelayMs } from './guard.js';
 
 export const GUARDRAILS = [
   'FOXREX: navy #0B1320, slate #1F2937, restrained teal #00D4A7, professional financial education.',
@@ -111,33 +112,119 @@ export class OllamaCreativeProvider {
     try { return JSON.parse(data.message.content); } catch { throw Object.assign(new Error('Creative provider returned invalid JSON'), { status: 422 }); }
   }
 }
+const QUEUE_MAX = 10, QUEUE_TTL_MS = 6 * 3600_000;
+const guardError = (state, g, extra = {}) => Object.assign(new Error(`${state}: ${g.reason}`), { status: 503, retryAfterSec: extra.retryAfterSec, body: { state, blockedBy: g.state, reason: g.reason, guardSource: g.source, ...extra } });
+
 export class CreativeService {
-  constructor(config, provider) {
+  /**
+   * Local reasoning (an Ollama model load + generation) is NON_CRITICAL work on a live trading host.
+   * Every run asks the resource guard (kind "ollama") BEFORE anything is sent to the model. On a deny
+   * the request is queued (QUEUED_RESOURCE_GUARD) and retried with backoff, or refused with
+   * BLOCKED_TRADING_PRIORITY / WAITING_FOR_RESOURCES when the queue is full. Nothing is ever stopped.
+   */
+  constructor(config, provider, { guard = buildGuard(config), now = Date.now, autoRetry = true, log = console.warn } = {}) {
     this.provider = provider || (config.creativeProvider === 'ollama' ? new OllamaCreativeProvider(config) : null);
     this.file = path.join(config.dataDir, 'creative.json');
     this.data = fs.existsSync(this.file) ? JSON.parse(fs.readFileSync(this.file, 'utf8')) : { schemaVersion: 1, revisions: [], quotes: {} };
+    Object.assign(this, { guard, now, autoRetry, log, queue: new Map(), timer: null, draining: false, inFlight: 0 });
   }
   persist() { fs.writeFileSync(this.file + '.tmp', JSON.stringify(this.data, null, 2)); fs.renameSync(this.file + '.tmp', this.file); }
   async status() {
     if (!this.provider) return { available: false, code: 'NOT_CONFIGURED', message: 'Set CREATIVE_PROVIDER=ollama and CREATIVE_MODEL to an installed local model. Manual planning and generation remain available.' };
     try { return await this.provider.health(); } catch (e) { return { available: false, code: 'UNAVAILABLE', message: e.message }; }
   }
-  async run(stage, input) {
+  preflight(stage, input) {
     if (!SCHEMAS[stage]) throw Object.assign(new Error('Unknown creative stage'), { status: 400 });
     validateBrief(input.brief);
     if (stage === 'plan') validateShape(input.concept, SCHEMAS.ideate.properties.concepts.items, 'selectedConcept');
     if (!this.provider) throw Object.assign(new Error('Creative provider not configured; use manual mode'), { status: 503 });
     if (this.provider.costMode !== 'LOCAL_COMPUTE') throw Object.assign(new Error('Paid creative APIs are disabled'), { status: 403 });
+  }
+  async run(stage, input) {
+    this.preflight(stage, input);
+    const g = await this.guard.check('ollama');
+    if (!g.allow) throw this.enqueue(stage, input, g);
+    return this.execute(stage, input);
+  }
+  async execute(stage, input) {
     let output, attempts = 0, requestInput = input;
-    for (;;) {
-      const candidate = await this.provider.generate({ stage, input: requestInput, schema: SCHEMAS[stage] }); attempts++;
-      try { output = validateOutput(stage, candidate, input); break; }
-      catch (e) {
-        if (attempts >= 2 || e.status !== 422) throw e;
-        requestInput = { ...input, validationFeedback: e.message + '. Repair the invalid fields; recommendedId must exactly equal one concept id. Return the complete corrected object.', previousInvalidOutput: candidate };
+    this.inFlight++;
+    try {
+      for (;;) {
+        if (attempts > 0) { const g = await this.guard.check('ollama'); if (!g.allow) throw guardError(g.state, g, { queued: false }); } // the repair call is new work too
+        const candidate = await this.provider.generate({ stage, input: requestInput, schema: SCHEMAS[stage] }); attempts++;
+        try { output = validateOutput(stage, candidate, input); break; }
+        catch (e) {
+          if (attempts >= 2 || e.status !== 422) throw e;
+          requestInput = { ...input, validationFeedback: e.message + '. Repair the invalid fields; recommendedId must exactly equal one concept id. Return the complete corrected object.', previousInvalidOutput: candidate };
+        }
       }
-    }
+    } finally { this.inFlight--; }
     const revision = { id: crypto.randomUUID(), contentId: input.contentId, stage, input, output, attempts, provider: this.provider.id, model: this.provider.model, costMode: this.provider.costMode, createdAt: new Date().toISOString(), reviewState: 'draft' };
     this.data.revisions.push(revision); this.persist(); return revision;
   }
+
+  /** Queues a denied request (one per contentId+stage, newest wins) and returns the error to send. */
+  enqueue(stage, input, g) {
+    this.expire();
+    const nowIso = new Date(this.now()).toISOString();
+    for (const q of this.queue.values())
+      if (q.state === GuardState.QUEUED_RESOURCE_GUARD && q.stage === stage && q.contentId === (input.contentId ?? null)) Object.assign(q, { state: 'SUPERSEDED', finishedAt: nowIso });
+    const pending = [...this.queue.values()].filter(q => q.state === GuardState.QUEUED_RESOURCE_GUARD).length;
+    if (pending >= QUEUE_MAX) { this.log(`[creative] ${stage} refused, queue full: ${g.state}: ${g.reason}`); return guardError(g.state, g, { queued: false }); }
+    const delay = retryDelayMs(1);
+    const q = { id: crypto.randomUUID(), stage, contentId: input.contentId ?? null, input, state: GuardState.QUEUED_RESOURCE_GUARD, blockedBy: g.state, reason: g.reason,
+      attempts: 1, createdAt: nowIso, nextAttemptAt: new Date(this.now() + delay).toISOString(), revisionId: null, error: null, finishedAt: null };
+    this.queue.set(q.id, q); this.schedule();
+    this.log(`[creative] ${stage} ${GuardState.QUEUED_RESOURCE_GUARD} as ${q.id} (${g.state}): ${g.reason}`);
+    return guardError(GuardState.QUEUED_RESOURCE_GUARD, g, { queued: true, queueId: q.id, nextAttemptAt: q.nextAttemptAt, retryAfterSec: delay / 1000 });
+  }
+  expire() {
+    const now = this.now();
+    for (const [id, q] of this.queue) {
+      if (q.state === GuardState.QUEUED_RESOURCE_GUARD && now - Date.parse(q.createdAt) > QUEUE_TTL_MS) Object.assign(q, { state: 'EXPIRED', finishedAt: new Date(now).toISOString() });
+      if (q.finishedAt && now - Date.parse(q.finishedAt) > QUEUE_TTL_MS) this.queue.delete(id);
+    }
+  }
+  /** One timer for the earliest due entry; never a busy loop. */
+  schedule() {
+    if (!this.autoRetry) return;
+    clearTimeout(this.timer); this.timer = null;
+    const due = [...this.queue.values()].filter(q => q.state === GuardState.QUEUED_RESOURCE_GUARD).map(q => Date.parse(q.nextAttemptAt));
+    if (!due.length) return;
+    this.timer = setTimeout(() => this.processQueue().catch(e => this.log(`[creative] queue retry failed: ${e.message}`)), Math.max(1000, Math.min(...due) - this.now()));
+    this.timer.unref?.();
+  }
+  /** Retries due entries one at a time: ask the guard, run when allowed, otherwise back off. */
+  async processQueue() {
+    if (this.draining) return; this.draining = true;
+    try {
+      this.expire();
+      for (const q of [...this.queue.values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt))) {
+        if (q.state !== GuardState.QUEUED_RESOURCE_GUARD || Date.parse(q.nextAttemptAt) > this.now()) continue;
+        const g = await this.guard.check('ollama');
+        if (!g.allow) {
+          q.attempts++; Object.assign(q, { blockedBy: g.state, reason: g.reason, nextAttemptAt: new Date(this.now() + retryDelayMs(q.attempts)).toISOString() });
+          this.log(`[creative] queued ${q.stage} ${q.id} still ${g.state}, attempt ${q.attempts}: ${g.reason}`);
+          break; // the same answer holds for everything behind it
+        }
+        q.state = 'RUNNING';
+        try { const r = await this.execute(q.stage, q.input); Object.assign(q, { state: 'COMPLETED', revisionId: r.id }); }
+        catch (e) {
+          if (e.body?.blockedBy) { q.attempts++; Object.assign(q, { state: GuardState.QUEUED_RESOURCE_GUARD, blockedBy: e.body.blockedBy, reason: e.body.reason, nextAttemptAt: new Date(this.now() + retryDelayMs(q.attempts)).toISOString() }); break; }
+          Object.assign(q, { state: 'FAILED', error: e.message });
+        }
+        q.finishedAt = new Date(this.now()).toISOString();
+      }
+    } finally { this.draining = false; this.schedule(); }
+  }
+  publicQueue(q) { const { input, ...rest } = q; return rest; }
+  listQueue() { this.expire(); return [...this.queue.values()].map(q => this.publicQueue(q)); }
+  cancelQueued(id) {
+    const q = this.queue.get(id);
+    if (!q) return null;
+    if (q.state === GuardState.QUEUED_RESOURCE_GUARD) Object.assign(q, { state: 'CANCELLED', finishedAt: new Date(this.now()).toISOString() });
+    this.schedule(); return this.publicQueue(q);
+  }
+  stopQueue() { clearTimeout(this.timer); this.timer = null; }
 }

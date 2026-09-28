@@ -1,6 +1,8 @@
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from 'node:url';
+import { DEFAULT_HOST_MEM_FILE } from "./guard.js";
 
 // Load the local worker settings without requiring an additional dependency.
 // Explicit process environment values take precedence over .env.
@@ -40,5 +42,10 @@ export const CONFIG = Object.freeze({
   imageModels: (env.HF_IMAGE_MODELS || "nano_banana_2,gpt_image_2_5").split(",").map(s => s.trim()).filter(Boolean),
   enableVideo: env.ENABLE_VIDEO === "true",
   estimateCost: env.ESTIMATE_COST !== "false",
-  cliTimeoutMs: +(env.CLI_TIMEOUT_MS || 12 * 60 * 1000)
+  cliTimeoutMs: +(env.CLI_TIMEOUT_MS || 12 * 60 * 1000),
+  // FIONERA control plane resource guard (D45). Always on for the running worker; no env switch disables it.
+  // The API is used automatically once the private token file exists; until then the SRE host file decides.
+  controlUrl: env.FIONERA_CONTROL_URL || "https://fionera.net",
+  controlTokenFile: env.FIONERA_CONTROL_TOKEN_FILE || path.join(os.homedir(), ".fionera-control", "foxrex-studio.token"),
+  hostMemFile: env.FIONERA_HOST_MEM_FILE || DEFAULT_HOST_MEM_FILE
 });

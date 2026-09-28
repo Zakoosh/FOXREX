@@ -6,16 +6,49 @@ import { assertCostSafe, DEFAULT_POLICY } from "./policy.js";
 import { chooseModel } from "./models.js";
 import { download, sniff } from "./providers/util.js";
 import { UNAVAILABLE_CODES } from "./providers/higgsfield-cli.js";
+import { buildGuard, GuardState, retryDelayMs } from "./guard.js";
 
 export class Runner {
-  constructor({ store, registry, config, policy = DEFAULT_POLICY }) {
-    Object.assign(this, { store, registry, config, policy, busy: false, timer: null });
+  constructor({ store, registry, config, policy = DEFAULT_POLICY, guard = buildGuard(config), now = Date.now, log = console.warn }) {
+    Object.assign(this, { store, registry, config, policy, guard, now, log, busy: false, timer: null, current: null });
     this.assetsDir = path.join(config.dataDir, "assets"); this.inputsDir = path.join(config.dataDir, "inputs");
     fs.mkdirSync(this.assetsDir, { recursive: true }); fs.mkdirSync(this.inputsDir, { recursive: true });
   }
   start(ms = 1000) { this.timer = setInterval(() => this.tick(), ms); }
   stop() { clearInterval(this.timer); }
-  async tick() { if (this.busy) return; const job = this.store.next(); if (!job) return; this.busy = true; try { await this.execute(job); } finally { this.busy = false; } }
+
+  /** Oldest QUEUED job that is not waiting out a resource-guard backoff. */
+  nextJob() {
+    const now = this.now();
+    return Object.values(this.store.jobs).filter(j => j.status === JobStatus.QUEUED && !(j.guard_retry_at && Date.parse(j.guard_retry_at) > now))
+      .sort((a, b) => a.created_at.localeCompare(b.created_at))[0] || null;
+  }
+  async tick() {
+    if (this.busy) return; const job = this.nextJob(); if (!job) return; this.busy = true;
+    try { if (await this.admit(job)) { this.current = job.id; await this.execute(this.store.get(job.id)); } }
+    finally { this.current = null; this.busy = false; }
+  }
+
+  /**
+   * Resource guard (control-plane §7, D45): asked before a NEW generation starts. On a deny the job stays
+   * QUEUED with guard_state QUEUED_RESOURCE_GUARD and is not asked again before guard_retry_at
+   * (60 s, 120 s, 240 s, then every 300 s). Nothing is dropped; running work is never stopped.
+   */
+  async admit(job) {
+    if (this.registry[job.provider]?.manual) return true; // manual production: no local compute
+    const g = await this.guard.check("generation");
+    const fresh = this.store.get(job.id);
+    if (fresh?.status !== JobStatus.QUEUED) return false; // cancelled while the guard was asked
+    if (!g.allow) {
+      const attempts = (fresh.guard_attempts || 0) + 1, nowIso = new Date(this.now()).toISOString();
+      this.store.update(job.id, { guard_state: GuardState.QUEUED_RESOURCE_GUARD, guard_blocked_by: g.state, guard_reason: g.reason, guard_source: g.source,
+        guard_attempts: attempts, guard_first_deferred_at: fresh.guard_first_deferred_at || nowIso, guard_retry_at: new Date(this.now() + retryDelayMs(attempts)).toISOString() });
+      this.log(`[runner] job ${job.id} ${GuardState.QUEUED_RESOURCE_GUARD} (${g.state}), attempt ${attempts}: ${g.reason}`);
+      return false;
+    }
+    if (fresh.guard_state) this.store.update(job.id, { guard_state: null, guard_blocked_by: null, guard_retry_at: null, guard_resumed_at: new Date(this.now()).toISOString() });
+    return true;
+  }
 
   writeReferences(job) {
     return (job.input_assets || []).filter(a => a.dataUrl).map((a, i) => {
