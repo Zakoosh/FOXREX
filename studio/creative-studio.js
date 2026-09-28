@@ -218,8 +218,8 @@ function installCreativeStudio() {
     if (e.target.dataset.creative) {
       const field = e.target.dataset.creative; c[field] = e.target.value;
       if (field === 'selectedId') c.plan = null;
-      creativeSaveRevision(it, field, e.target.value); render();
-    } else if (e.target.dataset.p) { c.factsReviewed = false; invalidateCreativeQuote(c); save(); render(); }
+      creativeSaveRevision(it, field, e.target.value); field === 'selectedId' ? render() : renderAfterBlur();
+    } else if (e.target.dataset.p) { c.factsReviewed = false; invalidateCreativeQuote(c); save(); renderAfterBlur(); }
   });
   // Refresh stored terminal failures too: recovered jobs must reappear in the asset library.
   if (DB.settings.workerUrl) wapi('/jobs').then(jobs => {
