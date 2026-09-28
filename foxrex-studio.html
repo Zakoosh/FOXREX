@@ -682,6 +682,10 @@ function renderNav(){
 }
 function go(v,extra={}){ Object.assign(S,{view:v},extra); render(); window.scrollTo(0,0); }
 function render(){ renderNav(); $("#main").innerHTML=(VIEWS[S.view]||VIEWS.home)(); after(); }
+// A text field's "change" fires on blur, before focus reaches the field the user clicked. Rendering then would
+// replace that field and drop what they type next, so render once focus has moved and return it (and the caret) there.
+const fieldKey=el=>{ for(const k of ["id","data-p","data-creative","data-w"]){ const v=el&&el.getAttribute&&el.getAttribute(k); if(v) return `[${k}="${CSS.escape(v)}"]`; } return null; };
+function renderAfterBlur(){ setTimeout(()=>{ const a=document.activeElement, key=fieldKey(a), s=a&&a.selectionStart, e=a&&a.selectionEnd; render(); const n=key&&document.querySelector("#main "+key); if(n&&n!==document.activeElement){ n.focus(); try{ n.setSelectionRange(s,e); }catch(_){} } }); }
 function after(){ /* post-render hooks */ const p=$("#prompt-box"); if(p) p.value=S._promptText||""; const d=$("#adv"); if(d) d.addEventListener("toggle",()=>{S.showDetails=d.open;}); }
 
 /* ---------------- SHARED UI ---------------- */
@@ -1138,7 +1142,7 @@ function onEdit(e){
     if(el.dataset.p.startsWith("data.")&&["DRAFT","PROMPT_READY","WAITING_FOR_EXTERNAL_GENERATION"].includes(it.status)) refreshDerived(it);
     save();
     if(el.dataset.live){ const tc=textChecks(it); $("#tchecks").innerHTML=tc.map(x=>`<li class="${x.ok?"y":"n"}"><span class="mk">${x.ok?"✓":"✕"}</span>${esc(x.t)}</li>`).join(""); const b=$("#appr"); if(b) b.disabled=!tc.every(x=>x.ok); return; }
-    if(e.type==="change") render(); else { const p=$("#prompt-box"); if(p&&!S.promptV){ S._promptText=buildPrompt(it); p.value=S._promptText; } }
+    if(e.type==="change") renderAfterBlur(); else { const p=$("#prompt-box"); if(p&&!S.promptV){ S._promptText=buildPrompt(it); p.value=S._promptText; } }
     return; }
   if(el.dataset.hc){ const [n,k]=el.dataset.hc.split(":"),g=cur().generations.find(x=>x.n==n); g.checks[k]=el.checked; save(); const b=document.querySelector(`[data-act="approve-var"][data-n="${n}"]`); if(b) b.disabled=!HUMAN_CHECKS.every(([q])=>g.checks[q]); return; }
   if(el.dataset.rev){ const g=cur().generations.slice(-1)[0]; g.checks[el.dataset.rev]=el.checked; save(); const b=document.querySelector('[data-act="rev-ok"]'); if(b) b.disabled=!REVIEW.every(r=>g.checks[r.k]); return; }

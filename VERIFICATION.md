@@ -2,7 +2,7 @@
 
 ## Checks
 
-- `cd worker; npm test`: 43 passed, zero failures/skips. All charged-generation coverage uses mocks.
+- `cd worker; npm test`: 45 passed, zero failures/skips. All charged-generation coverage uses mocks.
 - `npm run check`: worker, tests, helper scripts, creative UI and inline JavaScript parse successfully.
 - Focused regressions cover API root/health/auth/exact CORS, non-overwriting setup, and persistence of creative inputs before blur/rerender.
 - Existing coverage includes immutable previews, concurrent/repeated approvals, restart recovery, lost provider IDs, cancellation, reconciliation, increased cost, schema/fact validation, migration and external-import lineage.
@@ -41,8 +41,19 @@ Repeated approval of one quote returns its existing job. A persisted submission 
 
 The live URL `https://zakoosh.github.io/FOXREX/foxrex-studio.html` returned HTTP 200 but did not load creative-studio.js; that script URL returned 404. The fetched remote main branch also lacked these uncommitted features. There is no custom build workflow or bundler in this repository. Changes are prepared as a review branch and PR; they are not deployed or merged by this task. Pages publishing settings could not be freshly inspected because the browser call timed out. Merge/publish through the repository's configured Pages workflow and verify the deployed result separately.
 
+## Deployed GitHub Pages verification — follow-up, 2026-09-28
+
+Run in the operator's normal Chrome 153 profile against the deployed page and the existing worker on 127.0.0.1:8787 (HOST unchanged, port unchanged).
+
+- Browser block: not reproducible in this profile. A fetch from the Pages origin and a direct navigation to `/health` both returned 200. Chrome stores a `loopback_network` Allow for `https://zakoosh.github.io` (granted 2026-09-27 20:34 UTC). No policy restricts local network access. The earlier ERR_BLOCKED_BY_CLIENT came from the automation clients used then: the in-app browser loaded port 5174 but not 8787 on the same host, which rules out Chrome's local-network check or a worker fault. The only active network-blocking extension here, AdBlock, contains no rule matching this origin → 127.0.0.1 (its EasyPrivacy localhost rules are scoped to named third-party sites). No setting was changed.
+- The stored Pages token was stale (policy 401). The rotated token was pasted privately from `.env` via the clipboard, then the clipboard was cleared. Settings' own check reported health 200, authenticated policy 200 and provider status loaded.
+- On a labelled test item: ideation (3 concepts, OLLAMA_LOCAL qwen3:4b), selecting a non-recommended concept, planning, operator plan edit validated by the worker, reload persistence of all fields and revisions, and the manual path (MANUAL_CLAUDE quote without estimate → MANUAL_REQUIRED job).
+- The two recovered Higgsfield jobs are byte-identical before and after; both PNGs are served to the Pages origin at their on-disk sizes. Their content item was created in the in-app browser's temporary storage and does not exist in the Pages origin's storage, so the live Studio has no item to show them under.
+- Defect found and fixed: editing a text field and then clicking straight into the next field dropped the next input's typing, because the blur-time `change` handler re-rendered and replaced the clicked field. The render is now deferred until focus has moved, and focus and caret are returned to the same field. Regression tests were added; the fix was confirmed in Chrome.
+- Local inference was stopped and the model unloaded, at the host's request, while the FX market is open. The optional critique step was not run.
+
 ## Files and remaining limits
 
 Changes cover the Studio HTML/creative module; worker configuration, creative service, server, runner and job recovery; setup/check/live-verification scripts; focused tests; README, worker README and GENERATION documentation. All prior working-tree changes were continued in place.
 
-Remaining limits: live Pages connection blocked on this client, token entry/reconnection outstanding, external browser upload permission, no rendered video/audio, no pixel-aware critique, no social publishing, and no multi-user persistence. Paid APIs stay disabled with a zero budget. .env, its backup, job data and detailed verification evidence are ignored and excluded from the commit.
+Remaining limits: recovered Higgsfield jobs are not attached to a content item in the Pages origin, external browser upload permission, no rendered video/audio, no pixel-aware critique, no social publishing, and no multi-user persistence. Paid APIs stay disabled with a zero budget. .env, its backup, job data and detailed verification evidence are ignored and excluded from the commit.
