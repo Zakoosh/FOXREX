@@ -14,22 +14,38 @@ Preview: serve the repository root with `python3 -m http.server 5180` and open `
 
 ## Engine
 
+A hybrid: **WebGL (Three.js) for the world**, DOM for the typography and interfaces, SVG/Canvas only where they are the better tool.
+
 | Layer | Choice | Why |
 |---|---|---|
-| Visual engine | Canvas 2D with a small perspective camera (`js/engine.js`) | One continuous particle world plus crisp vector charts. No WebGL dependency means no WebGL failure mode. |
-| Animation | Scroll is the film timeline, eased with inertia, plus `requestAnimationFrame` | 15 scenes; every scene is a *formation* the same particles morph into. |
-| 3D | Hand-rolled projection (yaw, depth, camera travel) | Enough for depth, fly-through, orbiting the feature space and REX head turns. Three.js was not needed. |
-| Typography / UI | DOM overlay (Inter / IBM Plex Sans Arabic) | Real text, selectable, accessible and translatable. |
-| Libraries | none | |
+| World renderer | Three.js r170, WebGL2 (`js/world3d.js`, vendored at `vendor/three.module.min.js`, MIT) | Real camera depth, perspective, per-scene lighting, exponential fog, depth of field on the particles, 3D objects and a lit REX mesh. |
+| Timeline / choreography | `js/engine.js` | Scroll is the film timeline (eased, with inertia). The engine owns formations, the camera narrative, REX behaviour and interactions, and hands the renderer one state object per frame. |
+| Particles | One `THREE.Points` field with custom shaders (depth-of-field circle of confusion, fog, per-particle alpha/size) | The same population morphs through every scene. |
+| REX | Procedural faceted mesh with custom shading (key/fill/specular, fresnel rim, noise dissolve into data, scan bands) and a separate eye shader (amber iris, vertical slit, reflected market text, glint) | No GLB yet, and no cheap fake 3D animal. See *Asset plan*. |
+| Typography / UI | DOM overlay (Inter / IBM Plex Sans Arabic) | Real text: selectable, accessible and translatable. Some labels live in 3D space as sprites. |
+| Lens | CSS film grain and vignette | Cheap, and it does not touch the GPU budget. |
+| Fallback | The original Canvas 2D engine | Used automatically when WebGL is unavailable or fails, or forced with `?renderer=2d`. |
+
+- **Camera:** the camera travels through the world. It pushes in at the opening, flies through the architecture, orbits the chart and the feature space, pulls focus in the reasoning chamber and locks off at the decision.
+- **Lighting:** each scene has its own look: fog density, exposure, a volumetric beam, rim and key light, and aperture. Teal is used sparingly.
+- **Depth layers:** foreground, midground, background and far background. Every scene is built from these.
+- **Performance budget:**
+  - Adaptive DPR: it drops when frames run slow and recovers when they are fast.
+  - Particle counts by device tier: 5,200 desktop, 3,200 tablet, 1,800 mobile.
+  - Scene objects are built lazily and stay asleep (invisible) unless their scene, or the next one, is on screen.
+  - Geometry and materials are reused.
+- **QA hook:** `window.FOXREX_XP.state()` (read-only) returns the scroll position, scene, renderer and DPR.
 
 Files:
 
 | File | Contents |
 |---|---|
-| `index.html` | Stage, overlay and the complete text fallback (for no-JS, errors and screen readers) |
+| `index.html` | Stage (WebGL canvas, 2D fallback canvas, lens), overlay, and the complete text fallback |
 | `experience.css` | Styles |
-| `js/engine.js` | Timeline, formations, camera, REX, vector layer and interactions |
-| `js/rex.js` | REX geometry |
+| `js/engine.js` | Timeline, formations, camera narrative, REX behaviour, DOM layer, interactions, and the 2D fallback renderer |
+| `js/world3d.js` | WebGL world: particles, REX mesh and eyes, scene objects, lighting and fog |
+| `vendor/three.module.min.js` | Three.js r170 (MIT, see `vendor/THREE-LICENSE.txt`) |
+| `js/rex.js` | REX line geometry (used by the 2D fallback) |
 | `js/indicators.js` | Genuine indicator maths |
 | `js/demo-data.js` | **DEMO_DATA** |
 | `js/copy.js` | EN / AR copy |
@@ -45,25 +61,26 @@ Morphs are staggered per particle, so objects *become* the next thing instead of
 
 ## REX
 
-**Implementation:** a procedural faceted fox head (`js/rex.js`).
+**Implementation:** a procedural faceted fox-head mesh rendered in WebGL (`createWorld` in `js/world3d.js`).
 
-- It is 3D line geometry: silhouette, ear triangles, brow, facial mask and muzzle ridge, with depth so the head can turn.
-- It renders two ways: as particles that dissolve into data and re-form, and as crisp line-art once organised.
-- The eyes are narrow, slanted and amber with a vertical slit. They track targets such as volatility, the latest candle, evidence nodes and the selected market, blink, and narrow when the scene is about risk.
-- Loading behaviour is a teal scan across the eyes; there is no spinner.
+- **Material:** obsidian, with lighting from a cool key, a warm fill (kept low), a specular highlight and a teal fresnel rim.
+- **Dissolve:** it can dissolve into data along a noise edge and re-form from it.
+- **Particle formations:** they sample the same surface (`sampleRexSurface`), so particles can *become* REX.
+- **Eyes:** a separate shader, amber and slanted with a vertical slit, reflecting market text. The eyes blink, narrow on risk, and follow meaningful targets such as the latest candle, evidence and the selected market. They follow the cursor only when it is near a meaningful object.
+- **Swapping in a GLB later:** replace the mesh in `world3d.js` with the loaded model and keep the eye materials and `sampleRexSurface`. The engine drives REX only through the state it hands over (`rexS`: position, scale, yaw, pitch, mesh, edge, dissolve, eye), so nothing else changes.
 
 **Narrative arc:**
 
-1. Eyes only, far away in the dark.
-2. Silhouettes forming from observations.
-3. Formed by the data streams ("it was always watching").
-4. A small observer beside the chart.
-5. Dissolved into the ML feature space.
-6. Fully recognisable in the reasoning chamber, where it waits.
-7. Stopped behind the risk gate.
-8. Perfectly still at the decision; the environment keeps moving.
-9. Explaining in Ask REX.
-10. A faint signature at the centre of Live Intelligence and the System.
+1. **First contact:** the eyes alone in near-total darkness, reflecting market text, then gone.
+2. **Observation:** a lit silhouette with depth, with data passing in front of it, behind it and across it.
+3. **Data formation:** the ten evidence streams form REX, which then gives way to the architecture.
+4. **Technical:** a small observer whose attention follows price, structure, volatility and the breakout.
+5. **ML:** it dissolves into the feature space.
+6. **Reasoning:** it re-forms behind the evidence in the dark chamber and waits.
+7. **Risk:** stopped behind the gate.
+8. **Decision:** perfectly still while the environment keeps moving.
+9. **Ask REX:** it explains.
+10. **Live and System:** a faint signature.
 
 **Assets used:** the existing assets are the FOXREX brand mark (used in the nav) and `assets/rex/rex-arms.jpg` (116×106, a character illustration). The illustration is too small and too mascot-like for cinematic use, so REX here is a *premium placeholder silhouette system* derived from its defining traits: tall pointed ears, cheek ruff, narrow muzzle and slanted amber eyes. No random fox imagery was introduced.
 
@@ -122,17 +139,24 @@ Everything market-like is **DEMO_DATA** (`js/demo-data.js`) and labelled on scre
 ## Mobile, reduced motion, performance
 
 **Mobile / tablet:** a separate choreography, not a shrunk desktop.
-- About 1,000 particles (1,800 on tablet, 2,600 on desktop); DPR is capped at 1.5.
-- Fewer candles, a vertical architecture path, and panels below the world instead of beside it.
-- A narrower camera travel.
+- WebGL: 1,800 particles on mobile and 3,200 on tablet, with adaptive DPR.
+- Fewer candles, a vertical architecture path, and a 3-column docked market row.
+- Panels sit below the world, and the camera travel is narrower.
 
 **Reduced motion:**
-- No inertia, drift, camera travel, blur or staggered morphs; scenes switch cleanly as you scroll.
+- No inertia, drift, camera travel or staggered morphs; scenes switch cleanly as you scroll.
 - The story and every interface remain.
+
+**No WebGL:** the Canvas 2D engine takes over automatically.
 
 **No JavaScript or an error:** the full narrative as text.
 
-**Performance:**
-- Particles are drawn in one pass per colour, with no per-frame layout reads other than `scrollY`.
-- DOM writes are limited to transforms and opacity, only for the active scene's elements.
-- Measured about 60 fps average across a full scripted scroll at 1440×900 in headless Chromium, with a worst frame of about 24 ms.
+**Performance (measured honestly):** headless QA ran on SwiftShader, which is CPU software WebGL with no GPU, on 4 cores. Adaptive DPR fell to its floor of 0.75. Averages across a full scripted scroll:
+
+| Viewport | Average fps |
+|---|---|
+| 1440×900 | about 25 |
+| 1920×1080 | about 16 |
+| 390×844 | about 46 |
+
+These are lower bounds. Real-GPU numbers have not been measured here and should be checked on target hardware before any production decision.

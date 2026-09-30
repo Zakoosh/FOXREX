@@ -19,7 +19,7 @@ const SCENES = [
   { id: 'risk', a: 0.675, b: 0.735 }, { id: 'decision', a: 0.735, b: 0.785 }, { id: 'replay', a: 0.785, b: 0.855 },
   { id: 'ask', a: 0.855, b: 0.905 }, { id: 'live', a: 0.905, b: 0.955 }, { id: 'system', a: 0.955, b: 1.001 }
 ];
-const MORPH = { opening: 0.35, noise: 0.3, observe: 0.35, streams: 0.3, enter: 0.3, technical: 0.14, memory: 0.28, ml: 0.25, reason: 0.22, risk: 0.25, decision: 0.3, replay: 0.18, ask: 0.22, live: 0.25, system: 0.2 };
+const MORPH = { opening: 0.35, noise: 0.3, observe: 0.35, streams: 0.3, enter: 0.3, technical: 0.14, memory: 0.28, ml: 0.25, reason: 0.22, risk: 0.25, decision: 0.3, replay: 0.18, ask: 0.22, live: 0.16, system: 0.2 };
 const IDX = Object.fromEntries(SCENES.map((s, i) => [s.id, i]));
 
 /* ------------------------------------------------------------------ environment */
@@ -27,8 +27,11 @@ const params = new URLSearchParams(location.search);
 const RM = params.get('motion') === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches;
 const root = document.documentElement;
 const canvas = document.getElementById('xp-canvas');
-const ctx = canvas.getContext('2d', { alpha: false });
-if (!ctx) throw new Error('Canvas 2D unavailable');
+let ctx = null;                               // Canvas 2D: fallback renderer only (used when WebGL is unavailable)
+let GL = null;                                 // the Three.js world (js/world3d.js) when WebGL is available
+const glCanvas = document.getElementById('xp-gl');
+const PALRGB = [[0.9, 0.91, 0.925], [0, 0.83, 0.655], [0.42, 0.46, 0.53], [0.96, 0.725, 0.26], [1, 0.36, 0.48]];
+let dprLive = 1, frameMs = 16, frameCount = 0;
 const $ = s => document.querySelector(s);
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, u) => a + (b - a) * u;
@@ -69,11 +72,11 @@ function buildMemories() {
 function resize() {
   W = innerWidth; H = innerHeight; MOBILE = W < 760; NARROW = W < 1100 || W / H < 1.05; // tablets / portrait get their own choreography
   DPR = Math.min(devicePixelRatio || 1, MOBILE ? 1.5 : 2);
-  canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
-  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  if (GL) { dprLive = Math.min(dprLive || DPR, DPR); GL.resize(W, H, dprLive); }
+  else if (ctx) { canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR); canvas.style.width = W + 'px'; canvas.style.height = H + 'px'; }
   A = W / H; S = H / 2;
   NV = MOBILE ? 64 : 110;
-  const n = RM ? (MOBILE ? 700 : 1400) : W < 760 ? 1000 : W < 1200 ? 1800 : 2600;
+  const n = GL ? (RM ? (MOBILE ? 1200 : 2400) : W < 760 ? 1800 : W < 1200 ? 3200 : 5200) : RM ? (MOBILE ? 700 : 1400) : W < 760 ? 1000 : W < 1200 ? 1800 : 2600;
   if (n !== N) initParticles(n);
   document.getElementById('xp-scroll').style.height = (MOBILE ? 1500 : 1700) + 'vh';
 }
@@ -83,7 +86,8 @@ function initParticles(n) {
   rrnd = Array.from({ length: 6 }, () => new Float32Array(N));
   let s = 1234567;
   for (const arr of rrnd) for (let i = 0; i < N; i++) { s = (s * 16807) % 2147483647; arr[i] = s / 2147483647; }
-  rexPts = samplePoints(R);
+  rexPts = GL ? GL.sampleRexSurface(R).map(p => [p[0], p[1], p[2]]) : samplePoints(R);
+  if (GL) GL.setParticles(N);
   fragIdx = []; for (let k = 0; k < FN; k++) fragIdx.push(R + k * 7);
 }
 
@@ -101,20 +105,25 @@ function project(x, y, z, out) {
   return true;
 }
 const CAMS = {
-  opening: { z: -3 }, noise: { z: -3 }, observe: { z: -3 }, streams: { z: -3.2 }, enter: { z: -3 }, technical: { z: -3 }, memory: { z: -3 },
+  opening: { z: -3 }, noise: { z: GL ? 1.2 : -3 }, observe: { z: -3 }, streams: { z: -3.2 }, enter: { z: -3 }, technical: { z: -3 }, memory: { z: -3 },
   ml: { z: -3.4, pivot: 1 }, reason: { z: -3 }, risk: { z: -3 }, decision: { z: -3 }, replay: { z: -3 }, ask: { z: -3 }, live: { z: -3.2 }, system: { z: -3.2 }
 };
 function camFor(id, lp, t) {
   const c = { x: 0, y: 0, z: -3, yaw: 0, pivot: 2, ...CAMS[id] };
   if (RM) return c;
-  if (id === 'noise') c.z = -3 + lp * 0.8;
-  if (id === 'observe') c.z = -2.2 - lp * 0.4;
-  if (id === 'streams') c.z = -3.4 + lp * 0.9;
+  if (id === 'opening' && GL) c.z = -3 + ease(clamp(introT / 11)) * 3.6 + lp * 0.6;   // slow travel through isolated numbers
+  if (id === 'noise') c.z = GL ? 1.2 + lp * 1.6 : -3 + lp * 0.8;                        // deeper into the chaos
+  if (id === 'observe') c.z = GL ? -3.4 + lp * 1.1 : -2.2 - lp * 0.4;                   // slow push-in: attention
+  if (id === 'streams') { c.z = -3.4 + lp * 0.9; if (GL) { c.pivot = 1.4; c.yaw = -0.16 + lp * 0.32; } }   // orbit while the data converges
   if (id === 'enter') c.z = -3 + ease(lp) * 11.5;                        // travel INTO the architecture
   if (id === 'memory') c.z = -3 + lp * 3.2, c.x = Math.sin(lp * 2) * 0.2;
   if (id === 'ml') c.yaw = -0.5 + lp * 1.6 + Math.sin(t * 0.15) * 0.05;  // orbit the feature space
   if (id === 'system') c.z = -3 - ease(lp) * 1.8;                        // pull back: the whole system
-  if (id === 'decision') c.z = -3 + lp * 0.25;
+  if (id === 'decision') c.z = GL ? -3 : -3 + lp * 0.25;                                 // locked: control
+  if (GL && id === 'technical') { c.z = -3.35 + lp * 0.45; c.pivot = 0; c.yaw = Math.sin(lp * Math.PI) * 0.11; }   // push-in + parallax reveals the indicator layers
+  if (GL && id === 'reason') c.z = -3.35 + lp * 0.45;                                   // into the chamber
+  if (GL && id === 'risk') c.z = -3.1 + lp * 0.15;
+  if (GL && id === 'live') c.z = -3.5 + lp * 0.3;
   return c;
 }
 
@@ -122,23 +131,30 @@ function camFor(id, lp, t) {
 function rexFor(id, lp, t) {
   const m = MOBILE;
   const base = {
-    opening: { x: m ? 0.2 : 1.5, y: 0.35, z: 10, s: 1, formed: 0, a: 0, eye: smooth(0.55, 0.95, lp) * 0.3 },
-    noise: { x: m ? -0.1 : -1.6, y: 0.45, z: 10, s: 1, formed: 0.04, a: 0.1, eye: 0.28 },
-    observe: { x: m ? 0.05 : 1.0, y: 0.3, z: 5.5, s: 1, formed: 0.25, a: 0.3, eye: 0.55 },
-    streams: { x: 0, y: 0.05, z: 1.4, s: m ? 0.5 : 0.72, formed: smooth(0.15, 0.85, lp), a: 0.7, eye: 0.35 + lp * 0.45 },
+    // A · FIRST CONTACT: only the eyes, far in the dark, market data reflected in them — then gone
+    opening: { x: m ? 0.1 : 0.55, y: 0.16, z: 3.6, s: m ? 0.55 : 0.8, formed: 0, a: 0, eye: GL ? smooth(4.3, 5.3, introT) * (1 - smooth(7.0, 8.0, introT)) * 0.95 : smooth(0.55, 0.95, lp) * 0.3 },
+    noise: { x: m ? -0.1 : -1.6, y: 0.45, z: GL ? 12 : 10, s: 1, formed: 0.04, a: 0.1, eye: GL ? 0.22 * Math.pow(Math.max(0, Math.sin(t * 0.45)), 12) : 0.28 },
+    // B · OBSERVATION: a sculpted silhouette with real depth; data passes in front of, behind and across it
+    observe: { x: m ? 0.05 : 0.7, y: 0.18, z: 3.2, s: m ? 0.7 : 1.05, formed: 0.18, a: 0.3, eye: 0.6, mesh: GL ? 0.55 : 0, edge: 0.06 },
+    // C · DATA FORMATION: particles converge into REX … then become the architecture
+    streams: { x: 0, y: 0.05, z: 1.4, s: m ? 0.5 : 0.72, formed: smooth(0.15, 0.85, lp), a: 0.7, eye: 0.35 + lp * 0.45, mesh: smooth(0.55, 0.85, lp) * 0.9, edge: smooth(0.55, 0.85, lp) * 0.12 },
     enter: { x: 0, y: 0, z: 12.5, s: 1.1, formed: 0.7, a: 0.3, eye: 0.6 },
-    technical: { x: m ? A * 0.62 : A * 0.84, y: m ? 0.82 : 0.86, z: 0.6, s: m ? 0.12 : 0.15, formed: 0.9, a: 0.35, eye: 0.8 },
-    memory: { x: m ? 0 : -0.95, y: 0.12, z: 3.5 + lp * 2.2, s: 0.7, formed: 0.45, a: 0.22, eye: 0.5 },
-    ml: { x: 0, y: 0, z: 0, s: 0.8, formed: smooth(0.85, 1, lp) * 0.4, a: 0.2, eye: smooth(0.88, 1, lp) * 0.5 },
-    reason: { x: 0, y: 0.02, z: 0.6, s: m ? 0.42 : 0.6, formed: 1, a: 0.9, eye: 1 },
-    risk: { x: 0, y: 0.08 + GATE().y, z: 2.3, s: NARROW ? 0.3 : 0.45, formed: 1, a: 0.55, eye: 0.9 },
-    decision: { x: 0, y: m ? 0.66 : 0.66, z: 1.4, s: m ? 0.17 : 0.2, formed: 1, a: 0.5, eye: 0.85 },
-    replay: { x: m ? A * 0.62 : -A * 0.84, y: m ? 0.86 : 0.86, z: 0.6, s: m ? 0.11 : 0.14, formed: 0.9, a: 0.35, eye: 0.8 },
-    ask: { x: NARROW ? 0 : -A * 0.4, y: NARROW ? 0.5 : 0.04, z: 0.6, s: m ? 0.26 : NARROW ? 0.3 : 0.44, formed: 1, a: 0.95, eye: 1 },
-    live: { x: 0, y: 0, z: 3.4, s: 0.32, formed: 0.85, a: 0.16, eye: 0.45 },
-    system: { x: 0, y: m ? 0.02 : 0.08, z: 2.2, s: m ? 0.22 : 0.3, formed: 1, a: 0.32, eye: 0.6 }
+    // D · TECHNICAL: a small observer beside the chart, attention following price / structure / volatility / breakout
+    technical: { x: m ? A * 0.62 : A * 0.84, y: m ? 0.82 : 0.86, z: 0.6, s: m ? 0.12 : 0.15, formed: 0.9, a: 0.35, eye: 0.8, mesh: 0.85, edge: 0.2 },
+    memory: { x: m ? 0 : -0.95, y: 0.12, z: 3.5 + lp * 2.2, s: 0.7, formed: 0.45, a: 0.22, eye: 0.5, mesh: 0.3, edge: 0.08 },
+    // E · ML: REX dissolves — the intelligence becomes mathematics
+    ml: { x: 0, y: 0, z: 1, s: 0.8, formed: smooth(0.85, 1, lp) * 0.4, a: 0.2, eye: GL ? 0.9 * (1 - smooth(0.06, 0.16, lp)) : smooth(0.88, 1, lp) * 0.5, mesh: GL ? 1 - smooth(0.2, 0.24, lp) : 0, dissolve: smooth(0.02, 0.2, lp), edge: 0 },
+    // F · REASONING: REX slowly re-forms behind the evidence
+    reason: { x: 0, y: 0.04, z: 0.6, s: m ? 0.42 : 0.66, formed: 1, a: 0.9, eye: 1, mesh: 1, dissolve: 1 - smooth(0.0, 0.38, lp), edge: 0.16, rimBoost: 1.2 },
+    risk: { x: 0, y: 0.08 + GATE().y, z: 2.3, s: NARROW ? 0.3 : 0.45, formed: 1, a: 0.55, eye: 0.9, mesh: 0.9, edge: 0.14 },
+    // G · DECISION: complete stillness
+    decision: { x: 0, y: m ? 0.66 : 0.66, z: 1.4, s: m ? 0.17 : 0.2, formed: 1, a: 0.5, eye: 0.85, mesh: 1, edge: 0.2 },
+    replay: { x: m ? A * 0.62 : -A * 0.84, y: m ? 0.86 : 0.86, z: 0.6, s: m ? 0.11 : 0.14, formed: 0.9, a: 0.35, eye: 0.8, mesh: 0.85, edge: 0.18 },
+    ask: { x: NARROW ? 0 : -A * 0.4, y: NARROW ? 0.5 : 0.04, z: 0.6, s: m ? 0.26 : NARROW ? 0.3 : 0.44, formed: 1, a: 0.95, eye: 1, mesh: 1, edge: 0.18, rimBoost: 1.1 },
+    live: { x: 0, y: 0, z: 3.4, s: 0.32, formed: 0.85, a: 0.16, eye: 0.45, mesh: 0.35, edge: 0.06 },
+    system: { x: 0, y: m ? 0.02 : -0.98, z: 3.4, s: m ? 0.22 : 0.3, formed: 1, a: 0.22, eye: 0.45, mesh: 0.32, edge: 0.08 }
   }[id];
-  return { yaw: 0, pitch: 0, ...base };
+  return { yaw: 0, pitch: 0, mesh: 0, edge: 0, dissolve: 0, rimBoost: 1, ...base };
 }
 function mixRex(a, b, u) { const o = {}; for (const k of Object.keys(a)) o[k] = lerp(a[k], b[k] ?? a[k], u); return o; }
 
@@ -160,9 +176,18 @@ const NODES = id => EVIDENCE.map((e, j) => {
   const ang = Math.PI * (0.5 + 2 * j / EVIDENCE.length), ask = id === 'ask';
   const cx0 = ask && !NARROW ? -A * 0.4 : 0, cy0 = ask && NARROW ? 0.5 : 0.04;
   const rx_ = NARROW ? A * (ask ? 0.66 : 0.8) : ask ? Math.min(A * 0.5, 0.86) : Math.min(A * 0.78, 1.35), ry = NARROW ? (ask ? 0.32 : 0.6) : ask ? 0.62 : 0.56;
-  return { x: cx0 + Math.cos(ang) * rx_, y: cy0 + Math.sin(ang) * ry, z: 0.2 };
+  // narrow screens: the two lowest nodes sit close together, so spread them apart
+  const spread = NARROW && !ask && Math.sin(ang) < -0.8 ? 1.75 : 1;
+  return { x: cx0 + Math.cos(ang) * rx_ * spread, y: cy0 + Math.sin(ang) * ry, z: 0.2 };
 });
-const MK = () => MARKETS.map((m, j) => { const ang = -Math.PI / 2 + (2 * Math.PI * j) / MARKETS.length + 0.3; return { x: Math.cos(ang) * (MOBILE ? A * 0.7 : Math.min(A * 0.7, 1.25)), y: Math.sin(ang) * (MOBILE ? 0.55 : 0.6) - 0.02, z: 0.3 + (j % 2) * 0.5 }; });
+const MK = () => { const d = typeof dockU === 'function' ? dockU() : 0; return MARKETS.map((m, j) => {
+  const ang = -Math.PI / 2 + (2 * Math.PI * j) / MARKETS.length + 0.3;
+  const free = { x: Math.cos(ang) * (MOBILE ? A * 0.7 : Math.min(A * 0.7, 1.25)), y: Math.sin(ang) * (MOBILE ? 0.55 : 0.6) - 0.02, z: 0.3 + (j % 2) * 0.5 };
+  // the constellation stabilises into the product: one calm row of markets
+  const cols = MOBILE ? 3 : 6, row = MOBILE ? Math.floor(j / 3) : 0, col = MOBILE ? j % 3 : j, span = MOBILE ? A * 1.5 : Math.min(A * 1.7, 2.9);
+  const dock = { x: -span / 2 + (col + 0.5) * span / cols, y: MOBILE ? -0.28 - row * 0.3 : -0.42, z: 0.3 };
+  return { x: lerp(free.x, dock.x, d), y: lerp(free.y, dock.y, d), z: lerp(free.z, dock.z, d) };
+}); };
 const STATIONS = () => T.stations.map((_, j) => { const u = j / (T.stations.length - 1); return MOBILE ? { x: Math.sin(u * Math.PI * 2) * A * 0.45, y: 0.72 - u * 1.44, z: 0.4 } : { x: lerp(-A * 0.86, A * 0.86, u), y: Math.sin(u * Math.PI * 1.5) * 0.2 - 0.36, z: 0.4 + Math.sin(u * Math.PI) * 0.8 }; });
 let nodeCache = null, mkCache = null, stCache = null, nodesBy = {};
 
@@ -312,7 +337,9 @@ function frame(now) {
   aimRex(rex, sc.id, lp, t);
   rexState.x = rex.x; rexState.y = rex.y;
 
-  // background
+  if (GL) { glFrame(t, dt, sc, lp, next, mu, rex); updateDom(sc, lp, mu, next, t); adaptQuality(now); requestAnimationFrame(frame); return; }
+
+  // background (Canvas 2D fallback renderer)
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
   const vg = ctx.createRadialGradient(W / 2, H * 0.45, 0, W / 2, H * 0.5, Math.max(W, H) * 0.75);
@@ -360,6 +387,56 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
+/* ------------------------------------------------------------------ WebGL frame */
+function techStep(lp) { const u = clamp((lp - 0.06) / 0.86) * 12; return { step: Math.min(11, Math.floor(u - 1e-6)), stepU: u % 1 }; }
+function glFrame(t, dt, sc, lp, next, mu, rex) {
+  const Wp = GL.particles, jitterOff = sc.id === 'decision';
+  const meshA = rex.mesh || 0;
+  for (let i = 0; i < N; i++) {
+    const isRex = i < R;
+    formation(sc.id, i, t, lp, oa);
+    if (mu > 0) {
+      const st = RM ? 0 : rrnd[5][i] * 0.35, u = clamp((mu - st) / (1 - st));
+      formation(next.id, i, t, 0, ob);
+      oa.x = lerp(oa.x, ob.x, u); oa.y = lerp(oa.y, ob.y, u); oa.z = lerp(oa.z, ob.z, u); oa.a = lerp(oa.a, ob.a, u); oa.s = lerp(oa.s, ob.s, u); if (u > 0.5) oa.c = ob.c;
+    }
+    if (isRex && rex.formed > 0.001) {
+      place(rexPts[i], rex, P);
+      const f = RM ? (rex.formed > 0.5 ? 1 : 0) : smooth(rrnd[4][i] * 0.5, rrnd[4][i] * 0.5 + 0.5, rex.formed);
+      const bre = jitterOff || RM ? 0 : Math.sin(t * 1.3 + i) * 0.004;
+      oa.x = lerp(oa.x, P[0] + bre, f); oa.y = lerp(oa.y, P[1] + bre, f); oa.z = lerp(oa.z, P[2] - 0.004, f);
+      oa.a = lerp(oa.a, rex.a * (0.45 + 0.55 * rrnd[3][i]) * (1 - meshA * 0.6), f); if (f > 0.5) oa.c = rrnd[2][i] < 0.12 ? 1 : 0; oa.s = lerp(oa.s, 0.7, f);
+    }
+    const o = i * 3, c = PALRGB[oa.c];
+    Wp.pos[o] = oa.x; Wp.pos[o + 1] = oa.y; Wp.pos[o + 2] = -oa.z;
+    Wp.col[o] = c[0]; Wp.col[o + 1] = c[1]; Wp.col[o + 2] = c[2];
+    Wp.alpha[i] = oa.a; Wp.size[i] = oa.s * (MOBILE ? 1.15 : 1);
+  }
+  if (!RM) { nextBlink -= dt; if (nextBlink < 0) { blink = 1; nextBlink = 4 + Math.random() * 5; } blink = Math.max(0, blink - dt * 7); }
+  const ts = techStep(sc.id === 'technical' ? lp : 1);
+  const subjZ = { opening: 3, noise: 4, observe: rex.z, streams: 1.4, enter: 3, technical: 0, memory: 2.5, ml: 1, reason: 0.4, risk: 1, decision: rex.z, replay: 0, ask: 0.5, live: 0.5, system: 0.8 }[sc.id];
+  const openZ = [2.2, 4.4, 5.4, 6.8, 8.2, 9.4, 10.6, 11.8, 13, 14.2, 15.6][Math.min(10, Math.floor(Math.max(0, introT - 0.6) / 0.85))];
+  const focus = (sc.id === 'opening' ? openZ : subjZ) - cam.z;
+  const conflictFill = sc.id === 'reason' || sc.id === 'ask' ? 0.14 : 0;   // a hint of amber from the conflicting side
+  GL.frame({
+    t, id: sc.id, nid: next.id, mu, lp, cam: { ...cam }, rexS: rex, focus, gaze, eyeOpen: 1 - Math.sin(blink * Math.PI) * 0.92,
+    eyeFocus: lerp(sc.id === 'risk' || sc.id === 'decision' ? 1 : 0, next.id === 'risk' || next.id === 'decision' ? 1 : 0, mu), intro: introT, fragIdx,
+    step: ts.step, stepU: ts.stepU, crisp: crispFor('technical'), crispReplay: crispFor('replay'),
+    nodes: nodesBy[sc.id === 'ask' ? 'ask' : 'reason'], linkTarget: sc.id === 'ask' ? { x: rexState.x, y: rexState.y, z: 0.6 } : { x: 0, y: 0, z: 0.6 },
+    focusOf: id => (sc.id === 'ask' ? askFocus(id) : 1), waitHold: sc.id === 'reason' && lp > 0.4 && lp < 0.72,
+    gate: GATE(), gateW: MOBILE ? 0.34 : 0.42, narrow: NARROW, A, mobile: MOBILE, decY, DEC: DECISION, mk: mkCache, liveFocus, dock: dockU(), st: stCache, fill: conflictFill
+  });
+}
+/* adaptive pixel ratio: keep the frame budget, never shimmer back and forth */
+function adaptQuality(now) {
+  const ms = now - (adaptQuality.last || now); adaptQuality.last = now; if (ms > 0 && ms < 250) frameMs = frameMs * 0.94 + ms * 0.06;
+  if (++frameCount % 90 !== 0) return;
+  const maxD = DPR, minD = MOBILE ? 0.6 : 0.75;
+  if (frameMs > 24 && dprLive > minD) { dprLive = Math.max(minD, +(dprLive * 0.85).toFixed(2)); GL.resize(W, H, dprLive); }
+  else if (frameMs < 13 && dprLive < maxD) { dprLive = Math.min(maxD, +(dprLive * 1.1).toFixed(2)); GL.resize(W, H, dprLive); }
+}
+function dockU() { return cur.id === 'live' ? smooth(0.32, 0.58, cur.lp) : 0; }
+
 /* ------------------------------------------------------------------ REX attention */
 let gaze = { x: 0, y: 0 }, blink = 0, nextBlink = 3;
 function aimRex(rex, id, lp, t) {
@@ -367,7 +444,11 @@ function aimRex(rex, id, lp, t) {
   let tgt = null;
   if (id === 'noise') { const i = fragIdx[3]; tgt = { x: (rrnd[0][i] - 0.5) * (A * 2 + 5), y: (rrnd[1][i] - 0.5) * 4.2 }; }
   else if (id === 'observe' || id === 'streams') tgt = { x: Math.sin(t * 0.4) * 0.8, y: Math.cos(t * 0.3) * 0.3 };
-  else if (id === 'technical') { const box = chartBox('technical'); tgt = { x: cx(box, LAST), y: cy(box, candles[LAST].c) }; }
+  else if (id === 'technical') {
+    const box = chartBox('technical'), { step } = techStep(lp), st_ = IND.st;
+    const at = i => ({ x: cx(box, i), y: cy(box, candles[i].c) });
+    tgt = step >= 11 && st_.bos ? at(st_.bos.i) : step === 10 ? at(st_.swings.at(-1).i) : step >= 4 && step <= 8 ? { x: cx(box, LAST - 8), y: cy(box, IND.bb.up[LAST - 8]) } : at(LAST);
+  }
   else if (id === 'replay') { const box = chartBox('replay'), ix = replayIndex(); tgt = { x: cx(box, ix), y: cy(box, candles[ix].c) }; }
   else if (id === 'memory') { tgt = { x: 0.55, y: 0.1 }; }
   else if (id === 'reason') {
@@ -378,6 +459,9 @@ function aimRex(rex, id, lp, t) {
   else if (id === 'ask') { const f = ASK[askIdx].focus[0]; tgt = nodeCache[EVIDENCE.findIndex(e => e.id === f)]; }
   else if (id === 'live' && liveFocus >= 0) tgt = mkCache[liveFocus];
   else if (id === 'risk') tgt = { x: -0.5, y: 0 };
+  if (pointer.interest && !RM && pointer.active) {  // attentive, not a toy: only near meaningful objects
+    const kk = F / Math.max(0.5, rex.z - cam.z); tgt = { x: cam.x + (pointer.x - W / 2) / (kk * S), y: cam.y - (pointer.y - H / 2) / (kk * S) };
+  }
   if (tgt && !RM) {
     const dx = tgt.x - rex.x, dy = tgt.y - rex.y;
     gaze.x = lerp(gaze.x, clamp(dx, -1, 1), 0.06); gaze.y = lerp(gaze.y, clamp(dy, -1, 1), 0.06);
@@ -611,7 +695,7 @@ function buildDom() {
   el.ml = $('#xp-ml'); el.ml.querySelector('ol').innerHTML = T.mlStages.map((s, k) => `<li data-k="${k}">${s}</li>`).join('');
   el.prob = $('#xp-prob');
   // evidence labels
-  el.ev = $('#xp-evidence'); el.ev.innerHTML = EVIDENCE.map(e => `<div class="ev" data-id="${e.id}"><b>${e.label}</b><span class="ltr">${e.state}</span><i style="--s:${e.strength}"></i></div>`).join('');
+  el.ev = $('#xp-evidence'); el.ev.innerHTML = EVIDENCE.map(e => `<div class="ev" data-interest data-id="${e.id}"><b>${e.label}</b><span class="ltr">${e.state}</span><i style="--s:${e.strength}"></i></div>`).join('');
   el.evs = [...el.ev.children];
   // risk checks
   el.risk = $('#xp-risk');
@@ -627,12 +711,12 @@ function buildDom() {
   el.rEvents.addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; const e = REPLAY[+b.dataset.i]; replayUser = (e.i - (REPLAY[0].i - 6)) / (LAST - (REPLAY[0].i - 6)); el.scrub.value = Math.round(replayUser * 1000); });
   // ask
   el.ask = $('#xp-ask'); el.askList = el.ask.querySelector('.ask-q'); el.askA = el.ask.querySelector('.ask-a');
-  el.askList.innerHTML = ASK.map((a, k) => `<button type="button" data-k="${k}" aria-pressed="${k === 0}">${a.q}</button>`).join('');
+  el.askList.innerHTML = ASK.map((a, k) => `<button type="button" data-interest data-k="${k}" aria-pressed="${k === 0}">${a.q}</button>`).join('');
   el.askList.addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; askIdx = +b.dataset.k; el.askList.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); el.askA.textContent = ASK[askIdx].a; blink = 1; Sound.cue('rex'); });
   el.askA.textContent = ASK[0].a;
   // live
   el.live = $('#xp-live'); el.liveNodes = $('#xp-live-nodes'); el.liveDetail = $('#xp-live-detail');
-  el.liveNodes.innerHTML = MARKETS.map((m, j) => `<button type="button" class="mk" data-j="${j}"><b>${m.sym}</b><span class="ltr px">${fmt(m)}</span><em data-sig="${m.signal}">${m.signal}</em></button>`).join('');
+  el.liveNodes.innerHTML = MARKETS.map((m, j) => `<button type="button" class="mk" data-interest data-j="${j}"><b>${m.sym}</b><span class="ltr px">${fmt(m)}</span><em data-sig="${m.signal}">${m.signal}</em><span class="mk-more ltr"><i>${m.trend}</i><i>${m.regime}</i><i>${m.vol}</i><i>${m.conf.toFixed(2)}</i></span></button>`).join('');
   el.mks = [...el.liveNodes.children];
   const focus = j => { liveFocus = j; el.mks.forEach((b, k) => b.classList.toggle('on', k === j)); renderLiveDetail(); };
   el.liveNodes.addEventListener('mouseover', ev => { const b = ev.target.closest('.mk'); if (b && liveFocus < 0) { el.mks.forEach(x => x.classList.toggle('near', x === b)); } });
@@ -672,10 +756,10 @@ function updateDom(sc, lp, mu, next, t) {
   }
   // opening: isolated fragments appear, then vanish (time-based on load, while at the top)
   const openingOn = sc.id === 'opening';
-  vis(el.opening, openingOn); vis(el.hint, sc.id === 'opening' && introT > 5.5);
+  vis(el.opening, openingOn && !GL); vis(el.hint, sc.id === 'opening' && introT > (GL ? 10 : 5.5));
   if (openingOn) { const seq = el.opening.children, per = 0.95, k = Math.floor(introT / per); for (let j = 0; j < seq.length; j++) seq[j].classList.toggle('on', j === k % (seq.length + 2)); }
   // nav: almost invisible at first, defined as the visitor goes deeper
-  el.nav.style.setProperty('--nav', (0.18 + smooth(0.03, 0.12, p) * 0.82).toFixed(3));
+  el.nav.style.setProperty('--nav', (GL ? smooth(0.1, 0.16, p) : 0.18 + smooth(0.03, 0.12, p) * 0.82).toFixed(3));
   el.railNum.textContent = String(cur.k + 1).padStart(2, '0'); el.railName.textContent = T.scenes[cur.k];
   el.rail.style.setProperty('--prog', p.toFixed(4));
   // technical steps
@@ -689,7 +773,7 @@ function updateDom(sc, lp, mu, next, t) {
   if (evOn) el.evs.forEach((d, j) => { const n = nodesBy[sc.id][j]; if (project(n.x, n.y + 0.08, n.z, P)) { d.style.transform = `translate3d(${P[0].toFixed(1)}px, ${P[1].toFixed(1)}px, 0) translate(-50%, -100%)`; } const e = EVIDENCE[j]; d.classList.toggle('conflict', !e.agree); d.classList.toggle('dim', sc.id === 'ask' && askFocus(e.id) < 1); d.classList.toggle('wait', sc.id === 'reason' && lp > 0.4 && lp < 0.72 && !e.agree); });
   // risk
   const riskOn = sc.id === 'risk' && mu < 0.6; vis(el.risk, riskOn);
-  if (riskOn) { const rc = lp < 0.55 ? RISK_CASES[0] : RISK_CASES[1]; if (el.risk._c !== rc) { el.risk._c = rc; el.risk.innerHTML = `<h3>${rc.name}</h3><ul>${rc.checks.map(([k, v, ok]) => `<li class="${ok ? 'ok' : 'fail'}"><b>${k}</b><span class="ltr">${v}</span><i>${ok ? 'PASS' : 'FAIL'}</i></li>`).join('')}</ul>`; Sound.cue(rc.verdict === 'REJECTED' ? 'risk' : 'pass'); } el.risk.querySelectorAll('li').forEach((li, j) => li.classList.toggle('in', ((lp % 0.55) / 0.3) * 7 > j || lp > 0.72)); }
+  if (riskOn) { const rc = lp < 0.55 ? RISK_CASES[0] : RISK_CASES[1]; if (el.risk._c !== rc) { el.risk._c = rc; el.risk.innerHTML = `<h3>${rc.name}</h3><ul>${rc.checks.map(([k, v, ok]) => `<li data-interest class="${ok ? 'ok' : 'fail'}"><b>${k}</b><span class="ltr">${v}</span><i>${ok ? 'PASS' : 'FAIL'}</i></li>`).join('')}</ul>`; Sound.cue(rc.verdict === 'REJECTED' ? 'risk' : 'pass'); } el.risk.querySelectorAll('li').forEach((li, j) => li.classList.toggle('in', ((lp % 0.55) / 0.3) * 7 > j || lp > 0.72)); }
   // decision
   const decOn = sc.id === 'decision' && mu < 0.5; vis(el.decision, decOn); if (decOn && el.decision._played !== true && lp > 0.2) { el.decision._played = true; Sound.cue('decision'); }
   el.decision.style.setProperty('--u', smooth(0.1, 0.45, lp).toFixed(3));
@@ -706,6 +790,7 @@ function updateDom(sc, lp, mu, next, t) {
   vis(el.ask, sc.id === 'ask' && mu < 0.6);
   // live
   const liveOn = sc.id === 'live' && mu < 0.6; vis(el.live, liveOn);
+  if (liveOn) el.live.classList.toggle('docked', dockU() > 0.6);
   if (liveOn) el.mks.forEach((b, j) => { const n = mkCache[j]; if (project(n.x, n.y, n.z, P)) b.style.transform = `translate3d(${P[0].toFixed(1)}px, ${P[1].toFixed(1)}px, 0) translate(-50%, -50%)`; });
   // system stations
   const sysOn = sc.id === 'system'; vis(el.sys, sysOn);
@@ -722,11 +807,21 @@ function onScene(k) {
 }
 
 /* ------------------------------------------------------------------ boot */
-function boot() {
+async function boot() {
   if (LANG === 'ar') { root.lang = 'ar'; root.dir = 'rtl'; }
+  if (params.get('renderer') !== '2d') {
+    try {
+      const { createWorld } = await import('./world3d.js');
+      GL = await createWorld(glCanvas, { candles, IND, LAST, NV: () => NV, chartBox, cx, cy, memShapes, EVIDENCE, MARKETS, LINKS, REPLAY, DECISION, T, FRAGMENTS, lang: LANG, mobile: () => MOBILE, A: () => A, replayIndex });
+      const _set = GL.setParticles; GL.setParticles = n => { GL.particles = _set(n); return GL.particles; };
+      root.classList.add('xp-gl');
+    } catch (e) { GL = null; console.warn('WebGL unavailable — using the Canvas 2D renderer:', e.message); }
+  }
+  if (!GL) { ctx = canvas.getContext('2d', { alpha: false }); if (!ctx) throw new Error('Canvas unavailable'); }
+  dprLive = Math.min(devicePixelRatio || 1, innerWidth < 760 ? 1.5 : 2);
   resize(); buildDom();
   addEventListener('resize', () => { resize(); VR.v = null; }, { passive: true });
-  addEventListener('pointermove', e => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = e.pointerType === 'mouse'; }, { passive: true });
+  addEventListener('pointermove', e => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = e.pointerType === 'mouse'; pointer.interest = !!(e.target.closest && e.target.closest('[data-interest]')); }, { passive: true });
   addEventListener('pointerleave', () => { pointer.active = false; });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { t0 = performance.now() - (last - t0); } });
   $('#xp-sound').addEventListener('click', ev => { const on = Sound.toggle(); ev.currentTarget.setAttribute('aria-pressed', on); ev.currentTarget.querySelector('[data-state]').textContent = on ? T.on : T.off; });
@@ -734,6 +829,7 @@ function boot() {
   const api = document.querySelector('meta[name="foxrex-market-api"]')?.content || '';
   $('#xp-live-status').textContent = api ? '' : `${T.unavailable} · ${T.demoValues}`;
   root.classList.add('xp-ready'); if (RM) root.classList.add('xp-rm');
+  window.FOXREX_XP = { state: () => ({ p: cur.p, target: cur.target, id: cur.id, lp: cur.lp, gl: !!GL, dpr: dprLive, frameMs }) };   // read-only QA/diagnostics
   requestAnimationFrame(t => { last = t; t0 = t; frame(t); });
 }
-try { boot(); } catch (e) { root.classList.remove('xp-ready'); root.classList.add('xp-failed'); console.warn('FOXREX experience fallback:', e.message); }
+boot().catch(e => { root.classList.remove('xp-ready'); root.classList.add('xp-failed'); console.warn('FOXREX experience fallback:', e.message); });

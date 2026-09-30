@@ -201,7 +201,8 @@ html.xp-ready .xp-fallback{position:absolute!important;width:1px;height:1px;over
   .st--sys{top:calc(12vh + 1.6em + var(--i) * 1.1em)}
   .xp-step{bottom:9vh;inset-inline:16px;max-width:none}
   .xp-step ol{display:none}
-  .xp-ml{top:auto;bottom:12vh}
+  .xp-ml{top:auto;bottom:calc(14vh + 64px)}
+  .xp-ml li:not(.now){display:none}
   .ev b{font-size:9px;letter-spacing:.1em}.ev span{font-size:11px}.ev i{width:32px}
   .xp-risk{top:auto;bottom:10vh;translate:none;inset-inline:16px;width:auto}
   .xp-risk li{padding:5px 0;font-size:11.5px}
@@ -245,3 +246,33 @@ html[lang="ar"] .st--big{text-transform:none}
 /* interactive controls must stay hit-testable ("all:unset" would inherit the overlay's pointer-events:none) */
 .xp-overlay button,.xp-overlay input,.xp-overlay a,.r-events button,.ask-q button,.mk,.xp-sound{pointer-events:auto}
 .xp-overlay section:not(.show) *{pointer-events:none}
+
+/* ================================================= WebGL world + lens (cinematic pass) */
+#xp-gl{position:fixed;inset:0;display:none;width:100vw;height:100vh;z-index:0}
+html.xp-gl #xp-gl{display:block}
+html.xp-gl #xp-canvas{display:none}
+html:not(.xp-ready) #xp-gl{display:none}
+/* lens: vignette + fine animated film grain (CSS-only, GPU composited) */
+.xp-lens{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,rgba(0,0,0,0) 55%,rgba(2,4,8,.55) 100%)}
+.xp-grain{position:absolute;inset:-50%;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-2%)}60%{transform:translate(-2%,-4%)}80%{transform:translate(4%,2%)}100%{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){.xp-grain{animation:none}}
+html:not(.xp-ready) .xp-lens{display:none}
+/* navigation emerges after the opening */
+html.xp-gl .xp-nav{opacity:var(--nav,0);pointer-events:none}
+html.xp-gl .xp-nav[style*="--nav: 1"],html.xp-gl .xp-nav:focus-within{pointer-events:auto}
+/* typography: quieter, more editorial */
+html.xp-gl .st--hero{font-weight:600;letter-spacing:-.045em}
+html.xp-gl .st--line{font-weight:500;letter-spacing:-.015em;color:rgba(255,255,255,.92)}
+/* live: the constellation docks into the product interface */
+.mk-more{display:none;gap:10px;font-size:10px;letter-spacing:.08em;color:var(--faint)}
+.mk-more i{font-style:normal}
+.xp-live.docked .mk{background:rgba(15,25,40,.62);border:1px solid rgba(229,231,235,.08);padding:12px 16px;min-width:150px;backdrop-filter:blur(6px)}
+.xp-live.docked .mk-more{display:flex}
+.xp-live.docked .mk.on{border-color:rgba(0,212,167,.5)}
+.mk{transition:background .6s,border-color .6s,padding .6s}
+.xp-live.docked .mk{min-width:min(200px,15vw)}
+.xp-live.docked .mk-more{flex-wrap:wrap;justify-content:center;max-width:180px}
+@media (max-width:760px){.xp-live.docked .mk{min-width:0;padding:8px 10px}.xp-live.docked .mk-more{display:none}}
+/* system path: labels above the path sit clear of their station rings */
+@media (min-width:760px){.xp-stations span:nth-child(even){margin-top:-16px}}
