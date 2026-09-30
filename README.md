@@ -4,6 +4,8 @@ FOXREX Studio: editable AI-directed planning, manual prompts/import, and reviewe
 
 ## Project layout
 
+- `index.html` — public landing page for foxrex.co.
+- `login.html` and `auth.js` — admin login in front of the Studio. It is a client-side gate (GitHub Pages is static), so use Cloudflare Access for real protection.
 - `foxrex-studio.html` and `creative-studio.js` — browser Studio. Serve both together; existing data is migrated additively.
 - `worker/` — Node.js generation worker. See [worker/README.md](worker/README.md) for setup and API routes.
 - `GENERATION.md` — generation architecture, policy, and lifecycle.

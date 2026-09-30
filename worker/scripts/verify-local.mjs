@@ -14,11 +14,11 @@ const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'foxrex-live-check-'));
 const config = { dataDir, creativeProvider: 'ollama', creativeModel: process.env.CREATIVE_MODEL || 'qwen3:4b', creativeUrl: 'http://127.0.0.1:11434', token: '', allowedOrigin: '', imageModels: ['nano_banana_2'], enableVideo: false, estimateCost: false };
 if (process.argv.includes('--serve')) {
   const worker = createServer({ config, registry: { MANUAL_CLAUDE: new ManualClaudeProvider() }, autoRun: false });
-  const files = { '/': 'index.html', '/index.html': 'index.html', '/foxrex-studio.html': 'foxrex-studio.html', '/creative-studio.js': 'creative-studio.js' };
+  const files = { '/': 'index.html', '/index.html': 'index.html', '/foxrex-studio.html': 'foxrex-studio.html', '/creative-studio.js': 'creative-studio.js', '/auth.js': 'auth.js', '/login.html': 'login.html', '/assets/logo.jpg': 'assets/logo.jpg', '/assets/fox.jpg': 'assets/fox.jpg' };
   http.createServer((req, res) => {
     const name = files[new URL(req.url, 'http://localhost').pathname];
     if (!name) return worker.server.emit('request', req, res);
-    res.writeHead(200, { 'Content-Type': name.endsWith('.js') ? 'text/javascript; charset=utf-8' : 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+    res.writeHead(200, { 'Content-Type': name.endsWith('.js') ? 'text/javascript; charset=utf-8' : name.endsWith('.jpg') ? 'image/jpeg' : 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
     fs.createReadStream(path.join(root, name)).pipe(res);
   }).listen(5174, '127.0.0.1', () => console.log(`Isolated verification: http://127.0.0.1:5174/foxrex-studio.html\nLocal Ollama ${config.creativeModel}; MANUAL asset provider only. Data: ${dataDir}`));
 } else {

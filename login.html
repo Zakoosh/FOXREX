@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>FOXREX Admin — تسجيل الدخول</title>
+<link rel="icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<script src="auth.js"></script>
+<style>
+:root{--teal:#00D4A7;--ink:#0B1320;--panel:#111B2A;--text:#E5E7EB;--muted:rgba(229,231,235,.62);--faint:rgba(229,231,235,.12);--sell:#FF5C7A}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{min-height:100vh;display:grid;place-items:center;padding:24px 16px;background:radial-gradient(ellipse at 50% -10%,rgba(0,212,167,.18),transparent 55%),var(--ink);color:var(--text);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif}
+.box{width:100%;max-width:400px;background:var(--panel);border:1px solid var(--faint);border-radius:20px;padding:34px 28px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)}
+.logo{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:26px;text-align:center}
+.logo .chip{background:#fff;border-radius:14px;padding:8px 12px}
+.logo img{height:52px;display:block}
+.logo h1{margin:0;font-size:20px}
+.logo p{margin:0;color:var(--muted);font-size:14px}
+label{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px}
+input[type=text],input[type=password]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--faint);background:rgba(229,231,235,.04);color:var(--text);font:inherit;font-family:Inter,system-ui,sans-serif;direction:ltr;text-align:left}
+input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,212,167,.18)}
+.row{display:flex;justify-content:space-between;align-items:center;margin:16px 0 22px;font-size:14px;color:var(--muted)}
+.row label{margin:0;display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--muted);font-size:14px}
+input[type=checkbox]{accent-color:var(--teal);width:16px;height:16px}
+button{width:100%;padding:13px;border:0;border-radius:12px;background:var(--teal);color:#062019;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+button:hover{background:#19e3b8}
+button:disabled{opacity:.6;cursor:wait}
+.err{min-height:22px;margin:12px 0 0;color:var(--sell);font-size:14px;text-align:center}
+.back{display:block;text-align:center;margin-top:18px;color:var(--muted);font-size:14px;text-decoration:none}
+.back:hover{color:#fff}
+.shake{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+<main class="box" id="box">
+  <div class="logo">
+    <span class="chip"><img src="assets/logo.jpg" alt="FOXREX"></span>
+    <h1>لوحة تحكم FOXREX</h1>
+    <p>سجّل الدخول للوصول إلى الاستوديو</p>
+  </div>
+  <form id="f" autocomplete="on" novalidate>
+    <label for="u">اسم المستخدم</label>
+    <input type="text" id="u" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+    <label for="p">كلمة المرور</label>
+    <input type="password" id="p" name="password" autocomplete="current-password" required>
+    <div class="row"><label><input type="checkbox" id="r"> تذكرني لمدة 30 يومًا</label></div>
+    <button type="submit" id="go">دخول</button>
+    <p class="err" id="err" role="alert"></p>
+  </form>
+  <a class="back" href="index.html">← العودة إلى الموقع</a>
+</main>
+<script>
+(function(){
+  var next=new URLSearchParams(location.search).get("next")||"";
+  if(!/^[\w-]+\.html$/.test(next)) next="foxrex-studio.html";
+  if(FoxAuth.valid()){ location.replace(next); return; }
+  var f=document.getElementById("f"),err=document.getElementById("err"),go=document.getElementById("go"),box=document.getElementById("box");
+  document.getElementById("u").focus();
+  f.addEventListener("submit",async function(e){
+    e.preventDefault(); err.textContent=""; go.disabled=true;
+    var ok=await FoxAuth.login(document.getElementById("u").value,document.getElementById("p").value,document.getElementById("r").checked);
+    if(ok){ location.replace(next); return; }
+    go.disabled=false; err.textContent="اسم المستخدم أو كلمة المرور غير صحيحة";
+    box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+    document.getElementById("p").select();
+  });
+})();
+</script>
+</body>
+</html>
