@@ -276,3 +276,41 @@ html.xp-gl .st--line{font-weight:500;letter-spacing:-.015em;color:rgba(255,255,2
 @media (max-width:760px){.xp-live.docked .mk{min-width:0;padding:8px 10px}.xp-live.docked .mk-more{display:none}}
 /* system path: labels above the path sit clear of their station rings */
 @media (min-width:760px){.xp-stations span:nth-child(even){margin-top:-16px}}
+
+/* ------------------------------------------------------------------ typography tiers (art direction pass)
+   CINEMATIC STATEMENTS: confident, readable over imagery · SYSTEM LABELS: legible, scale with the viewport ·
+   AMBIENT DATA: stays subtle (3D fragments, rail, demo note) */
+.st{text-shadow:0 2px 28px rgba(7,12,21,.85),0 0 2px rgba(7,12,21,.6)}
+.st--hero{font-size:clamp(34px,6.2vw,150px)}
+.st--line{font-size:clamp(22px,2.7vw,60px);letter-spacing:-.025em}
+.st--word{font-size:clamp(40px,6.8vw,160px)}
+.st--wait{font-size:clamp(40px,5.8vw,140px)}
+.st--sys{font-size:clamp(28px,4vw,92px)}
+.st--sys0{font-size:clamp(20px,2.3vw,48px)}
+.st--sub{font-size:clamp(14px,1.15vw,24px)}
+.xp-step{max-width:clamp(300px,24vw,520px)}
+.xp-step h2{font-size:clamp(26px,2.6vw,58px)}
+.xp-step p{font-size:clamp(14px,0.95vw,20px);color:#AEB8C6}
+.xp-step ol{font-size:clamp(10.5px,0.62vw,14px);color:rgba(229,231,235,.34)}
+.xp-ml ol{font-size:clamp(12px,0.66vw,16px);gap:clamp(6px,0.45vw,10px);color:rgba(229,231,235,.34)}
+.xp-ml li.now{font-weight:700}
+#xp-prob{font-size:clamp(13px,0.8vw,18px)}
+#xp-prob b{font-size:clamp(28px,2.4vw,56px)}
+.ev{font-size:clamp(10.5px,0.6vw,14px)}
+.ev b{color:#AEB8C6}
+.ev span{font-size:clamp(13px,0.78vw,19px)}
+.ev i{width:clamp(44px,2.6vw,64px)}
+.xp-decision dd{font-size:clamp(15px,1.05vw,24px)}
+.xp-decision dt{font-size:clamp(10px,0.58vw,13px)}
+.dec-why{font-size:clamp(13px,0.85vw,18px);max-width:52ch}
+.st--tag{max-width:94vw}
+.st--sys{font-size:clamp(28px,3.6vw,84px)}
+.xp-risk{width:clamp(300px,24vw,520px)}
+.xp-risk li{font-size:clamp(11.5px,0.7vw,16px)}
+.xp-risk h3,.xp-risk .k{font-size:clamp(10.5px,0.62vw,14px)}
+@media (min-width:761px){
+  .xp-live.docked .mk{min-width:min(clamp(200px,11vw,300px),15vw);padding:clamp(10px,0.7vw,16px) clamp(12px,0.9vw,20px)}
+  .xp-live .mk b{font-size:clamp(11px,0.62vw,15px)}
+  .xp-live .mk .px{font-size:clamp(14px,0.95vw,22px)}
+  .xp-live h2{font-size:clamp(26px,2.4vw,56px)}
+}

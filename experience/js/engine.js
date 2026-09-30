@@ -19,11 +19,12 @@ const SCENES = [
   { id: 'risk', a: 0.675, b: 0.735 }, { id: 'decision', a: 0.735, b: 0.785 }, { id: 'replay', a: 0.785, b: 0.855 },
   { id: 'ask', a: 0.855, b: 0.905 }, { id: 'live', a: 0.905, b: 0.955 }, { id: 'system', a: 0.955, b: 1.001 }
 ];
-const MORPH = { opening: 0.35, noise: 0.3, observe: 0.35, streams: 0.3, enter: 0.3, technical: 0.14, memory: 0.28, ml: 0.25, reason: 0.22, risk: 0.25, decision: 0.3, replay: 0.18, ask: 0.22, live: 0.16, system: 0.2 };
+const MORPH = { opening: 0.35, noise: 0.3, observe: 0.35, streams: 0.12, enter: 0.3, technical: 0.14, memory: 0.28, ml: 0.1, reason: 0.22, risk: 0.25, decision: 0.3, replay: 0.18, ask: 0.22, live: 0.16, system: 0.2 };
 const IDX = Object.fromEntries(SCENES.map((s, i) => [s.id, i]));
 
 /* ------------------------------------------------------------------ environment */
 const params = new URLSearchParams(location.search);
+const NO_ADAPT = params.get('adapt') === '0';   // QA only: freeze quality at full resolution for review screenshots
 const RM = params.get('motion') === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches;
 const root = document.documentElement;
 const canvas = document.getElementById('xp-canvas');
@@ -39,7 +40,7 @@ const smooth = (a, b, x) => { const u = clamp((x - a) / (b - a)); return u * u *
 const ease = u => (u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
 
 let W = 0, H = 0, DPR = 1, A = 1, S = 1, MOBILE = false, NARROW = false, N = 0, R = 0, FN = 0;
-let rx, rrnd, rexPts, fragIdx;               // per-particle data
+let rx, rrnd, rexPts, fragIdx, regionPts = [], regionC = [];               // per-particle data
 const C = { light: '#E5E7EB', teal: '#00D4A7', teal2: '#00A884', slate: '#6B7686', amber: '#F5B942', neg: '#FF5C7A', bg: '#0B1320' };
 const PAL = [C.light, C.teal, C.slate, C.amber, C.neg];
 
@@ -88,6 +89,11 @@ function initParticles(n) {
   let s = 1234567;
   for (const arr of rrnd) for (let i = 0; i < N; i++) { s = (s * 16807) % 2147483647; arr[i] = s / 2147483647; }
   rexPts = GL ? GL.sampleRexSurface(R).map(p => [p[0], p[1], p[2]]) : samplePoints(R);
+  if (GL) {   // DATA FORMATION: surface points grouped by the region each evidence stream builds
+    const all = GL.sampleRexSurface(Math.max(N, 2000), 7);
+    regionPts = Array.from({ length: 10 }, (_, k) => all.filter(p => p[3] === k));
+    regionC = regionPts.map(a => { const c = [0, 0, 0]; for (const p of a) { c[0] += p[0]; c[1] += p[1]; c[2] += p[2]; } return c.map(v => v / Math.max(1, a.length)); });
+  }
   if (GL) GL.setParticles(N);
   fragIdx = []; for (let k = 0; k < FN; k++) fragIdx.push(R + k * 7);
 }
@@ -107,7 +113,7 @@ function project(x, y, z, out) {
 }
 const CAMS = {
   opening: { z: -3 }, noise: { z: GL ? 1.2 : -3 }, observe: { z: -3 }, streams: { z: -3.2 }, enter: { z: -3 }, technical: { z: -3 }, memory: { z: -3 },
-  ml: { z: -3.4, pivot: 1 }, reason: { z: -3 }, risk: { z: -3 }, decision: { z: -3 }, replay: { z: -3 }, ask: { z: -3 }, live: { z: -3.2 }, system: { z: -3.2 }
+  ml: { z: GL ? -3 : -3.4, pivot: GL ? 1.2 : 1 }, reason: { z: -3 }, risk: { z: -3 }, decision: { z: -3 }, replay: { z: -3 }, ask: { z: -3 }, live: { z: -3.2 }, system: { z: -3.2 }
 };
 function camFor(id, lp, t) {
   const c = { x: 0, y: 0, z: -3, yaw: 0, pivot: 2, ...CAMS[id] };
@@ -118,7 +124,12 @@ function camFor(id, lp, t) {
   if (id === 'streams') { c.z = -3.4 + lp * 0.9; if (GL) { c.pivot = 1.4; c.yaw = -0.16 + lp * 0.32; } }   // orbit while the data converges
   if (id === 'enter') c.z = -3 + ease(lp) * 11.5;                        // travel INTO the architecture
   if (id === 'memory') c.z = -3 + lp * 3.2, c.x = Math.sin(lp * 2) * 0.2;
-  if (id === 'ml') c.yaw = -0.5 + lp * 1.6 + Math.sin(t * 0.15) * 0.05;  // orbit the feature space
+  if (id === 'ml') {
+    if (GL) {   // look at the candles → enter the feature field → through the validation plane → pull back for probability
+      c.pivot = 1.2; c.z = -3 + ease(smooth(0.34, 0.52, lp)) * 2.7 - ease(smooth(0.8, 0.88, lp)) * 2.5 + Math.sin(lp * 9) * 0.02;
+      c.yaw = (smooth(0.36, 0.56, lp) * 0.32 - smooth(0.6, 0.68, lp) * 0.22 - smooth(0.8, 0.88, lp) * 0.1) + Math.sin(t * 0.12) * 0.02; c.y = (smooth(0.36, 0.56, lp) - smooth(0.78, 0.88, lp)) * 0.06;
+    } else c.yaw = -0.5 + lp * 1.6 + Math.sin(t * 0.15) * 0.05;  // orbit the feature space
+  }
   if (id === 'system') c.z = -3 - ease(lp) * 1.8;                        // pull back: the whole system
   if (id === 'decision') c.z = GL ? -3 : -3 + lp * 0.25;                                 // locked: control
   if (GL && id === 'technical') { c.z = -3.35 + lp * 0.45; c.pivot = 0; c.yaw = Math.sin(lp * Math.PI) * 0.11; }   // push-in + parallax reveals the indicator layers
@@ -133,23 +144,25 @@ function rexFor(id, lp, t) {
   const m = MOBILE;
   const base = {
     // A · FIRST CONTACT: only the eyes, far in the dark, market data reflected in them — then gone
-    opening: { x: m ? 0.1 : 0.55, y: 0.16, z: 3.6, s: m ? 0.55 : 0.8, formed: 0, a: 0, eye: GL ? smooth(4.3, 5.3, introT) * (1 - smooth(7.0, 8.0, introT)) * 0.95 : smooth(0.55, 0.95, lp) * 0.3 },
+    opening: { x: m ? 0.1 : A * 0.2, y: 0.12, z: GL ? 2.4 : 3.6, s: m ? 0.55 : GL ? 1.7 : 0.8, formed: 0, a: 0, eye: GL ? smooth(4.3, 5.3, introT) * (1 - smooth(7.0, 8.0, introT)) * 0.95 : smooth(0.55, 0.95, lp) * 0.3 },
     noise: { x: m ? -0.1 : -1.6, y: 0.45, z: GL ? 12 : 10, s: 1, formed: 0.04, a: 0.1, eye: GL ? 0.22 * Math.pow(Math.max(0, Math.sin(t * 0.45)), 12) : 0.28 },
     // B · OBSERVATION: a sculpted silhouette with real depth; data passes in front of, behind and across it
-    observe: { x: m ? 0.05 : 0.7, y: 0.18, z: 3.2, s: m ? 0.7 : 1.05, formed: 0.18, a: 0.3, eye: 0.6, mesh: GL ? 0.55 : 0, edge: 0.06 },
+    observe: GL && !m ? { x: A * 0.72, y: 0.12, z: 1.8, s: 1.4, formed: 0, a: 0, eye: 0.95, mesh: 0.9 * smooth(0.0, 0.18, lp), edge: 0, yaw: -0.62, pitch: -0.03 } : { x: m ? 0.05 : 0.7, y: 0.18, z: 3.2, s: m ? 0.7 : 1.05, formed: 0.18, a: 0.3, eye: 0.6, mesh: GL ? 0.55 : 0, edge: 0.06 },
     // C · DATA FORMATION: particles converge into REX … then become the architecture
-    streams: { x: 0, y: 0.05, z: 1.4, s: m ? 0.5 : 0.72, formed: smooth(0.15, 0.85, lp), a: 0.7, eye: 0.35 + lp * 0.45, mesh: smooth(0.55, 0.85, lp) * 0.9, edge: smooth(0.55, 0.85, lp) * 0.12 },
+    streams: GL ? { x: m ? 0 : A * 0.44, y: m ? 0.1 : 0.04, z: 1.0, s: m ? 0.62 : 1.04, formed: 0, a: 0, eye: smooth(0.1, 0.17, lp) * 0.95, mesh: 1, edge: 0.32 * smooth(0.72, 0.76, lp) * (1 - smooth(0.8, 0.88, lp)), yaw: -0.5, pitch: -0.04, rimBoost: 1 + 0.9 * smooth(0.72, 0.78, lp) * (1 - smooth(0.8, 0.9, lp)) }
+      : { x: 0, y: 0.05, z: 1.4, s: m ? 0.5 : 0.72, formed: smooth(0.15, 0.85, lp), a: 0.7, eye: 0.35 + lp * 0.45, mesh: smooth(0.55, 0.85, lp) * 0.9, edge: smooth(0.55, 0.85, lp) * 0.12 },
     enter: { x: 0, y: 0, z: 12.5, s: 1.1, formed: 0.7, a: 0.3, eye: 0.6 },
     // D · TECHNICAL: a small observer beside the chart, attention following price / structure / volatility / breakout
-    technical: { x: m ? A * 0.62 : A * 0.84, y: m ? 0.82 : 0.86, z: 0.6, s: m ? 0.12 : 0.15, formed: 0.9, a: 0.35, eye: 0.8, mesh: 0.85, edge: 0.2 },
+    technical: { x: m ? A * 0.62 : A * 0.86, y: m ? 0.82 : 0.9, z: 0.6, s: m ? 0.12 : 0.15, formed: 0.9, a: 0.35, eye: 0.8, mesh: 0.85, edge: 0.2 },
     memory: { x: m ? 0 : -0.95, y: 0.12, z: 3.5 + lp * 2.2, s: 0.7, formed: 0.45, a: 0.22, eye: 0.5, mesh: 0.3, edge: 0.08 },
     // E · ML: REX dissolves — the intelligence becomes mathematics
-    ml: { x: 0, y: 0, z: 1, s: 0.8, formed: smooth(0.85, 1, lp) * 0.4, a: 0.2, eye: GL ? 0.9 * (1 - smooth(0.06, 0.16, lp)) : smooth(0.88, 1, lp) * 0.5, mesh: GL ? 1 - smooth(0.2, 0.24, lp) : 0, dissolve: smooth(0.02, 0.2, lp), edge: 0 },
+    ml: GL ? { x: A * 0.3, y: 0.05, z: 2.6, s: 1.1, formed: 0, a: 0, eye: 0.9 * (1 - smooth(0.04, 0.12, lp)), mesh: 1 - smooth(0.12, 0.14, lp), dissolve: smooth(0.0, 0.12, lp), edge: 0, yaw: -0.3 } : { x: 0, y: 0, z: 1, s: 0.8, formed: smooth(0.85, 1, lp) * 0.4, a: 0.2, eye: GL ? 0.9 * (1 - smooth(0.06, 0.16, lp)) : smooth(0.88, 1, lp) * 0.5, mesh: GL ? 1 - smooth(0.2, 0.24, lp) : 0, dissolve: smooth(0.02, 0.2, lp), edge: 0 },
     // F · REASONING: REX slowly re-forms behind the evidence
-    reason: { x: 0, y: 0.04, z: 0.6, s: m ? 0.42 : 0.66, formed: 1, a: 0.9, eye: 1, mesh: 1, dissolve: 1 - smooth(0.0, 0.38, lp), edge: 0.16, rimBoost: 1.2 },
-    risk: { x: 0, y: 0.08 + GATE().y, z: 2.3, s: NARROW ? 0.3 : 0.45, formed: 1, a: 0.55, eye: 0.9, mesh: 0.9, edge: 0.14 },
+    reason: GL && !NARROW ? { x: A * 0.07, y: 0.22, z: 2.3, s: 1.5, formed: 0, a: 0, eye: 1, mesh: 1, dissolve: 1 - smooth(0.0, 0.2, lp), edge: 0.1 * smooth(0.2, 0.3, lp), rimBoost: 1.1 + 0.4 * smooth(0.76, 0.86, lp), yaw: -0.14 }
+      : { x: 0, y: 0.04, z: 0.6, s: m ? 0.42 : 0.66, formed: 1, a: 0.9, eye: 1, mesh: 1, dissolve: 1 - smooth(0.0, 0.38, lp), edge: 0.16, rimBoost: 1.2 },
+    risk: { x: 0, y: 0.08 + GATE().y, z: 2.3, s: NARROW ? 0.3 : GL ? 0.62 : 0.45, formed: 1, a: 0.55, eye: 0.9, mesh: 0.9, edge: 0.14 },
     // G · DECISION: complete stillness
-    decision: { x: 0, y: m ? 0.66 : 0.66, z: 1.4, s: m ? 0.17 : 0.2, formed: 1, a: 0.5, eye: 0.85, mesh: 1, edge: 0.2 },
+    decision: GL && !m ? { x: A * 0.02, y: 0.62, z: 4.6, s: 1.5, formed: 0, a: 0, eye: 0.55, mesh: 0.1, edge: 0, pitch: -0.05 } : { x: 0, y: m ? 0.66 : 0.66, z: 1.4, s: m ? 0.17 : 0.2, formed: 1, a: 0.5, eye: 0.85, mesh: 1, edge: 0.2 },
     replay: { x: m ? A * 0.62 : -A * 0.84, y: m ? 0.86 : 0.86, z: 0.6, s: m ? 0.11 : 0.14, formed: 0.9, a: 0.35, eye: 0.8, mesh: 0.85, edge: 0.18 },
     ask: { x: NARROW ? 0 : -A * 0.4, y: NARROW ? 0.5 : 0.04, z: 0.6, s: m ? 0.26 : NARROW ? 0.3 : 0.44, formed: 1, a: 0.95, eye: 1, mesh: 1, edge: 0.18, rimBoost: 1.1 },
     live: { x: 0, y: 0, z: 3.4, s: 0.32, formed: 0.85, a: 0.16, eye: 0.45, mesh: 0.35, edge: 0.06 },
@@ -161,7 +174,8 @@ function mixRex(a, b, u) { const o = {}; for (const k of Object.keys(a)) o[k] = 
 
 /* ------------------------------------------------------------------ chart geometry */
 function chartBox(id) {
-  const w = Math.min(A * (MOBILE ? 0.92 : 0.84), 1.7);
+  const w = GL && !MOBILE ? Math.min(A * 0.9, 2.1) : Math.min(A * (MOBILE ? 0.92 : 0.84), 1.7);
+  if (GL && !MOBILE && id !== 'replay') return { x0: -w, x1: w, y0: -0.4, y1: 0.72, z: 0 };
   if (id === 'replay') return { x0: -w, x1: w, y0: MOBILE ? 0.06 : 0.02, y1: MOBILE ? 0.62 : 0.66, z: 0 };
   return { x0: -w, x1: w, y0: MOBILE ? -0.18 : -0.26, y1: MOBILE ? 0.58 : 0.64, z: 0 };
 }
@@ -173,7 +187,19 @@ function cy(box, price) { const r = VR.v; return lerp(box.y0, box.y1, (price - r
 /* ------------------------------------------------------------------ formations */
 const O = { x: 0, y: 0, z: 0, a: 0, c: 0, s: 1 };
 function set(o, x, y, z, a, c, s = 1) { o.x = x; o.y = y; o.z = z; o.a = a; o.c = c; o.s = s; }
+// REASONING CHAMBER (desktop WebGL): evidence occupies real depth — near the camera, around REX, behind it
+const CHAMBER = { trend: [-0.6, 0.56, 0.5], structure: [-0.7, -0.14, -0.7], momentum: [-0.56, -0.62, 0.2], volatility: [0.8, -0.44, -0.45], history: [0.5, -0.78, 0.6],
+  ml: [-0.95, 0.46, 2.5], session: [-0.16, 0.9, 3.3], news: [0.6, 0.66, 2.7], risk: [0.9, 0.26, 1.0] };
+const LINK_ORDER = ['structure', 'trend', 'momentum', 'history', 'ml', 'risk', 'session', 'volatility', 'news'];
+const RL = EVIDENCE.map(() => ({ grow: 0, w: 1 }));
+function reasonLinks(lp) {   // connections appear only as reasoning establishes them, then the picture simplifies
+  const clear = smooth(0.74, 0.86, lp);
+  EVIDENCE.forEach((e, j) => { const o = LINK_ORDER.indexOf(e.id), t0 = 0.1 + o * 0.035; RL[j].grow = smooth(t0, t0 + 0.05, lp);
+    const keep = e.agree && e.strength >= 0.6; RL[j].w = lerp(1, keep ? 1.25 : 0.18, clear); });
+  return RL;
+}
 const NODES = id => EVIDENCE.map((e, j) => {
+  if (GL && id === 'reason' && !NARROW) { const c = CHAMBER[e.id]; return { x: c[0] * A, y: c[1], z: c[2] }; }
   const ang = Math.PI * (0.5 + 2 * j / EVIDENCE.length), ask = id === 'ask';
   const cx0 = ask && !NARROW ? -A * 0.4 : 0, cy0 = ask && NARROW ? 0.5 : 0.04;
   const rx_ = NARROW ? A * (ask ? 0.66 : 0.8) : ask ? Math.min(A * 0.5, 0.86) : Math.min(A * 0.78, 1.35), ry = NARROW ? (ask ? 0.32 : 0.6) : ask ? 0.62 : 0.56;
@@ -191,6 +217,28 @@ const MK = () => { const d = typeof dockU === 'function' ? dockU() : 0; return M
 }); };
 const STATIONS = () => T.stations.map((_, j) => { const u = j / (T.stations.length - 1); return MOBILE ? { x: Math.sin(u * Math.PI * 2) * A * 0.45, y: 0.72 - u * 1.44, z: 0.4 } : { x: lerp(-A * 0.86, A * 0.86, u), y: Math.sin(u * Math.PI * 1.5) * 0.2 - 0.36, z: 0.4 + Math.sin(u * Math.PI) * 0.8 }; });
 let nodeCache = null, mkCache = null, stCache = null, nodesBy = {};
+
+/* ML: the same data, transformed step by step — and the camera travels through it */
+const ML_NC = 56, ML_Z = 2.4, ML_CEN = [[0.8, 0.34, -0.5], [-0.8, -0.28, 0.2], [0.1, -0.05, 0.9]];
+const ML_BOX = () => ({ x0: -Math.min(A * 0.86, 1.6), x1: Math.min(A * 0.86, 1.6), y0: -0.5, y1: 0.46, z: 0.4 });
+let mlRange = null, mlFeat = [];
+function mlInit() { const lo = LAST - ML_NC + 1; let mn = Infinity, mx = -Infinity; for (let i = lo; i <= LAST; i++) { mn = Math.min(mn, candles[i].l); mx = Math.max(mx, candles[i].h); } mlRange = { mn, mx };
+  mlFeat = Array.from({ length: ML_NC }, (_, j) => { const i = lo + j, c = candles[i]; return [clamp(Math.abs(c.c - c.o) / (c.h - c.l + 1e-9)), clamp((IND.rsi[i] ?? 50) / 100), clamp(Math.abs(IND.macd.hist?.[i] ?? 0) * 3), clamp((IND.atr[i] ?? 1) / 4), clamp((IND.adx.adx[i] ?? 20) / 50)]; }); }
+const ML_STAGE = [0, 0.12, 0.24, 0.36, 0.5, 0.62, 0.78];
+
+/* DATA FORMATION: ten evidence streams arrive one after another and each builds its own region of REX */
+const STREAM = { start: k => 0.04 + k * 0.064, dur: 0.12 };
+const streamReveal = lp => (lp - 0.12) / 0.064;                       // region k appears as its stream lands
+let REXNOW = null; const eyeTarget = { x: 0, y: 0, z: 0 };
+function streamPath(k, out) {   // origin far in the dark → control → the region of REX it builds
+  const ang = (k / 10) * Math.PI * 2 + 0.3, r = REXNOW, P3 = [0, 0, 0];
+  place(regionC[k] || [0, 0, 0], r, P3);
+  out.o = [Math.cos(ang) * (MOBILE ? 1.6 : A * 1.35), Math.sin(ang) * 1.1, 4.2 + (k % 3) * 0.7];
+  out.c = [Math.cos(ang + 0.9) * (MOBILE ? 0.9 : A * 0.75), Math.sin(ang + 0.9) * 0.62, -0.9];   // sweeps close past the camera, then lands
+  out.t = P3; return out;
+}
+const bez = (a, b, c, u) => { const v = 1 - u; return [v * v * a[0] + 2 * v * u * b[0] + u * u * c[0], v * v * a[1] + 2 * v * u * b[1] + u * u * c[1], v * v * a[2] + 2 * v * u * b[2] + u * u * c[2]]; };
+const SP = Array.from({ length: 10 }, () => ({}));
 
 function formation(id, i, t, lp, o) {
   const r0 = rrnd[0][i], r1 = rrnd[1][i], r2 = rrnd[2][i], r3 = rrnd[3][i], r4 = rrnd[4][i], r5 = rrnd[5][i];
@@ -212,7 +260,17 @@ function formation(id, i, t, lp, o) {
       if (signal) { x = lerp(x, (r0 - 0.5) * A * 2.2, u); y = lerp(y, -0.5 + lane * 0.25, u); z = lerp(z, 1 + lane * 0.4, u); }
       return set(o, x, y, z, signal ? 0.55 + 0.4 * u : 0.3 * (1 - u * 0.8), signal ? 1 : 0, signal ? 1.3 : 1);
     }
-    case 'streams': {
+    case 'streams': if (GL && REXNOW && regionPts.length) {
+      const k = i % 10, sp = SP[k], st = STREAM.start(k), u = clamp((lp - st) / STREAM.dur * 1.35 - r0 * 0.35);
+      const pts = regionPts[k], tp = pts[i % pts.length], P3 = [0, 0, 0]; place(tp, REXNOW, P3);
+      if (u <= 0) return set(o, sp.o[0] + (r1 - 0.5) * 0.4, sp.o[1] + (r2 - 0.5) * 0.4, sp.o[2], 0, k === 0 || k === 5 ? 1 : 0, 1);
+      if (u >= 1) {   // landed: the particle becomes part of REX, then yields to the surface
+        const fade = 1 - smooth(0.76, 0.86, lp);
+        return set(o, P3[0], P3[1], P3[2] - 0.01, (0.5 - smooth(0, 0.06, lp - st - STREAM.dur) * 0.3) * fade, 1, 0.8);
+      }
+      const b = bez(sp.o, sp.c, P3, ease(u)), spread = (1 - u) * 0.28;
+      return set(o, b[0] + (r1 - 0.5) * spread, b[1] + (r2 - 0.5) * spread, b[2] + (r3 - 0.5) * spread, 0.55 + 0.45 * u, k === 0 || k === 5 || u > 0.7 ? 1 : 0, 1.7 + u * 0.9);
+    } else {
       const k = i % 10, ang = (k / 10) * Math.PI * 2 + 0.3, u = (r0 + T_ * (0.05 + 0.02 * (k % 3))) % 1, rad = (1 - u) * (MOBILE ? 1.6 : 2.6) + 0.12;
       const sw = (1 - u) * 1.2, x = Math.cos(ang + sw) * rad * (MOBILE ? 0.7 : 1.1), y = Math.sin(ang + sw) * rad * 0.62, z = (1 - u) * 6 - 0.3 + (r1 - 0.5) * 0.3 * (1 - u);
       return set(o, x + (r2 - 0.5) * 0.04, y + (r3 - 0.5) * 0.04, z, 0.25 + 0.6 * u * (0.4 + lp), k === 0 || k === 5 ? 1 : 0, 1 + u);
@@ -236,7 +294,28 @@ function formation(id, i, t, lp, o) {
       const keep = m.similar ? 1 : 1 - smooth(0.45, 0.8, lp) * 0.85;
       return set(o, x, y, z, (m.similar ? 0.8 : 0.4) * keep, m.similar && lp > 0.35 ? 1 : 0, 1);
     }
-    case 'ml': {
+    case 'ml': if (GL) {
+      // CANDLES → OBSERVATIONS → FEATURE VECTORS → FEATURE SPACE → CLUSTERS → WALK-FORWARD → PROBABILITY
+      const NC = ML_NC, j = i % NC, cd = candles[LAST - NC + 1 + j], box = ML_BOX(), xw = lerp(box.x0, box.x1, (j + 0.5) / NC);
+      const yv = v => lerp(box.y0, box.y1, (v - mlRange.mn) / (mlRange.mx - mlRange.mn));
+      const body = r1 < 0.7, candle = { x: xw + (r0 - 0.5) * (box.x1 - box.x0) / NC * 0.5, y: body ? yv(lerp(Math.min(cd.o, cd.c), Math.max(cd.o, cd.c), r2)) : yv(lerp(cd.l, cd.h, r2)), z: box.z };
+      const obs = { x: xw, y: yv(cd.c), z: box.z };
+      const fk = Math.floor(r3 * 5), fv = mlFeat[j][fk], vec = { x: xw + (r4 - 0.5) * 0.045 * fv, y: yv(cd.c) + 0.05 + fk * 0.034, z: box.z };
+      const cls = i % 3, g1 = Math.sqrt(-2 * Math.log(r1 + 1e-6)) * Math.cos(2 * Math.PI * r2), g2 = Math.sqrt(-2 * Math.log(r3 + 1e-6)) * Math.sin(2 * Math.PI * r4), g3 = (r5 - 0.5) * 1.6;
+      const cen = ML_CEN[cls], sx = MOBILE ? 0.62 : 1;
+      const space = { x: (r0 - 0.5) * 2.8 * sx, y: (r2 - 0.5) * 1.7, z: ML_Z + (r4 - 0.5) * 2.4 };
+      const clus = { x: cen[0] * sx + g1 * 0.2, y: cen[1] + g2 * 0.16, z: ML_Z + cen[2] + g3 * 0.2 };
+      const pv = cls === 0 ? 0.72 + g1 * 0.07 : 0.42 + g1 * 0.12, pdf = Math.exp(-((pv - (cls === 0 ? 0.72 : 0.42)) ** 2) / (2 * (cls === 0 ? 0.0049 : 0.0144)));
+      const prob = { x: lerp(-A * 0.72, A * 0.72, clamp(pv)), y: -0.5 + r5 * pdf * (cls === 0 ? 0.62 : 0.34), z: 0.9 };
+      const u = [smooth(0.11, 0.2, lp), smooth(0.23, 0.32, lp), smooth(0.36, 0.47, lp), smooth(0.5, 0.6, lp), smooth(0.78, 0.86, lp)].map(v => RM ? (v > 0.5 ? 1 : 0) : v);
+      const stg = (a, b, w) => ({ x: lerp(a.x, b.x, w), y: lerp(a.y, b.y, w), z: lerp(a.z, b.z, w) });
+      let q = stg(candle, obs, u[0]); q = stg(q, vec, u[1]); q = stg(q, space, ease(clamp(u[2] * 1.25 - rrnd[5][i] * 0.25))); q = stg(q, clus, u[3]); q = stg(q, prob, u[4]);
+      // walk-forward: a validation plane sweeps toward (and past) the camera; what it has crossed is validated
+      const wz = lerp(ML_Z + 1.5, -0.5, smooth(0.62, 0.8, lp)), crossed = lp > 0.62 && q.z > wz;
+      const hot = lp < 0.36 ? (u[0] > 0.5 ? 1 : cd.c >= cd.o ? 1 : 0) : lp > 0.62 && lp < 0.8 ? (crossed ? (cls === 0 ? 1 : 0) : 2) : cls === 0 && lp > 0.5 ? 1 : cls === 1 && lp > 0.5 ? 0 : 2;
+      const a = (0.62 + 0.3 * u[0]) * (lp > 0.62 && lp < 0.8 && !crossed ? 0.5 : 1) * (lp > 0.8 && cls !== 0 ? 0.7 : 1) * (lp > 0.36 && lp < 0.8 ? 1.25 : 1);
+      return set(o, q.x, q.y, q.z, Math.min(1, a), hot, lp < 0.24 && u[0] > 0.5 ? 2.4 : lp < 0.36 ? 1.3 : lp > 0.8 ? 1.4 : lp > 0.5 && cls === 0 ? 1.8 : 1.45);
+    } else {
       // DATASET grid → FEATURES axes → clusters; walk-forward band sweeps through "time" (r0)
       const cls = i % 3, grid = { x: ((i % 60) / 59 - 0.5) * 2.2, y: (Math.floor(i / 60) % 40 / 39 - 0.5) * 1.4, z: 0 };
       const g1 = Math.sqrt(-2 * Math.log(r1 + 1e-6)) * Math.cos(2 * Math.PI * r2), g2 = Math.sqrt(-2 * Math.log(r3 + 1e-6)) * Math.sin(2 * Math.PI * r4), g3 = (r5 - 0.5) * 1.6;
@@ -255,18 +334,20 @@ function formation(id, i, t, lp, o) {
       const stream = r0 < 0.35;
       const conv = id === 'reason' ? smooth(0.72, 0.95, lp) : 0.2;
       const waitHold = id === 'reason' && lp > 0.4 && lp < 0.72;
-      if (stream) {
+      const deep = GL && id === 'reason' && !NARROW, lk = deep ? RL[j] : { grow: 1, w: 1 };
+      if (stream && lk.grow > 0.98) {
         let u = (r1 + T_ * 0.12) % 1; if (!e.agree) u = Math.min(u, 0.45 + Math.sin(T_ * 3 + r2 * 6) * 0.05); if (waitHold) u = Math.min(u, 0.55);
-        const cxn = (id === 'ask' ? rexState.x : 0), cyn = (id === 'ask' ? rexState.y : 0);
-        return set(o, lerp(n.x, cxn, u * (0.7 + conv * 0.3)), lerp(n.y, cyn, u * (0.7 + conv * 0.3)), lerp(n.z, 0.6, u), (0.25 + 0.5 * (1 - u)) * focus, e.agree ? 1 : 3, 0.9);
+        const tg = deep ? eyeTarget : { x: id === 'ask' ? rexState.x : 0, y: id === 'ask' ? rexState.y : 0, z: 0.6 };
+        return set(o, lerp(n.x, tg.x, u * (0.7 + conv * 0.3)), lerp(n.y, tg.y, u * (0.7 + conv * 0.3)), lerp(n.z, tg.z, u), (0.25 + 0.5 * (1 - u)) * focus * Math.min(1, lk.w), e.agree ? 1 : 3, deep && u > 0.6 ? 1.3 : 0.9);
       }
       const ang = r2 * Math.PI * 2 + T_ * 0.4 * (r3 - 0.5), rad = 0.03 + r4 * 0.07 * (0.6 + e.strength);
-      return set(o, n.x * (1 - conv * 0.35) + Math.cos(ang) * rad, n.y * (1 - conv * 0.35) + Math.sin(ang) * rad * 0.8, n.z + (r5 - 0.5) * 0.1, (0.35 + 0.5 * e.strength) * focus, e.agree ? (focus > 0.9 && id === 'ask' ? 1 : 0) : 3, 1.1);
+      const pull = deep ? 0 : conv * 0.35;
+      return set(o, n.x * (1 - pull) + Math.cos(ang) * rad, n.y * (1 - pull) + Math.sin(ang) * rad * 0.8, n.z + (r5 - 0.5) * 0.1, (0.35 + 0.5 * e.strength) * focus * (deep ? (0.45 + 0.55 * lk.grow) * Math.min(1, lk.w) : 1), e.agree ? (focus > 0.9 && id === 'ask' ? 1 : deep && lk.w > 1.1 ? 1 : 0) : 3, 1.1);
     }
     case 'risk': {
       const phaseB = lp > 0.55, frame = r0 < 0.55;
       if (frame) { // the gate: a tall portal
-        const u = r1, gw = MOBILE ? 0.34 : 0.42, gh = GATE().h, per = 2 * (gw + gh);
+        const u = r1, gw = MOBILE ? 0.34 : GL ? 0.54 : 0.42, gh = GATE().h, per = 2 * (gw + gh);
         let d = u * per * 2, x, y;
         if (d < 2 * gw) { x = -gw + d; y = gh; } else if ((d -= 2 * gw) < 2 * gh) { x = gw; y = gh - d; } else if ((d -= 2 * gh) < 2 * gw) { x = gw - d; y = -gh; } else { d -= 2 * gw; x = -gw; y = -gh + d; }
         const verdict = lp > 0.3 && lp < 0.55 ? 4 : lp >= 0.72 ? 1 : 0;
@@ -280,7 +361,7 @@ function formation(id, i, t, lp, o) {
     }
     case 'decision': {
       const yH = decY(DECISION.entry);
-      if (r0 < 0.8) return set(o, lerp(-A * 1.05, A * 1.05, (r1 + T_ * 0.012) % 1), yH + (r2 - 0.5) * 0.004, 0.3 + r3 * 0.5, 0.15 + r4 * 0.2, 0, 0.8);
+      if (r0 < 0.8) return set(o, lerp(-A * 1.05, A * 1.05, (r1 + T_ * 0.012) % 1), yH + (r2 - 0.5) * 0.004, 0.3 + r3 * 0.5, GL ? (r0 < 0.45 ? 0.07 + r4 * 0.1 : 0) : 0.15 + r4 * 0.2, 0, 0.8);
       const ang = r2 * Math.PI * 2, rad = r3 * 0.035;
       return set(o, A * (MOBILE ? 0.5 : 0.62) + Math.cos(ang) * rad, yH + Math.sin(ang) * rad, 0.3, 0.7, 1, 1);
     }
@@ -301,7 +382,7 @@ function formation(id, i, t, lp, o) {
   return set(o, 0, 0, 0, 0, 0);
 }
 
-const GATE = () => (NARROW ? { h: 0.4, y: 0.24 } : { h: 0.62, y: 0 });
+const GATE = () => (NARROW ? { h: 0.4, y: 0.24 } : { h: GL ? 0.78 : 0.62, y: 0 });
 const decY = v => (MOBILE ? -0.46 : -0.5) + (v - DECISION.entry) * (MOBILE ? 0.007 : 0.008);
 
 /* ------------------------------------------------------------------ interactive state */
@@ -334,11 +415,13 @@ function frame(now) {
   const ca = camFor(sc.id, lp, t), cb = camFor(next.id, 0, t);
   for (const key of ['x', 'y', 'z', 'yaw', 'pivot']) cam[key] = lerp(ca[key] ?? 0, cb[key] ?? 0, mu);
   // REX
-  const ra = rexFor(sc.id, lp, t), rb = rexFor(next.id, 0, t), rex = mixRex(ra, rb, mu);
+  const ra = rexFor(sc.id, lp, t), rb = rexFor(next.id, 0, t);
+  let rex = mixRex(ra, rb, mu);
   aimRex(rex, sc.id, lp, t);
+  if (inspect) rex = inspectRex(t);   // owner review (?review=1): REX isolated for art direction
   rexState.x = rex.x; rexState.y = rex.y;
 
-  if (GL) { glFrame(t, dt, sc, lp, next, mu, rex); updateDom(sc, lp, mu, next, t); adaptQuality(now); requestAnimationFrame(frame); return; }
+  if (GL) { REXNOW = rex; { const q = place([0, 0.04, 0.38], rex, [0, 0, 0]); eyeTarget.x = q[0]; eyeTarget.y = q[1]; eyeTarget.z = q[2]; } reasonLinks(sc.id === 'reason' ? lp : 1); if (regionC.length) for (let k = 0; k < 10; k++) streamPath(k, SP[k]); glFrame(t, dt, sc, lp, next, mu, rex); updateDom(sc, lp, mu, next, t); if (!NO_ADAPT) adaptQuality(now); requestAnimationFrame(frame); return; }
 
   // background (Canvas 2D fallback renderer)
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -388,6 +471,18 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
+/* ------------------------------------------------------------------ owner review: REX inspection (?review=1 only) */
+let inspect = null;
+function inspectRex(t) {
+  const base = { x: 0, y: 0.02, z: 1.3, s: 1, formed: 0, a: 0, eye: 1, mesh: 1, edge: 0, dissolve: 0, rimBoost: 1, yaw: 0.42, pitch: -0.06 };
+  cam.x = 0; cam.y = 0; cam.z = -3; cam.yaw = 0; cam.pivot = 2; gaze.x = lerp(gaze.x, 0, 0.1); gaze.y = lerp(gaze.y, 0, 0.1);
+  if (inspect === 'silhouette') return { ...base, yaw: 1.5, pitch: 0, eye: 0.9 };
+  if (inspect === 'eyes') return { ...base, x: -0.06, y: -0.02, z: 0.9, s: 2.6, yaw: 0.1, pitch: -0.02 };
+  if (inspect === 'turn') return { ...base, yaw: Math.sin(t * 0.3) * 1.35, pitch: Math.sin(t * 0.21) * 0.08 };
+  if (inspect === 'front') return { ...base, yaw: 0, pitch: -0.04 };
+  return base;   // 'face': three-quarter
+}
+
 /* ------------------------------------------------------------------ WebGL frame */
 function techStep(lp) { const u = clamp((lp - 0.06) / 0.86) * 12; return { step: Math.min(11, Math.floor(u - 1e-6)), stepU: u % 1 }; }
 function glFrame(t, dt, sc, lp, next, mu, rex) {
@@ -415,7 +510,7 @@ function glFrame(t, dt, sc, lp, next, mu, rex) {
   }
   if (!RM) { nextBlink -= dt; if (nextBlink < 0) { blink = 1; nextBlink = 4 + Math.random() * 5; } blink = Math.max(0, blink - dt * 7); }
   const ts = techStep(sc.id === 'technical' ? lp : 1);
-  const subjZ = { opening: 3, noise: 4, observe: rex.z, streams: 1.4, enter: 3, technical: 0, memory: 2.5, ml: 1, reason: 0.4, risk: 1, decision: rex.z, replay: 0, ask: 0.5, live: 0.5, system: 0.8 }[sc.id];
+  const subjZ = { opening: 3, noise: 4, observe: rex.z, streams: rex.z, enter: 3, technical: 0, memory: 2.5, ml: GL ? (lp < 0.36 ? ML_BOX().z : lp < 0.8 ? ML_Z : 0.9) : 1, reason: GL && !NARROW ? rex.z - 0.4 : 0.4, risk: 1, decision: rex.z, replay: 0, ask: 0.5, live: 0.5, system: 0.8 }[sc.id];
   const openZ = [2.2, 4.4, 5.4, 6.8, 8.2, 9.4, 10.6, 11.8, 13, 14.2, 15.6][Math.min(10, Math.floor(Math.max(0, introT - 0.6) / 0.85))];
   const focus = (sc.id === 'opening' ? openZ : subjZ) - cam.z;
   const conflictFill = sc.id === 'reason' || sc.id === 'ask' ? 0.14 : 0;   // a hint of amber from the conflicting side
@@ -423,9 +518,11 @@ function glFrame(t, dt, sc, lp, next, mu, rex) {
     t, id: sc.id, nid: next.id, mu, lp, cam: { ...cam }, rexS: rex, focus, gaze, eyeOpen: 1 - Math.sin(blink * Math.PI) * 0.92,
     eyeFocus: lerp(sc.id === 'risk' || sc.id === 'decision' ? 1 : 0, next.id === 'risk' || next.id === 'decision' ? 1 : 0, mu), intro: introT, fragIdx,
     step: ts.step, stepU: ts.stepU, crisp: crispFor('technical'), crispReplay: crispFor('replay'),
-    nodes: nodesBy[sc.id === 'ask' ? 'ask' : 'reason'], linkTarget: sc.id === 'ask' ? { x: rexState.x, y: rexState.y, z: 0.6 } : { x: 0, y: 0, z: 0.6 },
+    nodes: nodesBy[sc.id === 'ask' ? 'ask' : 'reason'], linkTarget: sc.id === 'ask' ? { x: rexState.x, y: rexState.y, z: 0.6 } : NARROW ? { x: 0, y: 0, z: 0.6 } : { ...eyeTarget }, links: !NARROW && sc.id === 'reason' ? RL : null,
     focusOf: id => (sc.id === 'ask' ? askFocus(id) : 1), waitHold: sc.id === 'reason' && lp > 0.4 && lp < 0.72,
-    gate: GATE(), gateW: MOBILE ? 0.34 : 0.42, narrow: NARROW, A, mobile: MOBILE, decY, DEC: DECISION, mk: mkCache, liveFocus, dock: dockU(), st: stCache, fill: conflictFill
+    inspect, reveal: inspect ? 12 : sc.id === 'streams' ? streamReveal(lp) : 12, build: sc.id === 'streams' && !inspect ? 1 : 0,
+    streams: sc.id === 'streams' || next.id === 'streams' ? SP.map((p, k) => ({ o: p.o, c: p.c, t: p.t, u: sc.id === 'streams' ? clamp((lp - STREAM.start(k)) / STREAM.dur) : 0 })) : null,
+    gate: GATE(), gateW: MOBILE ? 0.34 : GL ? 0.54 : 0.42, narrow: NARROW, A, mobile: MOBILE, decY, DEC: DECISION, mk: mkCache, liveFocus, dock: dockU(), st: stCache, fill: conflictFill
   });
 }
 /* adaptive pixel ratio: keep the frame budget, never shimmer back and forth */
@@ -455,6 +552,8 @@ function aimRex(rex, id, lp, t) {
   // head turns toward what matters in each scene; pupils follow a world-space target
   let tgt = null;
   if (id === 'noise') { const i = fragIdx[3]; tgt = { x: (rrnd[0][i] - 0.5) * (A * 2 + 5), y: (rrnd[1][i] - 0.5) * 4.2 }; }
+  else if (id === 'streams' && GL && SP[0].o) { const k = clamp(Math.floor((lp - 0.04) / 0.064), 0, 9); tgt = lp > 0.76 ? { x: rex.x - 1.2, y: rex.y } : { x: SP[k].c[0], y: SP[k].c[1] }; }
+  else if (id === 'observe' && GL && GL.attention()) { const at = GL.attention(); tgt = { x: at.x, y: at.y }; }
   else if (id === 'observe' || id === 'streams') tgt = { x: Math.sin(t * 0.4) * 0.8, y: Math.cos(t * 0.3) * 0.3 };
   else if (id === 'technical') {
     const box = chartBox('technical'), { step } = techStep(lp), st_ = IND.st;
@@ -477,7 +576,7 @@ function aimRex(rex, id, lp, t) {
   if (tgt && !RM) {
     const dx = tgt.x - rex.x, dy = tgt.y - rex.y;
     gaze.x = lerp(gaze.x, clamp(dx, -1, 1), 0.06); gaze.y = lerp(gaze.y, clamp(dy, -1, 1), 0.06);
-    if (id !== 'decision') { rex.yaw = clamp(dx * 0.3, -0.35, 0.35) * rex.formed; rex.pitch = clamp(-dy * 0.2, -0.15, 0.15) * rex.formed; }
+    if (id !== 'decision') { rex.yaw += clamp(dx * 0.3, -0.35, 0.35) * Math.max(rex.formed, rex.mesh * 0.35); rex.pitch += clamp(-dy * 0.2, -0.15, 0.15) * Math.max(rex.formed, rex.mesh * 0.35); }
   } else { gaze.x = lerp(gaze.x, 0, 0.05); gaze.y = lerp(gaze.y, 0, 0.05); }
 }
 
@@ -680,8 +779,8 @@ function buildDom() {
   h += st(at('noise', 0.12), at('noise', 0.48), T.noise1, 'st--hero');
   h += st(at('noise', 0.55), at('noise', 0.92), T.noise2, 'st--hero st--quiet');
   T.observe.forEach((w, k) => { h += st(at('observe', 0.12 + k * 0.17), at('observe', 0.26 + k * 0.17 + 0.1), w, 'st--word', `style="--i:${k}"`); });
-  h += st(at('streams', 0.1), at('streams', 0.55), T.streams, 'st--line');
-  h += st(at('streams', 0.6), at('streams', 0.95), T.streamsSub, 'st--line st--quiet');
+  h += st(at('streams', 0.03), at('streams', 0.36), T.streams, 'st--line');
+  h += st(at('streams', 0.76), at('streams', 0.98), T.streamsSub, 'st--line');
   h += st(at('enter', 0.02), at('enter', 0.35), T.enter, 'st--hero st--center');
   h += st(at('technical', 0.0), at('technical', 0.08), T.tech, 'st--line st--top');
   h += st(at('memory', 0.08), at('memory', 0.78), T.memory, 'st--line st--top st--big');
@@ -779,10 +878,11 @@ function updateDom(sc, lp, mu, next, t) {
   if (techOn) { const k = clamp(Math.floor(clamp((lp - 0.06) / 0.86) * 12 - 1e-6), 0, 11); if (el.step._k !== k) { el.step._k = k; el.stepName.textContent = T.steps[k][0]; el.stepSub.textContent = T.steps[k][1]; el.stepList.querySelectorAll('li').forEach((li, j) => { li.classList.toggle('done', j < k); li.classList.toggle('now', j === k); }); Sound.cue('tick'); } }
   // ML
   const mlOn = sc.id === 'ml' && mu < 0.6; vis(el.ml, mlOn);
-  if (mlOn) { const k = Math.min(7, Math.floor(lp * 8)); el.ml.querySelectorAll('li').forEach((li, j) => { li.classList.toggle('done', j < k); li.classList.toggle('now', j === k); }); el.prob.style.opacity = smooth(0.8, 0.9, lp); }
+  if (mlOn) { const k = GL ? ML_STAGE.filter(v => lp >= v).length - 1 : Math.min(T.mlStages.length - 1, Math.floor(lp * T.mlStages.length)); el.ml.querySelectorAll('li').forEach((li, j) => { li.classList.toggle('done', j < k); li.classList.toggle('now', j === k); }); el.prob.style.opacity = smooth(0.82, 0.87, lp); }
   // evidence (reasoning + ask)
   const evOn = (sc.id === 'reason' || sc.id === 'ask') && mu < 0.7; vis(el.ev, evOn);
-  if (evOn) el.evs.forEach((d, j) => { const n = nodesBy[sc.id][j]; if (project(n.x, n.y + 0.08, n.z, P)) { d.style.transform = `translate3d(${P[0].toFixed(1)}px, ${P[1].toFixed(1)}px, 0) translate(-50%, -100%)`; } const e = EVIDENCE[j]; d.classList.toggle('conflict', !e.agree); d.classList.toggle('dim', sc.id === 'ask' && askFocus(e.id) < 1); d.classList.toggle('wait', sc.id === 'reason' && lp > 0.4 && lp < 0.72 && !e.agree); });
+  if (evOn) el.evs.forEach((d, j) => { const n = nodesBy[sc.id][j]; if (project(n.x, n.y + 0.08, n.z, P)) { const kk = GL && sc.id === 'reason' && !NARROW ? clamp(P[2] / 0.62, 0.72, 1.4) : 1; d.style.transform = `translate3d(${P[0].toFixed(1)}px, ${P[1].toFixed(1)}px, 0) translate(-50%, -100%) scale(${kk.toFixed(3)})`; }
+    d.style.opacity = GL && sc.id === 'reason' && !NARROW ? (0.3 + 0.7 * RL[j].grow) * Math.min(1, RL[j].w + 0.1) : ''; const e = EVIDENCE[j]; d.classList.toggle('conflict', !e.agree); d.classList.toggle('dim', sc.id === 'ask' && askFocus(e.id) < 1); d.classList.toggle('wait', sc.id === 'reason' && lp > 0.4 && lp < 0.72 && !e.agree); });
   // risk
   const riskOn = sc.id === 'risk' && mu < 0.6; vis(el.risk, riskOn);
   if (riskOn) { const rc = lp < 0.55 ? RISK_CASES[0] : RISK_CASES[1]; if (el.risk._c !== rc) { el.risk._c = rc; el.risk.innerHTML = `<h3>${rc.name}</h3><ul>${rc.checks.map(([k, v, ok]) => `<li data-interest class="${ok ? 'ok' : 'fail'}"><b>${k}</b><span class="ltr">${v}</span><i>${ok ? 'PASS' : 'FAIL'}</i></li>`).join('')}</ul>`; Sound.cue(rc.verdict === 'REJECTED' ? 'risk' : 'pass'); } el.risk.querySelectorAll('li').forEach((li, j) => li.classList.toggle('in', ((lp % 0.55) / 0.3) * 7 > j || lp > 0.72)); }
@@ -831,7 +931,7 @@ async function boot() {
   }
   if (!GL) { ctx = canvas.getContext('2d', { alpha: false }); if (!ctx) throw new Error('Canvas unavailable'); }
   dprLive = Math.min(devicePixelRatio || 1, innerWidth < 760 ? 1.5 : 2);
-  resize(); buildDom();
+  mlInit(); resize(); buildDom();
   addEventListener('resize', () => { resize(); VR.v = null; }, { passive: true });
   addEventListener('pointermove', e => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = e.pointerType === 'mouse'; pointer.interest = !!(e.target.closest && e.target.closest('[data-interest]')); }, { passive: true });
   addEventListener('pointerleave', () => { pointer.active = false; });
@@ -841,11 +941,12 @@ async function boot() {
   const api = document.querySelector('meta[name="foxrex-market-api"]')?.content || '';
   $('#xp-live-status').textContent = api ? '' : `${T.unavailable} · ${T.demoValues}`;
   root.classList.add('xp-ready'); if (RM) root.classList.add('xp-rm');
-  window.FOXREX_XP = { state: () => ({ p: cur.p, target: cur.target, id: cur.id, lp: cur.lp, gl: !!GL, dpr: dprLive, frameMs }) };   // read-only QA/diagnostics
+  window.FOXREX_XP = { state: () => ({ p: cur.p, target: cur.target, id: cur.id, lp: cur.lp, gl: !!GL, dpr: dprLive, frameMs, intro: introT }) };   // read-only QA/diagnostics
   // development-only owner review tools (?review=1): scene navigator + renderer diagnostics. Never loaded otherwise.
   if (params.get('review') === '1') import('./review.js').then(m => m.mountReview({
     SCENES, renderer: GL && GL.renderer,
-    jump(id, u) { const s = SCENES[IDX[id]], max = document.documentElement.scrollHeight - innerHeight, v = id === 'opening' ? 0 : s.a + (s.b - s.a) * u;   // opening: u = seconds into the intro
+    inspect(mode) { inspect = mode || null; },
+    jump(id, u) { inspect = null; const s = SCENES[IDX[id]], max = document.documentElement.scrollHeight - innerHeight, v = id === 'opening' ? 0 : s.a + (s.b - s.a) * u;   // opening: u = seconds into the intro
       scrollTo({ top: v * max, behavior: 'auto' }); cur.p = cur.target = v; if (id === 'opening') { introT = u; t0 = performance.now(); } },
     info: () => ({ N, dpr: dprLive, dprMax: DPR, frameMs, vsync, pTier, gl: !!GL, mobile: MOBILE, rm: RM, scene: cur.id, lp: cur.lp, adaptLog: adaptLog.slice(-6) })
   })).catch(e => console.warn('review tools failed to load:', e.message));

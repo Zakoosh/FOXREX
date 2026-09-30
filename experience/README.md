@@ -61,28 +61,50 @@ Morphs are staggered per particle, so objects *become* the next thing instead of
 
 ## REX
 
-**Implementation:** a procedural faceted fox-head mesh rendered in WebGL (`createWorld` in `js/world3d.js`).
+**Implementation:** a sculpted, faceted fox head built procedurally from fox anatomy (`js/rex3d.js`) and rendered in WebGL.
 
-- **Material:** obsidian, with lighting from a cool key, a warm fill (kept low), a specular highlight and a teal fresnel rim.
-- **Dissolve:** it can dissolve into data along a noise edge and re-form from it.
-- **Particle formations:** they sample the same surface (`sampleRexSurface`), so particles can *become* REX.
-- **Eyes:** a separate shader, amber and slanted with a vertical slit, reflecting market text. The eyes blink, narrow on risk, and follow meaningful targets such as the latest candle, evidence and the selected market. They follow the cursor only when it is near a meaningful object.
-- **Swapping in a GLB later:** replace the mesh in `world3d.js` with the loaded model and keep the eye materials and `sampleRexSurface`. The engine drives REX only through the state it hands over (`rexS`: position, scale, yaw, pitch, mesh, edge, dissolve, eye), so nothing else changes.
+- **Anatomy:**
+  - A lofted skull that narrows through a clear stop into a long, tapered muzzle and a nose tip.
+  - A narrow jaw and a cheek ruff that frames the face.
+  - Ears with a wide base, set back on the skull and leaning outward.
+  - A sculpted brow ridge, cheekbones and eye sockets.
+  - About 860 triangles with architectural faceting: alternating diagonals and small deterministic offsets, not a smoothed animal model.
+- **Material:**
+  - Smoked graphite on the skull, the bridge of the muzzle and the ear backs.
+  - Dark smoked ceramic on the cheeks, lower muzzle and throat. These are the fox markings, blended per vertex so there is no zigzag boundary.
+  - An obsidian nose.
+- **Lighting:**
+  - A soft frontal key and fill, so both halves stay readable with no hard seam.
+  - A cool rim and a studio-softbox reflection, so the facets catch light differently.
+  - A trace of FOXREX teal, in the reflection only.
+  - Warm bounce light from the eyes.
+- **Eyes:**
+  - Set into sockets under an upper-lid overhang.
+  - Amber iris with fibres and a limbal ring, and a soft vertical slit.
+  - The lid's shadow, a wet cornea (softbox highlight plus a secondary glint) and faintly reflected market data.
+  - Restrained emission; the eyes follow meaningful targets only.
+- **Build regions:** every triangle carries a build region (0 PRICE … 9 MEMORY). In **Data formation** each evidence stream travels to its own region and builds it facet by facet.
+- **Rendering:** front faces only, since every triangle is wound outward.
+- **Swapping in a GLB later:** replace the mesh in `world3d.js`, keep the eye materials, and provide `sampleRexSurface(n)` → `[x, y, z, region]`. The engine drives REX only through `rexS` (position, scale, yaw, pitch, mesh, edge, dissolve, eye).
 
 **Narrative arc:**
 
-1. **First contact:** the eyes alone in near-total darkness, reflecting market text, then gone.
-2. **Observation:** a lit silhouette with depth, with data passing in front of it, behind it and across it.
-3. **Data formation:** the ten evidence streams form REX, which then gives way to the architecture.
-4. **Technical:** a small observer whose attention follows price, structure, volatility and the breakout.
-5. **ML:** it dissolves into the feature space.
-6. **Reasoning:** it re-forms behind the evidence in the dark chamber and waits.
-7. **Risk:** stopped behind the gate.
-8. **Decision:** perfectly still while the environment keeps moving.
-9. **Ask REX:** it explains.
-10. **Live and System:** a faint signature.
+1. **First contact:** the eyes alone, large, in near-darkness.
+2. **Observation:** large and cropped at the edge of frame, looking inward at the signals FOXREX selects.
+3. **Data formation:** built by the ten streams, then clearly readable at completion.
+4. **Technical:** a small observer; its gaze and an amber glint find the break of structure.
+5. **ML:** dissolves as the candles appear.
+6. **Reasoning:** large and partially framed behind evidence in real depth.
+7. **Risk:** behind the gate.
+8. **Decision:** almost invisible, only the eyes and a silhouette.
+9. **Live and System:** a faint signature.
 
-**Assets used:** the existing assets are the FOXREX brand mark (used in the nav) and `assets/rex/rex-arms.jpg` (116×106, a character illustration). The illustration is too small and too mascot-like for cinematic use, so REX here is a *premium placeholder silhouette system* derived from its defining traits: tall pointed ears, cheek ruff, narrow muzzle and slanted amber eyes. No random fox imagery was introduced.
+**Visual signature (recurring motifs):**
+- **Observation line:** a precise thin line that selects. It appears as brackets and a light path in Observation, stream trails in Data formation, links that grow from evidence to REX's eyes in Reasoning, the edge of the validation pane in ML, and the instrument arcs of the architecture.
+- **Intelligence particle:** information that has become intelligence renders as a crisp diamond, not a round dot.
+- **Attention (REX's eye):** an amber anamorphic glint at key moments only: the selected signal, and the break of structure.
+
+**Assets used:** the existing assets are the FOXREX brand mark (used in the nav) and `assets/rex/rex-arms.jpg` (116×106, a character illustration). The illustration is too small and too mascot-like for cinematic use, so REX here is a procedural sculpt built from its defining traits: fox ears with a wide base, a cheek ruff, a long tapered muzzle and slanted amber eyes. A commissioned GLB can replace it later (see below). No random fox imagery was introduced.
 
 ### Asset plan — `REX_3D_ASSET_REQUIRED=YES`
 
@@ -138,7 +160,11 @@ The panel has:
   | `5` | ML | `-` | System |
   | `6` | Reasoning | | |
 
+  Watchable scenes (data formation, ML, reasoning) jump to their start; press **`P`** to play the current scene hands-free at cinematic pace.
+
   Other keys: `R` shows REX in the Observation scene; `←` / `→` fine-scrub; `H` hides the panel.
+- **REX inspection:** `F` face (three-quarter), `V` front, `S` silhouette (profile, backlit), `E` eyes (close-up), `T` turntable.
+- **QA only:** `?adapt=0` freezes quality at full resolution (used for review screenshots).
 - **Renderer diagnostics:**
   - browser, WebGL version, unmasked GPU renderer, and hardware vs software rasteriser;
   - device pixel ratio, screen and viewport;
@@ -193,12 +219,20 @@ Everything market-like is **DEMO_DATA** (`js/demo-data.js`) and labelled on scre
 
 **No JavaScript or an error:** the full narrative as text.
 
-**Performance (measured honestly):** headless QA ran on SwiftShader, which is CPU software WebGL with no GPU, on 4 cores. Adaptive DPR fell to its floor of 0.75. Averages across a full scripted scroll:
+**Performance (measured honestly):**
+- **Owner's machine:** hardware-accelerated (GTX 1660 SUPER, 2560×1440, 5,200 particles), about 60 fps before this art-direction pass.
+- **Software rendering, this pass:** headless QA runs on SwiftShader (CPU software WebGL, 4 cores), with adaptive DPR at its 0.75 floor. Full-journey averages:
 
-| Viewport | Average fps |
-|---|---|
-| 1440×900 | about 25 |
-| 1920×1080 | about 16 |
-| 390×844 | about 46 |
+  | Viewport | This pass | Previous pass |
+  |---|---|---|
+  | 1440×900 | about 19 fps | about 25 fps |
+  | 1920×1080 | about 12 fps | about 16 fps |
+  | 390×844 | about 44 fps | about 46 fps |
 
-These are lower bounds. Real-GPU numbers have not been measured here and should be checked on target hardware before any production decision.
+  The larger REX, the depth-of-field market field and the signature motifs cost about a quarter more fill-rate.
+- **Heaviest scenes:** Observation, Reasoning and Noise, measured as per-scene frame time at DPR 1.
+- **Savings in this pass:**
+  - REX renders front faces only.
+  - Dissolve noise runs only while dissolving.
+  - Invisible sprites and zero-alpha particles are never rasterized.
+- **Still to measure:** real-GPU numbers after this pass, on the owner's machine with the **Benchmark journey** button.

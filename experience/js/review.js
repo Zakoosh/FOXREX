@@ -3,19 +3,20 @@
    diagnostics and a full-journey benchmark measured on the actual machine. Not part of the experience. */
 
 const MOMENTS = [
-  ['01', 'Market noise', 'noise', 0.57],
+  ['01', 'Market noise', 'noise', 0.3],
   ['02', 'REX first contact', 'opening', 3.8],        // seconds into the intro: eyes arrive ~4.3 s, leave ~7–8 s
-  ['03', 'Data formation', 'streams', 0.64],
-  ['04', 'Technical vision', 'technical', 0.68],
-  ['05', 'ML space', 'ml', 0.83],
-  ['06', 'Reasoning chamber', 'reason', 0.44],
-  ['07', 'Risk gate', 'risk', 0.33],
-  ['08', 'Decision', 'decision', 0.6],
-  ['09', 'Decision replay', 'replay', 0.64],
-  ['10', 'Live intelligence', 'live', 0.7],
-  ['11', 'Complete system', 'system', 0.93]
+  ['03', 'Data formation (builds REX)', 'streams', 0.02],
+  ['04', 'Technical vision', 'technical', 0.04],
+  ['05', 'ML transformation', 'ml', 0.02],
+  ['06', 'Reasoning chamber', 'reason', 0.02],
+  ['07', 'Risk gate', 'risk', 0.2],
+  ['08', 'Decision', 'decision', 0.2],
+  ['09', 'Decision replay', 'replay', 0.3],
+  ['10', 'Live intelligence', 'live', 0.3],
+  ['11', 'Complete system', 'system', 0.5]
 ];
 const EXTRA = [['REX', 'Observation (REX close)', 'observe', 0.45]];
+const INSPECT = [['F', 'REX face (three-quarter)', 'face'], ['V', 'REX front', 'front'], ['S', 'REX silhouette (profile)', 'silhouette'], ['E', 'REX eyes (close)', 'eyes'], ['T', 'REX turntable', 'turn']];
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-'];
 
 const errors = [];
@@ -57,27 +58,41 @@ export function mountReview(api) {
   .rv dl{display:grid;grid-template-columns:auto 1fr;gap:1px 8px;margin:0}.rv dt{color:#7f8a99}.rv dd{margin:0;word-break:break-word}
   .rv .ok{color:#00D4A7}.rv .bad{color:#ff5c7a}.rv .act{display:flex;gap:6px;margin-top:6px}.rv .act button{text-align:center;border:1px solid rgba(255,255,255,.16)}
   .rv pre{white-space:pre-wrap;margin:6px 0 0;color:#e5e7eb}.rv-min{width:auto}.rv-min .rv-body{display:none}
+  .rv-inspect #xp-overlay,.rv-inspect .xp-demo{opacity:0!important;transition:none}
   .rv .tag{display:inline-block;padding:0 5px;border-radius:3px;background:#F5B942;color:#111;font-weight:700;margin-left:6px}`;
   document.head.appendChild(css);
   const box = document.createElement('aside'); box.className = 'rv'; box.setAttribute('aria-label', 'Owner review tools (development only)');
   const btn = (k, [n, label, id, u]) => `<button data-id="${id}" data-u="${u}"><b>${n}</b>${label}${k ? `<kbd>${k}</kbd>` : ''}</button>`;
   box.innerHTML = `<h4>OWNER REVIEW <span class="tag">DEV ONLY</span> <kbd>H hide</kbd></h4><div class="rv-body">
-    <div>${MOMENTS.map((m, i) => btn(KEYS[i], m)).join('')}${EXTRA.map(m => btn('R', m)).join('')}</div>
-    <p style="margin:4px 0 0;color:#7f8a99">← / → fine-scrub</p>
+    <div>${MOMENTS.map((m, i) => btn(KEYS[i], m)).join('')}${EXTRA.map(m => btn('R', m)).join('')}</div><h4>REX INSPECTION</h4><div>${INSPECT.map(([k, label, mode]) => `<button data-inspect="${mode}"><b>REX</b>${label}<kbd>${k}</kbd></button>`).join('')}</div>
+    <p style="margin:4px 0 0;color:#7f8a99">P play scene · ← / → fine-scrub</p>
     <h4>RENDERER</h4><dl id="rv-gpu"></dl>
     <h4>LIVE</h4><dl id="rv-live"></dl>
     <div class="act"><button id="rv-bench">Benchmark journey</button><button id="rv-copy">Copy report</button></div>
     <pre id="rv-out"></pre></div>`;
   document.body.appendChild(box);
 
-  const go = (id, u) => { api.jump(id, +u); box.querySelectorAll('[data-id]').forEach(b => b.classList.toggle('on', b.dataset.id === id && b.dataset.u === String(u))); };
+  // P: play the current scene at cinematic pace (scroll-driven scenes, hands-free), again to stop
+  let playing = null;
+  function playScene() {
+    if (playing) { cancelAnimationFrame(playing); playing = null; return; }
+    const I = api.info(), S = api.SCENES.find(x => x.id === I.scene); if (!S) return;
+    const max = document.documentElement.scrollHeight - innerHeight, from = scrollY / max, to = S.b - 0.001, dur = Math.max(4, (to - from) / (S.b - S.a) * 22) * 1000, t0 = performance.now();
+    const step = now => { const u = Math.min(1, (now - t0) / dur); scrollTo(0, (from + (to - from) * u) * max); if (u < 1) playing = requestAnimationFrame(step); else playing = null; };
+    playing = requestAnimationFrame(step);
+  }
+  const go = (id, u) => { api.jump(id, +u); document.documentElement.classList.remove('rv-inspect'); box.querySelectorAll('[data-id]').forEach(b => b.classList.toggle('on', b.dataset.id === id && b.dataset.u === String(u))); };
   box.querySelectorAll('[data-id]').forEach(b => b.addEventListener('click', () => go(b.dataset.id, b.dataset.u)));
+  const insp = mode => { api.jump('observe', 0.45); api.inspect(mode); document.documentElement.classList.toggle('rv-inspect', !!mode); box.querySelectorAll('[data-id],[data-inspect]').forEach(b => b.classList.toggle('on', b.dataset.inspect === mode)); };
+  box.querySelectorAll('[data-inspect]').forEach(b => b.addEventListener('click', () => insp(b.dataset.inspect)));
   addEventListener('keydown', e => {
     if (e.target.closest && e.target.closest('input,textarea')) return;
     const i = KEYS.indexOf(e.key);
     if (i >= 0) { const m = MOMENTS[i]; go(m[2], m[3]); }
     else if (e.key === 'r' || e.key === 'R') go(EXTRA[0][2], EXTRA[0][3]);
     else if (e.key === 'h' || e.key === 'H') box.classList.toggle('rv-min');
+    else if (e.key === 'p' || e.key === 'P') playScene();
+    else if (INSPECT.some(x => x[0] === e.key.toUpperCase())) insp(INSPECT.find(x => x[0] === e.key.toUpperCase())[2]);
     else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); scrollBy({ top: (e.key === 'ArrowRight' ? 1 : -1) * 0.004 * (document.documentElement.scrollHeight - innerHeight), behavior: 'auto' }); }
   });
 

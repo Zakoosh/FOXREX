@@ -5,6 +5,7 @@
    amber eyes that reflect market data), volumetric light beams, a spatial 3D chart, and text living inside
    the space. Engine coordinates: x right, y up, z AWAY from the viewer → three.js z = -z. */
 import * as THREE from '../vendor/three.module.min.js';
+import { buildRex, sampleSurface, maskValue } from './rex3d.js';
 
 const FOV = 2 * Math.atan(1 / 3) * 180 / Math.PI;   // matches the engine's projection (y = 1 at distance 3)
 const BG = new THREE.Color('#070C15');
@@ -13,41 +14,10 @@ const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, u) => a + (b - a) * u;
 const smooth = (a, b, x) => { const u = clamp((x - a) / (b - a)); return u * u * (3 - 2 * u); };
 
-/* ------------------------------------------------------------------ REX: sculpted low-poly fox bust */
-// Left-half vertices (x < 0); the right half is mirrored. REX space: x right, y up, z toward the viewer.
-const RV = {
-  C0: [0, 0.58, -0.08], C1: [0, 0.30, 0.18], C2: [0, 0.02, 0.32], C3: [0, -0.40, 0.46], C4: [0, -0.86, 0.58], C5: [0, -1.04, 0.60], C6: [0, -1.00, 0.30], C7: [0, -0.80, -0.08],
-  earTip: [-0.74, 1.14, -0.30], earIn: [-0.26, 0.52, -0.02], earOut: [-0.92, 0.36, -0.28], earMid: [-0.56, 0.66, -0.04],
-  brow: [-0.40, 0.26, 0.10], temple: [-0.74, 0.20, -0.12], eyeIn: [-0.17, -0.04, 0.27], eyeOut: [-0.50, 0.10, 0.13], eyeLow: [-0.32, -0.12, 0.22],
-  cheek: [-1.08, -0.08, -0.20], ruff: [-1.00, -0.40, -0.18], ruff2: [-0.70, -0.44, 0.00], jaw: [-0.40, -0.60, 0.16], muz: [-0.14, -0.94, 0.44], muzSide: [-0.20, -0.62, 0.36],
-  back: [-0.62, 0.40, -0.48], neck: [-0.55, -0.86, -0.36]
-};
-const RT = [['earTip', 'earOut', 'earMid'], ['earTip', 'earMid', 'earIn'], ['earMid', 'earOut', 'temple'], ['earMid', 'temple', 'brow'], ['earMid', 'brow', 'earIn'],
-  ['earIn', 'brow', 'C1'], ['earIn', 'C1', 'C0'], ['brow', 'C1', 'C2'], ['brow', 'C2', 'eyeIn'], ['brow', 'eyeIn', 'eyeOut'], ['brow', 'eyeOut', 'temple'],
-  ['temple', 'eyeOut', 'cheek'], ['temple', 'earOut', 'cheek'], ['eyeOut', 'eyeLow', 'cheek'], ['eyeIn', 'eyeLow', 'eyeOut'], ['eyeIn', 'C2', 'C3'], ['eyeIn', 'C3', 'muzSide'],
-  ['eyeIn', 'muzSide', 'eyeLow'], ['eyeLow', 'muzSide', 'jaw'], ['eyeLow', 'jaw', 'ruff2'], ['eyeLow', 'ruff2', 'cheek'], ['cheek', 'ruff2', 'ruff'], ['muzSide', 'C3', 'C4'],
-  ['muzSide', 'C4', 'muz'], ['muz', 'C4', 'C5'], ['muzSide', 'muz', 'jaw'], ['jaw', 'muz', 'C6'], ['muz', 'C5', 'C6'], ['jaw', 'C6', 'C7'], ['ruff2', 'jaw', 'neck'],
-  ['ruff', 'ruff2', 'neck'], ['jaw', 'C7', 'neck'], ['earOut', 'back', 'temple'], ['back', 'cheek', 'temple'], ['back', 'ruff', 'cheek'], ['back', 'neck', 'ruff'], ['earIn', 'earTip', 'back'], ['C0', 'earIn', 'back']];
-function rexTriangles() {
-  const P = k => RV[k], M = k => (k[0] === 'C' ? RV[k] : [-RV[k][0], RV[k][1], RV[k][2]]);
-  const tris = [];
-  for (const [a, b, c] of RT) { tris.push([P(a), P(b), P(c)]); if (!(a[0] === 'C' && b[0] === 'C' && c[0] === 'C')) tris.push([M(a), M(c), M(b)]); }
-  tris.push([RV.C7, [RV.neck[0], RV.neck[1], RV.neck[2]], [-RV.neck[0], RV.neck[1], RV.neck[2]]]);
-  return tris;
-}
-export const REX_EYES = { L: [RV.eyeIn, RV.eyeOut], R: [[-RV.eyeIn[0], RV.eyeIn[1], RV.eyeIn[2]], [-RV.eyeOut[0], RV.eyeOut[1], RV.eyeOut[2]]] };
-/** Area-weighted surface samples (REX space) — the particles that form, dissolve into and re-form REX. */
-export function sampleRexSurface(n, seed = 99) {
-  const tris = rexTriangles(), areas = tris.map(([a, b, c]) => { const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]], v = [c[0] - a[0], c[1] - a[1], c[2] - a[2]]; return Math.hypot(u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]) / 2; });
-  const total = areas.reduce((s, x) => s + x, 0); let s = seed; const r = () => ((s = (s * 16807) % 2147483647) / 2147483647);
-  const out = [];
-  for (let k = 0; k < n; k++) {
-    let x = r() * total, t = 0; while (t < tris.length - 1 && x > areas[t]) { x -= areas[t]; t++; }
-    let u = r(), v = r(); if (u + v > 1) { u = 1 - u; v = 1 - v; }
-    const [a, b, c] = tris[t]; out.push([a[0] + (b[0] - a[0]) * u + (c[0] - a[0]) * v, a[1] + (b[1] - a[1]) * u + (c[1] - a[1]) * v, a[2] + (b[2] - a[2]) * u + (c[2] - a[2]) * v]);
-  }
-  return out;
-}
+/* ------------------------------------------------------------------ REX: sculpted faceted fox head (js/rex3d.js) */
+const REX = buildRex();
+/** Area-weighted surface samples (REX space): [x, y, z, region] — the particles that build, dissolve into and re-form REX. */
+export function sampleRexSurface(n, seed = 99) { return sampleSurface(REX.tris, n, seed); }
 
 /* ------------------------------------------------------------------ shaders */
 const NOISE = `
@@ -56,42 +26,72 @@ float vnoise(vec3 x){ vec3 i=floor(x), f=fract(x); f=f*f*(3.-2.*f);
   return mix(mix(mix(hash3(i),hash3(i+vec3(1,0,0)),f.x),mix(hash3(i+vec3(0,1,0)),hash3(i+vec3(1,1,0)),f.x),f.y),
              mix(mix(hash3(i+vec3(0,0,1)),hash3(i+vec3(1,0,1)),f.x),mix(hash3(i+vec3(0,1,1)),hash3(i+vec3(1,1,1)),f.x),f.y),f.z); }`;
 
-const REX_VS = `varying vec3 vView; varying vec3 vLocal;
-void main(){ vLocal = position; vec4 mv = modelViewMatrix * vec4(position,1.0); vView = mv.xyz; gl_Position = projectionMatrix * mv; }`;
+const REX_VS = `attribute float aZone; attribute float aRegion; attribute float aSeed; attribute float aMask;
+varying vec3 vView; varying vec3 vLocal; varying float vZone; varying float vRegion; varying float vSeed; varying float vMask;
+void main(){ vLocal = position; vMask = aMask; vZone = aZone; vRegion = aRegion; vSeed = aSeed; vec4 mv = modelViewMatrix * vec4(position,1.0); vView = mv.xyz; gl_Position = projectionMatrix * mv; }`;
+// Material: smoked graphite + dark ceramic mask, obsidian nose. Soft frontal key (both halves readable, no hard
+// seam), cool rim, a studio-softbox reflection so facets catch light differently, a trace of FOXREX teal in the
+// reflection only, and warm bounce light from the eyes so they sit inside the sculpture.
 const REX_FS = `${NOISE}
-uniform vec3 uBase, uKeyColor, uKeyDir, uRimColor, uFillColor, uFillDir, uBg; uniform float uKey, uRim, uFill, uOpacity, uDissolve, uTime, uFog;
-varying vec3 vView; varying vec3 vLocal;
+uniform float uKey, uRim, uOpacity, uDissolve, uTime, uFog, uReveal, uEyeGlow, uBuild, uTeal;
+uniform vec3 uBg, uEyeL, uEyeR;
+varying vec3 vView; varying vec3 vLocal; varying float vZone; varying float vRegion; varying float vSeed; varying float vMask;
 void main(){
-  float n = vnoise(vLocal*11.0 + vec3(0.0, uTime*0.05, 0.0)) * 0.55 + vnoise(vLocal*29.0) * 0.45;
-  if (n < uDissolve) discard;
+  // data formation: each region appears when its stream arrives (facet by facet)
+  float rv = uReveal - vRegion - vSeed * 0.7;
+  if (rv <= 0.0) discard;
+  float n = 1.0;
+  if (uDissolve > 0.001) { n = vnoise(vLocal*9.0 + vec3(0.0, uTime*0.04, 0.0)) * 0.6 + vnoise(vLocal*23.0) * 0.4; if (n < uDissolve) discard; }
   vec3 N = normalize(cross(dFdx(vView), dFdy(vView)));
   vec3 V = normalize(-vView);
-  float key = max(dot(N, normalize(uKeyDir)), 0.0);
-  float fill = max(dot(N, normalize(uFillDir)), 0.0);
-  float fres = pow(1.0 - max(dot(N, V), 0.0), 3.6);
-  vec3 H = normalize(normalize(uKeyDir) + V);
-  float spec = pow(max(dot(N, H), 0.0), 48.0);
-  vec3 col = uBase + uKeyColor * key * key * uKey * 0.7 + uFillColor * fill * fill * uFill * 0.35 + vec3(0.85, 0.92, 1.0) * spec * uKey * 0.55 + uRimColor * fres * uRim * 0.55;
-  col += uRimColor * 0.035 * step(0.985, fract(vLocal.y * 22.0 - uTime * 0.12));      // faint data scan across the facets
-  float edge = (1.0 - smoothstep(uDissolve, uDissolve + 0.025, n)) * step(0.001, uDissolve);
-  col = mix(col, vec3(0.55, 0.95, 0.85), edge * 0.6);                                   // dissolving edge becomes data
+  // zone materials: base emission, diffuse albedo, specular strength, shininess
+  vec3 alb = mix(vec3(0.05, 0.058, 0.07), vec3(0.33, 0.335, 0.345), vMask); float spS = 0.5, shin = mix(70.0, 90.0, vMask);
+  if (vZone > 1.5 && vZone < 2.5) { alb = vec3(0.03, 0.03, 0.035); spS = 0.95; shin = 170.0; }
+  else if (vZone > 2.5) { alb = vec3(0.035, 0.04, 0.05); spS = 0.08; shin = 20.0; }
+  alb *= 0.9 + 0.2 * fract(sin(dot(floor(N * 23.0), vec3(12.9898, 78.233, 37.719))) * 43758.5453);   // facets vary slightly
+  vec3 L1 = normalize(vec3(-0.32, 0.5, 0.8)), L2 = normalize(vec3(0.55, 0.12, 0.82));
+  float d1 = max(dot(N, L1), 0.0), d2 = max(dot(N, L2), 0.0), sky = 0.5 + 0.5 * N.y;
+  vec3 col = alb * (d1 * 1.0 * uKey + d2 * 0.4 * uKey + sky * 0.22 + 0.06);
+  vec3 H = normalize(L1 + V); col += vec3(0.82, 0.88, 0.96) * pow(max(dot(N, H), 0.0), shin) * spS * uKey;
+  vec3 R = reflect(-V, N);
+  float soft = smoothstep(0.35, 0.95, R.y) * smoothstep(-0.9, 0.2, R.z);                 // softbox above the camera
+  col += vec3(0.5, 0.56, 0.64) * soft * spS * 0.22;
+  col += vec3(0.0, 0.83, 0.66) * smoothstep(0.8, 1.0, -R.x) * smoothstep(0.2, 0.7, R.y) * spS * 0.035 * uTeal;   // a trace of FOXREX teal, upper edges only
+  float fres = pow(1.0 - max(dot(N, V), 0.0), 3.0);
+  col += vec3(0.58, 0.68, 0.82) * fres * uRim * 0.32 * (0.35 + 0.65 * sky);            // cool rim, never green
+  // warm bounce from the eyes
+  float eL = exp(-dot(vLocal - uEyeL, vLocal - uEyeL) / 0.03), eR = exp(-dot(vLocal - uEyeR, vLocal - uEyeR) / 0.03);
+  col += vec3(0.9, 0.52, 0.14) * (eL + eR) * uEyeGlow * (vZone > 1.5 ? 0.35 : 0.12);
+  // data edges: building (formation) and dissolving (ML)
+  float build = 1.0 - smoothstep(0.0, 0.22, rv);
+  col = mix(col, vec3(0.62, 0.96, 0.86), build * 0.5 * uBuild);
+  float edge = (1.0 - smoothstep(uDissolve, uDissolve + 0.02, n)) * step(0.001, uDissolve);
+  col = mix(col, vec3(0.55, 0.95, 0.85), edge * 0.5);
   float fog = exp(-uFog * uFog * dot(vView, vView));
   gl_FragColor = vec4(mix(uBg, col, fog), uOpacity);
 }`;
 
 const EYE_VS = `varying vec2 vUv; void main(){ vUv = position.xy; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`;
+// Eye: amber iris with fibres and a darker limbal ring, a soft vertical slit, the upper lid's shadow, a wet cornea
+// (softbox highlight + a small secondary glint) and market information faintly reflected. Restrained emission.
 const EYE_FS = `uniform vec2 uGaze; uniform float uAlpha, uTime, uFocus, uDir; uniform sampler2D uRefl; varying vec2 vUv;
 void main(){
-  vec2 c = vec2(0.5 + uGaze.x * uDir * 0.16, 0.05 + uGaze.y * 0.05);
-  float d = length((vUv - c) * vec2(1.0, 1.7));
-  vec3 iris = mix(vec3(1.0, 0.93, 0.76), vec3(0.94, 0.66, 0.2), smoothstep(0.0, 0.42, d));
-  iris *= 1.0 - smoothstep(0.30, 0.62, d) * 0.65;
-  float slitW = mix(0.035, 0.018, uFocus);
-  float slit = (1.0 - smoothstep(slitW, slitW + 0.02, abs(vUv.x - c.x))) * (1.0 - smoothstep(0.18, 0.34, abs(vUv.y - c.y)));
-  vec3 col = mix(iris, vec3(0.02, 0.03, 0.05), slit);
-  vec3 refl = texture2D(uRefl, vec2(vUv.x * 1.3 + uTime * 0.03, vUv.y * 2.2 + 0.4)).rgb;   // market information, reflected
-  col += refl * 0.55 * (1.0 - slit);
-  col += vec3(1.0) * (1.0 - smoothstep(0.0, 0.07, length(vUv - vec2(0.64, 0.17)))) * 0.85;   // glint
+  float yn = clamp((vUv.y + 0.16) / 0.42, 0.0, 1.0);
+  vec2 c = vec2(0.5 + uGaze.x * uDir * 0.14, 0.03 + uGaze.y * 0.04);
+  vec2 q = (vUv - c) * vec2(1.0, 1.55); float d = length(q), ang = atan(q.y, q.x);
+  vec3 iris = mix(vec3(1.0, 0.86, 0.52), vec3(0.86, 0.5, 0.12), smoothstep(0.02, 0.36, d));
+  iris *= 0.86 + 0.14 * sin(ang * 26.0 + d * 30.0);                        // fibres
+  iris *= 1.0 - smoothstep(0.26, 0.5, d) * 0.72;                            // limbal ring
+  float slitW = mix(0.032, 0.016, uFocus);
+  float slit = (1.0 - smoothstep(slitW, slitW + 0.018, abs(vUv.x - c.x))) * (1.0 - smoothstep(0.2, 0.34, abs(vUv.y - c.y)));
+  vec3 col = mix(iris, vec3(0.015, 0.012, 0.01), slit);
+  col *= mix(0.32, 1.0, smoothstep(0.92, 0.45, yn));                        // the upper lid shades the eye
+  col *= smoothstep(0.0, 0.09, vUv.x) * smoothstep(1.0, 0.9, vUv.x);        // corners recede into the socket
+  vec3 refl = texture2D(uRefl, vec2(vUv.x * 1.3 + uTime * 0.025, vUv.y * 2.2 + 0.4)).rgb;
+  col += refl * 0.22 * (1.0 - slit) * smoothstep(0.85, 0.35, yn);         // market information, reflected
+  float gl1 = 1.0 - smoothstep(0.0, 0.05, length((vUv - vec2(0.36, 0.12)) * vec2(1.0, 1.8)));
+  float gl2 = 1.0 - smoothstep(0.0, 0.022, length(vUv - vec2(0.62, 0.02)));
+  col += vec3(1.0, 0.97, 0.92) * (gl1 * 0.8 + gl2 * 0.45);                 // wet cornea
   gl_FragColor = vec4(col, uAlpha);
 }`;
 
@@ -104,9 +104,11 @@ void main(){
   float fog = exp(-uFog * uFog * d * d);
   vAlpha = d < 0.25 ? 0.0 : aAlpha * fog / (1.0 + coc * coc * 1.6);
   vBlur = clamp(coc, 0.0, 1.0); vColor = aColor;
+  if (vAlpha < 0.004) { gl_PointSize = 0.0; gl_Position = vec4(2.0, 2.0, 2.0, 1.0); }   // skip rasterizing invisible particles
 }`;
 const PTS_FS = `varying vec3 vColor; varying float vAlpha; varying float vBlur;
-void main(){ float r = length(gl_PointCoord - 0.5); float core = mix(0.16, 0.46, vBlur);
+void main(){ vec2 pc = gl_PointCoord - 0.5; float intel = step(0.7, vColor.g) * step(vColor.r, 0.25) * (1.0 - vBlur);   // INTELLIGENCE PARTICLE: a crisp diamond
+  float r = mix(length(pc), (abs(pc.x) + abs(pc.y)) * 0.78, intel); float core = mix(0.16, 0.46, vBlur);
   float a = 1.0 - smoothstep(core * 0.55, 0.5, r); if (a <= 0.004 || vAlpha <= 0.004) discard; gl_FragColor = vec4(vColor, a * vAlpha); }`;
 
 const BEAM_VS = `varying float vH; varying vec3 vN; varying vec3 vV;
@@ -171,6 +173,40 @@ const basic = (color, opacity = 1, additive = false) => new THREE.MeshBasicMater
 const lineMat = (color, opacity = 1) => new THREE.LineBasicMaterial({ color, transparent: true, opacity, depthWrite: false });
 function polyline(pts, mat) { const g = new THREE.BufferGeometry().setFromPoints(pts.map(p => V3(...p))); return new THREE.Line(g, mat); }
 
+/* ------------------------------------------------------------------ market primitives (MARKET NOISE) */
+// Real market visual primitives drawn once to canvas, each in a sharp and an out-of-focus version, so the field can
+// render depth of field: near-camera primitives are large and soft, the focus plane is crisp, the far field recedes.
+function primitiveCanvas(kind, seed) {
+  let s = seed * 9301 + 49297; const r = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+  const W = 512, H = 256, c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+  const TEAL = '#2FE0B8', WHITE = '#E5E7EB', GREY = '#8E99A8', ROSE = '#FF7A90', AMBER = '#F5B942';
+  g.lineCap = 'round'; g.font = '500 30px Inter, system-ui, sans-serif'; g.textBaseline = 'middle';
+  if (kind === 'candles') { let p = 150; const n = 12 + Math.floor(r() * 6), w = (W - 40) / n;
+    for (let i = 0; i < n; i++) { const o = p, c2 = p + (r() - 0.46) * 46, hi = Math.min(o, c2) - r() * 22, lo = Math.max(o, c2) + r() * 22, up = c2 < o, x = 20 + i * w + w / 2;
+      g.strokeStyle = g.fillStyle = up ? TEAL : GREY; g.lineWidth = 3; g.beginPath(); g.moveTo(x, hi); g.lineTo(x, lo); g.stroke(); g.fillRect(x - w * 0.3, Math.min(o, c2), w * 0.6, Math.max(4, Math.abs(c2 - o))); p = Math.min(215, Math.max(40, c2)); } }
+  else if (kind === 'volume') { const n = 26, w = (W - 30) / n; for (let i = 0; i < n; i++) { const h = 20 + r() ** 2 * 190; g.fillStyle = r() < 0.5 ? 'rgba(47,224,184,0.8)' : 'rgba(142,153,168,0.7)'; g.fillRect(15 + i * w, H - 12 - h, w * 0.7, h); } }
+  else if (kind === 'ladder') { g.font = '500 24px Inter, system-ui, sans-serif'; for (let i = 0; i < 8; i++) { const y = 20 + i * 30, px = (4328.9 - i * 0.1).toFixed(2), bid = i >= 4, bw = 40 + r() * 260;
+      g.fillStyle = bid ? 'rgba(47,224,184,0.28)' : 'rgba(255,122,144,0.24)'; g.fillRect(bid ? 150 : 150, y - 11, bw, 22); g.fillStyle = bid ? TEAL : '#C9D4E3'; g.fillText(px, 14, y); g.fillStyle = GREY; g.fillText(String(Math.floor(r() * 90 + 5)), 170 + bw, y); } }
+  else if (kind === 'yield') { const pts = [[40, 190], [120, 150], [210, 120], [310, 108], [400, 98], [480, 94]], lab = ['2Y', '5Y', '7Y', '10Y', '20Y', '30Y'];
+    g.strokeStyle = WHITE; g.lineWidth = 3; g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.stroke();
+    g.font = '500 22px Inter, system-ui, sans-serif'; pts.forEach(([x, y], i) => { g.fillStyle = TEAL; g.beginPath(); g.arc(x, y, 6, 0, 7); g.fill(); g.fillStyle = GREY; g.fillText(lab[i], x - 14, y + 34); }); g.fillStyle = WHITE; g.fillText('US10Y 4.21  +4bp', 40, 34); }
+  else if (kind === 'calendar') { g.font = '500 25px Inter, system-ui, sans-serif'; const rows = [['08:30', 'USD', 'CPI y/y', '3.1%', '3.2%'], ['10:00', 'USD', 'ISM Services', '51.4', '52.0'], ['14:00', 'USD', 'FOMC Minutes', '—', '—'], ['09:30', 'GBP', 'GDP m/m', '0.2%', '0.1%']];
+    rows.forEach((rw, i) => { const y = 40 + i * 52; g.fillStyle = i === 0 ? AMBER : GREY; g.fillText(rw[0], 14, y); g.fillStyle = WHITE; g.fillText(rw[1], 104, y); g.fillText(rw[2], 180, y); g.fillStyle = GREY; g.fillText(rw[3], 380, y); g.fillText(rw[4], 450, y); }); }
+  else if (kind === 'depth') { g.lineWidth = 3; g.strokeStyle = TEAL; g.fillStyle = 'rgba(47,224,184,0.16)'; g.beginPath(); g.moveTo(10, 60); let x = 10, y = 60; while (x < 250) { x += 20 + r() * 20; g.lineTo(x, y); y += 10 + r() * 16; g.lineTo(x, y); } g.lineTo(256, 236); g.lineTo(10, 236); g.closePath(); g.fill(); g.stroke();
+    g.strokeStyle = ROSE; g.fillStyle = 'rgba(255,122,144,0.13)'; g.beginPath(); g.moveTo(502, 70); x = 502; y = 70; while (x > 262) { x -= 20 + r() * 20; g.lineTo(x, y); y += 10 + r() * 16; g.lineTo(x, y); } g.lineTo(256, 236); g.lineTo(502, 236); g.closePath(); g.fill(); g.stroke(); }
+  else if (kind === 'structure') { const pts = [[20, 200], [110, 110], [170, 160], [270, 60], [330, 120], [470, 30]], lab = ['', 'HH', 'HL', 'HH', 'HL', 'BOS'];
+    g.strokeStyle = WHITE; g.lineWidth = 3; g.beginPath(); pts.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.stroke();
+    g.setLineDash([10, 8]); g.strokeStyle = TEAL; g.beginPath(); g.moveTo(270, 60); g.lineTo(500, 60); g.stroke(); g.setLineDash([]);
+    g.font = '700 24px Inter, system-ui, sans-serif'; pts.forEach(([x, y], i) => { if (!lab[i]) return; g.fillStyle = TEAL; g.fillText(lab[i], x - 16, y + (i % 2 ? -22 : 26)); }); }
+  else if (kind === 'headline') { const hs = ['GOLD HOLDS 4,300 AHEAD OF CPI', 'FED SPEAKER: “DATA DEPENDENT”', 'DOLLAR FIRMS AS YIELDS RISE', 'RISK APPETITE FADES INTO THE CLOSE'];
+    g.font = '600 30px Inter, system-ui, sans-serif'; g.fillStyle = WHITE; g.fillText(hs[seed % hs.length], 14, 110); g.fillStyle = GREY; g.font = '500 22px Inter, system-ui, sans-serif'; g.fillText('09:31 · MARKETS · DEMO', 14, 160); g.fillStyle = TEAL; g.fillRect(14, 60, 60, 4); }
+  else if (kind === 'ticks') { g.font = '500 26px Inter, system-ui, sans-serif'; for (let i = 0; i < 6; i++) { const up = r() < 0.55; g.fillStyle = up ? TEAL : GREY; g.fillText(`09:31:0${i}.${String(Math.floor(r() * 999)).padStart(3, '0')}   ${(4328.3 + r() * 0.6).toFixed(2)}  ${up ? '▲' : '▼'}`, 14, 26 + i * 40); } }
+  else if (kind === 'sparkline') { g.strokeStyle = WHITE; g.lineWidth = 3; g.beginPath(); let y = 150; for (let x = 10; x < W - 10; x += 8) { y = Math.min(230, Math.max(30, y + (r() - 0.49) * 22)); x === 10 ? g.moveTo(x, y) : g.lineTo(x, y); } g.stroke(); g.fillStyle = TEAL; g.font = '600 26px Inter, system-ui, sans-serif'; g.fillText(['EURUSD 1.0842', 'BTCUSD 64,120', 'DXY 104.2', 'USDJPY 149.62'][seed % 4], 12, 24); }
+  return c;
+}
+function blurred(src, px) { const c = document.createElement('canvas'); c.width = src.width; c.height = src.height; const g = c.getContext('2d'); g.filter = `blur(${px}px)`; g.drawImage(src, 0, 0); if (g.filter === 'none') { g.globalAlpha = 0.5; for (const [dx, dy] of [[-4, 0], [4, 0], [0, -4], [0, 4]]) g.drawImage(src, dx, dy); } return c; }
+const tex2 = c => { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t; };
+
 /* ------------------------------------------------------------------ the world */
 export async function createWorld(canvas, D) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
@@ -213,29 +249,36 @@ export async function createWorld(canvas, D) {
 
   /* REX */
   const rex = new THREE.Group(); world.add(rex);
-  const rexGeo = new THREE.BufferGeometry(); { const arr = []; for (const t of rexTriangles()) for (const v of t) arr.push(...v); rexGeo.setAttribute('position', new THREE.Float32BufferAttribute(arr, 3)); }
-  const rexU = { uBase: { value: new THREE.Color('#070C14') }, uKeyColor: { value: new THREE.Color('#8FA2BC') }, uKeyDir: { value: new THREE.Vector3(-0.45, 0.75, 0.55) }, uKey: { value: 0.5 },
-    uRimColor: { value: new THREE.Color('#00D4A7') }, uRim: { value: 0.6 }, uFillColor: { value: new THREE.Color('#F5B942') }, uFillDir: { value: new THREE.Vector3(0.8, -0.1, 0.4) }, uFill: { value: 0 },
-    uOpacity: { value: 0 }, uDissolve: { value: 0 }, uTime: { value: 0 }, uFog: { value: 0.04 }, uBg: { value: BG } };
-  const rexMat = new THREE.ShaderMaterial({ vertexShader: REX_VS, fragmentShader: REX_FS, uniforms: rexU, transparent: true, side: THREE.DoubleSide });
+  const rexGeo = new THREE.BufferGeometry();
+  { const pos = [], zone = [], reg = [], seed = [], mask = []; let k = 0;
+    for (const [a, b, c, z, r] of REX.tris) { pos.push(...a, ...b, ...c); const sd = ((k++ * 0.6180339887) % 1);
+      for (const v of [a, b, c]) { zone.push(z === 4 ? 0 : z); reg.push(r); seed.push(sd); mask.push(z === 1 ? 1 : z === 4 ? maskValue(v) : 0); } }
+    rexGeo.setAttribute('aMask', new THREE.Float32BufferAttribute(mask, 1));
+    rexGeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); rexGeo.setAttribute('aZone', new THREE.Float32BufferAttribute(zone, 1));
+    rexGeo.setAttribute('aRegion', new THREE.Float32BufferAttribute(reg, 1)); rexGeo.setAttribute('aSeed', new THREE.Float32BufferAttribute(seed, 1)); }
+  const E3 = e => new THREE.Vector3(...e);
+  const rexU = { uKey: { value: 1 }, uRim: { value: 0.6 }, uOpacity: { value: 0 }, uDissolve: { value: 0 }, uTime: { value: 0 }, uFog: { value: 0.04 }, uBg: { value: BG },
+    uReveal: { value: 12 }, uBuild: { value: 0 }, uEyeGlow: { value: 0 }, uTeal: { value: 1 }, uEyeL: { value: E3(REX.eyes.L.centre) }, uEyeR: { value: E3(REX.eyes.R.centre) } };
+  const rexMat = new THREE.ShaderMaterial({ vertexShader: REX_VS, fragmentShader: REX_FS, uniforms: rexU, transparent: true, side: THREE.FrontSide });
   const rexMesh = new THREE.Mesh(rexGeo, rexMat); rexMesh.renderOrder = 1; rex.add(rexMesh);
-  const rexEdges = new THREE.LineSegments(new THREE.EdgesGeometry(rexGeo, 1), lineMat('#C9D4E3', 0)); rex.add(rexEdges);
-  // eyes: almond surfaces with amber iris, vertical slit, reflected market data, a glint
+  // crease lines (the OBSERVATION LINE motif tracing REX's structure) — only strong creases, never a wireframe
+  const rexEdges = new THREE.LineSegments(new THREE.EdgesGeometry(rexGeo, 32), lineMat('#DDE6F2', 0)); rex.add(rexEdges);
+  // eyes: set into the sculpture on the surface basis (inner → outer corner), under the lid overhang
   const reflTex = reflectionTexture(['4328.50', 'XAUUSD', 'CPI', 'BOS', 'EMA 200', '1.0842', 'VOL', 'US10Y', 'HL', 'RSI 61', 'ATR']);
-  const eyeShape = new THREE.Shape(); eyeShape.moveTo(0, 0); eyeShape.quadraticCurveTo(0.5, 0.33, 1, 0.02); eyeShape.quadraticCurveTo(0.52, -0.2, 0, 0);
-  const eyeGeo = new THREE.ShapeGeometry(eyeShape, 24);
+  const eyeShape = new THREE.Shape(); eyeShape.moveTo(0, 0); eyeShape.quadraticCurveTo(0.42, 0.34, 1, 0.03); eyeShape.quadraticCurveTo(0.56, -0.17, 0.08, -0.05); eyeShape.lineTo(0, 0);
+  const eyeGeo = new THREE.ShapeGeometry(eyeShape, 28);
   const eyeU = { uGaze: { value: new THREE.Vector2() }, uAlpha: { value: 0 }, uTime: { value: 0 }, uFocus: { value: 0 }, uRefl: { value: reflTex } };
   const eyeMats = { L: new THREE.ShaderMaterial({ vertexShader: EYE_VS, fragmentShader: EYE_FS, uniforms: { ...eyeU, uDir: { value: -1 } }, transparent: true, depthWrite: false, side: THREE.DoubleSide }),
     R: new THREE.ShaderMaterial({ vertexShader: EYE_VS, fragmentShader: EYE_FS, uniforms: { ...eyeU, uDir: { value: 1 } }, transparent: true, depthWrite: false, side: THREE.DoubleSide }) };
-  const glowTex = glowTexture('rgba(255,210,140,1)', 'rgba(245,185,66,0.22)');
+  const glowTex = glowTexture('rgba(255,200,120,1)', 'rgba(245,170,60,0.18)');
   const eyes = ['L', 'R'].map(side => {
-    const [a, b] = REX_EYES[side], g = new THREE.Group(), m = new THREE.Mesh(eyeGeo, eyeMats[side]); m.renderOrder = 4;
-    const len = Math.hypot(b[0] - a[0], b[1] - a[1]); g.position.set(a[0], a[1], a[2] + 0.035); g.rotation.z = Math.atan2(b[1] - a[1], b[0] - a[0]);
-    // the left eye runs inner→outer toward -x: flip its local y so the upper lid still bulges upward
-    const sign = side === 'L' ? -1 : 1, baseY = len * 0.5 * sign; m.scale.set(len, baseY, 1);
+    const E = REX.eyes[side], g = new THREE.Group(), m = new THREE.Mesh(eyeGeo, eyeMats[side]); m.renderOrder = 4;
+    const xa = E3(E.xAxis), ya = E3(E.yAxis), za = E3(E.normal);
+    g.matrixAutoUpdate = false; g.matrix.makeBasis(xa, ya, za).setPosition(E3(E.inner).addScaledVector(za, 0.008));
+    const baseY = E.len; m.scale.set(E.len, baseY, 1);
     const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 }));
-    glow.position.set(len * 0.5, 0.03, 0.02); glow.scale.set(len * 1.7, len * 0.95, 1); glow.renderOrder = 3;
-    glow.position.y *= sign; g.add(glow, m); rex.add(g); return { g, m, glow, len, baseY };
+    glow.position.set(E.len * 0.5, 0.0, 0.02); glow.scale.set(E.len * 1.5, E.len * 0.7, 1); glow.renderOrder = 3;
+    g.add(glow, m); rex.add(g); return { g, m, glow, len: E.len, baseY };
   });
 
   /* volumetric light beam */
@@ -250,29 +293,100 @@ export async function createWorld(canvas, D) {
     ['Fed speaker: “data dependent”', -2.6, 0.95, 11.4, 0.28], ['09:31:07', 2.9, 1.0, 12.6, 0.3], ['HH · HL · BOS', 0.3, -1.25, 13.8, 0.32]];
   const openSprites = OPEN.map(([t, x, y, z, h]) => { const s = textSprite(t, { px: 80, weight: 500, h }); s.position.copy(V3(x, y, z)); world.add(s); return s; });
 
+  /* MARKET NOISE field: primitives drifting toward the camera through depth, with depth of field */
+  const KINDS = ['candles', 'volume', 'ladder', 'yield', 'calendar', 'depth', 'structure', 'headline', 'ticks', 'sparkline'];
+  const PRIM = [];
+  { const texCache = {}, n = D.mobile() ? 22 : 36; let sd = 7;
+    for (let k = 0; k < n; k++) {
+      const kind = KINDS[k % KINDS.length], variant = Math.floor(k / KINDS.length) % 3, key = kind + variant;
+      if (!texCache[key]) { const c = primitiveCanvas(kind, variant + 1); texCache[key] = [tex2(c), tex2(blurred(c, 7))]; }
+      const r = () => ((sd = (sd * 16807) % 2147483647) / 2147483647);
+      const h = 0.34 + r() * 0.38, mk = map => new THREE.Sprite(new THREE.SpriteMaterial({ map, transparent: true, depthWrite: false, opacity: 0, fog: false }));
+      const sharp = mk(texCache[key][0]), soft = mk(texCache[key][1]); for (const sp of [sharp, soft]) { sp.scale.set(h * 2, h, 1); sp.renderOrder = 1; world.add(sp); }
+      const ang = r() * Math.PI * 2, rad = 0.55 + r() * 1.6;
+      PRIM.push({ sharp, soft, kind, d0: r(), x: Math.cos(ang) * rad * 1.9, y: Math.sin(ang) * rad * 0.8, speed: 0.7 + r() * 0.6, signal: kind === 'structure' && variant === 0 || kind === 'calendar' && variant === 0 || kind === 'candles' && variant === 1 });
+    } }
+  /* FOXREX motifs: OBSERVATION LINE brackets + light path, and the amber ATTENTION glint (REX's eye, reflected) */
+  const brackets = [0, 1, 2].map(() => { const g = new THREE.LineSegments(new THREE.BufferGeometry(), lineMat('#9FF5DF', 0)); g.frustumCulled = false; world.add(g); return g; });
+  const lightPath = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(1, 0, 0)]), lineMat('#CFFAF0', 0)); lightPath.frustumCulled = false; world.add(lightPath);
+  const glintTex = (() => { const c = document.createElement('canvas'); c.width = 256; c.height = 64; const g = c.getContext('2d');
+    const gr = g.createRadialGradient(128, 32, 0, 128, 32, 128); gr.addColorStop(0, 'rgba(255,226,170,1)'); gr.addColorStop(0.08, 'rgba(245,185,66,0.7)'); gr.addColorStop(0.35, 'rgba(245,160,50,0.12)'); gr.addColorStop(1, 'rgba(245,160,50,0)');
+    g.fillStyle = gr; g.setTransform(1, 0, 0, 0.18, 0, 26); g.fillRect(0, 0, 256, 64); g.setTransform(1, 0, 0, 1, 0, 0);
+    const c2 = g.createRadialGradient(128, 32, 0, 128, 32, 16); c2.addColorStop(0, 'rgba(255,240,210,1)'); c2.addColorStop(1, 'rgba(255,200,120,0)'); g.fillStyle = c2; g.fillRect(96, 0, 64, 64); return tex2(c); })();
+  const glints = [0, 1].map(() => { const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: glintTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 })); sp.scale.set(0.5, 0.125, 1); sp.renderOrder = 6; world.add(sp); return sp; });
+  function bracket(g, x, y, z, w, h, a) {
+    const c = Math.min(w, h) * 0.18, X0 = x - w / 2, X1 = x + w / 2, Y0 = y - h / 2, Y1 = y + h / 2, Z = -z, v = [];
+    for (const [px, py, sx, sy] of [[X0, Y0, 1, 1], [X1, Y0, -1, 1], [X0, Y1, 1, -1], [X1, Y1, -1, -1]]) v.push(px, py, Z, px + sx * c, py, Z, px, py, Z, px, py + sy * c, Z);
+    g.geometry.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.material.opacity = a; g.visible = a > 0.005;
+  }
+  const signals = [];   // screen-independent positions of the primitives FOXREX selects (engine reads them for REX's gaze)
+  const SPAN = 13, NEAR = 0.3, SIG_ANCHOR = [[0.04, 0.52, 3.6], [0.12, -0.52, 3.9], [-0.14, -0.04, 4.6]];
+  PRIM.filter(p => p.signal).forEach((p, k) => { p.sigK = k % 3; });
+  function updatePrims(s, fieldA, focusD, ap, select) {
+    signals.length = 0;
+    for (const p of PRIM) {
+      const d = NEAR + (((p.d0 - s.t * 0.016 * p.speed) % 1 + 1) % 1) * SPAN, z = s.cam.z + d;
+      const on = fieldA > 0.005; p.sharp.visible = p.soft.visible = on; if (!on) continue;
+      let a = fieldA * smooth(SPAN, SPAN - 3, d - NEAR) * smooth(0.25, 1.1, d) * 0.55;
+      let px = p.x, py = p.y, pz = z, dd = d;
+      if (select > 0) {   // attention: the noise dims; the signal settles where FOXREX can hold it in focus
+        if (p.signal) { const an = SIG_ANCHOR[p.sigK]; px = lerp(p.x, an[0] * s.A, select); py = lerp(p.y, an[1], select); dd = lerp(d, an[2], select); pz = s.cam.z + dd; a = lerp(a, fieldA * 0.95, select); }
+        else a *= 1 - 0.82 * select;
+      }
+      const coc = Math.abs(dd - focusD) * ap, b = smooth(0.12, 0.7, coc);
+      p.sharp.position.set(px, py, -pz); p.soft.position.copy(p.sharp.position);
+      const k = d < 1.2 ? 1 + (1.2 - d) * 0.25 : 1; p.sharp.scale.set(p.sharp.userData.w ??= p.sharp.scale.x, p.sharp.userData.h ??= p.sharp.scale.y, 1); p.soft.scale.set(p.sharp.userData.w * k, p.sharp.userData.h * k, 1);
+      p.sharp.material.opacity = a * (1 - b); p.soft.material.opacity = a * b * 0.9;
+      p.sharp.visible = p.sharp.material.opacity > 0.006; p.soft.visible = p.soft.material.opacity > 0.006;   // never rasterize what is invisible
+      if (p.signal && select > 0) signals.push({ x: px, y: py, z: pz, a, w: p.sharp.userData.w, h: p.sharp.userData.h });
+    }
+  }
+
   /* scene objects (built lazily; asleep unless their scene is near) */
   const groups = {};
   const G = id => (groups[id] ||= (() => { const g = new THREE.Group(); g.visible = false; world.add(g); return g; })());
   const built = {};
   const once = (k, f) => { if (!built[k]) { built[k] = true; f(); } };
 
-  /* streams: ten evidence flows with their names in space */
+  /* streams: ten evidence flows — each a fine trail (the OBSERVATION LINE) with its name riding the leading edge */
+  const STREAM_N = 48;
   function buildStreams() {
-    const g = G('streams'), names = ['PRICE', 'VOLUME', 'VOLATILITY', 'STRUCTURE', 'MOMENTUM', 'TREND', 'LIQUIDITY', 'NEWS', 'SESSION', 'HISTORICAL MEMORY'];
-    g.userData.labels = [];
+    const g = G('streams'), names = D.T.streamNames || ['PRICE', 'VOLUME', 'VOLATILITY', 'STRUCTURE', 'MOMENTUM', 'TREND', 'LIQUIDITY', 'NEWS', 'SESSION', 'HISTORICAL MEMORY'];
+    g.userData.trails = []; g.userData.labels = []; g.userData.heads = [];
+    const headTex = glowTexture('rgba(220,255,245,1)', 'rgba(0,212,167,0.3)');
     for (let k = 0; k < 10; k++) {
-      const ang = (k / 10) * Math.PI * 2 + 0.3, pts = [];
-      for (let s = 0; s <= 40; s++) { const u = s / 40, rad = (1 - u) * (D.mobile() ? 1.6 : 2.6) + 0.12, sw = (1 - u) * 1.2; pts.push([Math.cos(ang + sw) * rad * (D.mobile() ? 0.7 : 1.1), Math.sin(ang + sw) * rad * 0.62, (1 - u) * 6 - 0.3]); }
-      g.add(polyline(pts, lineMat(k === 0 || k === 5 ? '#00D4A7' : '#AEB8C6', 0.14)));
-      const lab = textSprite(names[k], { px: 64, weight: 600, h: 0.07, color: k === 0 || k === 5 ? '#00D4A7' : '#AEB8C6', track: 6 }); lab.position.copy(V3(...pts[6])); g.add(lab); g.userData.labels.push(lab);
+      const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(STREAM_N * 3), 3).setUsage(THREE.DynamicDrawUsage));
+      const tr = new THREE.Line(geo, lineMat(k === 0 || k === 5 ? '#7FF0D6' : '#C9D4E3', 0)); tr.frustumCulled = false; g.add(tr); g.userData.trails.push(tr);
+      const lab = textSprite(names[k], { px: 64, weight: 600, h: 0.1, color: '#E5E7EB', track: 7, align: 'left', font: D.lang === 'ar' ? 'IBM Plex Sans Arabic' : 'Inter' }); lab.material.depthTest = false; lab.renderOrder = 7; g.add(lab); g.userData.labels.push(lab);
+      const hd = new THREE.Sprite(new THREE.SpriteMaterial({ map: headTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 })); hd.scale.set(0.26, 0.26, 1); g.add(hd); g.userData.heads.push(hd);
     }
+  }
+  const bz = (a, b, c, u, out) => { const v = 1 - u; out.set(v * v * a[0] + 2 * v * u * b[0] + u * u * c[0], v * v * a[1] + 2 * v * u * b[1] + u * u * c[1], -(v * v * a[2] + 2 * v * u * b[2] + u * u * c[2])); return out; };
+  const _v = new THREE.Vector3();
+  function updateStreams(s, a) {
+    const U = groups.streams.userData, ST = s.streams; if (!ST) return;
+    ST.forEach((st, k) => {
+      const tr = U.trails[k], lab = U.labels[k], hd = U.heads[k], u = st.u, arr = tr.geometry.attributes.position.array;
+      const head = Math.min(1, u * 1.1), tail = Math.max(0, head - 0.55);
+      for (let i = 0; i < STREAM_N; i++) { bz(st.o, st.c, st.t, tail + (head - tail) * i / (STREAM_N - 1), _v); arr[i * 3] = _v.x; arr[i * 3 + 1] = _v.y; arr[i * 3 + 2] = _v.z; }
+      tr.geometry.attributes.position.needsUpdate = true;
+      const live = u > 0 && u < 1 ? 1 : 0;
+      tr.material.opacity = a * live * 0.85 * Math.sin(Math.min(1, u) * Math.PI) ** 0.5;
+      bz(st.o, st.c, st.t, head, _v); hd.position.copy(_v); hd.material.opacity = a * live * 0.8; hd.visible = tr.visible = live > 0 && a > 0.01; lab.visible = hd.visible;
+      // the name rides the leading edge, then settles beside the region it built
+      lab.position.set(_v.x + 0.07, _v.y + 0.04, _v.z); lab.material.opacity = a * (live ? smooth(0, 0.15, u) : 0) * 0.95;
+    });
   }
   /* enter: the six architecture layers the camera flies through */
   function buildEnter() {
     const g = G('enter'); g.userData.labels = [];
     D.T.layers.forEach((name, layer) => {
-      const z = 1.2 + layer * 2.1, pts = []; for (let s = 0; s <= 96; s++) { const a = s / 96 * Math.PI * 2; pts.push([Math.cos(a) * 1.05 * (D.mobile() ? 0.62 : 1), Math.sin(a) * 1.05 * 0.68, z]); }
-      g.add(polyline(pts, lineMat(layer === 3 ? '#00D4A7' : '#C9D4E3', 0.35)));
+      // a precision instrument, not a wireframe ring: three arcs with gaps, fine ticks, one major tick per arc
+      const z = 1.2 + layer * 2.1, sx = 1.05 * (D.mobile() ? 0.62 : 1), sy = 1.05 * 0.68, rot = layer * 0.5, col = layer === 3 ? '#00D4A7' : '#C9D4E3';
+      for (let arc = 0; arc < 3; arc++) { const a0 = rot + arc * Math.PI * 2 / 3 + 0.12, a1 = a0 + Math.PI * 2 / 3 - 0.24, pts = [];
+        for (let s = 0; s <= 40; s++) { const a = lerp(a0, a1, s / 40); pts.push([Math.cos(a) * sx, Math.sin(a) * sy, z]); } g.add(polyline(pts, lineMat(col, 0.35))); }
+      const tv = []; for (let k = 0; k < 72; k++) { const a = rot + k / 72 * Math.PI * 2, L = k % 12 === 0 ? 0.07 : 0.025; tv.push(Math.cos(a) * sx, Math.sin(a) * sy, -z, Math.cos(a) * (sx - L), Math.sin(a) * (sy - L * 0.68), -z); }
+      const ticks = new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(tv, 3)), lineMat(col, 0.3)); g.add(ticks);
       const lab = textSprite(name.toUpperCase(), { px: 64, weight: 600, h: 0.075, color: layer === 3 ? '#00D4A7' : '#C9D4E3', track: 8, font: D.lang === 'ar' ? 'IBM Plex Sans Arabic' : 'Inter' });
       lab.position.copy(V3(0, 1.05 * 0.68 + 0.08, z)); g.add(lab); g.userData.labels.push(lab);
     });
@@ -283,9 +397,9 @@ export async function createWorld(canvas, D) {
   function buildChart() {
     const g = G('chart'), NV = 120;
     const box = new THREE.BoxGeometry(1, 1, 1);
-    CH.body = new THREE.InstancedMesh(box, new THREE.MeshLambertMaterial({ transparent: true, opacity: 0, emissive: '#0a1320' }), NV);
-    CH.wick = new THREE.InstancedMesh(box, new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }), NV);
-    CH.vol = new THREE.InstancedMesh(box, new THREE.MeshLambertMaterial({ transparent: true, opacity: 0 }), NV);
+    CH.body = new THREE.InstancedMesh(box, new THREE.MeshLambertMaterial({ transparent: true, opacity: 0, emissive: '#0a1320', depthWrite: false }), NV);
+    CH.wick = new THREE.InstancedMesh(box, new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }), NV);
+    CH.vol = new THREE.InstancedMesh(box, new THREE.MeshLambertMaterial({ transparent: true, opacity: 0, depthWrite: false }), NV);
     for (const m of [CH.body, CH.wick, CH.vol]) { m.frustumCulled = false; m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); g.add(m); }
     const c = new THREE.Color(); for (let i = 0; i < NV; i++) { CH.body.setColorAt(i, c.set('#fff')); CH.wick.setColorAt(i, c); CH.vol.setColorAt(i, c); }
     const rib = (color, op, add) => { const r = new Ribbon(NV, basic(color, op, add)); r.mesh.renderOrder = 3; g.add(r.mesh); return r; };
@@ -294,7 +408,7 @@ export async function createWorld(canvas, D) {
     CH.bbFillPos = new Float32Array(NV * 2 * 3); { const gg = new THREE.BufferGeometry(); gg.setAttribute('position', new THREE.BufferAttribute(CH.bbFillPos, 3).setUsage(THREE.DynamicDrawUsage)); const idx = []; for (let i = 0; i < NV - 1; i++) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } gg.setIndex(idx); CH.bbFill = new THREE.Mesh(gg, basic('#9fb3cc', 0.05)); CH.bbFill.frustumCulled = false; g.add(CH.bbFill); }
     CH.osc = rib('#00D4A7', 0.9); CH.osc2 = rib('#E5E7EB', 0.6);
     CH.path = rib('#00D4A7', 0.85); CH.pathG = rib('#00D4A7', 0.14, true);                         // HH-HL-BOS-RETEST connected in space
-    CH.bos = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineDashedMaterial({ color: '#00D4A7', dashSize: 0.03, gapSize: 0.02, transparent: true, opacity: 0 })); g.add(CH.bos);
+    CH.bos = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineDashedMaterial({ color: '#00D4A7', dashSize: 0.03, gapSize: 0.02, transparent: true, opacity: 0, depthWrite: false })); g.add(CH.bos);
     CH.retest = new THREE.Mesh(new THREE.RingGeometry(0.028, 0.034, 40), basic('#00D4A7', 0)); g.add(CH.retest);
     CH.labels = []; for (let k = 0; k < 12; k++) { const s = textSprite('HH', { px: 60, weight: 700, h: 0.045, color: '#00D4A7' }); g.add(s); CH.labels.push(s); }
     CH.labelCache = {};
@@ -348,12 +462,13 @@ export async function createWorld(canvas, D) {
     CH.path.set(showS ? pts : [], 0.005); CH.pathG.set(showS ? pts : [], 0.028); CH.path.mesh.material.opacity = alpha * 0.85; CH.pathG.mesh.material.opacity = alpha * 0.1;
     if (bosOn) { CH.bos.geometry.setFromPoints([V3(cxw(b.from), cyw(b.level), box.z - 0.1), V3(lerp(cxw(b.from), cxw(cut), grow(11)), cyw(b.level), box.z - 0.1)]); CH.bos.computeLineDistances(); CH.bos.material.opacity = alpha * 0.9;
       CH.bosLab.position.copy(V3(cxw(b.i), cyw(b.level) + 0.06, box.z - 0.12)); CH.bosLab.material.opacity = alpha * smooth(0.4, 0.7, grow(11));
+      if (!replay) { const gl = glints[1]; gl.position.copy(V3(cxw(b.i), cyw(C_[b.i].c), box.z - 0.14)); gl.scale.set(0.34, 0.085, 1); gl.material.opacity = alpha * smooth(0.55, 0.9, grow(11)) * (0.6 + 0.4 * Math.sin(o.t * 2.2) ** 2); }
       if (rt && rt.i <= cut) { CH.retest.position.copy(V3(cxw(rt.i), cyw(C_[rt.i].l), box.z - 0.12)); CH.retest.material.opacity = alpha * smooth(0.7, 1, grow(11)); CH.rtLab.position.copy(V3(cxw(rt.i), cyw(C_[rt.i].l) - 0.07, box.z - 0.12)); CH.rtLab.material.opacity = CH.retest.material.opacity; } else CH.retest.material.opacity = CH.rtLab.material.opacity = 0;
-    } else CH.bos.material.opacity = CH.bosLab.material.opacity = CH.retest.material.opacity = CH.rtLab.material.opacity = 0;
+    } else { CH.bos.material.opacity = CH.bosLab.material.opacity = CH.retest.material.opacity = CH.rtLab.material.opacity = 0; glints[1].material.opacity = 0; }
     // price at the edge of knowledge
     const lastC = C_[cut].c.toFixed(2); if (CH.tagVal !== lastC) { CH.tagVal = lastC; const n2 = textSprite(lastC, { px: 60, weight: 600, h: 0.05, color: '#00D4A7', align: 'left' }); CH.tag.material.map.dispose(); CH.tag.material.map = n2.material.map; CH.tag.scale.copy(n2.scale); }
     CH.tag.position.copy(V3(cxw(D.LAST) + 0.05, cyw(C_[cut].c), box.z - 0.05)); CH.tag.material.opacity = crisp;
-    CH.grid.material.uniforms.uAlpha.value = alpha * 0.35;
+    CH.grid.material.uniforms.uAlpha.value = 0;   // no default grid: raw candles in darkness
     // replay: the moments FOXREX decided on, as vertical markers
     CH.markers.forEach((r, k) => { const e = D.REPLAY[k]; if (!replay || !e || e.i > cut) { r.mesh.material.opacity = 0; return; } r.set([[cxw(e.i), box.y1 + 0.02, box.z + 0.01], [cxw(e.i), box.y0 - 0.02, box.z + 0.01]], 0.0025); r.mesh.material.color.set(e.decision === 'BUY' ? '#00D4A7' : '#6b7686'); r.mesh.material.opacity = alpha * (e.decision === 'BUY' ? 0.8 : 0.35); });
   }
@@ -368,34 +483,36 @@ export async function createWorld(canvas, D) {
       const s = textSprite((m.similar ? '✓ ' : '× ') + m.score.toFixed(2), { px: 56, weight: 600, h: 0.05, color: m.similar ? '#00D4A7' : '#6b7686', align: 'left' }); s.position.copy(V3(pts[39][0] + 0.03, pts[39][1], depth)); g.add(s); g.userData.scores.push(s);
     });
   }
-  /* ML: a clean mathematical space — axes, a decision boundary, a walk-forward window travelling through time */
+  /* ML: no default axes or grids — a glass validation plane, cluster halos, and the probability distribution */
   function buildML() {
-    const g = G('ml'); const o = 1;
-    g.userData.axes = [[[-1.3, 0, o], [1.3, 0, o]], [[0, -0.85, o], [0, 0.85, o]], [[0, 0, o - 1.1], [0, 0, o + 1.1]]].map(([a, b]) => { const l = polyline([a, b], lineMat('#C9D4E3', 0)); g.add(l); return l; });
-    g.userData.axl = ['TREND SLOPE', 'MOMENTUM', 'VOLATILITY'].map((t, k) => { const s = textSprite(t, { px: 56, weight: 600, h: 0.05, color: '#AEB8C6', track: 6, align: 'left' }); s.position.copy(V3(...[[1.32, 0.03, o], [0.03, 0.88, o], [0.03, 0.03, o + 1.12]][k])); g.add(s); return s; });
-    const plane = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 1.7), new THREE.ShaderMaterial({ vertexShader: UV_VS, fragmentShader: GRID_FS, uniforms: { uColor: { value: new THREE.Color('#00D4A7') }, uAlpha: { value: 0 }, uCells: { value: 12 } }, transparent: true, depthWrite: false, side: THREE.DoubleSide }));
-    plane.position.copy(V3(-0.02, 0, o)); plane.rotation.y = 0.95; plane.rotation.z = 0.1; g.add(plane); g.userData.plane = plane;
-    const slab = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.5, 1.9), new THREE.MeshBasicMaterial({ color: '#00D4A7', transparent: true, opacity: 0, depthWrite: false })); g.add(slab); g.userData.slab = slab;
-    const slabEdge = new THREE.LineSegments(new THREE.EdgesGeometry(slab.geometry), lineMat('#00D4A7', 0)); slab.add(slabEdge); g.userData.slabEdge = slabEdge;
-    const lab = textSprite('WALK-FORWARD', { px: 56, weight: 600, h: 0.05, color: '#00D4A7', track: 8 }); g.add(lab); g.userData.slabLab = lab;
-    const pr = textSprite('P = 0.72', { px: 90, weight: 600, h: 0.14, color: '#FFFFFF' }); pr.position.copy(V3(0.75, 0.55, o - 0.3)); g.add(pr); g.userData.prob = pr;
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), new THREE.ShaderMaterial({ vertexShader: UV_VS, fragmentShader: GRID_FS, uniforms: { uColor: { value: new THREE.Color('#5d6b80') }, uAlpha: { value: 0 }, uCells: { value: 30 } }, transparent: true, depthWrite: false }));
-    floor.rotation.x = -Math.PI / 2; floor.position.copy(V3(0, -0.95, o)); g.add(floor); g.userData.floor = floor;
+    const g = G('ml'), U = g.userData, halo = glowTexture('rgba(200,255,240,0.9)', 'rgba(0,212,167,0.12)');
+    U.plane = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.2), new THREE.ShaderMaterial({ vertexShader: UV_VS, transparent: true, depthWrite: false, side: THREE.DoubleSide,
+      fragmentShader: `uniform float uAlpha, uTime; varying vec2 vUv; void main(){ vec2 e = min(vUv, 1.0 - vUv); float edge = 1.0 - smoothstep(0.0, 0.006, min(e.x, e.y * 1.6));
+        float scan = smoothstep(0.985, 1.0, fract(vUv.y * 1.0 - uTime * 0.18)) * 0.5; float fill = 0.032 + 0.03 * (1.0 - vUv.y);
+        gl_FragColor = vec4(mix(vec3(0.6, 0.72, 0.84), vec3(0.5, 0.98, 0.86), edge), (fill + edge * 0.8 + scan * 0.25) * uAlpha); }`,
+      uniforms: { uAlpha: { value: 0 }, uTime: { value: 0 } } }));
+    g.add(U.plane);
+    U.planeLab = textSprite('WALK-FORWARD · VALIDATION', { px: 64, weight: 600, h: 0.06, color: '#7FF0D6', track: 8, align: 'left' }); g.add(U.planeLab);
+    U.halos = [0, 1, 2].map(k => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: halo, color: ['#BFF7EA', '#E5E7EB', '#8e99a8'][k], transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 })); g.add(s); return s; });
+    U.base = new Ribbon(2, basic('#C9D4E3', 0)); U.mark = new Ribbon(2, basic('#7FF0D6', 0)); g.add(U.base.mesh, U.mark.mesh);
+    U.l0 = textSprite('0', { px: 56, weight: 500, h: 0.045, color: '#8e99a8' }); U.l1 = textSprite('1', { px: 56, weight: 500, h: 0.045, color: '#8e99a8' }); g.add(U.l0, U.l1);
   }
-  /* reasoning chamber: a dark room, a floor of rings, evidence connected to REX by flowing links */
+  /* reasoning chamber: darkness, a soft pool of light under REX, one precise ring; evidence connects only when
+     reasoning establishes the relationship (the OBSERVATION LINE grows from the evidence to REX's eyes) */
   function buildChamber() {
     const g = G('chamber');
-    const floor = new THREE.Group(); floor.position.copy(V3(0, -0.98, 0.7));
-    for (let r = 1; r <= 7; r++) { const pts = []; for (let s = 0; s <= 128; s++) { const a = s / 128 * Math.PI * 2; pts.push(new THREE.Vector3(Math.cos(a) * r * 0.42, 0, Math.sin(a) * r * 0.42)); } floor.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lineMat('#5d6b80', r === 3 ? 0.35 : 0.14))); }
-    for (let s = 0; s < 36; s++) { const a = s / 36 * Math.PI * 2; floor.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(Math.cos(a) * 0.42, 0, Math.sin(a) * 0.42), new THREE.Vector3(Math.cos(a) * 2.94, 0, Math.sin(a) * 2.94)]), lineMat('#5d6b80', 0.08))); }
-    g.add(floor);
-    for (let s = 0; s < 48; s++) { const a = s / 48 * Math.PI * 2; g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([V3(Math.cos(a) * 3.3, -0.98, 0.7 + Math.sin(a) * 3.3), V3(Math.cos(a) * 3.3, 2.2, 0.7 + Math.sin(a) * 3.3)]), lineMat('#3a4452', 0.22))); }
-    g.userData.links = D.EVIDENCE.map(e => { const m = new THREE.ShaderMaterial({ vertexShader: DASH_VS, fragmentShader: DASH_FS, uniforms: { uColor: { value: new THREE.Color(e.agree ? '#00D4A7' : '#F5B942') }, uAlpha: { value: 0 }, uTime: { value: 0 }, uSpeed: { value: e.agree ? 0.8 : 0.25 }, uFreq: { value: 9 } }, transparent: true, depthWrite: false }); const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(1, 0, 0)]), m); g.add(l); return l; });
+    const pool = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.ShaderMaterial({ vertexShader: UV_VS, transparent: true, depthWrite: false,
+      fragmentShader: `uniform float uAlpha; varying vec2 vUv; void main(){ float r = length(vUv - 0.5) * 2.0; float a = exp(-r * r * 9.0) * 0.5 + exp(-r * r * 2.2) * 0.12; gl_FragColor = vec4(vec3(0.62, 0.7, 0.82), a * uAlpha); }`,
+      uniforms: { uAlpha: { value: 0 } } }));
+    pool.rotation.x = -Math.PI / 2; pool.position.copy(V3(0, -1.3, 2.0)); g.add(pool); g.userData.pool = pool;
+    const ring = []; for (let k = 0; k <= 160; k++) { const a = k / 160 * Math.PI * 2; ring.push([Math.cos(a) * 1.7, -1.3, 2.0 + Math.sin(a) * 1.7]); }
+    g.userData.ring = polyline(ring, lineMat('#9FB3CC', 0)); g.add(g.userData.ring);
+    g.userData.links = D.EVIDENCE.map(e => { const m = new THREE.ShaderMaterial({ vertexShader: DASH_VS, fragmentShader: DASH_FS, uniforms: { uColor: { value: new THREE.Color(e.agree ? '#7FF0D6' : '#F5B942') }, uAlpha: { value: 0 }, uTime: { value: 0 }, uSpeed: { value: e.agree ? 0.8 : 0.25 }, uFreq: { value: 9 } }, transparent: true, depthWrite: false }); const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(1, 0, 0)]), m); g.add(l); return l; });
     const tex = glowTexture(); g.userData.cores = D.EVIDENCE.map(e => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, color: e.agree ? '#BFF7EA' : '#F5B942', transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 })); s.scale.set(0.22, 0.22, 1); g.add(s); return s; });
   }
   /* risk: a portal — the setup must pass through it */
   function buildGate() {
-    const g = G('gate'); const mat = new THREE.MeshBasicMaterial({ color: '#E5E7EB', transparent: true, opacity: 0 }); g.userData.mat = mat;
+    const g = G('gate'); const mat = new THREE.MeshBasicMaterial({ color: '#E5E7EB', transparent: true, opacity: 0, depthWrite: false }); g.userData.mat = mat;
     g.userData.bars = [0, 1, 2, 3].map(() => { const m = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), mat); g.add(m); return m; });
     g.userData.field = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.ShaderMaterial({ vertexShader: UV_VS, fragmentShader: `uniform vec3 uColor; uniform float uAlpha, uTime; varying vec2 vUv; void main(){ float s = step(0.92, fract(vUv.y * 60.0 - uTime * 0.8)); float edge = smoothstep(0.5, 0.0, abs(vUv.x - 0.5)) * 0.3 + s * 0.7; gl_FragColor = vec4(uColor, uAlpha * edge); }`, uniforms: { uColor: { value: new THREE.Color('#FF5C7A') }, uAlpha: { value: 0 }, uTime: { value: 0 } }, transparent: true, depthWrite: false, side: THREE.DoubleSide }));
     g.add(g.userData.field);
@@ -431,7 +548,7 @@ export async function createWorld(canvas, D) {
     enter: { fog: 0.03, exp: 1.0, beam: 0, rim: 0.6, key: 0.3, ap: 0.08 }, technical: { fog: 0.028, exp: 1.08, beam: 0, rim: 0.7, key: 0.45, ap: 0.09 },
     memory: { fog: 0.06, exp: 1.0, beam: 0, rim: 0.6, key: 0.3, ap: 0.12 }, ml: { fog: 0.018, exp: 1.12, beam: 0, rim: 0.5, key: 0.5, ap: 0.07 },
     reason: { fog: 0.045, exp: 1.0, beam: 0.28, rim: 1.2, key: 0.35, ap: 0.14 }, risk: { fog: 0.04, exp: 1.0, beam: 0.1, rim: 0.7, key: 0.3, ap: 0.1 },
-    decision: { fog: 0.03, exp: 1.1, beam: 0.75, rim: 0.5, key: 0.85, ap: 0.16 }, replay: { fog: 0.025, exp: 1.06, beam: 0, rim: 0.6, key: 0.45, ap: 0.08 },
+    decision: { fog: 0.05, exp: 1.05, beam: 0.22, rim: 0.4, key: 0.3, ap: 0.16 }, replay: { fog: 0.025, exp: 1.06, beam: 0, rim: 0.6, key: 0.45, ap: 0.08 },
     ask: { fog: 0.04, exp: 1.02, beam: 0.3, rim: 1.1, key: 0.55, ap: 0.12 }, live: { fog: 0.025, exp: 1.06, beam: 0, rim: 0.5, key: 0.4, ap: 0.08 },
     system: { fog: 0.03, exp: 1.04, beam: 0.25, rim: 0.7, key: 0.45, ap: 0.08 }
   };
@@ -441,10 +558,13 @@ export async function createWorld(canvas, D) {
   let W = 1, H = 1, dpr = 1;
   const eyeTmp = new THREE.Vector3();
   function resize(w, h, pr) { W = w; H = h; dpr = pr; renderer.setPixelRatio(pr); renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); ptsMat.uniforms.uPx.value = 6.2 * pr; dustMat.uniforms.uPx.value = 6.2 * pr;
-    for (const k of Object.keys(built)) { if (['streams', 'enter', 'memory'].includes(k)) { world.remove(groups[k]); delete groups[k]; delete built[k]; } } }
+    for (const k of Object.keys(built)) { if (['enter', 'memory'].includes(k)) { world.remove(groups[k]); delete groups[k]; delete built[k]; } } }
 
+  let lastAttention = null;
   function frame(s) {
-    const { t, id, nid, mu, lp, cam, rexS } = s, L = look(id, nid, mu), near = x => id === x || nid === x;
+    const { t, id, nid, mu, lp, cam, rexS } = s, near = x => id === x || nid === x;
+    let L = look(id, nid, mu);
+    if (s.inspect) L = s.inspect === 'silhouette' ? { fog: 0.03, exp: 1, beam: 0, rim: 2.6, key: -0.75, ap: 0.12 } : { fog: 0.03, exp: 1.05, beam: 0.3, rim: 1, key: 0.6, ap: 0.12 };
     // camera: orbit about the pivot (engine yaw), then dolly
     orbit.rotation.y = cam.yaw; world.position.set(-cam.x, 0, cam.pivot);
     camera.position.set(0, cam.y, cam.pivot - cam.z); camera.lookAt(0, cam.y, -1e3); camera.position.x = 0;
@@ -453,11 +573,11 @@ export async function createWorld(canvas, D) {
     ptsMat.uniforms.uFocus.value = s.focus; key.intensity = 0.4 + L.key; ambient.intensity = 0.25 + L.key * 0.4;
     // REX
     rex.position.set(rexS.x, rexS.y, -rexS.z); rex.scale.setScalar(rexS.s); rex.rotation.set(rexS.pitch, rexS.yaw, 0, 'XYZ');
-    rexU.uOpacity.value = rexS.mesh; rexU.uDissolve.value = rexS.dissolve; rexU.uTime.value = t; rexU.uFog.value = L.fog; rexU.uRim.value = L.rim * (rexS.rimBoost || 1); rexU.uKey.value = L.key;
-    rexU.uFill.value = s.fill || 0; rexMesh.visible = rexS.mesh > 0.01;
+    rexU.uOpacity.value = rexS.mesh; rexU.uDissolve.value = rexS.dissolve; rexU.uTime.value = t; rexU.uFog.value = L.fog; rexU.uRim.value = L.rim * (rexS.rimBoost || 1);
+    rexU.uKey.value = 0.55 + L.key * 0.6; rexU.uEyeGlow.value = rexS.eye; rexU.uReveal.value = s.reveal ?? 12; rexU.uBuild.value = s.build || 0; rexMesh.visible = rexS.mesh > 0.01;
     rexEdges.material.opacity = rexS.edge * (1 - rexS.dissolve); rexEdges.visible = rexEdges.material.opacity > 0.01;
     const open = s.eyeOpen, focusN = s.eyeFocus;
-    eyes.forEach(e => { e.m.scale.y = e.baseY * Math.max(0.06, open * (1 - focusN * 0.32)); e.glow.material.opacity = rexS.eye * 0.5; e.g.visible = rexS.eye > 0.01; });
+    eyes.forEach(e => { e.m.scale.y = e.baseY * Math.max(0.06, open * (0.86 - focusN * 0.26)); e.glow.material.opacity = rexS.eye * 0.16; e.g.visible = rexS.eye > 0.01; });
     eyeU.uAlpha.value = rexS.eye; eyeU.uTime.value = t; eyeU.uGaze.value.set(s.gaze.x, s.gaze.y); eyeU.uFocus.value = focusN;
     // beam from above onto REX
     beamU.uInt.value = L.beam * (rexS.mesh > 0.05 || id === 'observe' ? 1 : 0.3) * 0.35; beam.visible = beamU.uInt.value > 0.004;
@@ -469,11 +589,23 @@ export async function createWorld(canvas, D) {
     // opening sequence: isolated numbers appear one at a time in the dark, at different depths
     const intro = s.intro, openOn = id === 'opening' || (id === 'noise' && lp < 0.2);
     openSprites.forEach((sp, k) => { const t0 = k < 3 ? 0.7 + k * 0.95 : 8.0 + (k - 3) * 0.55, a = openOn ? smooth(t0, t0 + 0.6, intro) * (k < 3 ? 1 - smooth(3.4, 4.1, intro) : 1) : 0; sp.material.opacity = a * (1 - mu * (id === 'opening' ? 0 : 1)) * (id === 'noise' ? 1 - lp * 5 : 1); sp.visible = sp.material.opacity > 0.005; });
+    // market primitives: chaos arrives after the isolated numbers, fills the noise, then dims except the signal (observe)
+    { const fa = s.inspect ? 0 : id === 'opening' ? smooth(8.4, 11.5, intro) : id === 'noise' ? 1 - mu : id === 'observe' ? (1 - smooth(0.7, 0.95, lp)) * (1 - mu) : 0;
+      const fin = nid === 'noise' && id === 'opening' ? Math.max(fa, mu) : fa;
+      const sel = id === 'observe' && !s.inspect ? smooth(0.08, 0.32, lp) * (1 - mu) : 0;
+      updatePrims(s, fin, id === 'observe' ? 3.8 : 6.5, id === 'observe' ? L.ap * 1.4 : L.ap * 1.9, sel);
+      brackets.forEach((g, k) => { const sg = signals[k]; if (!sg || sel < 0.01) { g.visible = false; return; } bracket(g, sg.x, sg.y, sg.z, sg.w * 1.06, sg.h * 1.12, sel * Math.min(1, sg.a) * 0.9); });
+      const cur = signals.length ? signals[Math.floor(s.t / 3.2) % signals.length] : null;
+      if (cur && sel > 0.02 && rexS.eye > 0.05) { rex.updateMatrixWorld(); const e = eyes[1].g.localToWorld(_v.set(eyes[1].len * 0.5, 0, 0)).clone(), wp = world.worldToLocal(e);
+        lightPath.geometry.setFromPoints([wp, new THREE.Vector3(cur.x - cur.w / 2, cur.y, -cur.z)]); lightPath.material.opacity = sel * 0.35 * Math.min(1, cur.a); lightPath.visible = true;
+        glints[0].position.set(cur.x - cur.w * 0.46, cur.y + cur.h * 0.2, -cur.z + 0.01); glints[0].material.opacity = sel * (0.55 + 0.45 * Math.sin(s.t * 2.4) ** 2) * Math.min(1, cur.a); glints[0].scale.set(cur.w * 0.5, cur.w * 0.125, 1);
+        s.attention = { x: cur.x, y: cur.y, z: cur.z }; }
+      else { lightPath.visible = false; glints[0].material.opacity = 0; } }
     // market fragments ride their particles (noise / observe)
     const fragOn = id === 'noise' || id === 'observe' || (id === 'opening' && intro > 9);
     frag.forEach((sp, k) => { const i = s.fragIdx[k]; if (!fragOn || i == null) { sp.visible = false; return; } sp.visible = true; sp.position.set(P.pos[i * 3] + 0.05, P.pos[i * 3 + 1], P.pos[i * 3 + 2]);
-      const imp = k === 3 || k === 0 || k === 11 || k === 16; let a = P.alpha[i] * 1.6; if (id === 'observe') a = imp ? 0.95 : a * (1 - smooth(0.05, 0.5, lp) * 0.92); if (id === 'opening') a *= smooth(9, 12, intro) * 0.6;
-      sp.material.opacity = clamp(a) * (1 - mu); sp.material.color.set(imp && id !== 'opening' ? '#00D4A7' : '#E5E7EB'); });
+      const imp = k === 3 || k === 0 || k === 11 || k === 16; let a = P.alpha[i] * (id === 'noise' ? 0.6 : 1.6); if (id === 'observe') a = imp ? 0.95 : a * (1 - smooth(0.05, 0.5, lp) * 0.92); if (id === 'opening') a *= smooth(9, 12, intro) * 0.6;
+      sp.material.opacity = clamp(a) * (1 - mu); sp.visible = sp.material.opacity > 0.006; sp.material.color.set(imp && id !== 'opening' ? '#00D4A7' : '#E5E7EB'); });
     // scene objects — asleep unless their scene (or the next) is on screen
     for (const [gid, ids] of Object.entries({ streams: ['streams'], enter: ['enter'], chart: ['technical', 'replay', 'memory'], memory: ['memory'], ml: ['ml'], chamber: ['reason', 'ask'], gate: ['risk'], decision: ['decision'], live: ['live'], system: ['system'] })) {
       const on = ids.some(near); if (groups[gid]) groups[gid].visible = on;
@@ -481,32 +613,40 @@ export async function createWorld(canvas, D) {
       if (on && groups[gid]) groups[gid].visible = true;
     }
     const fadeFor = x => (id === x ? 1 - mu : nid === x ? mu : 0);
-    if (groups.streams?.visible) { const a = fadeFor('streams'); groups.streams.children.forEach(c => { if (c.isLine) c.material.opacity = 0.14 * a; }); groups.streams.userData.labels.forEach(l => { l.material.opacity = 0.7 * a * smooth(0.05, 0.3, id === 'streams' ? lp : 0); }); }
-    if (groups.enter?.visible) { const a = fadeFor('enter'); groups.enter.children.forEach(c => { if (c.isLine) c.material.opacity = 0.32 * a; }); groups.enter.userData.labels.forEach(l => { l.material.opacity = 0.85 * a; }); }
+    if (groups.streams?.visible) updateStreams(s, fadeFor('streams'));
+    if (groups.enter?.visible) { const a = fadeFor('enter'); groups.enter.children.forEach(c => { if (c.isLineSegments) c.material.opacity = 0.22 * a; else if (c.isLine) c.material.opacity = 0.34 * a; }); groups.enter.userData.labels.forEach(l => { l.material.opacity = 0.85 * a; }); }
+    if (!groups.chart?.visible) glints[1].material.opacity = 0;
     if (groups.chart?.visible) {
       const rep = id === 'replay' || (nid === 'replay' && mu > 0.5), cid = rep ? 'replay' : 'technical';
       const a = id === 'memory' ? (1 - smooth(0, 0.3, lp)) * 0.6 : fadeFor(cid);
-      updateChart({ box: D.chartBox(cid), lo: D.LAST - D.NV() + 1, cut: rep ? D.replayIndex() : D.LAST, step: id === 'technical' ? s.step : 11, stepU: s.stepU, crisp: (rep ? s.crispReplay : id === 'memory' ? a : s.crisp) * a, alpha: a, replay: rep });
+      updateChart({ t, box: D.chartBox(cid), lo: D.LAST - D.NV() + 1, cut: rep ? D.replayIndex() : D.LAST, step: id === 'technical' ? s.step : 11, stepU: s.stepU, crisp: (rep ? s.crispReplay : id === 'memory' ? a : s.crisp) * a, alpha: a, replay: rep });
     }
     if (groups.memory?.visible) { const a = fadeFor('memory'), u = id === 'memory' ? lp : 0; groups.memory.userData.lines.forEach((l, w) => { const m = D.memShapes[w], on = m.similar && u > 0.35, keep = m.similar ? 1 : 1 - smooth(0.45, 0.8, u); l.material.opacity = (on ? 0.75 : 0.18) * keep * a; l.material.color.set(on ? '#00D4A7' : '#AEB8C6'); groups.memory.userData.scores[w].material.opacity = (on ? 0.9 : 0.3) * keep * a * smooth(0.3, 0.4, u); }); }
-    if (groups.ml?.visible) { const a = fadeFor('ml'), u = id === 'ml' ? lp : 0, U = groups.ml.userData;
-      U.axes.forEach(l => { l.material.opacity = 0.3 * smooth(0.12, 0.25, u) * a; }); U.axl.forEach(l => { l.material.opacity = 0.7 * smooth(0.12, 0.25, u) * a; });
-      U.plane.material.uniforms.uAlpha.value = 0.55 * smooth(0.3, 0.45, u) * a; U.floor.material.uniforms.uAlpha.value = 0.4 * a;
-      const wf = smooth(0.5, 0.78, u), wa = smooth(0.48, 0.52, u) * (1 - smooth(0.8, 0.86, u)) * a; U.slab.position.copy(V3(lerp(-1.1, 1.1, wf), 0, 1)); U.slab.material.opacity = 0.06 * wa; U.slabEdge.material.opacity = 0.5 * wa;
-      U.slabLab.position.copy(V3(lerp(-1.1, 1.1, wf), 1.0, 1)); U.slabLab.material.opacity = wa; U.prob.material.opacity = 0; }
-    if (groups.chamber?.visible) { const a = Math.max(fadeFor('reason'), fadeFor('ask')), U = groups.chamber.userData, nodes = s.nodes, cx = s.linkTarget;
-      groups.chamber.children.forEach(c => { if (c.isLine && !U.links.includes(c)) c.material.opacity = (c.material.userData.base ??= c.material.opacity) * a; if (c.isGroup) c.children.forEach(cc => { cc.material.opacity = (cc.material.userData.base ??= cc.material.opacity) * a; }); });
+    if (groups.ml?.visible) { const a = fadeFor('ml'), u = id === 'ml' ? lp : 0, U = groups.ml.userData, MZ = 2.4, A_ = s.A;
+      const wz = lerp(MZ + 1.5, -0.5, smooth(0.62, 0.8, u)), wa = smooth(0.6, 0.64, u) * (1 - smooth(0.78, 0.82, u)) * a;
+      U.plane.position.set(0, 0, -wz); U.plane.material.uniforms.uAlpha.value = wa; U.plane.material.uniforms.uTime.value = t;
+      U.planeLab.position.set(-1.78, 1.2, -wz); U.planeLab.material.opacity = wa * 0.9;
+      const ha = smooth(0.52, 0.6, u) * (1 - smooth(0.8, 0.86, u)) * a;
+      [[0.8, 0.34, -0.5], [-0.8, -0.28, 0.2], [0.1, -0.05, 0.9]].forEach((c, k) => { const h = U.halos[k]; h.position.set(c[0] * (s.mobile ? 0.62 : 1), c[1], -(MZ + c[2])); h.scale.set(0.9, 0.9, 1); h.material.opacity = ha * [0.8, 0.4, 0.2][k]; });
+      const pa = smooth(0.8, 0.86, u) * a, X = A_ * 0.72;
+      U.base.set([[-X, -0.5, 0.9], [X, -0.5, 0.9]], 0.003); U.base.mesh.material.opacity = pa * 0.5;
+      const mx = lerp(-X, X, 0.72); U.mark.set([[mx, -0.5, 0.9], [mx, 0.2, 0.9]], 0.004); U.mark.mesh.material.opacity = pa * 0.9;
+      U.l0.position.copy(V3(-X, -0.56, 0.9)); U.l1.position.copy(V3(X, -0.56, 0.9)); U.l0.material.opacity = U.l1.material.opacity = pa * 0.8; }
+    if (groups.chamber?.visible) { const a = Math.max(fadeFor('reason'), fadeFor('ask')), U = groups.chamber.userData, nodes = s.nodes, cx = s.linkTarget, LK = s.links;
+      U.pool.material.uniforms.uAlpha.value = a * (LK ? 1 : 0.5); U.ring.material.opacity = a * 0.22;
       D.EVIDENCE.forEach((e, j) => { const n = nodes[j], l = U.links[j], f = s.focusOf(e.id), flick = !e.agree && s.waitHold ? 0.35 + 0.65 * Math.abs(Math.sin(t * 1.3 + j * 2.1)) : 1;
-        l.geometry.setFromPoints([V3(n.x, n.y, n.z), V3(cx.x, cx.y, cx.z)]); l.computeLineDistances(); l.material.uniforms.uAlpha.value = (e.agree ? 0.55 : 0.6) * a * f * flick * (s.waitHold && !e.agree ? 1 : 1); l.material.uniforms.uTime.value = t * (s.waitHold ? 0.35 : 1);
-        U.cores[j].position.copy(V3(n.x, n.y, n.z)); U.cores[j].material.opacity = (0.35 + e.strength * 0.4) * a * f; }); }
-    if (groups.gate?.visible) { const a = fadeFor('risk'), u = id === 'risk' ? lp : 0, U = groups.gate.userData, g = s.gate, gw = s.gateW, fail = u < 0.55, col = u > 0.3 && u < 0.55 ? '#FF5C7A' : u >= 0.72 ? '#00D4A7' : '#C9D4E3';
+        const grow = LK ? LK[j].grow : 1, w = LK ? LK[j].w : 1;
+        l.geometry.setFromPoints([V3(n.x, n.y, n.z), V3(lerp(n.x, cx.x, grow), lerp(n.y, cx.y, grow), lerp(n.z, cx.z, grow))]); l.computeLineDistances();
+        l.material.uniforms.uAlpha.value = (e.agree ? 0.55 : 0.6) * a * f * flick * Math.min(1.3, w) * (grow > 0.01 ? 1 : 0); l.material.uniforms.uTime.value = t * (s.waitHold ? 0.35 : 1);
+        U.cores[j].position.copy(V3(n.x, n.y, n.z)); U.cores[j].material.opacity = (0.35 + e.strength * 0.4) * a * f * (0.5 + 0.5 * grow) * Math.min(1.2, w); }); }
+    if (groups.gate?.visible) { const a = id === 'risk' ? 1 - mu : nid === 'risk' ? smooth(0.55, 1, mu) : 0, u = id === 'risk' ? lp : 0, U = groups.gate.userData, g = s.gate, gw = s.gateW, fail = u < 0.55, col = u > 0.3 && u < 0.55 ? '#FF5C7A' : u >= 0.72 ? '#00D4A7' : '#C9D4E3';
       const th = 0.012; [[0, g.h, gw * 2 + th, th], [0, -g.h, gw * 2 + th, th], [-gw, 0, th, g.h * 2], [gw, 0, th, g.h * 2]].forEach(([x, y, w, h], k) => { U.bars[k].position.copy(V3(x, g.y + y, 1)); U.bars[k].scale.set(w, h, 0.03); });
       U.mat.color.set(col); U.mat.opacity = 0.9 * a; U.field.position.copy(V3(0, g.y, 1)); U.field.scale.set(gw * 2, g.h * 2, 1); U.field.material.uniforms.uAlpha.value = (fail && u > 0.3 ? 0.35 : 0.08) * a; U.field.material.uniforms.uColor.value.set(fail ? '#FF5C7A' : '#00D4A7'); U.field.material.uniforms.uTime.value = t;
-      const vy = s.narrow ? g.y + g.h + 0.16 : -0.8; U.verdict.position.copy(V3(0, vy, 1)); U.pass.position.copy(V3(0, vy, 1)); U.verdict.material.opacity = a * smooth(0.3, 0.38, u) * (1 - smooth(0.52, 0.56, u)); U.pass.material.opacity = a * smooth(0.72, 0.8, u); }
+      const vy = s.narrow ? g.y + g.h + 0.16 : g.y - g.h - 0.16; U.verdict.position.copy(V3(0, vy, 1)); U.pass.position.copy(V3(0, vy, 1)); U.verdict.material.opacity = a * smooth(0.3, 0.38, u) * (1 - smooth(0.52, 0.56, u)); U.pass.material.opacity = a * smooth(0.72, 0.8, u); }
     if (groups.decision?.visible) { const a = fadeFor('decision'), u = id === 'decision' ? lp : 0, U = groups.decision.userData, X = s.A * 1.05, lv = smooth(0.25, 0.55, u) * a;
       U.h.set([[-X, s.decY(s.DEC.entry), 0.3], [X, s.decY(s.DEC.entry), 0.3]], 0.0035); U.h.mesh.material.opacity = 0.35 * a;
-      U.t.set([[-X, s.decY(s.DEC.target), 0.3], [X, s.decY(s.DEC.target), 0.3]], 0.002); U.t.mesh.material.opacity = 0.35 * lv; U.i.set([[-X, s.decY(s.DEC.invalidation), 0.3], [X, s.decY(s.DEC.invalidation), 0.3]], 0.002); U.i.mesh.material.opacity = 0.35 * lv;
-      U.tl.position.copy(V3(X * 0.95, s.decY(s.DEC.target) + 0.04, 0.3)); U.tl.material.opacity = 0.8 * lv; U.il.position.copy(V3(X * 0.95, s.decY(s.DEC.invalidation) + 0.04, 0.3)); U.il.material.opacity = 0.8 * lv;
+      U.t.set([[-X, s.decY(s.DEC.target), 0.3], [X, s.decY(s.DEC.target), 0.3]], 0.002); U.t.mesh.material.opacity = 0.16 * lv; U.i.set([[-X, s.decY(s.DEC.invalidation), 0.3], [X, s.decY(s.DEC.invalidation), 0.3]], 0.002); U.i.mesh.material.opacity = 0.16 * lv;
+      U.tl.position.copy(V3(X * 0.95, s.decY(s.DEC.target) + 0.04, 0.3)); U.tl.material.opacity = 0; U.il.position.copy(V3(X * 0.95, s.decY(s.DEC.invalidation) + 0.04, 0.3)); U.il.material.opacity = 0;
       U.pt.position.copy(V3(s.A * (s.mobile ? 0.5 : 0.62), s.decY(s.DEC.entry), 0.3)); U.pt.material.opacity = 0.7 * a; }
     if (groups.live?.visible) { const a = fadeFor('live'), U = groups.live.userData, mk = s.mk, foc = s.liveFocus;
       U.cores.forEach((c, j) => { c.position.copy(V3(mk[j].x, mk[j].y, mk[j].z)); c.material.opacity = a * (foc < 0 ? 0.55 : foc === j ? 0.9 : 0.25); });
@@ -517,8 +657,8 @@ export async function createWorld(canvas, D) {
       U.path.geometry.setFromPoints(new THREE.CatmullRomCurve3(st.map(p => V3(p.x, p.y, p.z))).getPoints(160)); U.path.material.opacity = 0.35 * a * smooth(0, 0.3, id === 'system' ? lp : 0);
       U.rings.forEach((r, k) => { const p = st[k]; r.position.copy(V3(p.x, p.y, p.z)); r.material.opacity = 0.6 * a; }); }
     // evidence light on REX in the chamber: teal agreement from the left, amber conflict from the right
-    rimL.intensity = 0;
+    rimL.intensity = 0; lastAttention = s.attention || null;
     renderer.render(scene, camera);
   }
-  return { renderer, resize, setParticles, frame, sampleRexSurface, get dpr() { return dpr; } };
+  return { renderer, resize, setParticles, frame, sampleRexSurface, signals, attention: () => lastAttention, get dpr() { return dpr; } };
 }
