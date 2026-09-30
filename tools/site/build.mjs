@@ -210,6 +210,8 @@ function goldFocus(b, withCta = true) {
     <div class="gold__sym"><span class="fx-sym">XAUUSD</span><span class="gold__px" data-gold="price">—</span></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="fx-badge" data-gold="bias">${t('Bias: not published', 'الاتجاه: لم يُنشر بعد')}</span><span class="fx-badge" data-gold="state">${t('Market state: unavailable', 'حالة السوق: غير متاحة')}</span></div>
     <p class="muted" data-gold="summary">${t('Today’s gold analysis has not been published yet. Levels and scenarios appear here once the FOXREX desk publishes them — we never display estimated or placeholder prices.', 'لم يُنشر تحليل الذهب لهذا اليوم بعد. تظهر المستويات والسيناريوهات هنا فور نشرها من مكتب FOXREX، ولا نعرض أسعارًا تقديرية أو وهمية أبدًا.')}</p>
+    <p class="muted" data-gold="invalidation" hidden></p>
+    <div data-gold="more" hidden></div>
     <p class="fx-card__meta"><span>${t('Last analysis', 'آخر تحليل')}:</span> <time data-gold="updated">—</time></p>
     ${withCta ? more(`${b}gold/`, 'Full Gold Analysis', 'تحليل الذهب الكامل') : ''}
   </div>
@@ -242,6 +244,7 @@ function signalsBlock(b, full) {
     <p class="muted" style="margin-top:14px;font-size:17px">${t('Each FOXREX Signal is a documented idea: instrument, direction, entry zone, stop-loss, targets, validity and the reasoning behind it. The stop-loss is defined before the entry, every time.', 'كل إشارة من FOXREX فكرة موثقة: الأداة والاتجاه ومنطقة الدخول ووقف الخسارة والأهداف ومدة الصلاحية، مع المنطق الذي تقوم عليه. ووقف الخسارة يُحدَّد قبل الدخول، في كل مرة.')}</p>
     ${riskBox()}
     <div class="hero__ctas"><a class="fx-btn fx-btn--primary" href="${SITE.social.telegram.url}" target="_blank" rel="noopener">${I.telegram} ${t('Get signals on Telegram', 'تابع الإشارات على Telegram')}</a>${full ? '' : `<a class="fx-btn fx-btn--ghost" href="${b}signals/">${t('How signals work', 'كيف تعمل الإشارات')}</a>`}</div>
+    ${full ? `<div style="margin-top:32px"><h3 style="font-size:16px;margin-bottom:12px">${t('Latest published signals', 'أحدث الإشارات المنشورة')}</h3><div data-signal-list data-limit="6">${empty(t('No signals published on the website yet', 'لا توجد إشارات منشورة على الموقع بعد'), t('Signals are posted first on Telegram. Published signals appear here with their entry, stop-loss, targets and risk.', 'تُنشر الإشارات أولًا على Telegram، وتظهر هنا الإشارات المنشورة بالدخول ووقف الخسارة والأهداف والمخاطرة.'))}</div></div>` : ''}
   </div>
   <div class="reveal">
     <ol class="steps">
@@ -422,7 +425,7 @@ PAGES.push({ id: 'news', path: 'news', title: 'Market News', titleAr: 'أخبا�
   ${newsList()}
 </div></section>` });
 
-PAGES.push({ id: 'learn', path: 'learn', title: 'Learn with REX', titleAr: 'تعلّم مع REX', description: 'REX Explains: short trading lessons on CPI, gold and yields, breakouts, market structure and risk/reward.', descriptionAr: 'REX يشرح: دروس تداول قصيرة عن CPI، والذهب والعوائد، والاختراق، وبنية السوق، ونسبة المخاطرة إلى العائد.',
+PAGES.push({ id: 'learn', path: 'learn', title: 'Learn with REX', titleAr: 'تعلّم مع REX', description: 'REX Explains: short trading lessons on CPI, gold and yields, breakouts, market structure and risk/reward.', descriptionAr: 'REX يشرح: دروس تداول قصيرة عن CPI، والذهب والعوائد، والاختراق، وبنية السوق، ونسبة المخاطرة إلى العائد.', scripts: ['scripts/public/content.js'],
   body: (r) => `${pageHero('REX', t('Learn with REX', 'تعلّم مع REX'), t('Clear explanations of the ideas behind market moves. Educational content only — not investment advice.', 'شرح واضح للأفكار التي تقف خلف حركة الأسواق. محتوى تعليمي فقط، وليس نصيحة استثمارية.'))}
 <section class="section section--tight"><div class="wrap rex">
   <aside class="rex__id">
@@ -431,6 +434,7 @@ PAGES.push({ id: 'learn', path: 'learn', title: 'Learn with REX', titleAr: 'تع
     <div class="rex__types"><span class="fx-badge fx-badge--primary">REX EXPLAINS</span><span class="fx-badge">REX NOTE</span><span class="fx-badge fx-badge--ai">ASK REX</span></div>
   </aside>
   <div>
+  <div data-learn-list style="margin-bottom:48px"></div>
   ${REX.map(x => `<article class="article" id="${x.id}"><span class="fx-kicker">${esc(x.type)}</span><h2>${tp(x.title)}</h2>
     ${x.body[AR() ? 1 : 0].map(p => `<p>${AR() ? arText(p) : esc(p)}</p>`).join('')}
     <p class="takeaway"><strong>REX:</strong> ${tp(x.takeaway)}</p></article>`).join('\n  ')}

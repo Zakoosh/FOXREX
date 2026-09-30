@@ -1,9 +1,7 @@
 {
   "$schema": "./content.schema.json",
+  "schemaVersion": 2,
   "updated": null,
-  "editorial": [],
-  "gold": null,
-  "analysis": [],
-  "news": [],
-  "signals": { "results": [] }
+  "publication": null,
+  "items": []
 }

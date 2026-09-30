@@ -5,12 +5,15 @@ FOXREX has two surfaces served from this repository by GitHub Pages (`main` / ro
 - **Public website** — English at `https://foxrex.co/`, Arabic edition at `https://foxrex.co/ar/` (every page has an Arabic equivalent: `/ar/markets/`, `/ar/gold/`, …). Each edition is real HTML with its own `lang`/`dir`, canonical, `hreflang`, titles and Open Graph; the Arabic edition is composed for Arabic (`styles/ar.css`), not toggled.
 - **FOXREX Studio** — `https://foxrex.co/studio/`: the admin content operating system (editable AI-directed planning, manual prompts/import and reviewed image generation). Paid APIs and automatic publishing remain disabled. The old `/foxrex-studio.html` URL redirects here; browser data is kept because the origin is unchanged.
 
+**Publishing:** Studio → Content → Editorial is the CMS. Content moves IDEA → DRAFT → REVIEW → APPROVED → PUBLISHED through the local worker's publishing engine, which validates, commits `data/content.json` and pushes (dry-run by default). See [docs/PUBLISHING.md](docs/PUBLISHING.md).
+
 Read [SECURITY.md](SECURITY.md) for the admin boundary: the Studio is static and not access-controlled at the host, ships no secrets, and runs every privileged operation through the local worker.
 
 ## Project layout
 
 - `index.html`, `markets/`, `gold/`, `analysis/`, `news/`, `learn/`, `signals/`, `about/`, `contact/`, `privacy/`, `terms/`, `risk-disclosure/`, `robots.txt`, `sitemap.xml`, `site.webmanifest` — **generated** public site. Edit `tools/site/content.mjs` (copy) or `tools/site/build.mjs` (layout and both editions), then run `node tools/site/build.mjs`. `node tools/site/build.mjs --check` fails if committed output is stale.
-- `data/content.json` — published content feed (editorial slots, Gold Focus, analysis, news, signal results) rendered at runtime by `scripts/public/content.js`; format in `data/content.schema.json`. Empty sections show explicit empty states. Never add estimated prices or unverified performance.
+- `data/content.json` — the public content feed (schema v2, `items[]`), written **only** by the publishing engine from approved Studio records and rendered at runtime by `scripts/public/content.js` per language. Strict schema: `data/content.schema.json`; checker: `node tools/site/check-feed.mjs`. Never edit it by hand, never add estimated prices, unverified performance or test fixtures.
+- `studio/cms-model.js` — the single editorial rule set (types, destinations, lifecycle, validation, feed mapping) shared by Studio and the worker. `studio/cms-studio.js` — library, editor, preview, publication center. `worker/src/cms.js`, `publisher.js`, `cms-routes.js` — CMS store and publishing engine.
 - `scripts/public/market.js` — market ticker. No data is bundled; a verified feed is connected by registering an adapter (documented in the file). Until then the ticker says "Market feed not connected".
 - `styles/tokens.css` — FOXREX design tokens (colours, spacing, and separate EN/AR typography scales `--en-*` / `--ar-*`), shared by the site and Studio. `fonts.css` self-hosts Inter and IBM Plex Sans Arabic (`assets/fonts/`, OFL). `base.css`, `components.css`, `public.css`, `ar.css`, `studio.css` build on them.
 - `docs/ARABIC-BRAND-TYPOGRAPHY.md` — the canonical Arabic typography system for the website, social formats, Telegram, reports and Studio.

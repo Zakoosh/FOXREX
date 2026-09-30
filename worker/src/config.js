@@ -40,5 +40,17 @@ export const CONFIG = Object.freeze({
   imageModels: (env.HF_IMAGE_MODELS || "nano_banana_2,gpt_image_2_5").split(",").map(s => s.trim()).filter(Boolean),
   enableVideo: env.ENABLE_VIDEO === "true",
   estimateCost: env.ESTIMATE_COST !== "false",
-  cliTimeoutMs: +(env.CLI_TIMEOUT_MS || 12 * 60 * 1000)
+  cliTimeoutMs: +(env.CLI_TIMEOUT_MS || 12 * 60 * 1000),
+  // Publishing engine. Default is DRY RUN: validate + preview only, never commit or push.
+  publish: {
+    mode: env.PUBLISH_MODE === 'live' ? 'live' : 'dry-run',
+    repoDir: path.resolve(workerDir, env.PUBLISH_REPO_DIR || '..'),
+    branch: env.PUBLISH_BRANCH || 'main',
+    remote: env.PUBLISH_REMOTE || 'origin',
+    checks: (env.PUBLISH_CHECKS || 'node tools/site/check-feed.mjs {feed};node --test worker/test/site.test.mjs').split(';').map(s => s.trim()).filter(Boolean),
+    publicFeedUrl: env.PUBLIC_FEED_URL || 'https://foxrex.co/data/content.json',
+    publicOrigin: env.PUBLIC_ORIGIN || 'https://foxrex.co'
+  },
+  // Automatic execution of SCHEDULED items. Off unless the worker runs on an always-on host.
+  schedulerEnabled: env.SCHEDULER_ENABLED === 'true'
 });
