@@ -56,6 +56,9 @@
       return u ? '<a href="' + esc(u) + '" rel="noopener nofollow" target="_blank">' + L(x.name) + '</a>' : L(x.name);
     }).join(' · ') + '</p>';
   }
+  /* expiresAt: time-sensitive commentary stops being shown as current once it expires */
+  function expired(e) { return !!(e && e.expiresAt && Date.parse(e.expiresAt) <= Date.now()); }
+  function expTag(e) { return expired(e) ? '<span class="fx-badge" data-expired>' + T('Expired', 'منتهي الصلاحية') + '</span>' : ''; }
   function risk(e) { return has(e.riskDisclosure) ? '<p class="fx-risk">' + L(e.riskDisclosure) + '</p>' : ''; }
   function more(e, extra) {
     var inner = (has(e.body) ? paras(e.body) : '') + (extra || '') + sources(e) + risk(e);
@@ -76,7 +79,7 @@
     var today = istDate(Date.now());
     document.querySelectorAll('[data-slot]').forEach(function (card) {
       var slot = card.getAttribute('data-slot');
-      var it = items.filter(function (x) { return x.slot === slot && istDate(x.publishedAt) === today; })[0];
+      var it = items.filter(function (x) { return x.slot === slot && istDate(x.publishedAt) === today && !expired(x); })[0];
       if (!it) return;
       card.querySelector('[data-slot-title]').innerHTML = L(it.title);
       var st = card.querySelector('[data-slot-status]');
@@ -94,6 +97,8 @@
     if (typeof g.price === 'number' && has(g.priceSource) && g.priceTime) {
       set('price', '<span class="num">' + esc(g.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })) + '</span>');
       var px = box.querySelector('[data-gold="price"]'); if (px) { px.style.color = 'var(--foxrex-text)'; px.title = g.priceSource + ' · ' + new Date(g.priceTime).toISOString(); }
+      /* The analysis price is the snapshot recorded at publication — never the live quote (that is in the ticker). */
+      set('pricenote', T('Price at time of analysis', 'السعر وقت التحليل') + ' · ' + L(g.priceSource) + ' · ' + time(g.priceTime));
     }
     if (BIAS[g.bias]) set('bias', T('Bias: ', 'الاتجاه: ') + bias(g.bias));
     if (has(g.marketState)) set('state', L(g.marketState));
@@ -108,7 +113,7 @@
 
   function analysisCard(a) {
     return '<article class="fx-card">' + img(a) +
-      '<div class="fx-card__meta"><span class="fx-sym">' + esc(a.symbol) + '</span>' + (a.timeframe ? '<span class="ltr num">' + esc(a.timeframe) + '</span>' : '') + bias(a.bias) + (cat(a.category) ? '<span class="fx-badge">' + cat(a.category) + '</span>' : '') + '</div>' +
+      '<div class="fx-card__meta"><span class="fx-sym">' + esc(a.symbol) + '</span>' + (a.timeframe ? '<span class="ltr num">' + esc(a.timeframe) + '</span>' : '') + bias(a.bias) + (cat(a.category) ? '<span class="fx-badge">' + cat(a.category) + '</span>' : '') + expTag(a) + '</div>' +
       '<h3>' + L(a.title) + '</h3><p>' + L(a.summary) + '</p>' + more(a, scen(a)) +
       '<div class="fx-card__foot">' + time(a.publishedAt) + '</div></article>';
   }
@@ -117,7 +122,7 @@
     var imp = { HIGH: ['fx-badge--negative', 'High impact', 'تأثير مرتفع'], MEDIUM: ['fx-badge--warning', 'Medium', 'متوسط'], LOW: ['', 'Low', 'منخفض'] }[n.importance];
     return '<li class="news-item">' + time(n.publishedAt) +
       '<div><h3>' + L(n.title) + '</h3><p>' + L(n.summary) + '</p>' + more(n) + '</div>' +
-      '<div class="news-item__mk">' + (imp ? '<span class="fx-badge ' + imp[0] + '">' + T(imp[1], imp[2]) + '</span>' : '') +
+      '<div class="news-item__mk">' + expTag(n) + (imp ? '<span class="fx-badge ' + imp[0] + '">' + T(imp[1], imp[2]) + '</span>' : '') +
       (n.affectedMarkets || []).slice(0, 4).map(function (m) { return '<span class="fx-badge fx-sym">' + esc(m) + '</span>'; }).join('') + '</div></li>';
   }
 
@@ -125,7 +130,7 @@
     var dir = s.direction === 'BUY' ? ['fx-bias--bullish', 'BUY', 'شراء'] : ['fx-bias--bearish', 'SELL', 'بيع'];
     var row = function (en, ar, v) { return '<div><dt>' + T(en, ar) + '</dt><dd class="ltr num">' + esc(v) + '</dd></div>'; };
     return '<article class="fx-card fx-signal">' +
-      '<div class="fx-card__meta"><span class="fx-sym">' + esc(s.symbol) + '</span><span class="fx-bias ' + dir[0] + '">' + T(dir[1], dir[2]) + '</span>' + time(s.publishedAt) + '</div>' +
+      '<div class="fx-card__meta"><span class="fx-sym">' + esc(s.symbol) + '</span><span class="fx-bias ' + dir[0] + '">' + T(dir[1], dir[2]) + '</span>' + expTag(s) + time(s.publishedAt) + '</div>' +
       '<h3>' + L(s.title) + '</h3>' +
       '<dl class="fx-levels">' + row('Entry', 'الدخول', s.entry) + row('Stop-loss', 'وقف الخسارة', s.stopLoss) + row('Targets', 'الأهداف', (s.targets || []).join(' · ')) + '</dl>' +
       (has(s.validity) ? '<p class="fx-card__meta">' + T('Validity', 'الصلاحية') + ': ' + L(s.validity) + '</p>' : '') +
@@ -143,7 +148,7 @@
 
   function learnCard(l) {
     var t = TYPE[l.type] || ['Learn', 'تعلّم'];
-    return '<article class="fx-card rex-card" id="' + esc(l.slug) + '"><span class="fx-kicker">' + T(t[0], t[1]) + '</span><h3>' + L(l.title) + '</h3><p>' + L(l.summary) + '</p>' + more(l) +
+    return '<article class="fx-card rex-card" id="' + esc(l.slug) + '"><span class="fx-kicker">' + T(t[0], t[1]) + '</span>' + expTag(l) + '<h3>' + L(l.title) + '</h3><p>' + L(l.summary) + '</p>' + more(l) +
       '<div class="fx-card__foot">' + time(l.publishedAt) + '</div></article>';
   }
 
@@ -180,7 +185,7 @@
     var of = function () { var types = [].slice.call(arguments); return items.filter(function (e) { return types.indexOf(e.type) >= 0; }); };
 
     renderDesk(of('MORNING_BRIEF', 'GOLD_FOCUS', 'EVENT', 'US_OPEN', 'MARKET_RECAP'));
-    renderGold(of('GOLD_FOCUS')[0]);
+    renderGold(of('GOLD_FOCUS').filter(function (g) { return !expired(g); })[0]);
     bindList('[data-analysis-list]', of('ANALYSIS'), analysisCard, function (h) { return '<div class="grid grid--3">' + h + '</div>'; },
       function (a, f) { return !f || f === 'all' || a.category === f || (f === 'gold' && a.symbol === 'XAUUSD'); }, '[data-analysis-tabs]');
     bindList('[data-news-list]', of('NEWS', 'EVENT'), newsItem, function (h) { return '<ul class="news-list">' + h + '</ul>'; },

@@ -18,6 +18,11 @@ export const SITE = {
   }
 };
 
+/* Public FOXREX Market API base URL (https only), e.g. 'https://market.foxrex.co'. Empty → the ticker keeps its
+   honest "Market feed not connected" state. It points at the FOXREX Market Service, NEVER at a data provider:
+   provider credentials stay on the worker (docs/MARKET-DATA.md). Rebuild the site after changing it. */
+export const MARKET_API = '';
+
 /* Market coverage (descriptive only — no prices) */
 export const MARKETS = [
   { sym: 'XAUUSD', name: ['Gold / US Dollar', 'الذهب / الدولار الأمريكي'], cls: ['Commodities', 'السلع'],

@@ -14,7 +14,7 @@
   const st = s => `<span class="pill ${ST_CLS[s] || ''}">${E(ST_AR[s] || s)}</span>`;
   const lang = l => `<span class="tag ltr">${l === 'ar' ? 'AR' : 'EN'}</span>`;
   const fmt = iso => iso ? C.formatEditorial(iso) : '—';
-  const X = () => (S.cms = S.cms || { list: null, filters: {}, sort: 'updated', q: '', rec: null, draft: null, dirty: false, pubs: null, config: null, modal: null, busy: false, err: '' });
+  const X = () => (S.cms = S.cms || { list: null, filters: {}, sort: 'updated', q: '', rec: null, draft: null, dirty: false, pubs: null, config: null, sys: null, sysErr: '', ops: null, modal: null, busy: false, err: '' });
 
   /* ---------- worker API ---------- */
   async function api(method, path, body, headers) {
@@ -30,6 +30,7 @@
   }
   async function loadList() { const s = X(); try { s.list = await api('GET', '/api/content'); s.err = ''; } catch (e) { s.err = e.message; s.list = s.list || []; } }
   async function loadConfig() { const s = X(); try { s.config = await api('GET', '/api/cms/config'); } catch (e) { s.config = null; } }
+  async function loadSys() { const s = X(); try { s.sys = await api('GET', '/api/system/status'); s.sysErr = ''; } catch (e) { s.sys = false; s.sysErr = e.message; } }
   async function loadPubs() { const s = X(); try { s.pubs = await api('GET', '/api/publications'); } catch (e) { s.err = e.message; s.pubs = s.pubs || []; } }
   async function openRecord(id) {
     const s = X(); s.busy = true; render();
@@ -55,7 +56,7 @@
     if (s === 'ARCHIVED') a.push('restore');
     return a;
   }
-  window.FOXREX_CMS_UI = { allowedActions };
+  window.FOXREX_CMS_UI = { allowedActions, stateClass: v => STATE_CLS[v] };
 
   /* ---------- library ---------- */
   function translationState(rec, list) {
@@ -77,10 +78,19 @@
   }
   const sel = (key, label, opts) => `<label class="cms-f"><span>${label}</span><select data-cff="${key}"><option value="">الكل</option>${opts.map(([v, t]) => `<option value="${E(v)}" ${X().filters[key] === v ? 'selected' : ''}>${E(t)}</option>`).join('')}</select></label>`;
 
+  /* Publishing mode comes from the worker's server configuration (PUBLISH_MODE) — Studio can only display it. */
+  function publishMode() { const s = X(); return (s.sys && s.sys.readiness && s.sys.readiness.publishing.mode) || (s.config && s.config.publish && s.config.publish.mode) || null; }
+  function modeBanner() {
+    const mode = publishMode();
+    if (!mode) return `<div class="mode-banner mode-off" role="status"><b class="ltr">WORKER NOT CONNECTED</b><span>العامل غير متصل — لا يمكن المعاينة أو النشر. اربطه من الإعدادات.</span></div>`;
+    return mode === 'live'
+      ? `<div class="mode-banner mode-live" role="status" data-mode="live"><b class="ltr">LIVE PUBLISHING</b><span>النشر مباشر: التأكيد يكتب commit ويدفعه إلى الموقع العام foxrex.co.</span></div>`
+      : `<div class="mode-banner mode-dry" role="status" data-mode="dry-run"><b class="ltr">DRY RUN</b><span>وضع تجريبي: لا يُكتب ولا يُدفع أي شيء. التحويل إلى LIVE يتم فقط من إعدادات الخادم (PUBLISH_MODE=live).</span></div>`;
+  }
   function header(title, sub) {
-    const s = X(), mode = s.config && s.config.publish && s.config.publish.mode;
-    return `<div class="head"><div><h1>${title}</h1><p>${sub}</p></div><div class="row">
-      ${mode ? `<span class="tag ${mode === 'live' ? 'bad' : 'ok'}" title="PUBLISH_MODE">${mode === 'live' ? 'النشر: مباشر LIVE' : 'النشر: تجريبي DRY RUN'}</span>` : '<span class="tag exp">العامل غير متصل</span>'}
+    const s = X();
+    if (s.sys === null && !s.sysLoading) { s.sysLoading = true; loadSys().then(() => { s.sysLoading = false; render(); }); }
+    return modeBanner() + `<div class="head"><div><h1>${title}</h1><p>${sub}</p></div><div class="row">
       <button class="btn" data-act="cms-refresh">تحديث</button></div></div>
       ${!DB.settings.operatorName ? `<div class="warnbox" style="margin-bottom:12px">سجل التدقيق يحتاج اسم المحرر. <label class="f" style="display:inline">اسم المحرر (Operator)</label> <input type="text" data-set="operatorName" placeholder="مثال: Zak" style="max-width:220px;display:inline-block"></div>` : ''}
       ${s.err ? `<div class="errbox" style="margin-bottom:12px">${E(s.err)}</div>` : ''}`;
@@ -95,7 +105,8 @@
       <label class="cms-f"><span>نوع جديد</span><select id="cms-new-type">${TYPES_ORDER.map(t => `<option value="${t}">${E(typeLabel(t))} · ${t}</option>`).join('')}</select></label>
       <label class="cms-f"><span>اللغة</span><select id="cms-new-lang"><option value="en">English</option><option value="ar">العربية</option></select></label>
       <label class="cms-f" style="flex:1"><span>العنوان</span><input type="text" id="cms-new-title" dir="auto" placeholder="عنوان العنصر"></label>
-      <button class="btn pri" data-act="cms-new">إنشاء مسودة</button><button class="btn" data-act="cms-new" data-idea="1">حفظ كفكرة</button></div></section>
+      <button class="btn pri" data-act="cms-new">إنشاء مسودة</button><button class="btn" data-act="cms-new" data-idea="1">حفظ كفكرة</button></div>
+      <div class="cms-new" style="margin-top:10px"><button class="btn" data-act="cms-gold-pair">Gold Focus جديد ثنائي اللغة <span class="ltr">(EN + AR)</span></button><span class="hint" style="margin:0">ينشئ مسودة إنجليزية فارغة ومسودة عربية فارغة مرتبطتين — لا محتوى مُولّد، وكل لغة تُعتمد بشكل مستقل.</span></div></section>
     <section class="panel" style="margin-bottom:14px"><div class="cms-filters">
       <label class="cms-f" style="flex:1 1 200px"><span>بحث</span><input type="search" id="cms-q" data-cfq value="${E(s.q)}" placeholder="عنوان، رمز، معرّف…" dir="auto"></label>
       ${sel('type', 'النوع', TYPES_ORDER.map(t => [t, typeLabel(t)]))}
@@ -109,12 +120,15 @@
       <label class="cms-f"><span>الترتيب</span><select data-cfs>${[['updated', 'آخر تحديث'], ['newest', 'الأحدث'], ['oldest', 'الأقدم'], ['scheduled', 'موعد الجدولة'], ['published', 'تاريخ النشر']].map(([v, t]) => `<option value="${v}" ${s.sort === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
     </div></section>
     <section class="panel scroll"><table class="t cms-table"><thead><tr><th>العنوان</th><th>النوع</th><th>اللغة</th><th>الحالة</th><th>الترجمة</th><th>الرمز</th><th>آخر تحديث</th><th>مجدول / منشور</th><th>إجراءات</th></tr></thead><tbody>
-    ${rows.map(r => `<tr><td><button class="linkish" data-act="cms-open" data-id="${E(r.id)}" dir="auto">${E(r.title || '(بدون عنوان)')}</button>${r.aiGenerated ? ' <span class="tag" title="مسودة مولّدة بالذكاء الاصطناعي — تحتاج مراجعة">AI</span>' : ''}${r.live ? ` <span class="tag ok" title="منشور على الموقع">LIVE v${r.live.publishVersion}</span>` : ''}</td>
+    ${rows.map(r => `<tr><td><button class="linkish" data-act="cms-open" data-id="${E(r.id)}" dir="auto">${E(r.title || '(بدون عنوان)')}</button>${r.aiGenerated ? ' <span class="tag" title="مسودة مولّدة بالذكاء الاصطناعي — تحتاج مراجعة">AI</span>' : ''}${r.live ? ` <span class="tag ok" title="منشور على الموقع">LIVE v${r.live.publishVersion}</span>` : ''}${flagTag(r)}${expTag(r)}</td>
       <td>${E(typeLabel(r.type))}</td><td>${lang(r.language)}</td><td>${st(r.status)}</td><td>${translationState(r, s.list)}</td><td class="ltr">${E(r.symbol || '—')}</td>
       <td class="num">${fmt(r.updatedAt)}</td><td class="num">${r.status === 'SCHEDULED' ? fmt(r.scheduledAt) : r.publishedAt ? fmt(r.publishedAt) : '—'}</td>
       <td class="cms-acts">${rowActions(r)}</td></tr>`).join('') || '<tr><td colspan="9" class="empty">لا يوجد محتوى مطابق. أنشئ أول مسودة من الأعلى.</td></tr>'}
     </tbody></table></section>`;
   }
+  const FLAG_AR = { MISSED: 'فات موعده', EXPIRED: 'منتهي', STALE: 'تغيّر بعد الجدولة', INVALID: 'غير صالح' };
+  function flagTag(r) { const f = r.scheduleFlag; return f && r.status === 'SCHEDULED' ? ` <span class="tag bad" title="${E(f.reason || '')}" data-flag="${E(f.state)}">${E(FLAG_AR[f.state] || f.state)} <span class="ltr">${E(f.state)}</span></span>` : ''; }
+  function expTag(r) { return r.expiresAt && Date.parse(r.expiresAt) <= Date.now() ? ' <span class="tag exp" title="انتهت صلاحية هذا المحتوى">منتهي الصلاحية</span>' : ''; }
   function rowActions(r) {
     const acts = allowedActions(r, { valid: true });
     const b = (act, label, extra = '') => `<button class="btn sm" data-act="${act}" data-id="${E(r.id)}" ${extra}>${label}</button>`;
@@ -155,7 +169,7 @@
     const valid = !s.errors.length, acts = allowedActions(r, { dirty: s.dirty, valid });
     const trading = ['GOLD_FOCUS', 'ANALYSIS'].includes(d.type);
     const typeSpecific = {
-      GOLD_FOCUS: [fld('حالة السوق', f + 'marketState', 'text', { req: 1 }), fld('الدعم الرئيسي', f + 'keySupport', 'list', { req: 1, ph: '2350, 2335' }), fld('المقاومة الرئيسية', f + 'keyResistance', 'list', { req: 1 }), fld('المستوى المهم', f + 'importantLevel', 'text', { ltr: 1 })],
+      GOLD_FOCUS: [fld('حالة السوق', f + 'marketState', 'text', { req: 1 }), fld('المستوى المهم', f + 'importantLevel', 'text', { ltr: 1, hint: 'Pivot' }), levelsEditor('مستويات الدعم', 'Support', f + 'keySupport'), levelsEditor('مستويات المقاومة', 'Resistance', f + 'keyResistance')],
       ANALYSIS: [fld('الإطار الزمني', f + 'timeframe', 'text', { ltr: 1, hint: 'H4, D1…' }), fld('المستويات الرئيسية', f + 'keyLevels', 'list')],
       NEWS: [fld('الأهمية', f + 'importance', 'select', { req: 1, options: C.IMPORTANCE.map(x => [x, x]) }), fld('الأسواق المتأثرة', f + 'affectedMarkets', 'list', { ph: 'XAUUSD, DXY' }), fld('وقت الحدث', f + 'eventTime', 'datetime')],
       EVENT: [fld('الأهمية', f + 'importance', 'select', { req: 1, options: C.IMPORTANCE.map(x => [x, x]) }), fld('الأسواق المتأثرة', f + 'affectedMarkets', 'list'), fld('وقت الحدث', f + 'eventTime', 'datetime')],
@@ -167,7 +181,7 @@
     const other = d.language === 'en' ? 'ar' : 'en', sib = (r.translations || []).find(x => x.language === other);
     const pubs = s.recPubs || [];
     return header(`${E(typeLabel(d.type))} <small class="ltr">${E(d.type)}</small>`, `<span class="ltr">${E(d.id)}</span>`) + `
-    <div class="cms-bar panel">${st(r.status)} ${lang(d.language)} <span class="hint" style="margin:0">مراجعة ${r.revision}${r.live ? ` · <b class="ok">منشور v${r.live.publishVersion}</b> (${fmt(r.live.publishedAt)})` : ''}${r.status === 'SCHEDULED' ? ` · مجدول ${fmt(r.scheduledAt)}` : ''}${s.dirty ? ' · <b class="warn">تغييرات غير محفوظة</b>' : ''}</span>
+    <div class="cms-bar panel">${st(r.status)} ${lang(d.language)} <span class="hint" style="margin:0">مراجعة ${r.revision}${r.live ? ` · <b class="ok">منشور v${r.live.publishVersion}</b> (${fmt(r.live.publishedAt)})` : ''}${r.status === 'SCHEDULED' ? ` · مجدول ${fmt(r.scheduledAt)}` : ''}${r.expiresAt ? ` · ينتهي ${fmt(r.expiresAt)}` : ''}${s.dirty ? ' · <b class="warn">تغييرات غير محفوظة</b>' : ''}</span>
       <span class="cms-bar__acts">
       ${r.status !== 'ARCHIVED' ? `<button class="btn ${s.dirty ? 'pri' : ''}" data-act="cms-save" ${s.dirty ? '' : 'disabled'}>حفظ المسودة</button>` : ''}
       ${acts.includes('start') ? '<button class="btn" data-act="cms-tr" data-a="start">بدء المسودة</button>' : ''}
@@ -181,17 +195,21 @@
       ${acts.includes('restore') ? '<button class="btn" data-act="cms-tr" data-a="restore">استعادة</button>' : ''}
       </span></div>
     ${r.status === 'PUBLISHED' || (r.live && r.status !== 'PUBLISHED') ? `<p class="hint">${r.live && r.status !== 'PUBLISHED' ? 'النسخة المنشورة v' + r.live.publishVersion + ' ما زالت ظاهرة على الموقع حتى تُعتمد هذه المسودة ويُعاد نشرها.' : 'أي تعديل ينشئ مسودة جديدة (يُلغى الاعتماد) — تبقى النسخة الحالية منشورة حتى إعادة النشر.'}</p>` : ''}
+    ${r.scheduleFlag && r.status === 'SCHEDULED' ? `<div class="errbox" style="margin-bottom:12px"><b>${E(FLAG_AR[r.scheduleFlag.state] || r.scheduleFlag.state)} <span class="ltr">${E(r.scheduleFlag.state)}</span></b> — ${E(r.scheduleFlag.reason || '')}. لن يُنشر تلقائيًا؛ أعد الجدولة أو انشره يدويًا بعد المعاينة والتأكيد.</div>` : ''}
     ${r.aiGenerated ? `<div class="warnbox">مسودة مولّدة بالذكاء الاصطناعي (${E(r.aiGenerated.provider)} / ${E(r.aiGenerated.model)}). راجع كل جملة ومصدر قبل الإرسال. ${(r.aiGenerated.warnings || []).map(E).join(' ')}</div>` : ''}
     <div class="cms-grid"><div>
       ${section('المحتوى', 'Content', fld('العنوان', 'title', 'text', { req: 1 }) + fld('الملخص', 'summary', 'area', { req: 1, rows: 3 }) + fld('النص', 'body', 'area', { req: !!t.body, rows: 10, hint: 'نص عادي — سطر فارغ بين الفقرات. لا HTML.' }))}
       ${section('التصنيف', 'Classification', `<div class="fg">${fld('الفئة', 'category', d.type === 'NEWS' ? 'select' : d.type === 'ANALYSIS' ? 'select' : 'text', { req: ['NEWS', 'ANALYSIS'].includes(d.type), ltr: 1, options: (d.type === 'NEWS' ? C.NEWS_CATEGORIES : C.ANALYSIS_CATEGORIES).map(x => [x, x]) })}${fld('السوق', 'market', 'text', { ltr: 1 })}${fld('الرمز', 'symbol', 'text', { ltr: 1, req: ['ANALYSIS', 'SIGNAL', 'SIGNAL_RESULT'].includes(d.type), hint: t.fixedSymbol ? 'ثابت: ' + t.fixedSymbol : '' })}${fld('الوسوم', 'tags', 'list')}</div>`)}
-      ${trading || typeSpecific.length ? section(trading ? 'السياق التداولي' : 'تفاصيل النوع', trading ? 'Trading context' : 'Type details', `<div class="fg">${trading ? fld('الاتجاه', 'bias', 'select', { req: 1, options: C.BIAS.map(x => [x, x]) }) : ''}${typeSpecific.join('')}</div>${trading ? fld('السيناريو الصاعد', f + 'bullishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('السيناريو الهابط', f + 'bearishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('مستوى الإلغاء', f + 'invalidation', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) +
-        `<div class="fg">${fld('السعر (اختياري)', f + 'price', 'number', { hint: 'يتطلب مصدرًا ووقتًا' })}${fld('مصدر السعر', f + 'priceSource', 'text', { ltr: 1 })}${fld('وقت السعر', f + 'priceTime', 'datetime')}</div>` : ''}`) : ''}
+      ${trading || typeSpecific.length ? section(trading ? 'السياق التداولي' : 'تفاصيل النوع', trading ? 'Trading context' : 'Type details', `<div class="fg">${trading ? fld('الاتجاه', 'bias', 'select', { req: 1, options: C.BIAS.map(x => [x, BIAS_LABEL[x]]) }) : ''}${typeSpecific.join('')}</div>${trading ? fld('السيناريو الصاعد', f + 'bullishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('السيناريو الهابط', f + 'bearishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('مستوى الإلغاء', f + 'invalidation', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) +
+        `<div class="fg">${fld('السعر (اختياري)', f + 'price', 'number', { hint: 'يتطلب مصدرًا ووقتًا' })}${fld('مصدر السعر', f + 'priceSource', 'text', { ltr: 1 })}${fld('وقت السعر', f + 'priceTime', 'datetime')}</div>` +
+        (d.type === 'GOLD_FOCUS' ? `<div class="row"><button class="btn sm" data-act="cms-gold-snapshot">أخذ لقطة من سعر XAUUSD الموثّق الحالي</button><span class="hint" style="margin:0">لقطة ثابتة تُحفظ مع التحليل (السعر + المصدر + الوقت). السعر المباشر لا يغيّر التحليل المنشور أبدًا.</span></div>` : '') : ''}`) : ''}
       ${section('المصادر', 'Sources', sourcesEditor())}
       ${section('المخاطر', 'Risk', fld('إفصاح المخاطر', 'riskDisclosure', 'area', { req: !!t.risk, rows: 2 }))}
     </div><div>
       ${section('النشر', 'Publishing', `<dl class="kv"><dt>اللغة</dt><dd>${d.language === 'ar' ? 'العربية' : 'English'}</dd><dt>قسم الموقع</dt><dd class="ltr">${E(t.section || '—')}</dd><dt>الوجهات</dt><dd>${C.destinations(d.type).map(p => `<a class="ltr" target="_blank" rel="noopener" href="${E(C.pageUrl(p, d.language, 'https://foxrex.co'))}">${E(C.pageUrl(p, d.language, ''))}</a>`).join('<br>') || '—'}</dd>
-        <dt>نسخة النشر</dt><dd class="num">${r.publishing ? r.publishing.publishVersion : 0}</dd><dt>آخر نشر</dt><dd>${fmt(r.publishing && r.publishing.lastPublishedAt)}</dd><dt>معتمد من</dt><dd>${E(r.audit && r.audit.approvedBy || '—')} ${r.approvedAt ? '· ' + fmt(r.approvedAt) : ''}</dd></dl>`)}
+        <dt>نسخة النشر</dt><dd class="num">${r.publishing ? r.publishing.publishVersion : 0}</dd><dt>آخر نشر</dt><dd>${fmt(r.publishing && r.publishing.lastPublishedAt)}</dd><dt>معتمد من</dt><dd>${E(r.audit && r.audit.approvedBy || '—')} ${r.approvedAt ? '· ' + fmt(r.approvedAt) : ''}</dd></dl>
+        ${fld('ينتهي في (اختياري)', 'expiresAt', 'datetime', { hint: 'بعده لا يُعرض كمحتوى حالي ولا يُنشر' })}${rollbackPanel(r)}`)}
+      ${d.type === 'GOLD_FOCUS' ? section('قائمة النشر الأول', 'Gold Focus checklist', goldChecklist(d, r, sib)) + section('معاينة البطاقة', 'Gold Focus card', goldCard(d)) : ''}
       ${section('الترجمة', 'Translation', `<p class="hint">كل لغة سجل مستقل يحتاج مراجعته واعتماده الخاص.</p>${sib ? `<p><button class="linkish" data-act="cms-open" data-id="${E(sib.id)}">${other.toUpperCase()} · ${E(sib.title || '(بدون عنوان)')}</button> ${st(sib.status)}</p>` :
         `<p class="hint">لا توجد نسخة ${other === 'ar' ? 'عربية' : 'إنجليزية'}.</p><div class="row"><button class="btn" data-act="cms-translate" data-id="${E(d.id)}" data-mode="blank">مسودة ترجمة فارغة</button><button class="btn" data-act="cms-translate" data-id="${E(d.id)}" data-mode="ai">${other === 'ar' ? 'توليد مسودة عربية (AI)' : 'Generate English draft (AI)'}</button></div><p class="hint">مخرجات الذكاء الاصطناعي تُحفظ كمسودة فقط — لا اعتماد ولا نشر تلقائي.</p>`}`)}
       ${section('الوسائط', 'Media', `${fld('مسار الصورة', 'image.src', 'text', { ltr: 1, hint: 'assets/media/…png|jpg|webp' })}${fld('النص البديل', 'image.alt', 'text')}${fld('وصف بصري / Prompt', 'visualPrompt', 'area', { rows: 2 })}`)}
@@ -201,6 +219,47 @@
       ${section('السجل', 'Audit', `<ul class="cms-hist">${(r.history || []).slice().reverse().slice(0, 30).map(h => `<li><span class="num">${fmt(h.at)}</span> · ${E(h.action)} · ${E(h.actor || '')}${h.note ? ` · <span class="ltr">${E(h.note)}</span>` : ''}</li>`).join('')}</ul>
         ${pubs.length ? `<h3>النشر</h3><ul class="cms-hist">${pubs.map(p => `<li>${E(p.result)} · ${E(p.action)} v${p.version} · ${fmt(p.requestedAt)}${p.commitSha ? ` · <span class="ltr">${E(p.commitSha.slice(0, 7))}</span>` : ''}${p.error ? ` · ${E(p.error)}` : ''}</li>`).join('')}</ul>` : ''}`)}
     </div></div>`;
+  }
+  const BIAS_LABEL = { bullish: 'BULLISH · صاعد', bearish: 'BEARISH · هابط', neutral: 'NEUTRAL · محايد' };
+  function levelsEditor(label, en, path) {
+    const d = X().draft, list = get(d, path) || [], errs = (X().errors || []).filter(e => e.field === path);
+    return `<div class="cms-field cms-levels ${errs.length ? 'has-err' : ''}"><label class="f">${label} <span class="ltr hint">${en}</span> <b class="req">*</b></label>
+      ${list.map((v, i) => `<div class="cms-level"><input type="text" inputmode="decimal" dir="ltr" data-cf="${path}.${i}" value="${E(v)}" aria-label="${en} ${i + 1}"><button class="btn sm" data-act="cms-lvl-del" data-path="${path}" data-i="${i}" aria-label="حذف">✕</button></div>`).join('')}
+      <button class="btn sm" data-act="cms-lvl-add" data-path="${path}">+ مستوى</button>${errs.map(e => `<p class="cms-err">${E(e.message)}</p>`).join('')}</div>`;
+  }
+  /* First-publication readiness for Gold Focus — mirrors the server gate; the server preflight is authoritative. */
+  function goldChecklist(d, r, sib) {
+    const fl = d.fields || {}, has = v => typeof v === 'string' ? v.trim() !== '' : v != null, n = a => (a || []).filter(has).length;
+    const priceOk = fl.price == null || fl.price === '' || (has(fl.priceSource) && !!fl.priceTime);
+    const items = [
+      ['العنوان والملخص', has(d.title) && has(d.summary)], ['الاتجاه (Bias)', C.BIAS.includes(d.bias)], ['حالة السوق', has(fl.marketState)],
+      ['مستوى دعم واحد على الأقل', n(fl.keySupport) > 0], ['مستوى مقاومة واحد على الأقل', n(fl.keyResistance) > 0],
+      ['السيناريو الصاعد والهابط', has(fl.bullishScenario) && has(fl.bearishScenario)], ['مستوى الإلغاء', has(fl.invalidation)],
+      ['مصدر واحد على الأقل', (d.sourceReferences || []).some(x => has(x.name))], ['إفصاح المخاطر', has(d.riskDisclosure)],
+      ['السعر مع مصدره ووقته (أو بدون سعر)', priceOk], ['لم تنتهِ الصلاحية', !(d.expiresAt && Date.parse(d.expiresAt) <= Date.now())],
+      ['هذه اللغة معتمدة', ['APPROVED', 'SCHEDULED', 'PUBLISHED'].includes(r.status)],
+      [`النسخة ${d.language === 'en' ? 'العربية' : 'الإنجليزية'} موجودة`, !!sib], [`النسخة ${d.language === 'en' ? 'العربية' : 'الإنجليزية'} معتمدة بشكل مستقل`, !!sib && ['APPROVED', 'SCHEDULED', 'PUBLISHED'].includes(sib.status)],
+      ['اسم المحرر مضبوط', !!DB.settings.operatorName]
+    ];
+    const done = items.filter(x => x[1]).length;
+    return `<p class="hint">${done}/${items.length} — الفحص النهائي (Preflight) يتم على الخادم قبل النشر.</p><ul class="cms-check">${items.map(([t, ok]) => `<li class="${ok ? 'ok' : 'bad'}"><span aria-hidden="true">${ok ? '✓' : '✕'}</span> ${t}</li>`).join('')}</ul>`;
+  }
+  function goldCard(d) {
+    const fl = d.fields || {}, ar = d.language === 'ar', lv = a => (a || []).filter(x => String(x).trim()).map(E).join(' · ') || '—';
+    const b = { bullish: ['Bullish', 'صاعد', 'up'], bearish: ['Bearish', 'هابط', 'down'], neutral: ['Neutral', 'محايد', 'flat'] }[d.bias];
+    return `<div class="gold-card" dir="${ar ? 'rtl' : 'ltr'}" lang="${ar ? 'ar' : 'en'}">
+      <div class="gold-card__top"><span class="ltr">XAUUSD</span>${b ? `<span class="gold-bias gold-bias--${b[2]}">${ar ? b[1] : b[0]}</span>` : '<span class="hint" style="margin:0">—</span>'}
+      ${typeof fl.price === 'number' && fl.priceSource && fl.priceTime ? `<span class="ltr num">${E(fl.price.toFixed(2))}</span>` : ''}</div>
+      <h4 dir="auto">${E(d.title || (ar ? 'العنوان' : 'Title'))}</h4><p dir="auto">${E(d.summary || '')}</p>
+      <dl class="gold-lv"><div><dt>${ar ? 'الدعم' : 'Support'}</dt><dd class="ltr num">${lv(fl.keySupport)}</dd></div><div><dt>${ar ? 'المحوري' : 'Pivot'}</dt><dd class="ltr num">${E(fl.importantLevel || '—')}</dd></div><div><dt>${ar ? 'المقاومة' : 'Resistance'}</dt><dd class="ltr num">${lv(fl.keyResistance)}</dd></div></dl>
+      ${fl.bullishScenario ? `<p dir="auto"><b class="ok">${ar ? 'صاعد' : 'Bullish'}:</b> ${E(fl.bullishScenario)}</p>` : ''}${fl.bearishScenario ? `<p dir="auto"><b class="bad">${ar ? 'هابط' : 'Bearish'}:</b> ${E(fl.bearishScenario)}</p>` : ''}
+      ${fl.invalidation ? `<p dir="auto"><b>${ar ? 'مستوى الإلغاء' : 'Invalidation'}:</b> ${E(fl.invalidation)}</p>` : ''}</div><p class="hint">المعاينة الكاملة بمُعرِض الموقع الحقيقي متاحة من "معاينة ونشر".</p>`;
+  }
+  function rollbackPanel(r) {
+    const vs = (r.publishedVersions || []).filter(v => v.entry && v.action !== 'unpublish').slice().reverse();
+    if (!vs.length) return '';
+    const cur = r.live && r.live.publishVersion;
+    return `<h3 style="margin-top:12px">النسخ المنشورة <small class="ltr">Rollback</small></h3><p class="hint">إعادة نشر نسخة سابقة تنشئ commit تصحيحيًا جديدًا — لا يُعاد كتابة السجل.</p><ul class="cms-hist">${vs.map(v => `<li><span class="num">v${v.version}</span> · ${fmt(v.publishedAt)}${v.commitSha ? ` · <span class="ltr">${E(v.commitSha.slice(0, 7))}</span>` : ''}${v.version === cur ? ' · <b class="ok">الحالية</b>' : ` <button class="btn sm" data-act="cms-rollback" data-v="${v.version}">إعادة نشر v${v.version}…</button>`}</li>`).join('')}</ul>`;
   }
   function sourcesEditor() {
     const d = X().draft; d.sourceReferences = d.sourceReferences || [];
@@ -215,7 +274,7 @@
     if (s.pubs === null || s.list === null) { Promise.all([loadPubs(), loadList(), loadConfig()]).then(render); return header('مركز النشر', 'Publication center') + '<div class="empty">جارٍ التحميل…</div>'; }
     const recs = s.list || [], pubs = s.pubs || [];
     const due = r => r.status === 'SCHEDULED' && Date.parse(r.scheduledAt) <= Date.now();
-    const recRow = r => `<li class="li"><span><button class="linkish" data-act="cms-open" data-id="${E(r.id)}" dir="auto">${E(r.title)}</button><br><span class="m">${E(typeLabel(r.type))} · ${lang(r.language)} ${r.status === 'SCHEDULED' ? '· ' + fmt(r.scheduledAt) : ''}</span></span>${st(r.status)}${r.status === 'APPROVED' || due(r) ? `<button class="btn sm pri" data-act="cms-preview" data-id="${E(r.id)}">معاينة ونشر…</button>` : ''}</li>`;
+    const recRow = r => `<li class="li"><span><button class="linkish" data-act="cms-open" data-id="${E(r.id)}" dir="auto">${E(r.title)}</button><br><span class="m">${E(typeLabel(r.type))} · ${lang(r.language)} ${r.status === 'SCHEDULED' ? '· ' + fmt(r.scheduledAt) : ''}${flagTag(r)}</span></span>${st(r.status)}${r.status === 'APPROVED' || due(r) ? `<button class="btn sm pri" data-act="cms-preview" data-id="${E(r.id)}">معاينة ونشر…</button>` : ''}</li>`;
     const pubRow = p => `<tr><td><button class="linkish ltr" data-act="cms-open" data-id="${E(p.contentId)}">${E(p.contentId)}</button></td><td>${lang(p.language)}</td><td class="ltr">${E(p.action)} · ${E(p.contentType)}</td><td class="num">v${p.version}</td>
       <td class="num">${fmt(p.publishedAt || p.requestedAt)}</td><td class="ltr">${p.commitSha ? `<a target="_blank" rel="noopener" href="https://github.com/Zakoosh/FOXREX/commit/${E(p.commitSha)}">${E(p.commitSha.slice(0, 7))}</a>` : '—'}</td>
       <td><span class="tag ${p.result === 'SUCCESS' ? 'ok' : p.result === 'DRY_RUN_OK' ? '' : 'bad'}">${E(p.result)}</span>${p.deployment ? ` <span class="tag">${E(p.deployment)}</span>` : ''}${p.mode === 'dry-run' ? ' <span class="tag">DRY RUN</span>' : ''}${p.error ? `<br><span class="hint" style="margin:0">${E(p.error)}</span>` : ''}${p.deploymentNote ? `<br><span class="hint" style="margin:0">${E(p.deploymentNote)}</span>` : ''}</td>
@@ -244,9 +303,29 @@
       const [pv, feed] = await Promise.all([api('POST', '/api/publish/preview', { contentId: id }), api('GET', '/api/feed')]);
       if (pv.errors && pv.errors.length) { modal(`<h2>لا يمكن النشر بعد</h2><ul class="cms-errs">${pv.errors.map(e => `<li><span class="ltr">${E(e.field)}</span> — ${E(e.message)}</li>`).join('')}</ul><div class="row"><button class="btn" data-act="cms-close">إغلاق</button></div>`); return; }
       const candidate = C.applyToFeed(feed.feed, pv.entry, { id: 'pub_preview00', at: pv.entry.publishedAt, contentId: rec.id, action: 'publish', version: pv.entry.publishVersion });
-      s.modal = { rec, pv, candidate, page: C.destinations(rec.type)[C.destinations(rec.type).length - 1] };
-      renderPreview();
+      s.modal = { rec, pv, candidate, pf: null, page: C.destinations(rec.type)[C.destinations(rec.type).length - 1] };
+      renderPreview(); runPreflight();
     } catch (e) { toast(e.message); }
+  }
+  async function runPreflight() {
+    const m = X().modal; if (!m) return;
+    m.pf = { running: true }; paintPreflight();
+    try { m.pf = await api('POST', '/api/publish/preflight', { contentId: m.rec.id, expectedVersion: m.pv.feedVersion }); }
+    catch (e) { m.pf = { ready: false, status: 'BLOCKED', checks: [{ id: 'worker', label: 'Preflight request', ok: false, detail: e.message }] }; }
+    paintPreflight();
+  }
+  function preflightHtml(pf) {
+    if (!pf || pf.running) return '<p class="hint">جارٍ الفحص المسبق (Preflight)… المستودع، الفرع، التحديث، التحقق، المخطط والاختبارات.</p>';
+    return `<div class="pf pf--${pf.ready ? 'ready' : 'blocked'}"><b class="ltr">${E(pf.status)}</b>${pf.ready ? '' : ' — أصلح العوائق التالية قبل النشر'}</div>` + checkList(pf.checks);
+  }
+  function checkList(checks) {
+    return `<ul class="cms-check">${(checks || []).map(c => `<li class="${c.ok ? 'ok' : 'bad'}" data-check="${E(c.id)}"><span aria-hidden="true">${c.ok ? '✓' : '✕'}</span> <span class="ltr">${E(c.label)}</span>${c.detail ? `<br><small class="ltr">${E(String(c.detail).slice(0, 300))}</small>` : ''}</li>`).join('')}</ul>`;
+  }
+  function paintPreflight() {
+    const m = X().modal, box = document.getElementById('cms-pf'); if (!m || !box) return;
+    box.innerHTML = preflightHtml(m.pf);
+    const btn = document.querySelector('[data-act="cms-confirm"]');
+    if (btn) { const ok = m.pf && m.pf.ready && m.pv.mode === 'live'; btn.disabled = !ok; btn.title = ok ? '' : m.pv.mode !== 'live' ? 'DRY RUN mode — live publishing is enabled only in the worker configuration' : 'Preflight is BLOCKED'; }
   }
   const FOCUS = { gold: '[data-gold-focus]', desk: '[data-editorial]', analysis: '[data-analysis-list]', news: '[data-news-list]', learn: '[data-learn-list]', signals: '[data-signal-list],[data-signal-results]' };
   function renderPreview() {
@@ -261,15 +340,18 @@
         <dt>SEO</dt><dd dir="auto">${E((e.seo && e.seo.title) || e.title)}<br><span class="hint" style="margin:0">${E((e.seo && e.seo.description) || e.summary)}</span></dd>
         ${e.riskDisclosure ? `<dt>المخاطر</dt><dd dir="auto">${E(e.riskDisclosure)}</dd>` : ''}<dt>النسخة</dt><dd class="num">v${e.publishVersion}</dd>
         <dt>وضع النشر</dt><dd>${mode === 'live' ? '<b class="bad">مباشر LIVE — سيُحدَّث الموقع العام</b>' : '<b>تجريبي DRY RUN — لن يُكتب أو يُدفع شيء</b>'}</dd></dl>
-      <div class="row"><button class="btn" data-act="cms-close">إلغاء</button><button class="btn" data-act="cms-dry">تجربة (Dry run)</button>${mode === 'live' ? '<button class="btn pri" data-act="cms-confirm">نشر…</button>' : ''}</div>
+      <h3>الفحص المسبق <small class="ltr">Preflight</small></h3><div id="cms-pf">${preflightHtml(m.pf)}</div>
+      <div class="row"><button class="btn" data-act="cms-close">إلغاء</button><button class="btn" data-act="cms-pf-run">إعادة الفحص</button><button class="btn" data-act="cms-dry">تجربة (Dry run)</button><button class="btn pri" data-act="cms-confirm" disabled>نشر…</button></div>
       <div id="cms-dry-out"></div></div>
       <iframe class="cms-prev__frame" title="معاينة الموقع العام" src="${E(src)}"></iframe></div>`);
+    paintPreflight();
     const frame = document.querySelector('.cms-prev__frame');
     const send = () => frame.contentWindow && frame.contentWindow.postMessage({ type: 'foxrex-preview', feed: m.candidate, focus: FOCUS[C.TYPES[r.type].section] }, location.origin);
     window.addEventListener('message', function onReady(ev) { if (ev.origin === location.origin && ev.data && ev.data.type === 'foxrex-preview-ready' && ev.source === frame.contentWindow) { send(); } });
   }
   function confirmPublish() {
     const m = X().modal, r = m.rec, e = m.pv.entry;
+    if (!m.pf || !m.pf.ready || m.pv.mode !== 'live') return; // the server re-checks everything anyway
     modal(`<h2>نشر هذا المحتوى؟</h2><dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(typeLabel(r.type))} — ${E(e.title)}</dd><dt>اللغة</dt><dd>${r.language === 'ar' ? 'العربية' : 'English'}</dd>
       <dt>الوجهات</dt><dd>${m.pv.destinations.map(d => E(d.page)).join('، ')}</dd><dt>النسخة</dt><dd class="num">v${e.publishVersion}</dd></dl>
       <p class="warnbox">سيؤدي هذا إلى تحديث ملف المحتوى العام لـ FOXREX (data/content.json) وإنشاء commit ودفعه إلى GitHub Pages.</p>
@@ -293,11 +375,90 @@
     modal(`<h2>إلغاء نشر هذا المحتوى؟</h2><p dir="auto">${E(r.title)}</p><p class="warnbox">سيُزال من الموقع العام ويُؤرشف في Studio. يبقى سجل التدقيق والنشر كاملًا.</p><div class="row"><button class="btn" data-act="cms-close">إلغاء</button><button class="btn bad" data-act="cms-unpublish-go">إلغاء النشر</button></div><div id="cms-pub-out"></div>`);
   }
 
+  /* ---------- rollback: republish a previous version as a new corrective commit ---------- */
+  function openRollback(version) {
+    const r = X().rec, v = (r.publishedVersions || []).find(x => x.version === +version); if (!v) return;
+    const mode = publishMode();
+    X().modal = { rollback: { version: v.version } };
+    modal(`<h2>إعادة نشر النسخة v${v.version}؟</h2><dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(v.entry.title)}</dd><dt>نُشرت</dt><dd>${fmt(v.publishedAt)}</dd><dt>الإجراء</dt><dd>commit تصحيحي جديد يعيد محتوى v${v.version} كنسخة جديدة — بدون إعادة كتابة السجل ولا force push.</dd>
+      <dt>وضع النشر</dt><dd>${mode === 'live' ? '<b class="bad">LIVE PUBLISHING</b>' : '<b>DRY RUN — لن يُكتب أو يُدفع شيء</b>'}</dd></dl>
+      <div class="row"><button class="btn" data-act="cms-close">إلغاء</button><button class="btn" data-act="cms-rollback-go" data-dry="1">تجربة (Dry run)</button>${mode === 'live' ? `<button class="btn bad" data-act="cms-rollback-go">إعادة نشر v${v.version}</button>` : ''}</div><div id="cms-pub-out"></div>`);
+  }
+  async function doRollback(dryRun) {
+    const s = X(), r = s.rec, v = s.modal && s.modal.rollback && s.modal.rollback.version, out = document.getElementById('cms-pub-out'); if (!v) return;
+    try {
+      const f = await api('GET', '/api/feed');
+      const res = await api('POST', '/api/republish', { contentId: r.id, version: v, expectedVersion: f.version, confirm: true, dryRun }, { 'Idempotency-Key': `republish:${r.id}@v${v}@r${r.revision}@${f.version}` });
+      if (dryRun || res.result === 'DRY_RUN_OK') { if (out) out.innerHTML = `<p class="ok">نجحت التجربة ✓ — لم يُكتب أو يُدفع شيء.</p><details><summary>Diff</summary><pre class="ltr cms-diff">${E(res.diff || '')}</pre></details>`; return; }
+      closeModal(); toast('commit تصحيحي: ' + (res.commitSha || '').slice(0, 7)); s.pubs = null; s.list = null; await openRecord(r.id);
+    } catch (e) { if (out) out.innerHTML = `<div class="errbox">${E(e.message)}</div>`; }
+  }
+
+  /* ---------- system status (health vs readiness) ---------- */
+  const STATE_CLS = { READY: 'ok', HEALTHY: 'ok', ENABLED: 'ok', CONNECTED: 'ok', DEGRADED: 'warn', CONNECTING: 'warn', RATE_LIMITED: 'warn', DISABLED: '', IDLE: '',
+    UNAVAILABLE: 'bad', DISCONNECTED: 'bad', AUTH_FAILED: 'bad', BLOCKED_MISSING_CREDENTIALS: 'bad' };
+  const STATE_AR = { READY: 'جاهز', HEALTHY: 'سليم', ENABLED: 'مفعّل', CONNECTED: 'متصل', DEGRADED: 'متدهور', CONNECTING: 'جارٍ الاتصال', RATE_LIMITED: 'محدود المعدل', DISABLED: 'معطّل', IDLE: 'خامل',
+    UNAVAILABLE: 'غير متاح', DISCONNECTED: 'منقطع', AUTH_FAILED: 'رُفضت المصادقة', BLOCKED_MISSING_CREDENTIALS: 'بيانات اعتماد مفقودة' };
+  const stTag = v => `<span class="tag ${STATE_CLS[v] || ''}" data-state="${E(v)}">${E(STATE_AR[v] || v)} <span class="ltr">${E(v)}</span></span>`;
+  const MK_AR = { LIVE: 'مباشر', DELAYED: 'متأخر', STALE: 'قديم', MARKET_CLOSED: 'السوق مغلق', UNAVAILABLE: 'غير متاح' };
+  function marketSummary(M) {
+    if (!M || M.state === 'DISABLED') return 'No provider configured (MARKET_PROVIDERS) — site shows “not connected”; publishing unaffected';
+    const c = M.counts || {};
+    return `${(M.providers || []).map(p => `${E(p.label)}: ${E(p.state)}`).join(' · ')} · live ${c.live || 0} · delayed ${c.delayed || 0} · stale ${c.stale || 0} · closed ${c.closed || 0} · unavailable ${c.unavailable || 0} · last update ${fmt(M.lastUpdate)}`;
+  }
+  function marketPanel(M) {
+    if (!M || M.state === 'DISABLED') return '';
+    const age = ms => ms == null ? '—' : ms < 90e3 ? Math.round(ms / 1000) + 's' : Math.round(ms / 60e3) + 'm';
+    return `<section class="panel" style="margin-bottom:14px" data-market-panel><h2>بيانات السوق <small class="ltr">Market data</small></h2>
+      <div class="scroll"><table class="t"><thead><tr><th>المزوّد</th><th>الاتصال</th><th>آخر نجاح</th><th>زمن الاستجابة</th><th>الاستطلاع</th><th>آخر خطأ</th></tr></thead><tbody>
+      ${(M.providers || []).map(p => `<tr><td class="ltr">${E(p.label)}${p.realtime ? '' : ' <span class="tag">delayed plan</span>'}</td><td>${stTag(p.state)}</td><td>${fmt(p.lastSuccessAt)}</td><td class="num ltr">${p.latencyMs == null ? '—' : E(p.latencyMs) + ' ms'}</td><td class="num ltr">${E(p.pollSeconds)}s</td><td class="ltr">${E(p.lastError || (p.missing && p.missing.length ? 'Missing ' + p.missing.join(', ') : '—'))}</td></tr>`).join('')}
+      </tbody></table></div>
+      <div class="scroll"><table class="t"><thead><tr><th>الرمز</th><th>الحالة</th><th>العمر</th><th>المصدر</th></tr></thead><tbody>
+      ${(M.symbols || []).map(s => `<tr data-market-symbol="${E(s.symbol)}"><td class="ltr">${E(s.symbol)}</td><td><span class="tag ${s.status === 'LIVE' ? 'ok' : s.status === 'DELAYED' ? 'warn' : s.status === 'STALE' || s.status === 'UNAVAILABLE' ? 'bad' : ''}" data-state="${E(s.status)}">${E(MK_AR[s.status] || s.status)} <span class="ltr">${E(s.status)}</span></span></td><td class="num ltr">${age(s.ageMs)}</td><td class="ltr">${E(s.provider || s.reason || '—')}</td></tr>`).join('')}
+      </tbody></table></div>
+      ${Object.keys(M.rejections || {}).length ? `<p class="hint ltr">Quality gate rejections: ${Object.entries(M.rejections).map(([k, v]) => `${E(k)} ${E(v)}`).join(' · ')}</p>` : ''}
+      <p class="hint">بيانات السوق خدمة مستقلة: النشر لا يعتمد عليها. لا تُعرض أي مفاتيح أو عناوين اتصال هنا.</p></section>`;
+  }
+  function viewSystem() {
+    const s = X();
+    if (s.sys === null) { if (!s.sysLoading) { s.sysLoading = true; loadSys().then(() => { s.sysLoading = false; render(); }); } return modeBanner() + '<div class="head"><div><h1>حالة النظام</h1><p>System status</p></div></div><div class="empty">جارٍ التحميل…</div>'; }
+    const head = header('حالة النظام', 'Health (هل العامل يعمل؟) منفصلة عن Readiness (هل كل مكوّن جاهز للنشر؟). لا مسارات ولا أسرار في هذه الحالة.');
+    if (!s.sys) return head + `<section class="panel"><p>${stTag('UNAVAILABLE')} تعذّر الوصول إلى العامل: ${E(s.sysErr)}</p><p class="hint">شغّل العامل واربطه من الإعدادات (Worker URL + token + ALLOWED_ORIGIN).</p></section>`;
+    const R = s.sys.readiness, D = s.sys.deployment || {}, H = s.sys.health;
+    const row = (name, en, st, detail) => `<tr data-component="${E(en)}"><td>${name} <span class="ltr hint" style="margin:0">${en}</span></td><td>${stTag(st)}</td><td class="ltr">${detail || ''}</td></tr>`;
+    const sch = R.scheduler || {};
+    const pub = p => p ? `<span class="ltr">${E(p.result)} · ${E(p.action)}${p.version ? ' v' + p.version : ''} · ${E(p.contentId || '')}${p.commit ? ' · ' + E(p.commit.slice(0, 7)) : ''}${p.deployment ? ' · ' + E(p.deployment) : ''}</span> · ${fmt(p.at)}${p.error ? `<br><small class="bad">${E(p.error)}</small>` : ''}` : '—';
+    const ops = s.ops || {};
+    return head + `
+    <section class="panel" style="margin-bottom:14px"><table class="t sys-table"><thead><tr><th>المكوّن</th><th>الحالة</th><th>التفاصيل</th></tr></thead><tbody>
+      ${row('العامل', 'Worker (health)', H.worker, `v${E(H.version)} · uptime ${E(H.uptimeSeconds)}s`)}
+      ${row('قاعدة المحتوى', 'CMS', R.cms.state, `${R.cms.records} record(s)`)}
+      ${row('مستودع النشر', 'Publishing repo', R.publishingRepo.state, `${E(R.publishingRepo.branch || '—')} / expected ${E(R.publishingRepo.expectedBranch)} · ${R.publishingRepo.clean ? 'clean' : 'NOT clean'}${R.publishingRepo.diverged ? ' · DIVERGED' : ''} · ${E(R.publishingRepo.head || '')}`)}
+      ${row('Git', 'Git', R.git.state, E(R.git.version || ''))}
+      ${row('GitHub', 'GitHub auth', R.github.state, `checked ${fmt(R.github.checkedAt)}`)}
+      ${row('الذكاء الاصطناعي', 'AI', R.ai.state, `${E(R.ai.provider || '')} ${E(R.ai.model || '')} ${R.ai.note ? '· ' + E(R.ai.note) : ''}`)}
+      ${row('النشر', 'Publishing', R.publishing.state, `<b class="${R.publishing.mode === 'live' ? 'bad' : ''}">${E(R.publishing.modeLabel)}</b>`)}
+      ${row('المُجدول', 'Scheduler', sch.state, `scheduled ${sch.scheduled} · due ${sch.due} · missed ${sch.missed} · expired ${sch.expired} · grace ${sch.graceMinutes}m / ${sch.graceMinutesOther}m · last tick ${fmt(sch.lastTick)}`)}
+      ${row('النسخ الاحتياطي', 'Backups', R.backups.state, R.backups.last ? `last ${fmt(R.backups.last.at)} · ${R.backups.count} kept (max ${R.backups.keep})` : 'no backup yet')}
+      ${row('سجل التدقيق', 'Audit log', R.audit.state, `${R.audit.entries} entries · hash-chained`)}
+      ${row('بيانات السوق', 'Market data', (R.market || {}).state || 'DISABLED', marketSummary(R.market))}
+    </tbody></table></section>
+    ${marketPanel(R.market)}
+    <div class="grid2" style="margin-bottom:14px">
+      <section class="panel"><h2>النشر <small class="ltr">Deployment</small></h2><dl class="kv"><dt>آخر نشر ناجح</dt><dd>${pub(D.lastSuccess)}</dd><dt>آخر فشل</dt><dd>${pub(D.lastFailure)}</dd><dt>آخر تشغيل تجريبي للبنية</dt><dd>${pub(D.lastCommission)}</dd></dl>
+        <p class="hint">LIVE يُعرض فقط بعد أن يُظهر الملف العام النسخة المنشورة؛ وإلا DEPLOYING أو DEPLOYED_UNVERIFIED.</p></section>
+      <section class="panel"><h2>العمليات <small class="ltr">Operations</small></h2>
+        <div class="row"><button class="btn" data-act="sys-commission">تشغيل فحص البنية <span class="ltr">(Commissioning)</span></button><button class="btn" data-act="sys-backup">نسخة احتياطية الآن</button><button class="btn" data-act="sys-audit">التحقق من سجل التدقيق</button></div>
+        <p class="hint">فحص البنية لا ينشئ أي محتوى ولا commit ولا push: يتحقق من المستودع، الجلب، صلاحية الدفع (dry-run)، توليد الملف، المخطط والاختبارات.</p>
+        <div id="sys-ops">${ops.html || ''}</div></section>
+    </div>`;
+  }
+
   /* ---------- actions ---------- */
-  function editable(d) { const o = {}; for (const k of ['title', 'slug', 'summary', 'body', 'symbol', 'market', 'bias', 'category', 'tags', 'image', 'visualPrompt', 'sourceReferences', 'riskDisclosure', 'seo', 'social', 'fields']) o[k] = d[k]; if (o.image && !o.image.src && !o.image.alt) o.image = null; return o; }
+  function editable(d) { const o = {}; for (const k of ['title', 'slug', 'summary', 'body', 'symbol', 'market', 'bias', 'category', 'tags', 'image', 'visualPrompt', 'sourceReferences', 'riskDisclosure', 'seo', 'social', 'fields', 'expiresAt']) o[k] = d[k]; if (o.image && !o.image.src && !o.image.alt) o.image = null; return o; }
   async function act(fn, okMsg) { const s = X(); try { await fn(); if (okMsg) toast(okMsg); s.err = ''; } catch (e) { s.err = e.status === 409 ? 'تغيّر هذا العنصر منذ تحميله. حدّث الصفحة قبل الحفظ.' : e.message + ((e.data && e.data.errors || []).length ? ' — ' + e.data.errors.map(x => x.message).join(' · ') : ''); } render(); }
   const ACTIONS = () => ({
-    'cms-refresh': () => { const s = X(); s.list = null; s.pubs = null; s.config = null; if (s.rec) openRecord(s.rec.id); else render(); },
+    'cms-refresh': () => { const s = X(); s.list = null; s.pubs = null; s.config = null; s.sys = null; if (s.rec) openRecord(s.rec.id); else render(); },
     'cms-open': el => openRecord(el.dataset.id),
     'cms-new': el => act(async () => {
       const title = ($('#cms-new-title') || {}).value || '';
@@ -336,6 +497,35 @@
       try { const f = await api('GET', '/api/feed'); await api('POST', '/api/unpublish', { contentId: r.id, expectedVersion: f.version, confirm: true }); closeModal(); X().list = null; X().pubs = null; await openRecord(r.id); toast('أُزيل من الموقع العام'); }
       catch (e) { if (out) out.innerHTML = `<div class="errbox">${E(e.message)}</div>`; }
     },
+    'cms-gold-pair': () => act(async () => {
+      const en = await api('POST', '/api/content', { type: 'GOLD_FOCUS', language: 'en', title: '', status: 'DRAFT' });
+      await api('POST', `/api/content/${en.id}/translate`, { mode: 'blank' });
+      X().list = null; await openRecord(en.id);
+    }, 'أُنشئت مسودتان فارغتان (EN + AR)'),
+    'cms-lvl-add': el => { const d = X().draft, a = get(d, el.dataset.path) || []; a.push(''); set(d, el.dataset.path, a); X().dirty = true; render(); },
+    'cms-lvl-del': el => { const d = X().draft, a = get(d, el.dataset.path) || []; a.splice(+el.dataset.i, 1); set(d, el.dataset.path, a); X().dirty = true; render(); },
+    'cms-pf-run': () => runPreflight(),
+    /* Explicit operator action: copy the CURRENT verified XAUUSD quote into this draft as a fixed snapshot.
+       Refused unless the market service reports it LIVE or DELAYED — stale/closed/unavailable prices are never snapshotted. */
+    'cms-gold-snapshot': () => act(async () => {
+      const m = await api('GET', '/api/system/market'), q = (m.quotes || []).find(x => x.symbol === 'XAUUSD');
+      if (!q || !['LIVE', 'DELAYED'].includes(q.status) || !(q.price > 0)) throw new Error(`لا يوجد سعر XAUUSD موثّق حاليًا (${q ? q.status : 'UNAVAILABLE'}) — لم يُضف أي سعر.`);
+      const d = X().draft; d.fields = d.fields || {};
+      d.fields.price = +q.price.toFixed(q.decimals || 2);
+      d.fields.priceSource = `${q.source.provider} ${q.source.providerSymbol} (${q.priceType === 'BID_ASK' ? 'mid' : 'last'}${q.status === 'DELAYED' ? ', delayed' : ''})`;
+      d.fields.priceTime = q.providerTime; X().dirty = true;
+    }, 'أُضيفت لقطة السعر — راجعها ثم احفظ المسودة'),
+    'cms-rollback': el => openRollback(el.dataset.v),
+    'cms-rollback-go': el => doRollback(!!el.dataset.dry),
+    'sys-refresh': () => { X().sys = null; render(); },
+    'sys-commission': async () => {
+      const s = X(); s.ops = { html: '<p class="hint">جارٍ الفحص… (fetch، push --dry-run، توليد الملف، الاختبارات)</p>' }; render();
+      try { const c = await api('POST', '/api/publish/commission', {}); s.ops = { html: `<div class="pf pf--${c.result === 'COMMISSION_OK' ? 'ready' : 'blocked'}"><b class="ltr">${E(c.result)}</b> · <span class="ltr">mode ${E(c.publishMode)} · head ${E(c.head || '')}</span></div>${checkList(c.checks)}` }; }
+      catch (e) { s.ops = { html: `<div class="errbox">${E(e.message)}</div>` }; }
+      s.sys = null; render();
+    },
+    'sys-backup': async () => { const s = X(); try { const b = await api('POST', '/api/system/backups', {}); s.ops = { html: `<p class="ok">نسخة احتياطية ✓ <span class="ltr">${E(b.file)} · ${E(b.bytes)} bytes · sha256 ${E(String(b.sha256 || '').slice(0, 12))}</span></p>` }; } catch (e) { s.ops = { html: `<div class="errbox">${E(e.message)}</div>` }; } s.sys = null; render(); },
+    'sys-audit': async () => { const s = X(); try { const a = await api('GET', '/api/system/audit?limit=15'); s.ops = { html: `<p class="${a.verify.ok ? 'ok' : 'bad'}">${a.verify.ok ? 'سلسلة التدقيق سليمة ✓' : 'تم اكتشاف تلاعب ✕'} <span class="ltr">(${E(a.verify.entries != null ? a.verify.entries : '')} entries${a.verify.brokenAt ? ', broken at #' + E(a.verify.brokenAt) : ''})</span></p><ul class="cms-hist">${a.entries.slice().reverse().map(x => `<li class="ltr">#${x.seq} ${E(x.at)} · ${E(x.action)} · ${E(x.actor || '')} ${x.contentId ? '· ' + E(x.contentId) : ''} ${x.result ? '· ' + E(x.result) : ''}</li>`).join('')}</ul>` }; } catch (e) { s.ops = { html: `<div class="errbox">${E(e.message)}</div>` }; } render(); },
     'pub-status': el => act(async () => { const p = await api('GET', `/api/publications/${el.dataset.id}/status`); const i = X().pubs.findIndex(x => x.publicationId === p.publicationId); if (i >= 0) X().pubs[i] = p; })
   });
 
@@ -357,7 +547,7 @@
   }
 
   window.installCmsStudio = function () {
-    VIEWS.cms = viewLibrary; VIEWS.cmsedit = viewEditor; VIEWS.publications = viewPublications;
+    VIEWS.cms = viewLibrary; VIEWS.cmsedit = viewEditor; VIEWS.publications = viewPublications; VIEWS.system = viewSystem;
     Object.assign(ACT, ACTIONS());
     document.addEventListener('input', onInput); document.addEventListener('change', onInput);
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('cms-modal') && !document.getElementById('cms-modal').hidden) closeModal(); });

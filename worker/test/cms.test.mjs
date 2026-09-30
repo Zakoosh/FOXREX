@@ -66,7 +66,7 @@ test('schema + integrity: valid entries of every website type pass; broken ones 
     mk('MORNING_BRIEF'), mk('US_OPEN'), mk('MARKET_RECAP'), mk('LEARN'), mk('REX_EXPLAINS'), mk('REX_NOTE'), mk('ASK_REX'),
     mk('EVENT', { sourceReferences: [{ name: 'BLS', url: 'https://www.bls.gov/cpi/' }], fields: { importance: 'HIGH', affectedMarkets: ['XAUUSD'] } }),
     mk('NEWS', { category: 'central-banks', sourceReferences: [{ name: 'Fed', url: 'https://www.federalreserve.gov/' }], fields: { importance: 'HIGH', affectedMarkets: ['DXY'] } }),
-    mk('GOLD_FOCUS', { bias: 'neutral', riskDisclosure: 'Risk.', fields: { ...goldEN.fields } }),
+    mk('GOLD_FOCUS', { bias: 'neutral', riskDisclosure: 'Risk.', sourceReferences: [{ name: 'Desk chart review' }], fields: { ...goldEN.fields } }),
     mk('ANALYSIS', { symbol: 'EURUSD', category: 'fx', bias: 'bullish', riskDisclosure: 'Risk.', fields: { timeframe: 'H4', keyLevels: ['1.1000'] } }),
     mk('SIGNAL', { symbol: 'XAUUSD', riskDisclosure: 'Risk.', fields: { direction: 'BUY', entry: '2380', stopLoss: '2360', targets: ['2400'], riskMessage: 'Risk 1%.', analysisContext: 'Context.' } }),
     mk('SIGNAL_RESULT', { symbol: 'XAUUSD', fields: { signalId: 'signal-x-en', direction: 'BUY', entry: '2380', exit: '2400', outcome: 'TARGET_HIT', closedAt: at, resultNotes: 'Closed at target.' } })
@@ -216,8 +216,9 @@ test('auth, CORS and AI boundaries', async t => {
   assert.equal((await api('POST', '/api/content', goldEN, { 'X-Foxrex-Actor': '' })).status, 400, 'writes need a named operator');
   assert.equal((await api('POST', '/api/content', goldEN, { 'Content-Type': 'text/plain' })).status, 415, 'form-style posts refused');
   const pre = await fetch(base + '/api/publish', { method: 'OPTIONS', headers: { Origin: 'https://evil.example' } });
-  assert.equal(pre.headers.get('access-control-allow-origin'), 'https://foxrex.co', 'single configured origin only, never *');
-  assert.notEqual(pre.headers.get('access-control-allow-origin'), '*');
+  assert.equal(pre.headers.get('access-control-allow-origin'), null, 'a foreign origin gets no CORS grant at all (never *, never a fallback)');
+  const ok = await fetch(base + '/api/publish', { method: 'OPTIONS', headers: { Origin: 'https://foxrex.co' } });
+  assert.equal(ok.headers.get('access-control-allow-origin'), 'https://foxrex.co');
   const id = (await api('POST', '/api/content', goldEN)).body.id;
   const ai = await api('POST', `/api/content/${id}/translate`, { mode: 'ai' });
   assert.equal(ai.status, 503, 'AI unavailable is reported, manual path unaffected'); assert.match(ai.body.error, /Blank translation draft/);
@@ -250,7 +251,7 @@ test('scheduling: future time required, not publishable early, executed only by 
   const early = await api('POST', '/api/publish', { contentId: id, expectedVersion: (await api('GET', '/api/feed')).body.version, confirm: true });
   assert.equal(early.status, 422); assert.ok(early.body.errors.some(e => e.field === 'scheduledAt'), 'not before scheduledAt');
   assert.equal(app.cms.publisher.due().length, 0);
-  app.cms.store.data.records[id].scheduledAt = '2020-01-01T00:00:00Z'; // simulate time passing
+  app.cms.store.data.records[id].scheduledAt = new Date(Date.now() - 60e3).toISOString().replace(/\.\d{3}Z$/, 'Z'); // simulate time passing: due 1 min ago (within grace)
   assert.equal(app.cms.publisher.due().length, 1);
   await app.cms.runDue();
   assert.equal(feedOf(repo).items.length, 1); assert.equal((await api('GET', `/api/content/${id}`)).body.status, 'PUBLISHED');

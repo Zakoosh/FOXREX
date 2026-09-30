@@ -52,5 +52,41 @@ export const CONFIG = Object.freeze({
     publicOrigin: env.PUBLIC_ORIGIN || 'https://foxrex.co'
   },
   // Automatic execution of SCHEDULED items. Off unless the worker runs on an always-on host.
-  schedulerEnabled: env.SCHEDULER_ENABLED === 'true'
+  schedulerEnabled: env.SCHEDULER_ENABLED === 'true',
+  // Missed-schedule policy: time-sensitive market content is never auto-published later than this.
+  scheduleGraceMinutes: +(env.SCHEDULE_GRACE_MINUTES || 15),
+  scheduleGraceMinutesOther: +(env.SCHEDULE_GRACE_MINUTES_OTHER || 24 * 60),
+  // Private CMS backups (never in the public repository).
+  backup: { dir: env.BACKUP_DIR ? path.resolve(workerDir, env.BACKUP_DIR) : null, keep: +(env.BACKUP_KEEP || 72), minIntervalMs: +(env.BACKUP_MIN_INTERVAL_MINUTES || 10) * 60e3 },
+  logFile: env.LOG_FILE ? path.resolve(workerDir, env.LOG_FILE) : null,
+  // Public repository used to read GitHub Pages deployment runs (no token; read-only).
+  githubRepo: env.GITHUB_REPO || 'Zakoosh/FOXREX',
+  // Market Data Layer (docs/MARKET-DATA.md). Credentials live ONLY here (worker env), never in Studio or the site.
+  market: marketConfig(env)
 });
+
+/** Market data configuration. MARKET_PROVIDER(S) is an ordered, comma-separated priority list
+    (oanda, twelvedata, coinbase, bridge). Empty → the market service is disabled and the site keeps its
+    honest "not connected" state. MARKET_API_KEY is accepted as the key of the FIRST provider when its
+    provider-specific variable is not set. */
+export function marketConfig(env) {
+  const providers = String(env.MARKET_PROVIDERS || env.MARKET_PROVIDER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  const generic = env.MARKET_API_KEY || '', first = providers[0];
+  const pollSeconds = {}; for (const p of ['oanda', 'twelvedata', 'coinbase', 'bridge']) if (env[`MARKET_POLL_SECONDS_${p.toUpperCase()}`]) pollSeconds[p] = +env[`MARKET_POLL_SECONDS_${p.toUpperCase()}`];
+  return {
+    providers,
+    symbols: String(env.MARKET_SYMBOLS || 'XAUUSD,EURUSD,GBPUSD,USDJPY,BTCUSD,DXY').split(',').map(s => s.trim().toUpperCase()).filter(Boolean),
+    symbolMap: env.MARKET_SYMBOL_MAP || '',
+    pollSeconds,
+    timeoutMs: +(env.MARKET_TIMEOUT_MS || 8000),
+    futureToleranceMs: +(env.MARKET_FUTURE_TOLERANCE_MS || 10000),
+    maxBackoffMs: +(env.MARKET_MAX_BACKOFF_SECONDS || 600) * 1000,
+    oanda: { token: env.OANDA_API_TOKEN || (first === 'oanda' ? generic : ''), accountId: env.OANDA_ACCOUNT_ID || '', environment: env.OANDA_ENV === 'live' ? 'live' : 'practice' },
+    twelvedata: { apiKey: env.TWELVEDATA_API_KEY || (first === 'twelvedata' ? generic : ''), realtime: env.TWELVEDATA_REALTIME === 'true' },
+    bridge: { url: env.MARKET_BRIDGE_URL || '', token: env.MARKET_BRIDGE_TOKEN || (first === 'bridge' ? generic : ''), label: env.MARKET_BRIDGE_LABEL || 'Broker bridge' },
+    publicOrigins: String(env.MARKET_PUBLIC_ORIGINS || 'https://foxrex.co').split(',').map(s => s.trim()).filter(o => o && o !== '*'),
+    trustProxy: env.MARKET_TRUST_PROXY || '',
+    port: env.MARKET_PORT ? +env.MARKET_PORT : null,
+    autoStart: env.MARKET_AUTOSTART !== 'false'
+  };
+}

@@ -1,0 +1,17 @@
+# Cloudflare Tunnel for the FOXREX control plane (example — the operator creates the tunnel and Access app).
+# The worker stays bound to 127.0.0.1; only the tunnel reaches it. Protect the hostname with Cloudflare Access
+# (docs/CLOUDFLARE-ACCESS.md) BEFORE routing traffic. Do not commit the credentials file.
+#   cloudflared tunnel create foxrex-control
+#   cloudflared tunnel route dns foxrex-control studio-api.foxrex.co    # operator action (DNS)
+tunnel: foxrex-control
+credentials-file: /var/lib/foxrex/.cloudflared/foxrex-control.json
+ingress:
+  - hostname: studio-api.foxrex.co
+    service: http://127.0.0.1:8787
+    originRequest:
+      connectTimeout: 10s
+      noTLSVerify: false
+  # Public, read-only Market API (market-only listener, MARKET_PORT). No Access policy: it serves prices only.
+  - hostname: market.foxrex.co
+    service: http://127.0.0.1:8788
+  - service: http_status:404

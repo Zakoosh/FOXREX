@@ -108,3 +108,13 @@ a.fx-card:hover,.fx-card--link:hover{border-color:var(--foxrex-primary-line);tra
 .fx-levels dd{margin:4px 0 0;font-weight:600;font-size:15px}
 [dir="rtl"] .fx-levels dd{text-align:right}
 html[data-preview] body::before{content:"PREVIEW — not published";position:fixed;z-index:100;inset-inline:0;top:0;padding:6px;text-align:center;font:700 12px/1 var(--foxrex-font-en);letter-spacing:.14em;background:var(--foxrex-warning);color:var(--foxrex-dark)}
+/* Market data status (scripts/public/market.js): stale or closed prices must never look live */
+.fx-ticker__item{position:relative}
+.fx-ticker__tag{font-family:var(--foxrex-font-en);font-size:10.5px;letter-spacing:.04em;color:var(--foxrex-text-faint);white-space:nowrap}
+.fx-ticker__tag:empty{display:none}
+.fx-ticker__item[data-status="LIVE"] .fx-ticker__px{color:var(--foxrex-text)}
+.fx-ticker__item[data-status="DELAYED"] .fx-ticker__px{color:var(--foxrex-text-muted)}
+.fx-ticker__item[data-status="DELAYED"] .fx-ticker__tag{color:var(--foxrex-warning)}
+.fx-ticker__item[data-status="STALE"] .fx-ticker__px{color:var(--foxrex-text-faint);opacity:.55}
+.fx-ticker__item[data-status="STALE"] .fx-ticker__tag{color:var(--foxrex-negative)}
+.fx-ticker__item[data-status="MARKET_CLOSED"] .fx-ticker__px{color:var(--foxrex-text-muted)}
