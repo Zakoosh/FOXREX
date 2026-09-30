@@ -42,6 +42,33 @@
   --foxrex-fs-2xl:clamp(26px,3.2vw,36px);
   --foxrex-fs-display:clamp(40px,6.4vw,76px);
 
+  /* Typography tokens — `font` shorthand: weight size/line-height family.
+     Latin (EN) and Arabic (AR) have separate scales. Arabic never takes letter-spacing,
+     uppercase or Latin tracking; it runs larger and looser because its x-height is smaller.
+     Canonical for web, social, Telegram, reports and Studio: docs/ARABIC-BRAND-TYPOGRAPHY.md */
+  --en-display:800 clamp(40px,6.4vw,76px)/1.02 var(--foxrex-font-en);
+  --en-h1:800 clamp(34px,5vw,56px)/1.08 var(--foxrex-font-en);
+  --en-h2:700 clamp(26px,3.2vw,36px)/1.2 var(--foxrex-font-en);
+  --en-card-title:600 18px/1.35 var(--foxrex-font-en);
+  --en-body:400 16px/1.65 var(--foxrex-font-en);
+  --en-caption:400 13px/1.55 var(--foxrex-font-en);
+  --en-label:600 12px/1.4 var(--foxrex-font-en);
+  --en-cta:600 15px/1.2 var(--foxrex-font-en);
+
+  --ar-display:700 clamp(44px,7.2vw,88px)/1.28 var(--foxrex-font-ar);
+  --ar-hero:700 clamp(40px,6.2vw,76px)/1.3 var(--foxrex-font-ar);
+  --ar-h1:700 clamp(32px,4.6vw,54px)/1.38 var(--foxrex-font-ar);
+  --ar-h2:700 clamp(26px,3.4vw,40px)/1.5 var(--foxrex-font-ar);
+  --ar-section:600 15px/1.6 var(--foxrex-font-ar);
+  --ar-card-title:600 19px/1.6 var(--foxrex-font-ar);
+  --ar-body:400 17px/1.95 var(--foxrex-font-ar);
+  --ar-lead:400 clamp(18px,1.6vw,20px)/1.9 var(--foxrex-font-ar);
+  --ar-caption:400 14px/1.8 var(--foxrex-font-ar);
+  --ar-label:500 13px/1.6 var(--foxrex-font-ar);
+  --ar-cta:600 16px/1.4 var(--foxrex-font-ar);
+  /* AR Data: symbols, prices, percentages and times inside Arabic stay Inter, LTR, tabular */
+  --ar-data:600 0.94em var(--foxrex-font-en);
+
   /* Spacing, radius, elevation, motion */
   --foxrex-s1:4px;--foxrex-s2:8px;--foxrex-s3:12px;--foxrex-s4:16px;--foxrex-s5:24px;--foxrex-s6:32px;--foxrex-s7:48px;--foxrex-s8:72px;--foxrex-s9:104px;
   --foxrex-r1:8px;--foxrex-r2:12px;--foxrex-r3:16px;--foxrex-r4:22px;--foxrex-pill:999px;
@@ -51,3 +78,4 @@
   --foxrex-gutter:clamp(16px,4vw,32px);
 }
 :root[lang="ar"],[dir="rtl"]{--foxrex-font:var(--foxrex-font-ar)}
+/* Fonts: styles/fonts.css (self-hosted Inter + IBM Plex Sans Arabic) */

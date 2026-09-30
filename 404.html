@@ -7,10 +7,8 @@
 <title>Page not found — FOXREX</title>
 <meta name="theme-color" content="#0B1320">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">
-<script>(function(){var d=document.documentElement,l=null;try{l=localStorage.getItem("foxrex-lang")}catch(e){}if(l==="ar"){d.lang="ar";d.dir="rtl"}})();</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Inter:ital,wght@0,400;0,600;0,800;1,800&display=swap">
+<script>(function(){var d=document.documentElement,l=null;try{l=localStorage.getItem("foxrex-lang")}catch(e){}if(/^\/ar(\/|$)/.test(location.pathname)||l==="ar"){d.lang="ar";d.dir="rtl"}})();</script>
+<link rel="stylesheet" href="/styles/fonts.css">
 <link rel="stylesheet" href="/styles/tokens.css">
 <link rel="stylesheet" href="/styles/base.css">
 <link rel="stylesheet" href="/styles/components.css">
@@ -29,8 +27,8 @@ h1{font-size:24px}
   <h1><span class="l-en">This page could not be found</span><span class="l-ar" lang="ar">الصفحة غير موجودة</span></h1>
   <p class="muted"><span class="l-en">The link may have moved. FOXREX Studio now lives at /studio/.</span><span class="l-ar" lang="ar">ربما نُقل الرابط. استوديو FOXREX أصبح على /studio/.</span></p>
   <div class="ctas">
-    <a class="fx-btn fx-btn--primary" href="/"><span class="l-en">Back to FOXREX</span><span class="l-ar" lang="ar">العودة إلى FOXREX</span></a>
-    <a class="fx-btn fx-btn--ghost" href="/markets/"><span class="l-en">Markets</span><span class="l-ar" lang="ar">الأسواق</span></a>
+    <a class="fx-btn fx-btn--primary l-en" href="/">Back to FOXREX</a><a class="fx-btn fx-btn--primary l-ar" lang="ar" href="/ar/">العودة إلى <bdi dir="ltr">FOXREX</bdi></a>
+    <a class="fx-btn fx-btn--ghost l-en" href="/markets/">Markets</a><a class="fx-btn fx-btn--ghost l-ar" lang="ar" href="/ar/markets/">الأسواق</a>
   </div>
 </main>
 </body>

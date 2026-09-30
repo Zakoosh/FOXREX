@@ -1,17 +1,13 @@
 /* FOXREX public site behaviour: mobile menu, language toggle, scroll reveal, year. No dependencies. */
 (function () {
   'use strict';
-  var d = document.documentElement;
 
-  /* Language (EN/LTR <-> AR/RTL). Both languages are in the markup; CSS hides the inactive one. */
-  function setLang(lang) {
-    d.lang = lang === 'ar' ? 'ar' : 'en';
-    d.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    try { localStorage.setItem('foxrex-lang', d.lang); } catch (e) { /* storage unavailable */ }
-    document.dispatchEvent(new CustomEvent('foxrex:lang', { detail: d.lang }));
-  }
-  document.querySelectorAll('[data-lang-toggle]').forEach(function (b) {
-    b.addEventListener('click', function () { setLang(d.lang === 'ar' ? 'en' : 'ar'); });
+  /* Language: English lives at /, Arabic at /ar/. The switcher is a normal link to the
+     equivalent page; the choice is also remembered (used by the 404 page). */
+  document.querySelectorAll('[data-lang-switch]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      try { localStorage.setItem('foxrex-lang', a.getAttribute('data-lang-switch')); } catch (e) { /* storage unavailable */ }
+    });
   });
 
   /* Mobile navigation */

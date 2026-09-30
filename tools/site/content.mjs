@@ -7,6 +7,8 @@ export const SITE = {
   name: 'FOXREX',
   tagline: 'TRADE SMARTER. GO FURTHER.',
   taglineAr: 'تداول أذكى... فرص أكبر',
+  positioningAr: ['ذكاء الأسواق', 'التحليل', 'التداول'],
+  descriptionAr: 'FOXREX منصة عربية لذكاء الأسواق وتعليم التداول: تحليل فني، تغطية يومية للذهب، أخبار اقتصادية وإشارات FOXREX، مع وضوح كامل بشأن المخاطر.',
   description: 'FOXREX is a market-intelligence and trading-education brand: technical analysis, gold coverage, economic news and FOXREX Signals, with clear risk awareness.',
   social: {
     telegram: { label: 'Telegram', handle: '@fooxrex', url: 'https://t.me/fooxrex' },
@@ -34,11 +36,11 @@ export const MARKETS = [
 
 /* Daily editorial system — times are Europe/Istanbul (UTC+3) */
 export const SCHEDULE = [
-  { id: 'brief', time: '09:00', kind: 'brief', title: ['Morning Brief', 'الموجز الصباحي'], desc: ['What moved overnight, what matters today and the levels we are watching.', 'ما تحرك خلال الليل، وما يهم اليوم، والمستويات التي نراقبها.'] },
-  { id: 'gold', time: '11:00', kind: 'gold', title: ['Gold Focus', 'تركيز الذهب'], desc: ['Structure, bias and scenarios for XAUUSD.', 'البنية والاتجاه والسيناريوهات للذهب XAUUSD.'] },
-  { id: 'event', time: '14:00', kind: 'event', title: ['The Event', 'الحدث'], desc: ['The key release or decision of the day — published only when relevant.', 'أهم بيان أو قرار في اليوم — يُنشر فقط عند وجود حدث مهم.'] },
-  { id: 'open', time: '15:30', kind: 'open', title: ['US Open', 'افتتاح السوق الأمريكي'], desc: ['Positioning and volatility into the New York session.', 'التمركز والتقلب مع افتتاح جلسة نيويورك.'] },
-  { id: 'recap', time: '22:30', kind: 'recap', title: ['Market Recap', 'ملخص السوق'], desc: ['How the day closed and what it means for tomorrow.', 'كيف أغلق اليوم وماذا يعني ذلك للغد.'] }
+  { id: 'brief', time: '09:00', kind: 'brief', title: ['Morning Brief', 'الموجز الصباحي'], desc: ['What moved overnight, what matters today and the levels we are watching.', 'ما الذي تحرك في الليل، وما الذي يهم اليوم، والمستويات التي نراقبها.'] },
+  { id: 'gold', time: '11:00', kind: 'gold', title: ['Gold Focus', 'تركيز الذهب'], desc: ['Structure, bias and scenarios for XAUUSD.', 'بنية الذهب XAUUSD واتجاهه والسيناريوهان المحتملان.'] },
+  { id: 'event', time: '14:00', kind: 'event', title: ['The Event', 'الحدث'], desc: ['The key release or decision of the day, such as CPI or NFP — published only when relevant.', 'البيان الأهم في اليوم مثل CPI أو NFP، يُنشر فقط عندما يكون هناك حدث مؤثر.'] },
+  { id: 'open', time: '15:30', kind: 'open', title: ['US Open', 'افتتاح السوق الأمريكي'], desc: ['XAUUSD and the majors into the Wall Street open at 15:30.', 'تحليل XAUUSD قبل افتتاح وول ستريت عند 15:30'] },
+  { id: 'recap', time: '22:30', kind: 'recap', title: ['Market Recap', 'ملخص السوق'], desc: ['How the day closed and what it means for tomorrow.', 'كيف أغلق اليوم، وماذا يعني ذلك لجلسة الغد.'] }
 ];
 export const SCHEDULE_EXTRA = [
   { time: ['Real-time', 'لحظي'], title: ['Breaking / Data Released', 'عاجل / صدور البيانات'] },

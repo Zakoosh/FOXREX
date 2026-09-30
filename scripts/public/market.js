@@ -21,7 +21,8 @@
   var STALE_MS = 5 * 60 * 1000;
   var last = {};
 
-  function label(en, ar) { return '<span class="l-en">' + en + '</span><span class="l-ar" lang="ar">' + ar + '</span>'; }
+  var AR = document.documentElement.lang === 'ar';
+  function label(en, ar) { var span = document.createElement('span'); span.textContent = AR ? ar : en; return span.innerHTML; }
   function setState(state, en, ar) { if (!stateEl) return; stateEl.setAttribute('data-state', state); stateEl.innerHTML = label(en, ar); }
   function fmt(sym, n) {
     var dp = /JPY$/.test(sym) ? 3 : /^(XAU|BTC|DXY)/.test(sym) ? 2 : 5;
