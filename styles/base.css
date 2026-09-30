@@ -1,0 +1,32 @@
+/* FOXREX base: reset, typography, layout primitives. Logical properties keep RTL/LTR symmetric. */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--foxrex-bg);color:var(--foxrex-text);font-family:var(--foxrex-font);font-size:var(--foxrex-fs-md);line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,svg{display:block;max-width:100%}
+img{height:auto}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,h4{margin:0;line-height:1.2;font-weight:700;letter-spacing:-.015em}
+[dir="rtl"] h1,[dir="rtl"] h2,[dir="rtl"] h3,[dir="rtl"] h4{letter-spacing:0;line-height:1.35}
+p{margin:0}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid var(--foxrex-primary);outline-offset:3px;border-radius:6px}
+::selection{background:rgba(0,212,167,.28);color:var(--foxrex-white)}
+
+.wrap{width:100%;max-width:var(--foxrex-wrap);margin-inline:auto;padding-inline:var(--foxrex-gutter)}
+.en,.num,.sym{font-family:var(--foxrex-font-en)}
+.num{font-variant-numeric:tabular-nums}
+.ltr{direction:ltr;unicode-bidi:isolate}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;inset-inline-start:12px;top:-60px;z-index:100;background:var(--foxrex-primary);color:var(--foxrex-dark);padding:10px 14px;border-radius:var(--foxrex-r1);font-weight:600}
+.skip:focus{top:12px}
+.muted{color:var(--foxrex-text-muted)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+/* Bilingual content: both languages ship in the markup; the inactive one is hidden.
+   <html lang="ar" dir="rtl"> is set before first paint by the inline head script. */
+html:not([lang="ar"]) .l-ar{display:none!important}
+html[lang="ar"] .l-en{display:none!important}

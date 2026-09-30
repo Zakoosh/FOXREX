@@ -14,13 +14,18 @@ const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'foxrex-live-check-'));
 const config = { dataDir, creativeProvider: 'ollama', creativeModel: process.env.CREATIVE_MODEL || 'qwen3:4b', creativeUrl: 'http://127.0.0.1:11434', token: '', allowedOrigin: '', imageModels: ['nano_banana_2'], enableVideo: false, estimateCost: false };
 if (process.argv.includes('--serve')) {
   const worker = createServer({ config, registry: { MANUAL_CLAUDE: new ManualClaudeProvider() }, autoRun: false });
-  const files = { '/': 'index.html', '/index.html': 'index.html', '/foxrex-studio.html': 'foxrex-studio.html', '/creative-studio.js': 'creative-studio.js', '/auth.js': 'auth.js', '/login.html': 'login.html', '/assets/logo.jpg': 'assets/logo.jpg', '/assets/fox.jpg': 'assets/fox.jpg' };
+  // Serve the repository's static site (public pages + /studio/) and fall through to the worker API.
+  const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.xml': 'application/xml', '.txt': 'text/plain; charset=utf-8', '.webmanifest': 'application/manifest+json' };
   http.createServer((req, res) => {
-    const name = files[new URL(req.url, 'http://localhost').pathname];
-    if (!name) return worker.server.emit('request', req, res);
-    res.writeHead(200, { 'Content-Type': name.endsWith('.js') ? 'text/javascript; charset=utf-8' : name.endsWith('.jpg') ? 'image/jpeg' : 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
-    fs.createReadStream(path.join(root, name)).pipe(res);
-  }).listen(5174, '127.0.0.1', () => console.log(`Isolated verification: http://127.0.0.1:5174/foxrex-studio.html\nLocal Ollama ${config.creativeModel}; MANUAL asset provider only. Data: ${dataDir}`));
+    let rel = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+    if (rel.endsWith('/')) rel += 'index.html';
+    const file = path.resolve(root, '.' + rel);
+    const relPath = path.relative(root, file);
+    const inside = !relPath.startsWith('..') && !path.isAbsolute(relPath) && !/^(worker|\.git|tools|node_modules)([\\/]|$)/.test(relPath);
+    if (req.method !== 'GET' || !inside || !fs.existsSync(file) || !fs.statSync(file).isFile()) return worker.server.emit('request', req, res);
+    res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+    fs.createReadStream(file).pipe(res);
+  }).listen(5174, '127.0.0.1', () => console.log(`Isolated verification: http://127.0.0.1:5174/studio/\nLocal Ollama ${config.creativeModel}; MANUAL asset provider only. Data: ${dataDir}`));
 } else {
   const service = new CreativeService(config);
   console.log(JSON.stringify(await service.status()));

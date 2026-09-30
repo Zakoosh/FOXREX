@@ -1,0 +1,46 @@
+/* FOXREX Studio shell — admin information architecture on top of the existing Studio styles.
+   Colours and fonts come from tokens.css; the Studio's own variables are mapped to them. */
+
+/* Sidebar navigation: Arabic label + English section name */
+.side .nav button .nl{display:flex;flex-direction:column;line-height:1.25}
+.side .nav button .nl small{font-family:var(--foxrex-font-en);font-size:11px;color:var(--foxrex-text-faint);letter-spacing:.02em}
+.side .nav button[aria-current="page"] .nl small{color:var(--foxrex-primary)}
+.brand b::after{content:"Content Operating System";display:block;font-family:var(--foxrex-font-en);font-size:10.5px;font-weight:500;letter-spacing:.06em;color:var(--foxrex-text-faint)}
+
+/* Environment panel (replaces any client-side "login": the page is static and says so) */
+.studio-env{margin-top:16px;padding:12px;border:1px solid var(--foxrex-border);border-radius:var(--foxrex-r2);background:rgba(229,231,235,.02);font-size:12px;color:var(--foxrex-text-muted);line-height:1.6}
+.studio-env p{margin:8px 0 10px}
+.studio-env .fx-status{font-size:12px}
+.env-links{display:flex;gap:6px}
+.env-links a,.env-links button{all:unset;cursor:pointer;flex:1;text-align:center;padding:6px 8px;border-radius:var(--foxrex-r1);border:1px solid var(--foxrex-border);color:var(--foxrex-text-muted);font-size:12px}
+.env-links a:hover,.env-links button:hover{color:var(--foxrex-white);border-color:var(--foxrex-primary)}
+.env-links :focus-visible{outline:2px solid var(--foxrex-primary);outline-offset:2px}
+
+/* Section sub-tabs */
+.subtabs{display:flex;gap:4px;margin:-4px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--foxrex-border);overflow-x:auto}
+.subtabs button{all:unset;cursor:pointer;white-space:nowrap;padding:6px 12px;border-radius:var(--foxrex-pill);font-size:13.5px;color:var(--foxrex-text-muted)}
+.subtabs button:hover{color:var(--foxrex-white);background:rgba(229,231,235,.05)}
+.subtabs button[aria-current="page"]{background:var(--foxrex-primary-tint);color:var(--foxrex-primary);font-weight:600}
+.subtabs button:focus-visible{outline:2px solid var(--foxrex-primary);outline-offset:2px}
+
+/* Overview: content lifecycle */
+.lifecycle{margin-bottom:16px}
+.lc{display:flex;align-items:stretch;gap:4px;overflow-x:auto;padding-bottom:4px}
+.lc button{all:unset;cursor:pointer;flex:1 0 92px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 8px;border-radius:var(--foxrex-r2);border:1px solid var(--foxrex-border);background:rgba(229,231,235,.02);text-align:center}
+.lc button:hover{border-color:var(--foxrex-primary-line)}
+.lc button:focus-visible{outline:2px solid var(--foxrex-primary);outline-offset:2px}
+.lc b{font-size:22px;font-weight:600}
+.lc span{font-size:13px}
+.lc small{font-family:var(--foxrex-font-en);font-size:10px;letter-spacing:.08em;color:var(--foxrex-text-faint)}
+.lc i{align-self:center;font-style:normal;color:var(--foxrex-text-faint);font-size:12px}
+.idea{display:flex;gap:8px;margin-top:12px}
+.idea input{flex:1;min-width:0}
+.sysrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--foxrex-border);font-size:13.5px}
+.sysrow:last-of-type{border-bottom:0}
+.security ul{margin:8px 0;padding-inline-start:18px;display:grid;gap:4px}
+
+@media (max-width:900px){
+  .studio-env{display:none}
+  .side .nav button .nl small{display:none}
+  .lc i{display:none}
+}

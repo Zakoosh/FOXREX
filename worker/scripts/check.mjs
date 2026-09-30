@@ -12,7 +12,7 @@ function check(dir) {
   }
 }
 for (const dir of ['worker/src', 'worker/scripts', 'worker/test']) check(path.join(root, dir));
-new vm.Script(fs.readFileSync(path.join(root, 'creative-studio.js'), 'utf8'));
-const html = fs.readFileSync(path.join(root, 'foxrex-studio.html'), 'utf8');
+new vm.Script(fs.readFileSync(path.join(root, 'studio', 'creative-studio.js'), 'utf8'));
+const html = fs.readFileSync(path.join(root, 'studio', 'index.html'), 'utf8');
 for (const m of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) new vm.Script(m[1]);
 console.log('Worker, verification scripts, tests, creative UI and inline Studio JavaScript parse successfully.');

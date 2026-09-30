@@ -40,8 +40,14 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
     const data = {}; for (const [id, p] of Object.entries(registry)) data[id] = await p.healthCheck();
     healthCache = { at: Date.now(), data }; return data;
   }
-  const send = (res, code, body, headers = {}) => { res.writeHead(code, { "Content-Type": "application/json", ...cors(), ...headers }); res.end(JSON.stringify(body)); };
-  const cors = () => config.allowedOrigin ? { "Access-Control-Allow-Origin": config.allowedOrigin, "Access-Control-Allow-Headers": "Authorization, Content-Type", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Vary": "Origin" } : {};
+  const send = (res, code, body, headers = {}) => { res.writeHead(code, { "Content-Type": "application/json", ...cors(res.fxOrigin), ...headers }); res.end(JSON.stringify(body)); };
+  // ALLOWED_ORIGIN may list several exact origins, comma-separated (e.g. https://foxrex.co,https://zakoosh.github.io).
+  const origins = String(config.allowedOrigin || "").split(",").map(o => o.trim().replace(/\/+$/, "")).filter(Boolean);
+  const cors = origin => {
+    if (!origins.length) return {};
+    const allow = origins.length === 1 ? origins[0] : origins.includes(origin) ? origin : null;
+    return allow ? { "Access-Control-Allow-Origin": allow, "Access-Control-Allow-Headers": "Authorization, Content-Type", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Vary": "Origin" } : { "Vary": "Origin" };
+  };
   const authed = req => !config.token || req.headers.authorization === `Bearer ${config.token}`;
   const body = req => new Promise((ok, bad) => { let d = ""; req.on("data", c => { d += c; if (d.length > 30e6) { bad(new Error("too large")); req.destroy(); } }); req.on("end", () => { try { ok(d ? JSON.parse(d) : {}); } catch (e) { bad(e); } }); });
 
@@ -57,15 +63,15 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
 
   const server = http.createServer(async (req, res) => {
     try {
-      const url = new URL(req.url, "http://x"); const p = url.pathname;
-      if (req.method === "OPTIONS") { res.writeHead(204, cors()); return res.end(); }
+      const url = new URL(req.url, "http://x"); const p = url.pathname; res.fxOrigin = req.headers.origin;
+      if (req.method === "OPTIONS") { res.writeHead(204, cors(res.fxOrigin)); return res.end(); }
       if (p.startsWith("/assets/")) {
         const name = p.slice(8); if (!/^[a-f0-9-]{36}\.(png|jpg|webp|mp4)$/.test(name)) return send(res, 404, { error: "not found" });
         const f = path.join(config.dataDir, "assets", name); if (!fs.existsSync(f)) return send(res, 404, { error: "not found" });
-        res.writeHead(200, { "Content-Type": { png: "image/png", jpg: "image/jpeg", webp: "image/webp", mp4: "video/mp4" }[name.split(".").pop()], "Cache-Control": "private, max-age=31536000, immutable", ...cors() });
+        res.writeHead(200, { "Content-Type": { png: "image/png", jpg: "image/jpeg", webp: "image/webp", mp4: "video/mp4" }[name.split(".").pop()], "Cache-Control": "private, max-age=31536000, immutable", ...cors(res.fxOrigin) });
         return fs.createReadStream(f).pipe(res);
       }
-      if (p === '/' && req.method === 'GET') return send(res, 200, { service: 'foxrex-studio-generation-worker', message: 'This port is the worker API, not the Studio UI.', health: '/health', studio: 'https://zakoosh.github.io/FOXREX/foxrex-studio.html' });
+      if (p === '/' && req.method === 'GET') return send(res, 200, { service: 'foxrex-studio-generation-worker', message: 'This port is the worker API, not the Studio UI.', health: '/health', studio: 'https://foxrex.co/studio/' });
       if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.1.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
       if (!authed(req)) return send(res, 401, { error: "unauthorized" });
       if (p === '/creative/status' && req.method === 'GET') return send(res, 200, await creative.status());

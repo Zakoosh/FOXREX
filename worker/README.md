@@ -17,7 +17,7 @@ For reasoning, install/start Ollama, check ollama list, then set CREATIVE_PROVID
 
 For automatic image production, install the official @higgsfield/cli, run higgsfield auth login, select the workspace using higgsfield workspace set <id>, and check higgsfield account status. CLI requests consume plan credits. No generation command is needed for setup verification. Without the CLI, use manual copy/import.
 
-Connect Studio Settings to the worker URL (default http://127.0.0.1:8787) and bearer token. ALLOWED_ORIGIN must exactly match the browser origin, e.g. http://localhost:5173. Restart after .env changes. Keep provider secrets outside browser data.
+Connect Studio Settings to the worker URL (default http://127.0.0.1:8787) and bearer token. ALLOWED_ORIGIN must exactly match the browser origin, e.g. https://foxrex.co for the hosted Studio or http://localhost:5173 locally; list several origins comma-separated. Restart after .env changes. Keep provider secrets outside browser data.
 
 ## API
 

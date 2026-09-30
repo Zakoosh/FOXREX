@@ -1,0 +1,53 @@
+/* FOXREX design tokens — single source of truth for the public site and Studio.
+   Brand, Design & Content Guidelines v1.0. Change values here, not in pages. */
+:root{
+  /* Brand */
+  --foxrex-primary:#00D4A7;
+  --foxrex-primary-dark:#00A884;
+  --foxrex-primary-deep:#00806B;
+  --foxrex-dark:#0B1320;
+  --foxrex-slate:#1F2937;
+  --foxrex-light:#E5E7EB;
+  --foxrex-white:#FFFFFF;
+
+  /* Semantic */
+  --foxrex-positive:#00D4A7;
+  --foxrex-negative:#FF5C7A;
+  --foxrex-warning:#F5B942;
+  --foxrex-info:#5B9BFF;
+  --foxrex-ai:#A78BFA;
+
+  /* Surfaces & text (dark-first brand) */
+  --foxrex-bg:var(--foxrex-dark);
+  --foxrex-bg-raised:#0F1928;
+  --foxrex-surface:#111B2A;
+  --foxrex-surface-2:#16233A;
+  --foxrex-border:rgba(229,231,235,.10);
+  --foxrex-border-strong:rgba(229,231,235,.18);
+  --foxrex-text:var(--foxrex-light);
+  --foxrex-text-muted:rgba(229,231,235,.66);
+  --foxrex-text-faint:rgba(229,231,235,.46);
+  --foxrex-primary-tint:rgba(0,212,167,.10);
+  --foxrex-primary-line:rgba(0,212,167,.32);
+
+  /* Typography */
+  --foxrex-font-en:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --foxrex-font-ar:"IBM Plex Sans Arabic","Inter",system-ui,sans-serif;
+  --foxrex-font:var(--foxrex-font-en);
+  --foxrex-fs-xs:12px;
+  --foxrex-fs-sm:14px;
+  --foxrex-fs-md:16px;
+  --foxrex-fs-lg:18px;
+  --foxrex-fs-xl:22px;
+  --foxrex-fs-2xl:clamp(26px,3.2vw,36px);
+  --foxrex-fs-display:clamp(40px,6.4vw,76px);
+
+  /* Spacing, radius, elevation, motion */
+  --foxrex-s1:4px;--foxrex-s2:8px;--foxrex-s3:12px;--foxrex-s4:16px;--foxrex-s5:24px;--foxrex-s6:32px;--foxrex-s7:48px;--foxrex-s8:72px;--foxrex-s9:104px;
+  --foxrex-r1:8px;--foxrex-r2:12px;--foxrex-r3:16px;--foxrex-r4:22px;--foxrex-pill:999px;
+  --foxrex-shadow:0 24px 60px -28px rgba(0,0,0,.65);
+  --foxrex-ease:cubic-bezier(.2,.7,.2,1);
+  --foxrex-wrap:1200px;
+  --foxrex-gutter:clamp(16px,4vw,32px);
+}
+:root[lang="ar"],[dir="rtl"]{--foxrex-font:var(--foxrex-font-ar)}

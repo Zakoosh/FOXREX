@@ -1,0 +1,92 @@
+/* FOXREX shared components — used by the public site and Studio. */
+
+/* Buttons */
+.fx-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 18px;border-radius:var(--foxrex-r2);border:1px solid transparent;font-weight:600;font-size:15px;line-height:1.2;cursor:pointer;white-space:nowrap;transition:background .18s var(--foxrex-ease),border-color .18s var(--foxrex-ease),color .18s var(--foxrex-ease),transform .18s var(--foxrex-ease)}
+.fx-btn:hover{transform:translateY(-1px)}
+.fx-btn:active{transform:none}
+.fx-btn svg{width:18px;height:18px;flex:none}
+.fx-btn--primary{background:var(--foxrex-primary);color:var(--foxrex-dark)}
+.fx-btn--primary:hover{background:#1fe0b7}
+.fx-btn--ghost{border-color:var(--foxrex-border-strong);color:var(--foxrex-text)}
+.fx-btn--ghost:hover{border-color:var(--foxrex-primary);color:var(--foxrex-white)}
+.fx-btn--quiet{color:var(--foxrex-text-muted);padding-inline:10px}
+.fx-btn--quiet:hover{color:var(--foxrex-white)}
+.fx-btn--sm{min-height:36px;padding:7px 14px;font-size:14px}
+[dir="rtl"] .fx-flip{transform:scaleX(-1)}
+
+/* Links */
+.fx-link{display:inline-flex;align-items:center;gap:6px;color:var(--foxrex-primary);font-weight:600;font-size:14px}
+.fx-link:hover{text-decoration:underline;text-underline-offset:4px}
+.fx-link svg{width:16px;height:16px}
+
+/* Eyebrow / kicker */
+.fx-kicker{display:inline-block;font-family:var(--foxrex-font-en);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--foxrex-primary)}
+[dir="rtl"] .fx-kicker{letter-spacing:.04em}
+
+/* Badges */
+.fx-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:var(--foxrex-pill);font-size:12px;font-weight:600;line-height:1.5;border:1px solid var(--foxrex-border-strong);color:var(--foxrex-text-muted);white-space:nowrap}
+.fx-badge i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.fx-badge--primary{color:var(--foxrex-primary);border-color:var(--foxrex-primary-line);background:var(--foxrex-primary-tint)}
+.fx-badge--positive{color:var(--foxrex-positive);border-color:rgba(0,212,167,.3)}
+.fx-badge--negative{color:var(--foxrex-negative);border-color:rgba(255,92,122,.35)}
+.fx-badge--warning{color:var(--foxrex-warning);border-color:rgba(245,185,66,.35)}
+.fx-badge--info{color:var(--foxrex-info);border-color:rgba(91,155,255,.35)}
+.fx-badge--ai{color:var(--foxrex-ai);border-color:rgba(167,139,250,.35)}
+
+/* Status indicator */
+.fx-status{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--foxrex-text-muted)}
+.fx-status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--foxrex-text-faint)}
+.fx-status[data-state="ok"]::before{background:var(--foxrex-positive);box-shadow:0 0 0 3px rgba(0,212,167,.18)}
+.fx-status[data-state="warn"]::before{background:var(--foxrex-warning)}
+.fx-status[data-state="off"]::before{background:var(--foxrex-text-faint)}
+.fx-status[data-state="error"]::before{background:var(--foxrex-negative)}
+
+/* Cards */
+.fx-card{position:relative;display:flex;flex-direction:column;gap:12px;background:var(--foxrex-surface);border:1px solid var(--foxrex-border);border-radius:var(--foxrex-r3);padding:22px;min-width:0;transition:border-color .2s var(--foxrex-ease),transform .2s var(--foxrex-ease)}
+a.fx-card:hover,.fx-card--link:hover{border-color:var(--foxrex-primary-line);transform:translateY(-2px)}
+.fx-card h3{font-size:18px}
+.fx-card p{color:var(--foxrex-text-muted);font-size:15px}
+.fx-card__meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--foxrex-text-faint)}
+.fx-card__foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:4px}
+.fx-card__media{aspect-ratio:16/9;border-radius:var(--foxrex-r2);overflow:hidden;background:var(--foxrex-surface-2);display:grid;place-items:center;color:var(--foxrex-text-faint);font-size:13px}
+.fx-card__media img{width:100%;height:100%;object-fit:cover}
+
+/* Empty / unavailable state — used whenever real content or data is missing */
+.fx-empty{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:18px;border:1px dashed var(--foxrex-border-strong);border-radius:var(--foxrex-r2);color:var(--foxrex-text-muted);font-size:14px;background:rgba(229,231,235,.02)}
+.fx-empty strong{color:var(--foxrex-text);font-weight:600;font-size:15px}
+
+/* Market label / symbol chip */
+.fx-sym{font-family:var(--foxrex-font-en);font-weight:700;letter-spacing:.02em;direction:ltr;unicode-bidi:isolate}
+.fx-bias{font-family:var(--foxrex-font-en);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.fx-bias--bullish{color:var(--foxrex-positive)}
+.fx-bias--bearish{color:var(--foxrex-negative)}
+.fx-bias--neutral{color:var(--foxrex-warning)}
+
+/* Market ticker */
+.fx-ticker{display:flex;align-items:stretch;border-block:1px solid var(--foxrex-border);background:var(--foxrex-bg-raised);overflow:hidden}
+.fx-ticker__state{flex:none;display:flex;align-items:center;gap:8px;padding:0 18px;border-inline-end:1px solid var(--foxrex-border);font-size:12px;color:var(--foxrex-text-muted);white-space:nowrap}
+.fx-ticker__list{display:flex;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;list-style:none;margin:0;padding:0}
+.fx-ticker__list::-webkit-scrollbar{display:none}
+.fx-ticker__item{flex:1 0 auto;min-width:150px;display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 18px;border-inline-end:1px solid var(--foxrex-border)}
+.fx-ticker__item:last-child{border-inline-end:0}
+.fx-ticker__px{font-family:var(--foxrex-font-en);font-variant-numeric:tabular-nums;font-size:14px;color:var(--foxrex-text-faint);direction:ltr;unicode-bidi:isolate}
+.fx-ticker__chg{font-family:var(--foxrex-font-en);font-size:12px;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+.fx-ticker__chg.up{color:var(--foxrex-positive)}.fx-ticker__chg.down{color:var(--foxrex-negative)}
+
+/* Form fields */
+.fx-field{display:flex;flex-direction:column;gap:6px}
+.fx-field label{font-size:13px;color:var(--foxrex-text-muted)}
+.fx-input,.fx-textarea,.fx-select{width:100%;min-height:44px;padding:10px 14px;border-radius:var(--foxrex-r2);border:1px solid var(--foxrex-border-strong);background:rgba(229,231,235,.03);color:var(--foxrex-text)}
+.fx-textarea{min-height:120px;resize:vertical}
+.fx-input:focus,.fx-textarea:focus,.fx-select:focus{outline:none;border-color:var(--foxrex-primary);box-shadow:0 0 0 3px rgba(0,212,167,.18)}
+
+/* Notice */
+.fx-notice{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--foxrex-r2);border:1px solid rgba(245,185,66,.32);background:rgba(245,185,66,.06);color:#F9DDA2;font-size:14px;line-height:1.6}
+.fx-notice--info{border-color:rgba(91,155,255,.32);background:rgba(91,155,255,.06);color:#C9DBFF}
+.fx-notice svg{flex:none;width:18px;height:18px;margin-top:2px}
+
+/* Brand lockup (mark + wordmark) */
+.fx-logo{display:inline-flex;align-items:center;gap:10px;direction:ltr}
+.fx-logo img{width:auto;height:30px}
+.fx-logo b{font-family:var(--foxrex-font-en);font-weight:800;font-style:italic;font-size:20px;letter-spacing:.01em;color:var(--foxrex-white)}
+.fx-logo b span{color:var(--foxrex-primary)}

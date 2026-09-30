@@ -46,8 +46,14 @@ test('Ollama uses structured JSON, rejects cloud/remote endpoints and malformed 
   assert.throws(() => new OllamaCreativeProvider({ creativeModel: 'x:cloud' }).checkLocal());
   assert.throws(() => new OllamaCreativeProvider({ creativeModel: 'x', creativeUrl: 'https://remote.test' }).checkLocal());
 });
+test('an unreachable local Ollama is reported as 503 with an actionable message, not an internal error', async () => {
+  const refused = async () => { throw new TypeError('fetch failed'); };
+  const p = new OllamaCreativeProvider({ creativeModel: 'qwen3:4b' }, refused);
+  await assert.rejects(p.generate({ stage: 'ideate', input: { brief }, schema: {} }), e => e.status === 503 && /not reachable/.test(e.message));
+});
+
 test('migration backs up and preserves prompts, assets, jobs, statuses and unknown user fields', () => {
-  const source = fs.readFileSync(new URL('../../creative-studio.js', import.meta.url), 'utf8');
+  const source = fs.readFileSync(new URL('../../studio/creative-studio.js', import.meta.url), 'utf8');
   const old = { items: [{ id: 'old', status: 'APPROVED', prompts: [{ text: 'Legacy' }], jobs: [{ id: 'job' }], custom: 'keep' }], assets: [{ id: 'asset' }], settings: {} };
   const memory = new Map(); const context = { DB: structuredClone(old), LS: 'studio', S: {}, localStorage: { getItem: k => memory.get(k), setItem: (k,v) => memory.set(k,v) }, save() {}, newItem() {}, genPanel() {}, ingest() {}, VIEWS: { item() {} }, ACT: {}, document: { addEventListener() {} } };
   vm.createContext(context); vm.runInContext(source + ';installCreativeStudio();', context);

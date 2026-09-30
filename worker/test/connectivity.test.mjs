@@ -21,6 +21,19 @@ test('API root explains UI location; health is public while policy requires toke
   assert.notEqual(pre.headers.get('access-control-allow-origin'), 'https://untrusted.example');
 });
 
+test('ALLOWED_ORIGIN accepts a comma-separated list and echoes only a listed origin', async t => {
+  const app = createServer({ config: cfg(tmp(), { allowedOrigin: 'https://foxrex.co, https://zakoosh.github.io/' }), registry: {}, autoRun: false });
+  await new Promise(r => app.server.listen(0, '127.0.0.1', r));
+  t.after(() => { app.server.closeAllConnections(); app.server.close(); });
+  const base = `http://127.0.0.1:${app.server.address().port}`;
+  for (const o of ['https://foxrex.co', 'https://zakoosh.github.io']) {
+    const r = await fetch(base + '/policy', { headers: { Authorization: 'Bearer t0k', Origin: o } });
+    assert.equal(r.status, 200); assert.equal(r.headers.get('access-control-allow-origin'), o);
+  }
+  const bad = await fetch(base + '/policy', { method: 'OPTIONS', headers: { Origin: 'https://untrusted.example' } });
+  assert.equal(bad.headers.get('access-control-allow-origin'), null);
+});
+
 test('setup generates a secret once and preserves existing configuration byte for byte', () => {
   const dir = tmp(); fs.mkdirSync(path.join(dir, 'scripts'));
   fs.copyFileSync(new URL('../scripts/setup.mjs', import.meta.url), path.join(dir, 'scripts/setup.mjs'));

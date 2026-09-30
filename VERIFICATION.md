@@ -1,5 +1,7 @@
 # Verification record — 2026-09-28
 
+> Note: the Studio has since moved to `studio/index.html` and `studio/creative-studio.js` (served at `https://foxrex.co/studio/`). URLs below are historical evidence.
+
 ## Checks
 
 - `cd worker; npm test`: 43 passed, zero failures/skips. All charged-generation coverage uses mocks.

@@ -85,8 +85,10 @@ export class OllamaCreativeProvider {
   }
   async health() {
     this.checkLocal();
-    const r = await this.fetcher(`${this.base}/api/tags`, { signal: AbortSignal.timeout(5000), redirect: 'error' });
-    if (!r.ok) throw new Error('Ollama unavailable');
+    let r;
+    try { r = await this.fetcher(`${this.base}/api/tags`, { signal: AbortSignal.timeout(5000), redirect: 'error' }); }
+    catch { throw Object.assign(new Error(`Local Ollama is not reachable at ${this.base}. Start Ollama on this machine and retry.`), { status: 503 }); }
+    if (!r.ok) throw Object.assign(new Error('Ollama unavailable'), { status: 503 });
     const data = await r.json();
     const found = data.models?.find(m => m.name === this.model || m.name === `${this.model}:latest`);
     return { available: !!found && !found.remote_host && !found.remote_model, provider: this.id, model: this.model, costMode: this.costMode, visualCritique: false };

@@ -1,0 +1,21 @@
+{
+  "name": "FOXREX",
+  "short_name": "FOXREX",
+  "description": "FOXREX is a market-intelligence and trading-education brand: technical analysis, gold coverage, economic news and FOXREX Signals, with clear risk awareness.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1320",
+  "theme_color": "#0B1320",
+  "icons": [
+    {
+      "src": "/assets/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/brand/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
