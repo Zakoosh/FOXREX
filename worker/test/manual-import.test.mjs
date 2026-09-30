@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 test('external image import retains prompt provenance and enters review without any provider call', async () => {
-  const html = fs.readFileSync(new URL('../../foxrex-studio.html', import.meta.url), 'utf8');
+  const html = fs.readFileSync(new URL('../../studio/index.html', import.meta.url), 'utf8');
   const code = html.slice(html.indexOf('async function onFile(e)'), html.indexOf('/* ---------------- SEED'));
   const it = { id: 'manual-content', family: 'education', format: 'post', char: { required: false }, prompts: [{ v: 3, text: 'Operator-approved prompt' }], jobs: [], generations: [] };
   const snapshot = { mode: 'manual', brief: { facts: [] }, reviewState: 'draft' };

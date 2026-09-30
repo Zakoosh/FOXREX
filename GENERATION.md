@@ -95,7 +95,7 @@ node scripts/verify-local.mjs
 node scripts/verify-local.mjs --serve
 ```
 
-Isolated browser URL: http://127.0.0.1:5174/foxrex-studio.html. Set its worker URL to http://127.0.0.1:5174 with an empty token. This helper uses temporary data and never loads a Higgsfield adapter. Live response evidence is saved under ignored worker/data/verification/ollama-live.json. It fails honestly when local inference or output validation fails.
+Isolated browser URL: http://127.0.0.1:5174/studio/ (the helper also serves the public site at /). Set its worker URL to http://127.0.0.1:5174 with an empty token. This helper uses temporary data and never loads a Higgsfield adapter. Live response evidence is saved under ignored worker/data/verification/ollama-live.json. It fails honestly when local inference or output validation fails.
 
 Automated tests use mocked reasoning and a CLI test double. They cover schema/fact validation, manual requests, cost controls, idempotency, lost IDs, restarts, retries, cancellation, reconciliation, migration and Windows CLI resolution. There is no bundler build; npm run check validates executable and inline JavaScript syntax. See VERIFICATION.md for live/browser evidence.
 

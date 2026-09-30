@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /studio/
+Disallow: /foxrex-studio.html
+
+Sitemap: https://foxrex.co/sitemap.xml

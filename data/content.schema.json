@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FOXREX public content feed",
+  "description": "Published content rendered by scripts/public/content.js. Leave arrays empty when nothing is published: the site shows explicit empty states. Never add estimated prices, performance or results. Text fields accept a string or { en, ar }.",
+  "type": "object",
+  "$defs": {
+    "text": { "oneOf": [ { "type": "string" }, { "type": "object", "properties": { "en": { "type": "string" }, "ar": { "type": "string" } } } ] },
+    "iso": { "type": "string", "format": "date-time" }
+  },
+  "properties": {
+    "updated": { "oneOf": [ { "$ref": "#/$defs/iso" }, { "type": "null" } ] },
+    "editorial": {
+      "type": "array",
+      "items": { "type": "object", "required": ["slot", "title", "publishedAt"],
+        "properties": { "slot": { "enum": ["brief", "gold", "event", "open", "recap"] }, "title": { "$ref": "#/$defs/text" }, "url": { "type": "string" }, "publishedAt": { "$ref": "#/$defs/iso" } } }
+    },
+    "gold": {
+      "oneOf": [ { "type": "null" }, { "type": "object", "required": ["updated"],
+        "properties": {
+          "updated": { "$ref": "#/$defs/iso" },
+          "bias": { "enum": ["bullish", "bearish", "neutral"] },
+          "state": { "$ref": "#/$defs/text" }, "summary": { "$ref": "#/$defs/text" },
+          "support": { "type": ["string", "number"] }, "pivot": { "type": ["string", "number"] }, "resistance": { "type": ["string", "number"] },
+          "bull": { "$ref": "#/$defs/text" }, "bear": { "$ref": "#/$defs/text" },
+          "price": { "type": "number", "description": "Only with priceSource and priceTime from a verified feed" },
+          "priceSource": { "type": "string" }, "priceTime": { "$ref": "#/$defs/iso" }, "url": { "type": "string" } } } ]
+    },
+    "analysis": {
+      "type": "array",
+      "items": { "type": "object", "required": ["symbol", "title", "publishedAt"],
+        "properties": { "id": { "type": "string" }, "symbol": { "type": "string" }, "title": { "$ref": "#/$defs/text" }, "summary": { "$ref": "#/$defs/text" },
+          "bias": { "enum": ["bullish", "bearish", "neutral"] }, "category": { "enum": ["technical", "macro", "gold", "fx", "indices", "crypto"] },
+          "publishedAt": { "$ref": "#/$defs/iso" }, "image": { "type": "string" }, "url": { "type": "string" } } }
+    },
+    "news": {
+      "type": "array",
+      "items": { "type": "object", "required": ["headline", "publishedAt"],
+        "properties": { "id": { "type": "string" }, "headline": { "$ref": "#/$defs/text" }, "summary": { "$ref": "#/$defs/text" },
+          "importance": { "enum": ["high", "medium", "low"] }, "category": { "enum": ["economic", "central-banks", "commodities", "fx"] },
+          "markets": { "type": "array", "items": { "type": "string" } }, "publishedAt": { "$ref": "#/$defs/iso" }, "url": { "type": "string" } } }
+    },
+    "signals": {
+      "type": "object",
+      "properties": { "results": { "type": "array", "items": { "type": "object", "required": ["symbol", "side", "entry", "exit", "outcome", "closedAt"],
+        "properties": { "symbol": { "type": "string" }, "side": { "enum": ["buy", "sell"] }, "entry": { "type": ["string", "number"] }, "exit": { "type": ["string", "number"] },
+          "outcome": { "enum": ["win", "loss", "be", "closed"] }, "closedAt": { "$ref": "#/$defs/iso" } } } } }
+    }
+  }
+}

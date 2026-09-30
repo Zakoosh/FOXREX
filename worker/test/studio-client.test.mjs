@@ -1,6 +1,6 @@
-/* Cost safety on the Studio side: extracts the delimited router block from foxrex-studio.html and runs it in a sandbox. */
+/* Cost safety on the Studio side: extracts the delimited router block from studio/index.html and runs it in a sandbox. */
 import test from "node:test"; import assert from "node:assert/strict"; import fs from "node:fs"; import path from "node:path"; import vm from "node:vm"; import { fileURLToPath } from "node:url";
-const html = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "../../foxrex-studio.html"), "utf8");
+const html = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "../../studio/index.html"), "utf8");
 const block = html.slice(html.indexOf("/* @@ROUTER_START"), html.indexOf("/* @@ROUTER_END */"));
 const ctx = {}; vm.createContext(ctx); vm.runInContext(block + ";this.out={CLIENT_POLICY,PROVIDER_DEFS,clientRoute,jobRequest};", ctx);
 const { CLIENT_POLICY, clientRoute, jobRequest, PROVIDER_DEFS } = ctx.out;
