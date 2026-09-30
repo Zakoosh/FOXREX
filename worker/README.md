@@ -35,6 +35,17 @@ All API routes except health and asset downloads require the configured bearer t
 - POST /jobs/:id/retry: 409; reconcile or explicitly approve a new request
 - GET /assets/:file
 
+CMS, publishing and operations (token + `X-Foxrex-Actor` + JSON on writes; see docs/PUBLISHING.md):
+
+- GET /api/system/status: health and per-component readiness (no paths or secrets). GET /api/system/audit[?action=&contentId=]: hash-chain verification + entries
+- GET, POST /api/system/backups: list, or take a manual backup
+- GET, POST /api/content, GET, PUT /api/content/:id, POST /api/content/:id/(transition|duplicate|translate)
+- POST /api/publish/preview, /api/publish/preflight {contentId, expectedVersion}, /api/publish/commission {}
+- POST /api/publish, /api/unpublish, /api/republish {contentId, expectedVersion, confirm:true, version?}. The publish mode comes from the server only
+- GET /api/publications[?contentId=], /api/publications/:id/status, /api/feed
+
+Operator scripts: `node scripts/commission.mjs` (commissioning dry run via the running worker), `node scripts/cms-backup.mjs`, `node scripts/cms-restore.mjs <file> --yes` (refuses while the worker runs). Service files: `../deploy/`.
+
 An unresolved submission blocks another job for its content. Do not work around it by changing IDs. See [GENERATION.md](../GENERATION.md) for schemas, costs, migration and limitations.
 
 npm test uses mocks only. npm run check verifies syntax. node scripts/verify-local.mjs explicitly exercises real Ollama and saves response evidence. Add --serve for an isolated temporary browser environment on port 5174 with only a manual asset provider; it cannot submit to Higgsfield.

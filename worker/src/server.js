@@ -17,6 +17,9 @@ import { download, sniff, pickUrls } from "./providers/util.js";
 import { CreativeService, validateCreativeRequest, validateOutput, validateBrief } from './creative.js';
 import { chooseModel } from './models.js';
 import { createCms } from './cms-routes.js';
+import { RateLimiter } from './ratelimit.js';
+import { logger, configureLogging } from './logger.js';
+const rlog = logger('http');
 
 export function buildRegistry(config = CONFIG) {
   return {
@@ -46,10 +49,12 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
   const origins = String(config.allowedOrigin || "").split(",").map(o => o.trim().replace(/\/+$/, "")).filter(Boolean);
   const cors = origin => {
     if (!origins.length) return {};
-    const allow = origins.length === 1 ? origins[0] : origins.includes(origin) ? origin : null;
+    // Exact match only: a foreign origin gets no Access-Control-Allow-Origin at all (never "*", never a fallback).
+    const allow = origins.includes(origin) ? origin : null;
     return allow ? { "Access-Control-Allow-Origin": allow, "Access-Control-Allow-Headers": "Authorization, Content-Type, X-Foxrex-Actor, Idempotency-Key", "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS", "Vary": "Origin" } : { "Vary": "Origin" };
   };
-  const authed = req => !config.token || req.headers.authorization === `Bearer ${config.token}`;
+  const expectedAuth = Buffer.from(`Bearer ${config.token}`);
+  const authed = req => { if (!config.token) return true; const got = Buffer.from(String(req.headers.authorization || '')); return got.length === expectedAuth.length && crypto.timingSafeEqual(got, expectedAuth); };
   const body = req => new Promise((ok, bad) => { let d = ""; req.on("data", c => { d += c; if (d.length > 30e6) { bad(new Error("too large")); req.destroy(); } }); req.on("end", () => { try { ok(d ? JSON.parse(d) : {}); } catch (e) { bad(e); } }); });
 
   function validate(b) {
@@ -62,8 +67,12 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
     return errs;
   }
 
-  const cms = createCms({ config, creative });
+  const cms = createCms({ config, creative, limits: config.limits });
+  const aiLimiter = new RateLimiter();
   const server = http.createServer(async (req, res) => {
+    // Access log: method, path (no query string), status, duration, actor — never headers, tokens or bodies.
+    const rid = crypto.randomBytes(6).toString('hex'), t0 = Date.now();
+    res.on('finish', () => { if (req.url !== '/health') rlog.info('request', { rid, method: req.method, path: (req.url || '').split('?')[0].slice(0, 120), status: res.statusCode, ms: Date.now() - t0, actor: (req.headers['x-foxrex-actor'] || '').toString().slice(0, 60) || undefined }); });
     try {
       const url = new URL(req.url, "http://x"); const p = url.pathname; res.fxOrigin = req.headers.origin;
       if (req.method === "OPTIONS") { res.writeHead(204, cors(res.fxOrigin)); return res.end(); }
@@ -74,9 +83,10 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
         return fs.createReadStream(f).pipe(res);
       }
       if (p === '/' && req.method === 'GET') return send(res, 200, { service: 'foxrex-studio-generation-worker', message: 'This port is the worker API, not the Studio UI.', health: '/health', studio: 'https://foxrex.co/studio/' });
-      if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.1.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
+      if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.2.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
       if (!authed(req)) return send(res, 401, { error: "unauthorized" });
-      if (await cms.handle(req, res, url, { send, body })) return;
+      if (await cms.handle(req, res, url, { send, body, ip: req.socket.remoteAddress })) return;
+      if (/^\/creative\/(ideate|plan|critique)$/.test(p) && req.method === 'POST') { const wait = aiLimiter.check('ai', (req.headers['x-foxrex-actor'] || req.socket.remoteAddress || 'anon').toString()); if (wait) return send(res, 429, { error: `Too many AI requests — wait ${wait}s` }, { 'Retry-After': String(wait) }); }
       if (p === '/creative/status' && req.method === 'GET') return send(res, 200, await creative.status());
       if (p === '/creative/revisions' && req.method === 'GET') return send(res, 200, creative.data.revisions.filter(r => r.contentId === url.searchParams.get('contentId')));
       if (/^\/creative\/(ideate|plan|critique)$/.test(p) && req.method === 'POST') return send(res, 200, await creative.run(p.split('/')[2], await body(req)));
@@ -220,7 +230,28 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
 const publicJob = j => { const { input_assets, ...rest } = j; return { ...rest, input_assets: (input_assets || []).map(({ dataUrl, ...a }) => a) }; };
 
 if (import.meta.url === pathToFileURL(process.argv[1] || "").href) {
-  if (!CONFIG.token && !["127.0.0.1", "localhost", "::1"].includes(CONFIG.host)) { console.error("Refusing to listen on a public interface without STUDIO_WORKER_TOKEN"); process.exit(1); }
-  const { server } = createServer();
-  server.listen(CONFIG.port, CONFIG.host, () => console.log(`FOXREX generation worker on http://${CONFIG.host}:${CONFIG.port} — paid APIs: DISABLED`));
+  const slog = logger('worker');
+  configureLogging({ file: CONFIG.logFile });
+  if (!CONFIG.token && !["127.0.0.1", "localhost", "::1"].includes(CONFIG.host)) { slog.error("Refusing to listen on a public interface without STUDIO_WORKER_TOKEN"); process.exit(1); }
+  if (/(^|,)\s*\*\s*(,|$)/.test(CONFIG.allowedOrigin)) { slog.error("ALLOWED_ORIGIN must list exact origins, never *"); process.exit(1); }
+  let app;
+  try { app = createServer(); } catch (e) { slog.error('startup failed', { error: e.message, code: e.code }); process.exit(1); }
+  // Startup diagnostics: configuration shape only — secrets are reported as SET/NOT SET, never printed.
+  slog.info('starting', { node: process.version, host: CONFIG.host, port: CONFIG.port, workerAuth: CONFIG.token ? `token SET (${CONFIG.token.length} chars)` : 'token NOT SET',
+    allowedOrigins: CONFIG.allowedOrigin ? CONFIG.allowedOrigin.split(',').map(o => o.trim()).filter(Boolean) : [], publishMode: CONFIG.publish.mode,
+    publishRepo: fs.existsSync(path.join(CONFIG.publish.repoDir, '.git')) ? 'SET (git repository)' : 'NOT A GIT REPOSITORY', scheduler: CONFIG.schedulerEnabled ? 'ENABLED' : 'DISABLED',
+    creativeProvider: CONFIG.creativeProvider, backupDir: CONFIG.backup.dir ? 'CUSTOM' : 'DATA_DIR/backups', logFile: CONFIG.logFile ? 'SET' : 'stdout only' });
+  app.server.listen(CONFIG.port, CONFIG.host, () => slog.info('listening', { url: `http://${CONFIG.host}:${CONFIG.port}`, paidApis: 'DISABLED' }));
+  let stopping = false;
+  const shutdown = async signal => {
+    if (stopping) return; stopping = true;
+    slog.info('shutting down', { signal });
+    const force = setTimeout(() => { slog.warn('forced exit after timeout'); process.exit(1); }, 20000); force.unref();
+    app.server.close();
+    app.runner?.stop?.();
+    await Promise.race([app.cms.drain(), new Promise(r => setTimeout(r, 15000))]); // let an in-flight publication finish
+    app.cms.stop({ finalBackup: true });
+    slog.info('stopped'); process.exit(0);
+  };
+  process.on('SIGTERM', () => shutdown('SIGTERM')); process.on('SIGINT', () => shutdown('SIGINT'));
 }

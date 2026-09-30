@@ -7,6 +7,8 @@ FOXREX has two surfaces served from this repository by GitHub Pages (`main` / ro
 
 **Publishing:** Studio → Content → Editorial is the CMS. Content moves IDEA → DRAFT → REVIEW → APPROVED → PUBLISHED through the local worker's publishing engine, which validates, commits `data/content.json` and pushes (dry-run by default). See [docs/PUBLISHING.md](docs/PUBLISHING.md).
 
+**Operations:** Studio → Overview → **System Status** shows health vs readiness per component, the DRY RUN / LIVE PUBLISHING mode, the last publication, backups, the scheduler and the audit chain, plus commissioning and manual backup. The always-on control plane (systemd / Task Scheduler / launchd / Docker, Cloudflare Tunnel) is prepared in `deploy/` and [docs/ALWAYS-ON.md](docs/ALWAYS-ON.md). Commissioning evidence is in [docs/COMMISSIONING.md](docs/COMMISSIONING.md).
+
 Read [SECURITY.md](SECURITY.md) for the admin boundary: the Studio is static and not access-controlled at the host, ships no secrets, and runs every privileged operation through the local worker.
 
 ## Project layout

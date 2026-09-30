@@ -5,12 +5,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { atomicWrite } from './fsx.js';
 
 const require = createRequire(import.meta.url);
 export const CMS = require('../../studio/cms-model.js');
 
 const EDITABLE = ['title', 'slug', 'summary', 'body', 'symbol', 'market', 'bias', 'category', 'tags', 'image', 'visualPrompt',
-  'sourceReferences', 'riskDisclosure', 'seo', 'social', 'fields', 'translationGroupId'];
+  'sourceReferences', 'riskDisclosure', 'seo', 'social', 'fields', 'translationGroupId', 'expiresAt'];
 const httpError = (status, message, extra) => Object.assign(new Error(message), { status, ...extra });
 
 export function cleanActor(v) {
@@ -19,12 +20,17 @@ export function cleanActor(v) {
 }
 
 export class CmsStore {
-  constructor(dataDir) {
+  constructor(dataDir, { journal, onChange } = {}) {
     this.dir = path.join(dataDir, 'cms'); fs.mkdirSync(this.dir, { recursive: true });
     this.file = path.join(this.dir, 'records.json');
     this.data = fs.existsSync(this.file) ? JSON.parse(fs.readFileSync(this.file, 'utf8')) : { schemaVersion: 1, records: {} };
+    this.data.scheduleFlags = this.data.scheduleFlags || {};
+    this.journal = journal || null; this.onChange = onChange || (() => {});
   }
-  persist() { fs.writeFileSync(this.file + '.tmp', JSON.stringify(this.data, null, 2)); fs.renameSync(this.file + '.tmp', this.file); }
+  persist() { atomicWrite(this.file, JSON.stringify(this.data, null, 2)); this.onChange(); }
+  /** Scheduler status flags (MISSED / EXPIRED / STALE / INVALID) — metadata that must not bump the record revision. */
+  setScheduleFlag(id, flag) { if (flag) this.data.scheduleFlags[id] = { ...flag, at: new Date().toISOString() }; else delete this.data.scheduleFlags[id]; this.persist(); }
+  scheduleFlag(id) { return this.data.scheduleFlags[id] || null; }
   get(id) { const r = this.data.records[id]; if (!r) throw httpError(404, 'Content not found'); return r; }
   list() { return Object.values(this.data.records).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || '')); }
   group(groupId) { return this.list().filter(r => r.translationGroupId === groupId); }
@@ -33,6 +39,9 @@ export class CmsStore {
     r.history = r.history || [];
     r.history.push({ at: new Date().toISOString(), action, actor, from: extra && extra.from, to: r.status, revision: r.revision, note: extra && extra.note });
     if (r.history.length > 200) r.history = r.history.slice(-200);
+    if (this.journal) this.journal.append({ action: action.split(' ')[0].toUpperCase(), actor, contentId: r.id, language: r.language, contentType: r.type, revision: r.revision,
+      version: r.publishing && r.publishing.publishVersion, from: extra && extra.from, to: r.status, note: extra && extra.note && String(extra.note).slice(0, 120),
+      commitSha: extra && extra.commitSha, publicationId: extra && extra.publicationId, result: extra && extra.result, deployment: extra && extra.deployment });
   }
   #checkRevision(r, expected) {
     if (expected == null) throw httpError(428, 'expectedRevision is required');
@@ -98,6 +107,9 @@ export class CmsStore {
     if (action === 'schedule') r.scheduledAt = scheduledAt;
     if (action === 'unschedule') r.scheduledAt = null;
     r.updatedAt = now; r.audit.updatedBy = actor; r.revision += 1;
+    // Pin the approved revision being scheduled: the scheduler refuses to publish any other revision.
+    r.scheduledRevision = action === 'schedule' ? r.revision : null;
+    if (action !== 'schedule') delete this.data.scheduleFlags[id];
     this.#audit(r, action, actor, { from, note });
     this.persist();
     return r;
@@ -132,18 +144,23 @@ export class CmsStore {
 
   markPublished(id, pub, actor) {
     const r = this.get(id); const from = r.status;
-    r.status = 'PUBLISHED'; r.publishedAt = pub.publishedAt; r.scheduledAt = null;
+    // A rollback republishes a stored version; an edit already in progress keeps its DRAFT/REVIEW/APPROVED state.
+    if (pub.action !== 'republish' || ['PUBLISHED', 'ARCHIVED'].includes(from)) { r.status = 'PUBLISHED'; r.scheduledAt = null; }
+    r.publishedAt = pub.publishedAt;
     r.publishing = { ...r.publishing, publishVersion: pub.version, lastPublishedAt: pub.publishedAt, destinations: pub.destinations };
     r.audit.publishedBy = actor;
     r.live = { publishVersion: pub.version, revision: r.revision, publicationId: pub.publicationId, commitSha: pub.commitSha, publishedAt: pub.publishedAt, mode: pub.mode };
+    // Keep every published version's exact public entry: rollback republishes one as a new, audited version.
+    if (pub.entry) { r.publishedVersions = (r.publishedVersions || []).concat([{ version: pub.version, publishedAt: pub.publishedAt, commitSha: pub.commitSha, publicationId: pub.publicationId, entry: pub.entry, action: pub.action }]).slice(-20); }
     r.revision += 1; r.updatedAt = pub.publishedAt;
-    this.#audit(r, 'publish', actor, { from, note: `v${pub.version} ${pub.commitSha || ''}`.trim() });
+    delete this.data.scheduleFlags[id];
+    this.#audit(r, pub.action === 'republish' ? 'republish' : 'publish', actor, { from, note: `v${pub.version} ${pub.commitSha || ''}`.trim(), commitSha: pub.commitSha, publicationId: pub.publicationId, result: pub.result, deployment: pub.deployment });
     this.persist(); return r;
   }
   markUnpublished(id, pub, actor) {
     const r = this.get(id); const from = r.status;
     r.status = 'ARCHIVED'; r.live = null; r.revision += 1; r.updatedAt = pub.publishedAt;
-    this.#audit(r, 'unpublish', actor, { from, note: pub.commitSha || '' });
+    this.#audit(r, 'unpublish', actor, { from, note: pub.commitSha || '', commitSha: pub.commitSha, publicationId: pub.publicationId, result: pub.result, deployment: pub.deployment });
     this.persist(); return r;
   }
 }

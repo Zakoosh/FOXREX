@@ -32,6 +32,8 @@
   const PUBLISHABLE_FROM = ['APPROVED', 'SCHEDULED'];
   /** Editing any of these states returns the record to DRAFT: approval never survives an edit. */
   const EDIT_RESETS = ['REVIEW', 'APPROVED', 'SCHEDULED', 'PUBLISHED'];
+  /** Market-time-sensitive types: never auto-published late (missed-schedule policy) and may carry expiresAt. */
+  const TIME_SENSITIVE = ['MORNING_BRIEF', 'GOLD_FOCUS', 'EVENT', 'US_OPEN', 'MARKET_RECAP'];
 
   /* ---------- content types & destination mapping (centralised) ---------- */
   const DESK = ['MORNING_BRIEF', 'EVENT', 'US_OPEN', 'MARKET_RECAP'];
@@ -132,7 +134,7 @@
       symbol: t.fixedSymbol || '', market: t.fixedSymbol ? 'commodities' : '', bias: '', category: type === 'GOLD_FOCUS' ? 'gold' : '', tags: [],
       image: null, visualPrompt: '',
       author: actor || '', reviewer: '',
-      createdAt: ts, updatedAt: ts, reviewedAt: null, approvedAt: null, scheduledAt: null, publishedAt: null,
+      createdAt: ts, updatedAt: ts, reviewedAt: null, approvedAt: null, scheduledAt: null, publishedAt: null, expiresAt: null,
       sourceReferences: [],
       riskDisclosure: t.risk ? DEFAULT_RISK[lang || 'en'] : '',
       seo: { title: '', description: '' }, social: { caption: '', hashtags: [] },
@@ -212,6 +214,7 @@
         if (!has(f.bullishScenario)) err('fields.bullishScenario', 'Bullish scenario is required');
         if (!has(f.bearishScenario)) err('fields.bearishScenario', 'Bearish scenario is required');
         if (!has(f.invalidation)) err('fields.invalidation', 'Invalidation is required');
+        if (!arr(r.sourceReferences).some(s => has(s && s.name))) err('sourceReferences', 'Gold Focus needs at least one source reference (data, chart or desk source)');
         priceCheck(); break;
       case 'ANALYSIS':
         if (!has(r.symbol)) err('symbol', 'Symbol is required');
@@ -248,6 +251,10 @@
         if (!has(f.resultNotes)) err('fields.resultNotes', 'Result notes are required'); break;
     }
     if (r.status === 'SCHEDULED' && !(r.scheduledAt && RE.iso.test(r.scheduledAt))) err('scheduledAt', 'Scheduled content needs a UTC schedule time');
+    if (r.expiresAt != null && r.expiresAt !== '') {
+      if (!RE.iso.test(r.expiresAt)) err('expiresAt', 'Expiry must be an ISO UTC timestamp');
+      else if (r.scheduledAt && Date.parse(r.expiresAt) <= Date.parse(r.scheduledAt)) err('expiresAt', 'Expiry must be after the scheduled time');
+    }
     return E;
   }
   function walkText(o, fn, path) {
@@ -273,6 +280,7 @@
   function publishGate(r, now) {
     const errors = [];
     if (!PUBLISHABLE_FROM.includes(r.status)) errors.push({ field: 'status', message: `Only APPROVED content can be published (this is ${r.status})` });
+    if (r.expiresAt && Date.parse(r.expiresAt) <= (now || Date.now())) errors.push({ field: 'expiresAt', message: 'This content has expired and can no longer be published as current' });
     if (r.status === 'SCHEDULED' && r.scheduledAt && Date.parse(r.scheduledAt) > (now || Date.now())) errors.push({ field: 'scheduledAt', message: 'Scheduled content cannot be published before its scheduled time' });
     if (!r.audit || !r.audit.approvedBy || !r.approvedAt) errors.push({ field: 'audit.approvedBy', message: 'Missing approval record' });
     return errors.concat(validateRecord(r, 'publish'));
@@ -310,6 +318,7 @@
     });
     if (sources.length) e.sources = sources;
     if (has(r.riskDisclosure)) e.riskDisclosure = str(r.riskDisclosure);
+    if (r.expiresAt) e.expiresAt = r.expiresAt;
     if (r.seo && (has(r.seo.title) || has(r.seo.description))) e.seo = { title: str(r.seo.title), description: str(r.seo.description) };
     const pick = keys => { for (const k of keys) { const v = f[k]; if (Array.isArray(v) ? trimList(v).length : v != null && v !== '') e[k] = Array.isArray(v) ? trimList(v) : typeof v === 'string' ? v.trim() : v; } };
     switch (r.type) {
@@ -355,7 +364,7 @@
   }
 
   return {
-    EDITORIAL_TZ, LANGS, STATES, STATE_LABEL, TRANSITIONS, PUBLISHABLE_FROM, EDIT_RESETS, TYPES, WEBSITE_TYPES, DESK, PAGE_PATH,
+    EDITORIAL_TZ, LANGS, TIME_SENSITIVE, STATES, STATE_LABEL, TRANSITIONS, PUBLISHABLE_FROM, EDIT_RESETS, TYPES, WEBSITE_TYPES, DESK, PAGE_PATH,
     ANALYSIS_CATEGORIES, NEWS_CATEGORIES, BIAS, IMPORTANCE, DIRECTION, OUTCOME, DEFAULT_RISK, RE,
     destinations, pageUrl, slugify, editorialDate, formatEditorial, istanbulLocalToUtc, utcToIstanbulLocal, makeGroupId, makeId,
     protectedTokens, missingTokens, blankRecord, blankFields, validateRecord, transitionError, publishGate,

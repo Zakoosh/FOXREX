@@ -1,3 +1,5 @@
+import { configureLogging } from '../src/logger.js';
+configureLogging({ captureForTests: true }); // keep TAP output clean; tests inspect the captured lines
 import fs from "node:fs"; import os from "node:os"; import path from "node:path"; import { fileURLToPath } from "node:url";
 export const FAKE = path.join(path.dirname(fileURLToPath(import.meta.url)), "fake-higgsfield.mjs");
 export function tmp() { return fs.mkdtempSync(path.join(os.tmpdir(), "fxw-")); }

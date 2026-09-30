@@ -1,0 +1,48 @@
+# FOXREX always-on control plane — systemd unit (Linux VM / small server).
+# Layout (see docs/ALWAYS-ON.md):
+#   /opt/foxrex/FOXREX            code checkout (read-only for the service; updated by the operator)
+#   /var/lib/foxrex/data          DATA_DIR: CMS records, publication log, audit log, backups (private)
+#   /var/lib/foxrex/foxrex-publish dedicated publishing clone (PUBLISH_REPO_DIR), pushed with a deploy key
+#   /opt/foxrex/FOXREX/worker/.env configuration (chmod 600, owned by foxrex) — never committed
+# Install:  sudo cp deploy/systemd/foxrex-worker.service /etc/systemd/system/ && sudo systemctl daemon-reload
+#           sudo systemctl enable --now foxrex-worker && journalctl -u foxrex-worker -f
+[Unit]
+Description=FOXREX Studio worker (CMS, publishing engine, scheduler)
+Documentation=https://github.com/Zakoosh/FOXREX/blob/main/docs/ALWAYS-ON.md
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=10
+
+[Service]
+Type=simple
+User=foxrex
+Group=foxrex
+WorkingDirectory=/opt/foxrex/FOXREX/worker
+ExecStart=/usr/bin/node src/server.js
+# Graceful shutdown: the worker drains an in-flight publication, stops the scheduler and takes a final backup.
+KillSignal=SIGTERM
+TimeoutStopSec=30
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+# Git over SSH with the deploy key in /var/lib/foxrex/.ssh (home of the foxrex user)
+Environment=HOME=/var/lib/foxrex
+Environment=GIT_TERMINAL_PROMPT=0
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/foxrex
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

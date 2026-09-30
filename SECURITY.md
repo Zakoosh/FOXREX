@@ -6,7 +6,7 @@
 |---|---|---|---|
 | Public website | `https://foxrex.co/` | GitHub Pages (static) | Public by design |
 | FOXREX Studio (admin) | `https://foxrex.co/studio/` | GitHub Pages (static) | **None at the host.** See below. |
-| Generation worker | `http://127.0.0.1:8787` | Operator's own machine | Bearer token + exact `ALLOWED_ORIGIN` + loopback bind |
+| Worker (CMS, publishing, scheduler) | `http://127.0.0.1:8787` | Operator machine today; always-on VM prepared (docs/ALWAYS-ON.md) | Bearer token + exact `ALLOWED_ORIGIN` + loopback bind (+ Cloudflare Access when tunnelled) |
 
 ## What the Studio page is — and is not
 
@@ -29,7 +29,14 @@ Publishing to foxrex.co is a privileged operation and happens **only in the work
 - Git pushes use the operator machine's own credentials for `PUBLISH_REPO_DIR`. No GitHub token, PAT or Git credential exists in Studio, the public site or this repository; `worker/test/cms.test.mjs` and `site.test.mjs` fail if one appears in shipped files.
 - The engine never force-pushes or rewrites history, refuses a dirty or diverged working tree, commits only `data/content.json`, and restores the previous HEAD if checks, commit or push fail.
 - CMS records and the publication log live in `worker/data/cms/` (git-ignored). The repository is public, so unpublished content is never committed.
-- Default `PUBLISH_MODE=dry-run`: nothing is written until the operator deliberately switches to `live`.
+- Default `PUBLISH_MODE=dry-run`: nothing is written until the operator deliberately switches to `live`. The mode is **server configuration only**: no API accepts a mode, and body fields such as `mode`/`publishMode` are ignored. Studio shows a dashed **DRY RUN** or solid red **LIVE PUBLISHING** banner from the worker's status.
+- **Preflight** (`POST /api/publish/preflight`) must report `READY TO PUBLISH` before Studio enables Publish. It checks the operator, approval, validation and expiry; the repo, branch, clean tree, remote, fast-forward and feed version; the TEST-fixture, fake-data and secret scans; and schema and site tests on the candidate feed. The publish call re-checks everything server-side.
+- **Rate limits:** publishing, preflight and commissioning are limited to 10/min per operator; AI endpoints to 10/min; other writes to 120/min. Over the limit the worker answers `429` with `Retry-After`.
+- **Audit log** (`worker/data/cms/audit.jsonl`): an append-only, SHA-256 hash-chained record of every create, edit, submit, approve, reject, schedule, publish, unpublish, republish, archive, deployment change, missed or expired schedule, commission and backup. `GET /api/system/audit` returns `verify.ok = false` and the first broken line after any edit or deletion.
+- **Logs:** structured JSON. Secret-looking keys and values (Bearer tokens, GitHub PATs, `sk-` keys) are redacted. Request logs carry method, path without query, status, duration and actor, never headers or bodies. The startup line reports the token only as SET or NOT SET with its length.
+- **Health vs readiness:** `/health` is public liveness only. `/api/system/status` (token required) lists component readiness with no filesystem paths, environment values or credentials.
+- **CORS:** an exact match against `ALLOWED_ORIGIN`. A foreign origin receives no `Access-Control-Allow-Origin` header at all. The token is compared in constant time.
+- **Single process:** a lock file in the data directory stops a second worker, or a restore, from writing the CMS concurrently.
 
 See `docs/PUBLISHING.md` for the full model.
 

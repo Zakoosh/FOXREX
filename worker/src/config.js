@@ -52,5 +52,13 @@ export const CONFIG = Object.freeze({
     publicOrigin: env.PUBLIC_ORIGIN || 'https://foxrex.co'
   },
   // Automatic execution of SCHEDULED items. Off unless the worker runs on an always-on host.
-  schedulerEnabled: env.SCHEDULER_ENABLED === 'true'
+  schedulerEnabled: env.SCHEDULER_ENABLED === 'true',
+  // Missed-schedule policy: time-sensitive market content is never auto-published later than this.
+  scheduleGraceMinutes: +(env.SCHEDULE_GRACE_MINUTES || 15),
+  scheduleGraceMinutesOther: +(env.SCHEDULE_GRACE_MINUTES_OTHER || 24 * 60),
+  // Private CMS backups (never in the public repository).
+  backup: { dir: env.BACKUP_DIR ? path.resolve(workerDir, env.BACKUP_DIR) : null, keep: +(env.BACKUP_KEEP || 72), minIntervalMs: +(env.BACKUP_MIN_INTERVAL_MINUTES || 10) * 60e3 },
+  logFile: env.LOG_FILE ? path.resolve(workerDir, env.LOG_FILE) : null,
+  // Public repository used to read GitHub Pages deployment runs (no token; read-only).
+  githubRepo: env.GITHUB_REPO || 'Zakoosh/FOXREX'
 });
