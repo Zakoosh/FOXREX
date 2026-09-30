@@ -11,4 +11,7 @@ ingress:
     originRequest:
       connectTimeout: 10s
       noTLSVerify: false
+  # Public, read-only Market API (market-only listener, MARKET_PORT). No Access policy: it serves prices only.
+  - hostname: market.foxrex.co
+    service: http://127.0.0.1:8788
   - service: http_status:404

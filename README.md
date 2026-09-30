@@ -9,6 +9,8 @@ FOXREX has two surfaces served from this repository by GitHub Pages (`main` / ro
 
 **Operations:** Studio → Overview → **System Status** shows health vs readiness per component, the DRY RUN / LIVE PUBLISHING mode, the last publication, backups, the scheduler and the audit chain, plus commissioning and manual backup. The always-on control plane (systemd / Task Scheduler / launchd / Docker, Cloudflare Tunnel) is prepared in `deploy/` and [docs/ALWAYS-ON.md](docs/ALWAYS-ON.md). Commissioning evidence is in [docs/COMMISSIONING.md](docs/COMMISSIONING.md).
 
+**Market data:** the Market Data Layer (worker/src/market) serves verified, freshness-labelled quotes through a read-only FOXREX Market API; the browser never contacts a provider. See [docs/MARKET-DATA.md](docs/MARKET-DATA.md).
+
 Read [SECURITY.md](SECURITY.md) for the admin boundary: the Studio is static and not access-controlled at the host, ships no secrets, and runs every privileged operation through the local worker.
 
 ## Project layout

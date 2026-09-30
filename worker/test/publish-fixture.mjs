@@ -27,9 +27,9 @@ export function makeRepo() {
 }
 
 /** Boot a worker against an isolated repo. Returns { app, repo, api, base, dataDir, config, restart }. */
-export async function boot(t, extra = {}, publish = {}, { repo = makeRepo(), dataRoot = tmp(), creativeProvider } = {}) {
+export async function boot(t, extra = {}, publish = {}, { repo = makeRepo(), dataRoot = tmp(), creativeProvider, market } = {}) {
   const config = cfg(dataRoot, { token: TOKEN, publish: { mode: 'live', repoDir: repo.work, branch: 'main', remote: 'origin', checks: ['node tools/site/check-feed.mjs {feed}'], publicFeedUrl: 'http://127.0.0.1:9/none', publicOrigin: 'https://foxrex.co', ...publish }, backup: { keep: 5, minIntervalMs: 60e3 }, ...extra });
-  const app = createServer({ config, registry: {}, autoRun: false, creativeProvider });
+  const app = createServer({ config, registry: {}, autoRun: false, creativeProvider, market });
   await new Promise(r => app.server.listen(0, '127.0.0.1', r));
   let stopped = false;
   const stop = () => { if (stopped) return; stopped = true; app.server.closeAllConnections(); app.server.close(); app.cms.stop(); };

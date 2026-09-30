@@ -54,6 +54,15 @@ cd /opt/foxrex/FOXREX/worker && sudo -u foxrex node scripts/commission.mjs     #
 
 Then set up the Cloudflare Tunnel (`deploy/cloudflared/config.example.yml`) and an Access application for the API hostname (docs/CLOUDFLARE-ACCESS.md). In Studio, set the worker URL to that hostname.
 
+## Market data
+
+The same worker runs the Market Service (docs/MARKET-DATA.md). On the VM:
+- set `MARKET_PROVIDERS` and that provider's credentials in `.env`;
+- set `MARKET_PORT=8788`;
+- tunnel `market.foxrex.co` to that port.
+
+Market data is independent of publishing: an outage there never blocks the CMS or the publishing engine.
+
 ## Service files
 
 | File | Use | Validated here |

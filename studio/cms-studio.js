@@ -201,7 +201,8 @@
       ${section('المحتوى', 'Content', fld('العنوان', 'title', 'text', { req: 1 }) + fld('الملخص', 'summary', 'area', { req: 1, rows: 3 }) + fld('النص', 'body', 'area', { req: !!t.body, rows: 10, hint: 'نص عادي — سطر فارغ بين الفقرات. لا HTML.' }))}
       ${section('التصنيف', 'Classification', `<div class="fg">${fld('الفئة', 'category', d.type === 'NEWS' ? 'select' : d.type === 'ANALYSIS' ? 'select' : 'text', { req: ['NEWS', 'ANALYSIS'].includes(d.type), ltr: 1, options: (d.type === 'NEWS' ? C.NEWS_CATEGORIES : C.ANALYSIS_CATEGORIES).map(x => [x, x]) })}${fld('السوق', 'market', 'text', { ltr: 1 })}${fld('الرمز', 'symbol', 'text', { ltr: 1, req: ['ANALYSIS', 'SIGNAL', 'SIGNAL_RESULT'].includes(d.type), hint: t.fixedSymbol ? 'ثابت: ' + t.fixedSymbol : '' })}${fld('الوسوم', 'tags', 'list')}</div>`)}
       ${trading || typeSpecific.length ? section(trading ? 'السياق التداولي' : 'تفاصيل النوع', trading ? 'Trading context' : 'Type details', `<div class="fg">${trading ? fld('الاتجاه', 'bias', 'select', { req: 1, options: C.BIAS.map(x => [x, BIAS_LABEL[x]]) }) : ''}${typeSpecific.join('')}</div>${trading ? fld('السيناريو الصاعد', f + 'bullishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('السيناريو الهابط', f + 'bearishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('مستوى الإلغاء', f + 'invalidation', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) +
-        `<div class="fg">${fld('السعر (اختياري)', f + 'price', 'number', { hint: 'يتطلب مصدرًا ووقتًا' })}${fld('مصدر السعر', f + 'priceSource', 'text', { ltr: 1 })}${fld('وقت السعر', f + 'priceTime', 'datetime')}</div>` : ''}`) : ''}
+        `<div class="fg">${fld('السعر (اختياري)', f + 'price', 'number', { hint: 'يتطلب مصدرًا ووقتًا' })}${fld('مصدر السعر', f + 'priceSource', 'text', { ltr: 1 })}${fld('وقت السعر', f + 'priceTime', 'datetime')}</div>` +
+        (d.type === 'GOLD_FOCUS' ? `<div class="row"><button class="btn sm" data-act="cms-gold-snapshot">أخذ لقطة من سعر XAUUSD الموثّق الحالي</button><span class="hint" style="margin:0">لقطة ثابتة تُحفظ مع التحليل (السعر + المصدر + الوقت). السعر المباشر لا يغيّر التحليل المنشور أبدًا.</span></div>` : '') : ''}`) : ''}
       ${section('المصادر', 'Sources', sourcesEditor())}
       ${section('المخاطر', 'Risk', fld('إفصاح المخاطر', 'riskDisclosure', 'area', { req: !!t.risk, rows: 2 }))}
     </div><div>
@@ -394,9 +395,30 @@
   }
 
   /* ---------- system status (health vs readiness) ---------- */
-  const STATE_CLS = { READY: 'ok', HEALTHY: 'ok', ENABLED: 'ok', DEGRADED: 'warn', DISABLED: '', UNAVAILABLE: 'bad' };
-  const STATE_AR = { READY: 'جاهز', HEALTHY: 'سليم', ENABLED: 'مفعّل', DEGRADED: 'متدهور', DISABLED: 'معطّل', UNAVAILABLE: 'غير متاح' };
+  const STATE_CLS = { READY: 'ok', HEALTHY: 'ok', ENABLED: 'ok', CONNECTED: 'ok', DEGRADED: 'warn', CONNECTING: 'warn', RATE_LIMITED: 'warn', DISABLED: '', IDLE: '',
+    UNAVAILABLE: 'bad', DISCONNECTED: 'bad', AUTH_FAILED: 'bad', BLOCKED_MISSING_CREDENTIALS: 'bad' };
+  const STATE_AR = { READY: 'جاهز', HEALTHY: 'سليم', ENABLED: 'مفعّل', CONNECTED: 'متصل', DEGRADED: 'متدهور', CONNECTING: 'جارٍ الاتصال', RATE_LIMITED: 'محدود المعدل', DISABLED: 'معطّل', IDLE: 'خامل',
+    UNAVAILABLE: 'غير متاح', DISCONNECTED: 'منقطع', AUTH_FAILED: 'رُفضت المصادقة', BLOCKED_MISSING_CREDENTIALS: 'بيانات اعتماد مفقودة' };
   const stTag = v => `<span class="tag ${STATE_CLS[v] || ''}" data-state="${E(v)}">${E(STATE_AR[v] || v)} <span class="ltr">${E(v)}</span></span>`;
+  const MK_AR = { LIVE: 'مباشر', DELAYED: 'متأخر', STALE: 'قديم', MARKET_CLOSED: 'السوق مغلق', UNAVAILABLE: 'غير متاح' };
+  function marketSummary(M) {
+    if (!M || M.state === 'DISABLED') return 'No provider configured (MARKET_PROVIDERS) — site shows “not connected”; publishing unaffected';
+    const c = M.counts || {};
+    return `${(M.providers || []).map(p => `${E(p.label)}: ${E(p.state)}`).join(' · ')} · live ${c.live || 0} · delayed ${c.delayed || 0} · stale ${c.stale || 0} · closed ${c.closed || 0} · unavailable ${c.unavailable || 0} · last update ${fmt(M.lastUpdate)}`;
+  }
+  function marketPanel(M) {
+    if (!M || M.state === 'DISABLED') return '';
+    const age = ms => ms == null ? '—' : ms < 90e3 ? Math.round(ms / 1000) + 's' : Math.round(ms / 60e3) + 'm';
+    return `<section class="panel" style="margin-bottom:14px" data-market-panel><h2>بيانات السوق <small class="ltr">Market data</small></h2>
+      <div class="scroll"><table class="t"><thead><tr><th>المزوّد</th><th>الاتصال</th><th>آخر نجاح</th><th>زمن الاستجابة</th><th>الاستطلاع</th><th>آخر خطأ</th></tr></thead><tbody>
+      ${(M.providers || []).map(p => `<tr><td class="ltr">${E(p.label)}${p.realtime ? '' : ' <span class="tag">delayed plan</span>'}</td><td>${stTag(p.state)}</td><td>${fmt(p.lastSuccessAt)}</td><td class="num ltr">${p.latencyMs == null ? '—' : E(p.latencyMs) + ' ms'}</td><td class="num ltr">${E(p.pollSeconds)}s</td><td class="ltr">${E(p.lastError || (p.missing && p.missing.length ? 'Missing ' + p.missing.join(', ') : '—'))}</td></tr>`).join('')}
+      </tbody></table></div>
+      <div class="scroll"><table class="t"><thead><tr><th>الرمز</th><th>الحالة</th><th>العمر</th><th>المصدر</th></tr></thead><tbody>
+      ${(M.symbols || []).map(s => `<tr data-market-symbol="${E(s.symbol)}"><td class="ltr">${E(s.symbol)}</td><td><span class="tag ${s.status === 'LIVE' ? 'ok' : s.status === 'DELAYED' ? 'warn' : s.status === 'STALE' || s.status === 'UNAVAILABLE' ? 'bad' : ''}" data-state="${E(s.status)}">${E(MK_AR[s.status] || s.status)} <span class="ltr">${E(s.status)}</span></span></td><td class="num ltr">${age(s.ageMs)}</td><td class="ltr">${E(s.provider || s.reason || '—')}</td></tr>`).join('')}
+      </tbody></table></div>
+      ${Object.keys(M.rejections || {}).length ? `<p class="hint ltr">Quality gate rejections: ${Object.entries(M.rejections).map(([k, v]) => `${E(k)} ${E(v)}`).join(' · ')}</p>` : ''}
+      <p class="hint">بيانات السوق خدمة مستقلة: النشر لا يعتمد عليها. لا تُعرض أي مفاتيح أو عناوين اتصال هنا.</p></section>`;
+  }
   function viewSystem() {
     const s = X();
     if (s.sys === null) { if (!s.sysLoading) { s.sysLoading = true; loadSys().then(() => { s.sysLoading = false; render(); }); } return modeBanner() + '<div class="head"><div><h1>حالة النظام</h1><p>System status</p></div></div><div class="empty">جارٍ التحميل…</div>'; }
@@ -419,7 +441,9 @@
       ${row('المُجدول', 'Scheduler', sch.state, `scheduled ${sch.scheduled} · due ${sch.due} · missed ${sch.missed} · expired ${sch.expired} · grace ${sch.graceMinutes}m / ${sch.graceMinutesOther}m · last tick ${fmt(sch.lastTick)}`)}
       ${row('النسخ الاحتياطي', 'Backups', R.backups.state, R.backups.last ? `last ${fmt(R.backups.last.at)} · ${R.backups.count} kept (max ${R.backups.keep})` : 'no backup yet')}
       ${row('سجل التدقيق', 'Audit log', R.audit.state, `${R.audit.entries} entries · hash-chained`)}
+      ${row('بيانات السوق', 'Market data', (R.market || {}).state || 'DISABLED', marketSummary(R.market))}
     </tbody></table></section>
+    ${marketPanel(R.market)}
     <div class="grid2" style="margin-bottom:14px">
       <section class="panel"><h2>النشر <small class="ltr">Deployment</small></h2><dl class="kv"><dt>آخر نشر ناجح</dt><dd>${pub(D.lastSuccess)}</dd><dt>آخر فشل</dt><dd>${pub(D.lastFailure)}</dd><dt>آخر تشغيل تجريبي للبنية</dt><dd>${pub(D.lastCommission)}</dd></dl>
         <p class="hint">LIVE يُعرض فقط بعد أن يُظهر الملف العام النسخة المنشورة؛ وإلا DEPLOYING أو DEPLOYED_UNVERIFIED.</p></section>
@@ -481,6 +505,16 @@
     'cms-lvl-add': el => { const d = X().draft, a = get(d, el.dataset.path) || []; a.push(''); set(d, el.dataset.path, a); X().dirty = true; render(); },
     'cms-lvl-del': el => { const d = X().draft, a = get(d, el.dataset.path) || []; a.splice(+el.dataset.i, 1); set(d, el.dataset.path, a); X().dirty = true; render(); },
     'cms-pf-run': () => runPreflight(),
+    /* Explicit operator action: copy the CURRENT verified XAUUSD quote into this draft as a fixed snapshot.
+       Refused unless the market service reports it LIVE or DELAYED — stale/closed/unavailable prices are never snapshotted. */
+    'cms-gold-snapshot': () => act(async () => {
+      const m = await api('GET', '/api/system/market'), q = (m.quotes || []).find(x => x.symbol === 'XAUUSD');
+      if (!q || !['LIVE', 'DELAYED'].includes(q.status) || !(q.price > 0)) throw new Error(`لا يوجد سعر XAUUSD موثّق حاليًا (${q ? q.status : 'UNAVAILABLE'}) — لم يُضف أي سعر.`);
+      const d = X().draft; d.fields = d.fields || {};
+      d.fields.price = +q.price.toFixed(q.decimals || 2);
+      d.fields.priceSource = `${q.source.provider} ${q.source.providerSymbol} (${q.priceType === 'BID_ASK' ? 'mid' : 'last'}${q.status === 'DELAYED' ? ', delayed' : ''})`;
+      d.fields.priceTime = q.providerTime; X().dirty = true;
+    }, 'أُضيفت لقطة السعر — راجعها ثم احفظ المسودة'),
     'cms-rollback': el => openRollback(el.dataset.v),
     'cms-rollback-go': el => doRollback(!!el.dataset.dry),
     'sys-refresh': () => { X().sys = null; render(); },

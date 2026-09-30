@@ -36,6 +36,11 @@ Publishing to foxrex.co is a privileged operation and happens **only in the work
 - **Logs:** structured JSON. Secret-looking keys and values (Bearer tokens, GitHub PATs, `sk-` keys) are redacted. Request logs carry method, path without query, status, duration and actor, never headers or bodies. The startup line reports the token only as SET or NOT SET with its length.
 - **Health vs readiness:** `/health` is public liveness only. `/api/system/status` (token required) lists component readiness with no filesystem paths, environment values or credentials.
 - **CORS:** an exact match against `ALLOWED_ORIGIN`. A foreign origin receives no `Access-Control-Allow-Origin` header at all. The token is compared in constant time.
+- **Market Data Layer** (docs/MARKET-DATA.md):
+  - Provider credentials exist only in the worker environment. They never appear in Studio, the site, static files, logs, status output or error messages.
+  - The public Market API is read-only (GET only) and served from the cache, never proxied per visitor.
+  - It uses exact-origin CORS and is rate-limited per client.
+  - It can run on its own listener (`MARKET_PORT`) that exposes nothing but `/health` and `/api/market/*`.
 - **Single process:** a lock file in the data directory stops a second worker, or a restore, from writing the CMS concurrently.
 
 See `docs/PUBLISHING.md` for the full model.

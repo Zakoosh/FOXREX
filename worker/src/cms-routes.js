@@ -21,7 +21,7 @@ import { logger } from './logger.js';
 const log = logger('cms');
 const gitVersion = () => new Promise(res => execFile('git', ['--version'], { timeout: 5000 }, (e, so) => res(e ? null : String(so).trim().replace(/^git version /, ''))));
 
-export function createCms({ config, creative, limits }) {
+export function createCms({ config, creative, limits, market = null }) {
   const releaseLock = acquireLock(path.join(config.dataDir, 'cms'));
   const journal = new AuditJournal(config.dataDir);
   const backups = new BackupService({ dataDir: config.dataDir, dir: config.backup && config.backup.dir, keep: config.backup && config.backup.keep, minIntervalMs: config.backup ? config.backup.minIntervalMs : 10 * 60e3 });
@@ -46,7 +46,7 @@ export function createCms({ config, creative, limits }) {
     const pick = p => p && { publicationId: p.publicationId, contentId: p.contentId, language: p.language, action: p.action, version: p.version, at: p.publishedAt || p.requestedAt, result: p.result, deployment: p.deployment, commit: p.commitSha && p.commitSha.slice(0, 12), error: p.error };
     const readyRepo = repo.isRepo && repo.onBranch && repo.clean && !repo.diverged;
     return {
-      health: { worker: 'HEALTHY', uptimeSeconds: Math.round((Date.now() - started) / 1000), version: '0.2.0' },
+      health: { worker: 'HEALTHY', uptimeSeconds: Math.round((Date.now() - started) / 1000), version: '0.3.0' },
       readiness: {
         cms: { state: cmsOk ? 'READY' : 'UNAVAILABLE', records: store.list().length },
         publishingRepo: { state: !repo.isRepo ? 'UNAVAILABLE' : readyRepo ? 'READY' : 'DEGRADED', branch: repo.branch, expectedBranch: publisher.cfg.branch, clean: repo.clean, diverged: repo.diverged, head: repo.head && repo.head.slice(0, 12) },
@@ -56,7 +56,9 @@ export function createCms({ config, creative, limits }) {
         publishing: { state: readyRepo && gh.ok ? 'READY' : 'DEGRADED', mode: publisher.mode, modeLabel: publisher.mode === 'live' ? 'LIVE PUBLISHING' : 'DRY RUN' },
         scheduler: scheduler.status(),
         backups: { state: backups.last ? 'READY' : 'DEGRADED', last: backups.last && { file: backups.last.file, at: backups.last.createdAt, bytes: backups.last.bytes }, count: backups.list().length, keep: backups.keep },
-        audit: { state: journal.verify().ok ? 'READY' : 'DEGRADED', entries: journal.seq }
+        audit: { state: journal.verify().ok ? 'READY' : 'DEGRADED', entries: journal.seq },
+        // Independent dependency: never part of publishing readiness (publishing works without live prices).
+        market: market ? market.status() : { state: 'DISABLED', providers: [], symbols: [], counts: {}, lastUpdate: null }
       },
       deployment: { lastSuccess: pick(lastOk), lastFailure: pick(lastFail), lastCommission: pick(lastCommission) }
     };
@@ -79,6 +81,8 @@ export function createCms({ config, creative, limits }) {
       return true;
     }
     if (p === '/api/system/status' && req.method === 'GET') { send(res, 200, await status()); return true; }
+    // Studio view of the market service (authenticated, Studio CORS): status + cached quotes. Never credentials.
+    if (p === '/api/system/market' && req.method === 'GET') { send(res, 200, market ? { status: market.status(), ...market.quotes() } : { status: { state: 'DISABLED' }, asOf: new Date().toISOString(), quotes: [] }); return true; }
     if (p === '/api/system/audit' && req.method === 'GET') { send(res, 200, { verify: journal.verify(), entries: journal.read(+url.searchParams.get('limit') || 200, { contentId: url.searchParams.get('contentId'), action: url.searchParams.get('action') }) }); return true; }
     if (p === '/api/system/backups' && req.method === 'GET') { send(res, 200, { last: backups.last, backups: backups.list().slice(0, 50) }); return true; }
     if (p === '/api/system/backups' && req.method === 'POST') { const b = backups.snapshot('manual'); journal.append({ action: 'BACKUP', actor, note: b.file }); send(res, 201, b); return true; }

@@ -17,6 +17,8 @@ import { download, sniff, pickUrls } from "./providers/util.js";
 import { CreativeService, validateCreativeRequest, validateOutput, validateBrief } from './creative.js';
 import { chooseModel } from './models.js';
 import { createCms } from './cms-routes.js';
+import { MarketService } from './market/service.js';
+import { createMarketRoutes, createMarketServer } from './market/routes.js';
 import { RateLimiter } from './ratelimit.js';
 import { logger, configureLogging } from './logger.js';
 const rlog = logger('http');
@@ -31,7 +33,7 @@ export function buildRegistry(config = CONFIG) {
   };
 }
 
-export function createServer({ config = CONFIG, registry = buildRegistry(config), policy = DEFAULT_POLICY, autoRun = true, creativeProvider } = {}) {
+export function createServer({ config = CONFIG, registry = buildRegistry(config), policy = DEFAULT_POLICY, autoRun = true, creativeProvider, market: marketOverride } = {}) {
   const store = new JobStore(config.dataDir); store.recover();
   const creative = new CreativeService(config, creativeProvider);
   const reconciling = new Set();
@@ -67,7 +69,11 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
     return errs;
   }
 
-  const cms = createCms({ config, creative, limits: config.limits });
+  // Market data is an independent dependency: the CMS and publishing never wait on it.
+  const market = marketOverride || new MarketService({ config: config.market || {}, env: process.env });
+  if (autoRun && (config.market || {}).autoStart !== false) market.start();
+  const marketRoutes = createMarketRoutes({ service: market, origins: (config.market || {}).publicOrigins || ['https://foxrex.co'], trustProxy: (config.market || {}).trustProxy });
+  const cms = createCms({ config, creative, limits: config.limits, market });
   const aiLimiter = new RateLimiter();
   const server = http.createServer(async (req, res) => {
     // Access log: method, path (no query string), status, duration, actor — never headers, tokens or bodies.
@@ -75,6 +81,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
     res.on('finish', () => { if (req.url !== '/health') rlog.info('request', { rid, method: req.method, path: (req.url || '').split('?')[0].slice(0, 120), status: res.statusCode, ms: Date.now() - t0, actor: (req.headers['x-foxrex-actor'] || '').toString().slice(0, 60) || undefined }); });
     try {
       const url = new URL(req.url, "http://x"); const p = url.pathname; res.fxOrigin = req.headers.origin;
+      if (marketRoutes(req, res, url)) return; // public, read-only, cache-backed market API (own CORS; before auth by design)
       if (req.method === "OPTIONS") { res.writeHead(204, cors(res.fxOrigin)); return res.end(); }
       if (p.startsWith("/assets/")) {
         const name = p.slice(8); if (!/^[a-f0-9-]{36}\.(png|jpg|webp|mp4)$/.test(name)) return send(res, 404, { error: "not found" });
@@ -83,7 +90,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
         return fs.createReadStream(f).pipe(res);
       }
       if (p === '/' && req.method === 'GET') return send(res, 200, { service: 'foxrex-studio-generation-worker', message: 'This port is the worker API, not the Studio UI.', health: '/health', studio: 'https://foxrex.co/studio/' });
-      if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.2.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
+      if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.3.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
       if (!authed(req)) return send(res, 401, { error: "unauthorized" });
       if (await cms.handle(req, res, url, { send, body, ip: req.socket.remoteAddress })) return;
       if (/^\/creative\/(ideate|plan|critique)$/.test(p) && req.method === 'POST') { const wait = aiLimiter.check('ai', (req.headers['x-foxrex-actor'] || req.socket.remoteAddress || 'anon').toString()); if (wait) return send(res, 429, { error: `Too many AI requests — wait ${wait}s` }, { 'Retry-After': String(wait) }); }
@@ -224,7 +231,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
       send(res, 404, { error: "not found" });
     } catch (e) { send(res, e.status || 500, { error: e.status ? e.message : 'internal', message: e.message, ...(e.errors ? { errors: e.errors } : {}), ...(e.code ? { code: e.code } : {}), ...(e.publication ? { publication: e.publication } : {}), ...(e.current != null ? { current: e.current } : {}), ...(e.currentVersion ? { currentVersion: e.currentVersion } : {}) }); }
   });
-  return { server, store, runner, registry, health, creative, cms };
+  return { server, store, runner, registry, health, creative, cms, market, marketRoutes };
 }
 /** Never return reference image bytes or internals to the client. */
 const publicJob = j => { const { input_assets, ...rest } = j; return { ...rest, input_assets: (input_assets || []).map(({ dataUrl, ...a }) => a) }; };
@@ -242,6 +249,12 @@ if (import.meta.url === pathToFileURL(process.argv[1] || "").href) {
     publishRepo: fs.existsSync(path.join(CONFIG.publish.repoDir, '.git')) ? 'SET (git repository)' : 'NOT A GIT REPOSITORY', scheduler: CONFIG.schedulerEnabled ? 'ENABLED' : 'DISABLED',
     creativeProvider: CONFIG.creativeProvider, backupDir: CONFIG.backup.dir ? 'CUSTOM' : 'DATA_DIR/backups', logFile: CONFIG.logFile ? 'SET' : 'stdout only' });
   app.server.listen(CONFIG.port, CONFIG.host, () => slog.info('listening', { url: `http://${CONFIG.host}:${CONFIG.port}`, paidApis: 'DISABLED' }));
+  const M = CONFIG.market;
+  slog.info('market data', { providers: M.providers.length ? M.providers : 'NONE (disabled)', symbols: M.symbols, publicOrigins: M.publicOrigins,
+    providerSetup: { oanda: M.oanda.token && M.oanda.accountId ? 'SET' : 'NOT SET', twelvedata: M.twelvedata.apiKey ? 'SET' : 'NOT SET', bridge: M.bridge.url ? 'SET' : 'NOT SET' } });
+  // Optional market-only listener for a public tunnel: serves /health and /api/market/* and nothing else.
+  let marketServer = null;
+  if (M.port) { marketServer = createMarketServer(app.marketRoutes); marketServer.listen(M.port, CONFIG.host, () => slog.info('market api listening', { url: `http://${CONFIG.host}:${M.port}` })); }
   let stopping = false;
   const shutdown = async signal => {
     if (stopping) return; stopping = true;
@@ -249,6 +262,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || "").href) {
     const force = setTimeout(() => { slog.warn('forced exit after timeout'); process.exit(1); }, 20000); force.unref();
     app.server.close();
     app.runner?.stop?.();
+    app.market.stop(); marketServer?.close();
     await Promise.race([app.cms.drain(), new Promise(r => setTimeout(r, 15000))]); // let an in-flight publication finish
     app.cms.stop({ finalBackup: true });
     slog.info('stopped'); process.exit(0);

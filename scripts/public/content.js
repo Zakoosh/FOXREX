@@ -97,6 +97,8 @@
     if (typeof g.price === 'number' && has(g.priceSource) && g.priceTime) {
       set('price', '<span class="num">' + esc(g.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })) + '</span>');
       var px = box.querySelector('[data-gold="price"]'); if (px) { px.style.color = 'var(--foxrex-text)'; px.title = g.priceSource + ' · ' + new Date(g.priceTime).toISOString(); }
+      /* The analysis price is the snapshot recorded at publication — never the live quote (that is in the ticker). */
+      set('pricenote', T('Price at time of analysis', 'السعر وقت التحليل') + ' · ' + L(g.priceSource) + ' · ' + time(g.priceTime));
     }
     if (BIAS[g.bias]) set('bias', T('Bias: ', 'الاتجاه: ') + bias(g.bias));
     if (has(g.marketState)) set('state', L(g.marketState));

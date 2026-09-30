@@ -10,7 +10,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITE, MARKETS, SCHEDULE, SCHEDULE_EXTRA, ANALYSIS_CATEGORIES, NEWS_CATEGORIES, REX } from './content.mjs';
+import { SITE, MARKETS, MARKET_API, SCHEDULE, SCHEDULE_EXTRA, ANALYSIS_CATEGORIES, NEWS_CATEGORIES, REX } from './content.mjs';
+if (MARKET_API && !/^https:\/\/[a-z0-9.-]+(:\d+)?$/.test(MARKET_API)) throw new Error('MARKET_API must be an https origin without a path (or empty)');
 import { esc, enText, arText } from './text.mjs';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
@@ -183,7 +184,7 @@ const empty = (h, p) => `<div class="fx-empty"><strong>${h}</strong><span>${p}</
 const more = (href, en, ar) => `<a class="fx-link" href="${href}">${t(en, ar)} ${I.arrow}</a>`;
 
 function ticker() {
-  return `<section class="fx-ticker" aria-label="${AR() ? 'نظرة على الأسواق' : 'Market overview'}" data-market-ticker>
+  return `<section class="fx-ticker" aria-label="${AR() ? 'نظرة على الأسواق' : 'Market overview'}" data-market-ticker${MARKET_API ? ` data-market-api="${esc(MARKET_API)}"` : ''}>
   <div class="fx-ticker__state"><span class="fx-status" data-state="off" data-market-state>${t('Market feed not connected', 'بيانات السوق غير متصلة')}</span></div>
   <ul class="fx-ticker__list">
     ${MARKETS.map(m => `<li class="fx-ticker__item" data-symbol="${m.sym}"><span class="fx-sym">${m.sym}</span><span><span class="fx-ticker__px" data-px>—</span> <span class="fx-ticker__chg" data-chg></span></span></li>`).join('\n    ')}
@@ -208,6 +209,7 @@ function goldFocus(b, withCta = true) {
   <div class="gold__main">
     <span class="fx-kicker" style="color:var(--foxrex-warning)">${t('Gold Focus', 'تركيز الذهب')}</span>
     <div class="gold__sym"><span class="fx-sym">XAUUSD</span><span class="gold__px" data-gold="price">—</span></div>
+    <p class="fx-card__meta" data-gold="pricenote" hidden></p>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="fx-badge" data-gold="bias">${t('Bias: not published', 'الاتجاه: لم يُنشر بعد')}</span><span class="fx-badge" data-gold="state">${t('Market state: unavailable', 'حالة السوق: غير متاحة')}</span></div>
     <p class="muted" data-gold="summary">${t('Today’s gold analysis has not been published yet. Levels and scenarios appear here once the FOXREX desk publishes them — we never display estimated or placeholder prices.', 'لم يُنشر تحليل الذهب لهذا اليوم بعد. تظهر المستويات والسيناريوهات هنا فور نشرها من مكتب FOXREX، ولا نعرض أسعارًا تقديرية أو وهمية أبدًا.')}</p>
     <p class="muted" data-gold="invalidation" hidden></p>
