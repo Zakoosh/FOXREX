@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FOXREX — Enter the mind of FOXREX (experimental prototype)</title>
+<meta name="description" content="Experimental cinematic prototype: what it feels like to enter the mind of FOXREX. Demonstration data only.">
+<!-- Isolated prototype: not linked from production pages, not in the sitemap, not indexed. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B1320">
+<meta name="color-scheme" content="dark">
+<!-- Live-data rule: only a real FOXREX Market API may replace DEMO values. Empty = MARKET DATA UNAVAILABLE. -->
+<meta name="foxrex-market-api" content="">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="preload" href="../assets/fonts/inter-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../styles/fonts.css">
+<link rel="stylesheet" href="experience.css">
+<script>document.documentElement.classList.add('js');</script>
+<script type="module" src="js/engine.js"></script>
+</head>
+<body data-scene="opening">
+<a class="xp-skip" href="#xp-fallback" data-go="live" data-t="skip">Skip the film</a>
+
+<!-- The world: one canvas, one continuous environment -->
+<canvas id="xp-canvas" aria-hidden="true"></canvas>
+<div id="xp-scroll" aria-hidden="true"></div>
+
+<!-- Minimal navigation: almost invisible at first -->
+<header id="xp-nav" class="xp-nav">
+  <a class="xp-mark" href="../" aria-label="FOXREX home"><img src="../assets/brand/foxrex-mark.png" width="175" height="146" alt=""><span>FOXREX</span></a>
+  <nav aria-label="Experience">
+    <a href="#" data-go="observe" data-t="nav.intel">Intelligence</a>
+    <a href="#" data-go="technical" data-t="nav.tech">Technology</a>
+    <a href="#" data-go="live" data-t="nav.live">Live</a>
+    <a href="#" data-go="ask" data-t="nav.rex">REX</a>
+    <a href="#" data-go="enter" class="xp-enter" data-t="nav.enter">Enter FOXREX</a>
+  </nav>
+  <button id="xp-sound" class="xp-sound" type="button" aria-pressed="false"><span data-t="sound">Sound</span> · <span data-state data-t="off">off</span></button>
+</header>
+
+<div id="xp-rail" class="xp-rail" aria-hidden="true"><i></i><span id="xp-rail-num">01</span><span id="xp-rail-name"></span></div>
+<p class="xp-demo" role="note" data-t="demo">DEMO / CINEMATIC DATA — not live market data</p>
+
+<!-- Typography and scene interfaces live above the world -->
+<div id="xp-overlay" class="xp-overlay">
+  <div id="xp-opening" class="xp-opening" aria-hidden="true"><span style="--x:18%;--y:34%;--s:1">4328.50</span><span style="--x:66%;--y:58%;--s:.7">XAUUSD</span><span style="--x:40%;--y:72%;--s:.5">▮ 1m</span><span style="--x:72%;--y:26%;--s:.6">CPI</span><span style="--x:24%;--y:62%;--s:.8">EURUSD</span><span style="--x:58%;--y:40%;--s:.45">US10Y +4bp</span><span style="--x:32%;--y:24%;--s:.65">BTCUSD</span><span style="--x:62%;--y:76%;--s:.5">MACD</span></div>
+  <p id="xp-hint" class="xp-hint" data-t="scroll">Scroll to enter</p>
+
+  <section id="xp-step" class="xp-step" aria-live="polite"><p class="k">XAUUSD · <span class="demo-tag">DEMO</span></p><h2 id="xp-step-name"></h2><p id="xp-step-sub"></p><ol id="xp-step-list"></ol></section>
+
+  <section id="xp-ml" class="xp-ml"><ol></ol><p id="xp-prob" class="ltr">P(continuation) <b>0.72</b> <span class="demo-tag">DEMO</span></p></section>
+
+  <div id="xp-evidence" class="xp-evidence"></div>
+
+  <section id="xp-risk" class="xp-risk" aria-live="polite"></section>
+
+  <section id="xp-decision" class="xp-decision" aria-live="polite">
+    <p class="k ltr">XAUUSD · 09:38 · <span class="demo-tag">DEMO</span></p>
+    <div class="dec-words ltr"></div>
+    <dl></dl>
+    <p class="dec-why"></p>
+  </section>
+
+  <section id="xp-replay" class="xp-replay">
+    <p class="k" data-t="replayHint"></p>
+    <div class="r-grid">
+      <div class="r-state"><p class="k" data-t="state"></p><p class="r-dec ltr">WAIT</p><p class="ltr"><span data-t="conf"></span> <b class="r-conf">—</b></p><span class="r-conf-bar"><i></i></span><p class="ltr"><span data-t="riskL"></span>: <b class="r-risk">—</b></p></div>
+      <div><p class="k" data-t="knew"></p><dl class="r-knew"></dl></div>
+    </div>
+    <label class="r-scrub ltr"><span class="sr-only">Replay time</span><input id="xp-scrub" type="range" min="0" max="1000" step="1" value="0"></label>
+    <ol class="r-events ltr"></ol>
+  </section>
+
+  <section id="xp-ask" class="xp-ask" aria-live="polite">
+    <h2 class="ask-title"><span data-t="askQ"></span></h2><p class="k" data-t="askSub"></p>
+    <div class="ask-q" role="group" aria-label="Ask REX"></div>
+    <p class="ask-a"></p>
+  </section>
+
+  <section id="xp-live" class="xp-live">
+    <h2 data-t="liveQ"></h2><p class="k" data-t="liveSub"></p><p id="xp-live-status" class="live-status"></p>
+    <div id="xp-live-nodes" class="live-nodes"></div>
+    <aside id="xp-live-detail" class="live-detail" hidden></aside>
+  </section>
+
+  <div id="xp-stations" class="xp-stations" aria-hidden="true"></div>
+  <nav class="xp-end" aria-label="End"><a href="../" data-t="back">Return to foxrex.co</a><a href="#" data-go="opening" data-t="again">Enter again</a></nav>
+</div>
+
+<!-- Fallback: the whole story as text (no JavaScript, no canvas, or an error). Screen readers get this narrative too. -->
+<main id="xp-fallback" class="xp-fallback">
+  <h1>Enter the mind of FOXREX</h1>
+  <p class="demo">Experimental prototype · demonstration data only · not live market data.</p>
+  <ol>
+    <li><h2>Market noise</h2><p>The market is noise — prices, headlines, volume and indicators, all at once. Until you know what to look for.</p></li>
+    <li><h2>Observation</h2><p>Observe. Filter. Connect. Understand. Attention separates signal from noise.</p></li>
+    <li><h2>The data awakens</h2><p>Price, volume, volatility, structure, momentum, trend, liquidity, news, session and historical memory flow into one intelligence.</p></li>
+    <li><h2>Technical vision</h2><p>XAUUSD, layer by layer: EMA 20, 50 and 200, Bollinger Bands 20,2, RSI 14, MACD 12,26,9, ATR 14, ADX 14, volume, market structure (HH, HL, LH, LL), a break of structure and its retest.</p></li>
+    <li><h2>Market memory</h2><p>Have I seen this before? The current structure is matched against past market states; some align, most are rejected.</p></li>
+    <li><h2>FOXREX ML</h2><p>Dataset, features, training, validation, walk-forward, model, probability, confidence. FOXREX learns from market behavior.</p></li>
+    <li><h2>Reasoning</h2><p>Evidence converges — and some of it disagrees. FOXREX waits. Waiting is a decision.</p></li>
+    <li><h2>Risk gate</h2><p>An early, attractive setup is rejected: poor entry, reward/risk 0.8, elevated volatility. Intelligence is knowing when not to trade.</p></li>
+    <li><h2>The decision</h2><p>Demonstration: BUY XAUUSD at 4,328.50 — confidence 0.72, invalidation 4,313.80, target 4,351.00, risk 0.5% per position.</p></li>
+    <li><h2>Decision replay and Ask REX</h2><p>Every step can be replayed and explained: why buy, why not earlier, what would invalidate it, the biggest risk, what changed.</p></li>
+    <li><h2>Live intelligence</h2><p>XAUUSD, EURUSD, GBPUSD, USDJPY, BTCUSD, ETHUSD — market data unavailable in this prototype.</p></li>
+    <li><h2>The FOXREX system</h2><p>FOXREX does not just generate signals. It observes. It learns. It reasons. It measures risk. It explains. Trade smarter. Go further.</p></li>
+  </ol>
+  <p><a href="../">Return to foxrex.co</a></p>
+</main>
+</body>
+</html>
