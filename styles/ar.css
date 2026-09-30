@@ -1,0 +1,116 @@
+/* FOXREX Arabic edition (/ar/). Loaded only on <html lang="ar" dir="rtl"> pages, after public.css.
+   Composition is set for Arabic reading, not mirrored from English:
+   - IBM Plex Sans Arabic for Arabic script with its own scale (tokens.css --ar-*), no tracking, no uppercase.
+   - Latin tokens (symbols, prices, %, times, brand names) are isolated in <bdi class="lt"> and set in Inter LTR.
+   - Market strip, timelines and numbers stay LTR. Logos and charts never mirror. */
+
+html[lang="ar"] body{font:var(--ar-body);letter-spacing:0}
+html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3,html[lang="ar"] h4{letter-spacing:0}
+html[lang="ar"] :is(h1,h2,h3,.hero__lead,.section-head p,.join p){text-wrap:balance}
+html[lang="ar"] p,html[lang="ar"] li{text-wrap:pretty}
+
+/* Latin / data tokens inside Arabic text */
+.lt{font-family:var(--foxrex-font-en);font-weight:inherit;direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums;font-size:.94em;letter-spacing:0}
+h1 .lt,h2 .lt{font-size:.86em;font-weight:800}
+.fx-sym,.num,time,.fx-ticker__px,.fx-ticker__chg{font-family:var(--foxrex-font-en)}
+
+/* Brand lockup never mirrors */
+html[lang="ar"] .fx-logo{direction:ltr}
+
+/* Header: Arabic nav sizing */
+html[lang="ar"] .site-nav a{font:var(--ar-cta);font-weight:500;padding:8px 13px}
+html[lang="ar"] .site-nav{margin-inline-start:18px}
+html[lang="ar"] .lang-toggle{font-family:var(--foxrex-font-en)}
+html[lang="ar"] .mobile-nav a{font:600 20px/1.6 var(--foxrex-font-ar)}
+
+/* Kickers, badges, buttons */
+html[lang="ar"] .fx-kicker{font:var(--ar-section);letter-spacing:0;text-transform:none}
+html[lang="ar"] .fx-kicker .lt{font-size:.9em;letter-spacing:.06em}
+html[lang="ar"] .fx-badge{font:var(--ar-label)}
+html[lang="ar"] .fx-btn{font:var(--ar-cta)}
+html[lang="ar"] .fx-btn--sm{font-size:15px}
+html[lang="ar"] .fx-link{font:var(--ar-cta);font-size:15px}
+
+/* Hero — Arabic headline leads; English tagline becomes a quiet Latin signature */
+.hero--ar h1{font:var(--ar-hero);margin-top:22px;text-align:right}
+.hero--ar h1 span{display:block}
+.hero--ar h1 .accent{color:var(--foxrex-primary)}
+.hero--ar .hero__pos{margin-top:18px;font:600 clamp(17px,1.8vw,21px)/1.7 var(--foxrex-font-ar);color:var(--foxrex-text);display:flex;flex-wrap:wrap;gap:6px 12px}
+.hero--ar .hero__pos i{font-style:normal;color:var(--foxrex-primary)}
+.hero--ar .hero__lead{font:var(--ar-lead);color:var(--foxrex-text-muted);max-width:34em;margin-top:18px}
+.hero--ar .hero__sig{margin-top:30px;font:600 12px/1 var(--foxrex-font-en);letter-spacing:.22em;color:var(--foxrex-text-faint);direction:ltr;text-align:right}
+.hero--ar .pillars li{font:500 17px/1.6 var(--foxrex-font-ar)}
+.hero--ar .pillars li > span:first-child{font-family:var(--foxrex-font-en)}
+
+/* Market strip stays LTR (a market timeline); only its status label reads RTL */
+html[lang="ar"] .fx-ticker{direction:ltr}
+html[lang="ar"] .fx-ticker__state{direction:rtl;font:var(--ar-label);border-inline-end:0;border-inline-start:1px solid var(--foxrex-border);order:2}
+
+/* Section heads */
+html[lang="ar"] .section-head h2{font:var(--ar-h2)}
+html[lang="ar"] .section-head p{font:var(--ar-lead);font-size:18px}
+html[lang="ar"] .page-hero h1{font:var(--ar-h1)}
+html[lang="ar"] .page-hero p{font:var(--ar-lead)}
+
+/* Cards */
+html[lang="ar"] .fx-card h3{font:var(--ar-card-title)}
+html[lang="ar"] .fx-card p{font:var(--ar-caption);font-size:15px}
+html[lang="ar"] .fx-empty{font:var(--ar-caption)}
+html[lang="ar"] .fx-empty strong{font:600 16px/1.6 var(--foxrex-font-ar)}
+html[lang="ar"] .fx-card__meta{font:var(--ar-caption);font-size:13px}
+
+/* Daily desk: time sits on the leading edge in Inter, title below */
+html[lang="ar"] .slot__time{flex-direction:row;align-items:baseline;justify-content:space-between}
+html[lang="ar"] .slot__time b{font-size:14px;color:var(--foxrex-text-muted)}
+html[lang="ar"] .slot h3{font:600 17px/1.75 var(--foxrex-font-ar)}
+html[lang="ar"] .slot .fx-status{font:var(--ar-label)}
+
+/* Gold focus */
+html[lang="ar"] .gold__main{gap:18px}
+html[lang="ar"] .gold__levels dt{font:var(--ar-label);letter-spacing:0;text-transform:none}
+html[lang="ar"] .gold__levels dd{direction:ltr;text-align:right}
+html[lang="ar"] .gold__scen h4{font:700 15px/1.6 var(--foxrex-font-ar);letter-spacing:0;text-transform:none}
+html[lang="ar"] .gold__scen p{font:var(--ar-caption)}
+html[lang="ar"] .gold__px{direction:ltr}
+
+/* News */
+html[lang="ar"] .tabs button{font:var(--ar-label);font-size:14px}
+html[lang="ar"] .news-item time{direction:ltr;text-align:right}
+
+/* Signals */
+html[lang="ar"] .signals h2{font:var(--ar-h2)}
+html[lang="ar"] .steps h3{font:600 17px/1.6 var(--foxrex-font-ar)}
+html[lang="ar"] .steps p{font:var(--ar-caption);font-size:15px}
+html[lang="ar"] .risk-box{font:var(--ar-caption);font-size:14.5px}
+
+/* REX */
+html[lang="ar"] .rex h2{font:700 26px/1.5 var(--foxrex-font-ar)}
+html[lang="ar"] .rex-card{border-inline-start:0;border-inline-end:0;border-top:3px solid var(--foxrex-primary)}
+
+/* Why FOXREX */
+html[lang="ar"] .why h3{font:var(--ar-card-title)}
+html[lang="ar"] .why p{font:var(--ar-caption);font-size:15px}
+
+/* Join */
+html[lang="ar"] .join h2{font:var(--ar-h2)}
+html[lang="ar"] .join p{font:var(--ar-lead);font-size:18px}
+
+/* Articles & prose */
+html[lang="ar"] .article h2{font:700 28px/1.5 var(--foxrex-font-ar)}
+html[lang="ar"] .article p{font:var(--ar-body);font-size:18px}
+html[lang="ar"] .article .takeaway{font:600 16px/1.8 var(--foxrex-font-ar)}
+html[lang="ar"] .prose h2{font:700 23px/1.55 var(--foxrex-font-ar)}
+html[lang="ar"] .prose p,html[lang="ar"] .prose li{font:var(--ar-body)}
+
+/* Footer */
+html[lang="ar"] .site-foot{font:var(--ar-caption)}
+html[lang="ar"] .site-foot h2{font:var(--ar-label);letter-spacing:0;text-transform:none;color:var(--foxrex-text-faint)}
+html[lang="ar"] .site-foot__ar{margin-top:12px;font:600 18px/1.6 var(--foxrex-font-ar);color:var(--foxrex-text)}
+html[lang="ar"] .site-foot__tag{direction:ltr;text-align:right}
+html[lang="ar"] .site-foot__legal p{line-height:1.9}
+
+@media (max-width:600px){
+  .hero--ar h1{font-size:clamp(40px,11.5vw,54px)}
+  html[lang="ar"] .section-head h2{font-size:clamp(25px,7vw,30px)}
+  html[lang="ar"] .slot__time{flex-direction:row}
+}

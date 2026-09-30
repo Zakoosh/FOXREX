@@ -7,7 +7,7 @@
 <meta name="description" content="How FOXREX Signals work: documented trade ideas with entry, stop-loss and targets, delivered on Telegram with clear risk awareness.">
 <link rel="canonical" href="https://foxrex.co/signals/">
 <link rel="alternate" hreflang="en" href="https://foxrex.co/signals/">
-<link rel="alternate" hreflang="ar" href="https://foxrex.co/signals/?lang=ar">
+<link rel="alternate" hreflang="ar" href="https://foxrex.co/ar/signals/">
 <link rel="alternate" hreflang="x-default" href="https://foxrex.co/signals/">
 <meta name="theme-color" content="#0B1320">
 <meta name="color-scheme" content="dark">
@@ -29,67 +29,68 @@
 <meta name="twitter:title" content="FOXREX Signals — FOXREX">
 <meta name="twitter:description" content="How FOXREX Signals work: documented trade ideas with entry, stop-loss and targets, delivered on Telegram with clear risk awareness.">
 <meta name="twitter:image" content="https://foxrex.co/assets/brand/og-image.png">
-<script>(function(){var d=document.documentElement,l=null;d.className+=" js";try{l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("foxrex-lang")}catch(e){}if(l==="ar"){d.lang="ar";d.dir="rtl"}})();</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&display=swap">
+<script>document.documentElement.className+=" js";</script>
+<link rel="preload" href="../assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/inter-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../styles/fonts.css">
 <link rel="stylesheet" href="../styles/tokens.css">
 <link rel="stylesheet" href="../styles/base.css">
 <link rel="stylesheet" href="../styles/components.css">
 <link rel="stylesheet" href="../styles/public.css">
 </head>
-<body data-root="../" data-page="signals">
-<a class="skip" href="#main"><span class="l-en">Skip to content</span><span class="l-ar" lang="ar">انتقل إلى المحتوى</span></a>
+<body data-root="../" data-page="signals" data-lang="en">
+<a class="skip" href="#main">Skip to content</a>
 <header class="site-head">
   <div class="wrap">
     <a class="fx-logo" href="../" aria-label="FOXREX home"><img src="../assets/brand/foxrex-mark.png" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>
-    <nav class="site-nav" aria-label="Primary"><a href="../markets/"><span class="l-en">Markets</span><span class="l-ar" lang="ar">الأسواق</span></a><a href="../analysis/"><span class="l-en">Analysis</span><span class="l-ar" lang="ar">التحليلات</span></a><a href="../news/"><span class="l-en">News</span><span class="l-ar" lang="ar">الأخبار</span></a><a href="../learn/"><span class="l-en">Learn</span><span class="l-ar" lang="ar">تعلّم</span></a><a href="../signals/" aria-current="page"><span class="l-en">Signals</span><span class="l-ar" lang="ar">الإشارات</span></a></nav>
+    <nav class="site-nav" aria-label="Primary"><a href="../markets/">Markets</a><a href="../analysis/">Analysis</a><a href="../news/">News</a><a href="../learn/">Learn</a><a href="../signals/" aria-current="page">Signals</a></nav>
     <div class="site-head__end">
-      <button class="lang-toggle" type="button" data-lang-toggle aria-label="Switch language"><span class="l-en" lang="ar">عربي</span><span class="l-ar">EN</span></button>
-      <a class="fx-btn fx-btn--primary fx-btn--sm" href="https://t.me/fooxrex" target="_blank" rel="noopener"><span class="l-en">Join FOXREX</span><span class="l-ar" lang="ar">انضم إلى FOXREX</span></a>
+      <a class="lang-toggle" href="../ar/signals/" hreflang="ar" lang="ar" data-lang-switch="ar">العربية</a>
+      <a class="fx-btn fx-btn--primary fx-btn--sm" href="https://t.me/fooxrex" target="_blank" rel="noopener">Join FOXREX</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu" data-menu-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
 </header>
 <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" data-open="false">
-  <a href="../"><span class="l-en">Home</span><span class="l-ar" lang="ar">الرئيسية</span></a>
-  <a href="../markets/"><span class="l-en">Markets</span><span class="l-ar" lang="ar">الأسواق</span></a>
-  <a href="../analysis/"><span class="l-en">Analysis</span><span class="l-ar" lang="ar">التحليلات</span></a>
-  <a href="../news/"><span class="l-en">News</span><span class="l-ar" lang="ar">الأخبار</span></a>
-  <a href="../learn/"><span class="l-en">Learn</span><span class="l-ar" lang="ar">تعلّم</span></a>
-  <a href="../signals/" aria-current="page"><span class="l-en">Signals</span><span class="l-ar" lang="ar">الإشارات</span></a>
-  <a href="../gold/"><span class="l-en">Gold</span><span class="l-ar" lang="ar">الذهب</span></a>
-  <a href="../about/"><span class="l-en">About</span><span class="l-ar" lang="ar">من نحن</span></a>
-  <a href="../contact/"><span class="l-en">Contact</span><span class="l-ar" lang="ar">تواصل</span></a>
-  <a class="fx-btn fx-btn--primary" href="https://t.me/fooxrex" target="_blank" rel="noopener"><span class="l-en">Join FOXREX on Telegram</span><span class="l-ar" lang="ar">انضم إلى FOXREX على تيليجرام</span></a>
+  <a href="../">Home</a>
+  <a href="../markets/">Markets</a>
+  <a href="../analysis/">Analysis</a>
+  <a href="../news/">News</a>
+  <a href="../learn/">Learn</a>
+  <a href="../signals/" aria-current="page">Signals</a>
+  <a href="../gold/">Gold</a>
+  <a href="../about/">About</a>
+  <a href="../contact/">Contact</a>
+  <a href="../ar/signals/" hreflang="ar" lang="ar" data-lang-switch="ar">العربية</a>
+  <a class="fx-btn fx-btn--primary" href="https://t.me/fooxrex" target="_blank" rel="noopener">Join FOXREX on Telegram</a>
 </nav>
 <main id="main">
-<section class="page-hero"><div class="wrap"><span class="fx-kicker">FOXREX Signals</span><h1><span class="l-en">Signals, with their risk.</span><span class="l-ar" lang="ar">إشارات، مع مخاطرها.</span></h1><p><span class="l-en">What a FOXREX Signal contains, how it is delivered and how results are recorded.</span><span class="l-ar" lang="ar">ما الذي تحتويه إشارة FOXREX، وكيف تصل، وكيف تُسجل النتائج.</span></p></div></section>
+<section class="page-hero"><div class="wrap"><span class="fx-kicker">FOXREX Signals</span><h1>Signals, with their risk.</h1><p>What a FOXREX Signal contains, how it is delivered and how results are recorded.</p></div></section>
 <section class="section section--tight"><div class="wrap"><div class="signals">
   <div class="reveal">
     <span class="fx-kicker">FOXREX Signals</span>
-    <h2 style="font-size:var(--foxrex-fs-2xl);margin-top:10px"><span class="l-en">Structured trade ideas, delivered with their risk.</span><span class="l-ar" lang="ar">أفكار تداول منظمة، تصلك مع مخاطرها.</span></h2>
-    <p class="muted" style="margin-top:14px;font-size:17px"><span class="l-en">Each FOXREX Signal is a documented idea: instrument, direction, entry zone, stop-loss, targets, validity and the reasoning behind it. The stop-loss is defined before the entry, every time.</span><span class="l-ar" lang="ar">كل إشارة من FOXREX فكرة موثقة: الأداة والاتجاه ومنطقة الدخول ووقف الخسارة والأهداف والصلاحية والمنطق وراءها. ووقف الخسارة يُحدد قبل الدخول في كل مرة.</span></p>
-    <div class="risk-box"><strong><span class="l-en">Risk awareness.</span><span class="l-ar" lang="ar">الوعي بالمخاطر.</span></strong> <span class="l-en">Signals are trade ideas, not instructions or guarantees. Markets can move against any idea, and past results never guarantee future outcomes. Only trade with capital you can afford to lose, size positions responsibly and always use a stop-loss.</span><span class="l-ar" lang="ar">الإشارات أفكار تداول وليست تعليمات أو ضمانات. قد يتحرك السوق عكس أي فكرة، والنتائج السابقة لا تضمن النتائج المستقبلية. تداول فقط برأس مال يمكنك تحمل خسارته، وحدد حجم مراكزك بمسؤولية واستخدم وقف الخسارة دائمًا.</span></div>
-    <div class="hero__ctas"><a class="fx-btn fx-btn--primary" href="https://t.me/fooxrex" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 2.8c.9-.3 1.7.2 1.4 1.5z"/></svg> <span class="l-en">Get signals on Telegram</span><span class="l-ar" lang="ar">تابع الإشارات على تيليجرام</span></a></div>
+    <h2 style="font-size:var(--foxrex-fs-2xl);margin-top:10px">Structured trade ideas, delivered with their risk.</h2>
+    <p class="muted" style="margin-top:14px;font-size:17px">Each FOXREX Signal is a documented idea: instrument, direction, entry zone, stop-loss, targets, validity and the reasoning behind it. The stop-loss is defined before the entry, every time.</p>
+    <div class="risk-box"><strong>Risk awareness.</strong> Signals are trade ideas, not instructions or guarantees. Markets can move against any idea, and past results never guarantee future outcomes. Only trade with capital you can afford to lose, size positions responsibly and always use a stop-loss.</div>
+    <div class="hero__ctas"><a class="fx-btn fx-btn--primary" href="https://t.me/fooxrex" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 2.8c.9-.3 1.7.2 1.4 1.5z"/></svg> Get signals on Telegram</a></div>
   </div>
   <div class="reveal">
     <ol class="steps">
-      <li><h3><span class="l-en">Analysis first</span><span class="l-ar" lang="ar">التحليل أولًا</span></h3><p><span class="l-en">Ideas come from the same structure, levels and macro context we publish in our analysis.</span><span class="l-ar" lang="ar">تنبع الأفكار من البنية والمستويات والسياق الاقتصادي نفسه الذي ننشره في تحليلاتنا.</span></p></li>
-      <li><h3><span class="l-en">Delivered on Telegram</span><span class="l-ar" lang="ar">تصل عبر تيليجرام</span></h3><p><span class="l-en">Signals are posted to the FOXREX Telegram channel with every parameter and the time of publication.</span><span class="l-ar" lang="ar">تُنشر الإشارات في قناة FOXREX على تيليجرام مع كل معاييرها ووقت نشرها.</span></p></li>
-      <li><h3><span class="l-en">Managed in public</span><span class="l-ar" lang="ar">إدارة علنية</span></h3><p><span class="l-en">Updates such as moving the stop or closing early are posted in the same thread.</span><span class="l-ar" lang="ar">تُنشر التحديثات مثل تحريك الوقف أو الإغلاق المبكر في السلسلة نفسها.</span></p></li>
-      <li><h3><span class="l-en">Results recorded</span><span class="l-ar" lang="ar">تسجيل النتائج</span></h3><p><span class="l-en">Outcomes are logged whether they win or lose.</span><span class="l-ar" lang="ar">تُسجل النتائج سواء كانت رابحة أو خاسرة.</span></p></li>
+      <li><h3>Analysis first</h3><p>Ideas come from the same structure, levels and macro context we publish in our analysis.</p></li>
+      <li><h3>Delivered on Telegram</h3><p>Signals are posted to the FOXREX Telegram channel with every parameter and the time of publication.</p></li>
+      <li><h3>Managed in public</h3><p>Updates such as moving the stop or closing early are posted in the same thread.</p></li>
+      <li><h3>Results recorded</h3><p>Outcomes are logged whether they win or lose.</p></li>
     </ol>
     <div style="margin-top:24px">
-      <h3 style="font-size:16px;margin-bottom:12px"><span class="l-en">Recent results</span><span class="l-ar" lang="ar">النتائج الأخيرة</span></h3>
-      <div data-signal-results><div class="fx-empty"><strong><span class="l-en">No verified results published yet</span><span class="l-ar" lang="ar">لا توجد نتائج موثقة منشورة بعد</span></strong><span><span class="l-en">Closed signals will be listed here with entry, exit and outcome — including losses. We do not publish win rates or performance figures until they can be independently verified.</span><span class="l-ar" lang="ar">ستُعرض هنا الإشارات المغلقة مع الدخول والخروج والنتيجة، بما فيها الخاسرة. لا ننشر نسب نجاح أو أرقام أداء قبل إمكانية التحقق منها بشكل مستقل.</span></span></div></div>
+      <h3 style="font-size:16px;margin-bottom:12px">Recent results</h3>
+      <div data-signal-results><div class="fx-empty"><strong>No verified results published yet</strong><span>Closed signals will be listed here with entry, exit and outcome — including losses. We do not publish win rates or performance figures until they can be independently verified.</span></div></div>
     </div>
   </div>
 </div></div></section>
 <section class="section section--tight section--raised"><div class="wrap">
-  <div class="section-head reveal"><div><span class="fx-kicker"><span class="l-en">Anatomy</span><span class="l-ar" lang="ar">المكونات</span></span><h2><span class="l-en">What every signal includes</span><span class="l-ar" lang="ar">ما تتضمنه كل إشارة</span></h2></div></div>
+  <div class="section-head reveal"><div><span class="fx-kicker">Anatomy</span><h2>What every signal includes</h2></div></div>
   <div class="grid grid--4">
-  <div class="fx-card reveal"><h3><span class="l-en">Instrument &amp; direction</span><span class="l-ar" lang="ar">الأداة والاتجاه</span></h3><p><span class="l-en">For example XAUUSD — buy or sell.</span><span class="l-ar" lang="ar">مثل XAUUSD، شراء أو بيع.</span></p></div><div class="fx-card reveal"><h3><span class="l-en">Entry zone</span><span class="l-ar" lang="ar">منطقة الدخول</span></h3><p><span class="l-en">The price area where the idea is valid.</span><span class="l-ar" lang="ar">منطقة السعر التي تكون فيها الفكرة صالحة.</span></p></div><div class="fx-card reveal"><h3><span class="l-en">Stop-loss</span><span class="l-ar" lang="ar">وقف الخسارة</span></h3><p><span class="l-en">Where the idea is wrong. Always defined first.</span><span class="l-ar" lang="ar">حيث تصبح الفكرة خاطئة، ويُحدد دائمًا أولًا.</span></p></div><div class="fx-card reveal"><h3><span class="l-en">Targets &amp; validity</span><span class="l-ar" lang="ar">الأهداف والصلاحية</span></h3><p><span class="l-en">Take-profit levels and how long the idea stays active.</span><span class="l-ar" lang="ar">مستويات جني الأرباح ومدة صلاحية الفكرة.</span></p></div>
+  <div class="fx-card reveal"><h3>Instrument &amp; direction</h3><p>For example XAUUSD — buy or sell.</p></div><div class="fx-card reveal"><h3>Entry zone</h3><p>The price area where the idea is valid.</p></div><div class="fx-card reveal"><h3>Stop-loss</h3><p>Where the idea is wrong. Always defined first.</p></div><div class="fx-card reveal"><h3>Targets &amp; validity</h3><p>Take-profit levels and how long the idea stays active.</p></div>
   </div>
 </div></section>
 </main>
@@ -98,17 +99,16 @@
     <div class="site-foot__grid">
       <div>
         <a class="fx-logo" href="../" aria-label="FOXREX home"><img src="../assets/brand/foxrex-mark.png" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>
-        <p class="site-foot__tag">TRADE SMARTER. GO FURTHER.</p>
-        <p style="margin-top:10px" lang="ar" class="l-any">تداول أذكى... فرص أكبر</p>
+        <p class="site-foot__tag">TRADE SMARTER. GO FURTHER.</p><p style="margin-top:10px" lang="ar" dir="rtl">تداول أذكى... فرص أكبر</p>
         <div class="social" aria-label="FOXREX social"><a href="https://t.me/fooxrex" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 2.8c.9-.3 1.7.2 1.4 1.5z"/></svg></a><a href="https://www.instagram.com/foxrextrade" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/foxrextrade" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v7h4v-7h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg></a></div>
       </div>
-      <div><h2><span class="l-en">Explore</span><span class="l-ar" lang="ar">استكشف</span></h2><ul><li><a href="../markets/"><span class="l-en">Markets</span><span class="l-ar" lang="ar">الأسواق</span></a></li><li><a href="../gold/"><span class="l-en">Gold</span><span class="l-ar" lang="ar">الذهب</span></a></li><li><a href="../analysis/"><span class="l-en">Analysis</span><span class="l-ar" lang="ar">التحليلات</span></a></li><li><a href="../news/"><span class="l-en">News</span><span class="l-ar" lang="ar">الأخبار</span></a></li><li><a href="../learn/"><span class="l-en">Learn</span><span class="l-ar" lang="ar">تعلّم</span></a></li><li><a href="../signals/"><span class="l-en">Signals</span><span class="l-ar" lang="ar">الإشارات</span></a></li></ul></div>
-      <div><h2><span class="l-en">Company</span><span class="l-ar" lang="ar">الشركة</span></h2><ul><li><a href="../about/"><span class="l-en">About</span><span class="l-ar" lang="ar">من نحن</span></a></li><li><a href="../contact/"><span class="l-en">Contact</span><span class="l-ar" lang="ar">تواصل معنا</span></a></li><li><a href="../privacy/"><span class="l-en">Privacy</span><span class="l-ar" lang="ar">الخصوصية</span></a></li><li><a href="../terms/"><span class="l-en">Terms</span><span class="l-ar" lang="ar">الشروط</span></a></li><li><a href="../risk-disclosure/"><span class="l-en">Risk Disclosure</span><span class="l-ar" lang="ar">إفصاح المخاطر</span></a></li></ul></div>
-      <div><h2><span class="l-en">Follow</span><span class="l-ar" lang="ar">تابعنا</span></h2><ul><li><a href="https://t.me/fooxrex">Telegram</a></li><li><a href="https://www.instagram.com/foxrextrade">Instagram</a></li><li><a href="https://www.facebook.com/foxrextrade">Facebook</a></li><li><span class="muted">WhatsApp · <span class="l-en">coming soon</span><span class="l-ar" lang="ar">قريبًا</span></span></li></ul></div>
+      <div><h2>Explore</h2><ul><li><a href="../markets/">Markets</a></li><li><a href="../gold/">Gold</a></li><li><a href="../analysis/">Analysis</a></li><li><a href="../news/">News</a></li><li><a href="../learn/">Learn</a></li><li><a href="../signals/">Signals</a></li></ul></div>
+      <div><h2>Company</h2><ul><li><a href="../about/">About</a></li><li><a href="../contact/">Contact</a></li><li><a href="../privacy/">Privacy</a></li><li><a href="../terms/">Terms</a></li><li><a href="../risk-disclosure/">Risk Disclosure</a></li></ul></div>
+      <div><h2>Follow</h2><ul><li><a href="https://t.me/fooxrex">Telegram</a></li><li><a href="https://www.instagram.com/foxrextrade">Instagram</a></li><li><a href="https://www.facebook.com/foxrextrade">Facebook</a></li><li><span class="muted">WhatsApp · coming soon</span></li></ul></div>
     </div>
     <div class="site-foot__legal">
-      <p><span class="l-en">Risk warning: trading financial instruments carries a high level of risk and may not be suitable for all investors. You can lose some or all of your capital. FOXREX content is for information and education only and is not investment advice.</span><span class="l-ar" lang="ar">تحذير المخاطر: ينطوي تداول الأدوات المالية على مخاطر عالية وقد لا يناسب جميع المستثمرين، وقد تخسر جزءًا من رأس مالك أو كله. محتوى FOXREX لأغراض المعلومات والتعليم فقط ولا يُعد نصيحة استثمارية.</span> <a href="../risk-disclosure/" style="text-decoration:underline"><span class="l-en">Read the full risk disclosure</span><span class="l-ar" lang="ar">اقرأ إفصاح المخاطر كاملًا</span></a>.</p>
-      <p class="en">© <span data-year>2026</span> FOXREX. All rights reserved.</p>
+      <p>Risk warning: trading financial instruments carries a high level of risk and may not be suitable for all investors. You can lose some or all of your capital. FOXREX content is for information and education only and is not investment advice. <a href="../risk-disclosure/" style="text-decoration:underline">Read the full risk disclosure</a>.</p>
+      <p class="en" dir="ltr">© <span data-year>2026</span> FOXREX. All rights reserved.</p>
     </div>
   </div>
 </footer>

@@ -9,7 +9,7 @@
 .site-nav a[aria-current="page"]{color:var(--foxrex-white)}
 .site-nav a[aria-current="page"]::after{content:"";display:block;height:2px;margin-top:4px;border-radius:2px;background:var(--foxrex-primary)}
 .site-head__end{margin-inline-start:auto;display:flex;align-items:center;gap:8px}
-.lang-toggle{min-height:36px;min-width:44px;padding:6px 10px;border-radius:var(--foxrex-r1);border:1px solid var(--foxrex-border-strong);background:transparent;color:var(--foxrex-text-muted);font-size:13px;font-weight:600;cursor:pointer}
+.lang-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:36px;min-width:44px;padding:6px 10px;border-radius:var(--foxrex-r1);border:1px solid var(--foxrex-border-strong);background:transparent;color:var(--foxrex-text-muted);font-size:13px;font-weight:600;cursor:pointer}
 .lang-toggle:hover{color:var(--foxrex-white);border-color:var(--foxrex-primary)}
 .menu-btn{display:none;width:44px;height:44px;border-radius:var(--foxrex-r1);border:1px solid var(--foxrex-border-strong);background:transparent;color:var(--foxrex-text);cursor:pointer;place-items:center}
 .menu-btn svg{width:22px;height:22px}

@@ -8,12 +8,22 @@
   var TZ = 'Europe/Istanbul';
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  /* Bilingual value: "text" or { en, ar } */
+  var AR = document.documentElement.lang === 'ar';
+  /* Arabic: isolate Latin/number runs (symbols, prices, %, times) so they stay Inter + LTR. Mirrors tools/site/text.mjs. */
+  var RUN = /[A-Za-z0-9$€£+\u2212][A-Za-z0-9.,:%\/+&'’_\u2212-]*(?:[ \u00A0][A-Za-z0-9$€£+\u2212][A-Za-z0-9.,:%\/+&'’_\u2212-]*)*/g;
+  function arText(s) {
+    return String(s).replace(RUN, '\u0000$&\u0001').split(/(\u0000[^\u0001]*\u0001)/).map(function (part) {
+      if (part.charAt(0) !== '\u0000') return esc(part);
+      var run = part.slice(1, -1), trail = (run.match(/[.,:\/&'’_-]+$/) || [''])[0];
+      run = run.slice(0, run.length - trail.length);
+      return (run ? '<bdi class="lt" dir="ltr">' + esc(run) + '</bdi>' : '') + esc(trail);
+    }).join('');
+  }
+  /* Localised value: "text" or { en, ar } — rendered in this page's language only */
   function L(v) {
     if (v == null) return '';
-    if (typeof v === 'string') return esc(v);
-    var en = v.en || v.ar || '', ar = v.ar || v.en || '';
-    return '<span class="l-en">' + esc(en) + '</span><span class="l-ar" lang="ar">' + esc(ar) + '</span>';
+    var s = typeof v === 'string' ? v : (AR ? (v.ar || v.en) : (v.en || v.ar)) || '';
+    return AR ? arText(s) : esc(s);
   }
   function has(v) { return v != null && (typeof v === 'string' ? v.trim() !== '' : !!(v.en || v.ar)); }
   function safeUrl(u) {
