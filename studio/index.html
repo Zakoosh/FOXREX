@@ -229,6 +229,8 @@ table.t tr.click{cursor:pointer} table.t tr.click:hover td{background:rgba(229,2
 <div class="toast" id="toast" role="status"></div>
 
 <script src="creative-studio.js"></script>
+<script src="cms-model.js"></script>
+<script src="cms-studio.js"></script>
 <script>
 /* =====================================================================
    FOXREX Studio — Content Operating System (v3)
@@ -683,8 +685,8 @@ const AUTO_L={ratio:"نسبة الأبعاد",res:"الدقة",dark:"الخلف�
 
 /* ---------------- NAV & ROUTER ---------------- */
 /* Admin IA: each section groups existing views; every original view stays reachable. */
-const NAV=[["overview","نظرة عامة","Overview",["home"]],["content","المحتوى","Content",["library"]],["create","إنشاء","Create",["create","item"]],["publishing","النشر","Publishing",["approvals","published"]],["calendar","التقويم","Calendar",["calendar","planner"]],["assets","الأصول","Assets",["assets","character"]],["templates","القوالب","Templates",["templates","prompts"]],["brand","الهوية","Brand",["brand"]],["analytics","التحليلات","Analytics",["performance"]],["settings","الإعدادات","Settings",["settings"]]];
-const VIEW_LABEL={home:"نظرة عامة",library:"مكتبة المحتوى",create:"إنشاء",item:"المحتوى",approvals:"الاعتمادات",published:"المنشور",calendar:"التقويم",planner:"مخطط المحتوى",assets:"مكتبة الأصول",character:"الشخصية",templates:"القوالب",prompts:"البرومبتات",brand:"هوية العلامة",performance:"الأداء",settings:"الإعدادات"};
+const NAV=[["overview","نظرة عامة","Overview",["home"]],["content","المحتوى","Content",["cms","library","cmsedit"]],["create","إنشاء","Create",["create","item"]],["publishing","النشر","Publishing",["publications","approvals","published"]],["calendar","التقويم","Calendar",["calendar","planner"]],["assets","الأصول","Assets",["assets","character"]],["templates","القوالب","Templates",["templates","prompts"]],["brand","الهوية","Brand",["brand"]],["analytics","التحليلات","Analytics",["performance"]],["settings","الإعدادات","Settings",["settings"]]];
+const VIEW_LABEL={home:"نظرة عامة",cms:"المحتوى التحريري",cmsedit:"محرر المحتوى",publications:"مركز النشر",library:"مكتبة الإنتاج",create:"إنشاء",item:"المحتوى",approvals:"الاعتمادات",published:"المنشور",calendar:"التقويم",planner:"مخطط المحتوى",assets:"مكتبة الأصول",character:"الشخصية",templates:"القوالب",prompts:"البرومبتات",brand:"هوية العلامة",performance:"الأداء",settings:"الإعدادات"};
 const navGroup=v=>NAV.find(n=>n[3].includes(v))||NAV[0];
 function counts(){const c={};Object.keys(ST).forEach(k=>c[k]=DB.items.filter(i=>i.status===k).length);return c;}
 function renderNav(){
@@ -693,7 +695,7 @@ function renderNav(){
   renderEnv();
 }
 function subTabs(){
-  const views=navGroup(S.view)[3].filter(v=>v!=="item"); if(views.length<2) return "";
+  const views=navGroup(S.view)[3].filter(v=>v!=="item"&&v!=="cmsedit"); if(views.length<2) return "";
   return `<nav class="subtabs" aria-label="أقسام فرعية">${views.map(v=>`<button data-act="go" data-v="${v}" aria-current="${S.view===v?"page":"false"}">${VIEW_LABEL[v]}</button>`).join("")}</nav>`;
 }
 /* Honest environment panel: this page is static and not access-controlled; AI runs on the operator's local worker. */
@@ -1100,7 +1102,7 @@ VIEWS.settings=()=>{
     <p class="hint">هذه الصفحة منشورة على استضافة ثابتة (GitHub Pages) وليست محمية بكلمة مرور على الخادم. الرابط غير المعلن ليس مصادقة، ولا توجد "حماية" وهمية في المتصفح.</p>
     <ul class="hint"><li>لا توجد مفاتيح أو رموز أو بيانات دخول داخل ملفات الموقع العامة.</li><li>رمز العامل يُدخل هنا ويُحفظ في هذا المتصفح فقط، ويرسل فقط إلى عنوان العامل الذي تحدده.</li><li>العمليات الحساسة (التوليد، الذكاء الاصطناعي، بيانات Higgsfield) تعمل فقط عبر العامل المحلي المحمي بالرمز وبـ ALLOWED_ORIGIN وHOST=127.0.0.1.</li><li>للحماية الحقيقية للوصول إلى /studio/ استخدم Cloudflare Access أمام foxrex.co/studio/* (راجع SECURITY.md في المستودع).</li></ul>
     <p class="hint">Static admin surface: not access-controlled. Secrets never ship in the bundle; privileged operations require the local worker and its bearer token.</p></section>
-  <div class="grid2"><section class="panel"><h2>الحساب</h2><label class="f">المعرّف في خاتمة الريلز</label><input type="text" data-set="handle" value="${esc(DB.settings.handle)}" class="ltr">
+  <div class="grid2"><section class="panel"><h2>الحساب</h2><label class="f">اسم المحرر (Operator) <span class="hint">يُسجَّل في سجل التدقيق والاعتماد والنشر</span></label><input type="text" data-set="operatorName" value="${esc(DB.settings.operatorName||"")}" placeholder="مثال: Zak" style="margin-bottom:10px"><label class="f">المعرّف في خاتمة الريلز</label><input type="text" data-set="handle" value="${esc(DB.settings.handle)}" class="ltr">
     <label class="f" style="margin-top:10px">المرجع الرئيسي للشخصية</label><p class="hint" style="margin:0">${esc((assetById(DB.settings.masterCharId)||{}).name||"غير محدد")} — يُغيَّر من مكتبة الشخصية. المراجع الحالية مقصوصة منخفضة الدقة من دليل العلامة؛ استبدلها بالأصل الرئيسي عالي الدقة.</p></section>
   <section class="panel"><h2>البيانات</h2><p class="hint">البيانات محفوظة في هذا المتصفح. صدّرها أو انقلها لخادمك عند الدمج.</p>
     <div class="row"><button class="btn" data-act="export">تصدير JSON</button><label class="btn">استيراد JSON<input type="file" accept="application/json" data-act-file="import" hidden></label><button class="btn bad" data-act="reset">إعادة ضبط البيانات التجريبية</button></div></section></div>`;
@@ -1262,6 +1264,7 @@ function seed(){
 
 if(!load()) { seed(); DB.items=[]; save(); }
 installCreativeStudio();
+installCmsStudio();
 DB.items.forEach(it=>{ it.jobs=it.jobs||[]; if(it.status==="GENERATING"&&!activeJob(it)) it.status="PROMPT_READY"; });
 refreshProviders().then(()=>{ if(["item","settings","home"].includes(S.view)) render(); }); resumePolling();
 render();

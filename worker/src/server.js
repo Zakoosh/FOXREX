@@ -16,6 +16,7 @@ import { HiggsfieldApiProvider, ClaudeApiProvider } from "./providers/paid-disab
 import { download, sniff, pickUrls } from "./providers/util.js";
 import { CreativeService, validateCreativeRequest, validateOutput, validateBrief } from './creative.js';
 import { chooseModel } from './models.js';
+import { createCms } from './cms-routes.js';
 
 export function buildRegistry(config = CONFIG) {
   return {
@@ -46,7 +47,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
   const cors = origin => {
     if (!origins.length) return {};
     const allow = origins.length === 1 ? origins[0] : origins.includes(origin) ? origin : null;
-    return allow ? { "Access-Control-Allow-Origin": allow, "Access-Control-Allow-Headers": "Authorization, Content-Type", "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Vary": "Origin" } : { "Vary": "Origin" };
+    return allow ? { "Access-Control-Allow-Origin": allow, "Access-Control-Allow-Headers": "Authorization, Content-Type, X-Foxrex-Actor, Idempotency-Key", "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS", "Vary": "Origin" } : { "Vary": "Origin" };
   };
   const authed = req => !config.token || req.headers.authorization === `Bearer ${config.token}`;
   const body = req => new Promise((ok, bad) => { let d = ""; req.on("data", c => { d += c; if (d.length > 30e6) { bad(new Error("too large")); req.destroy(); } }); req.on("end", () => { try { ok(d ? JSON.parse(d) : {}); } catch (e) { bad(e); } }); });
@@ -61,6 +62,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
     return errs;
   }
 
+  const cms = createCms({ config, creative });
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, "http://x"); const p = url.pathname; res.fxOrigin = req.headers.origin;
@@ -74,6 +76,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
       if (p === '/' && req.method === 'GET') return send(res, 200, { service: 'foxrex-studio-generation-worker', message: 'This port is the worker API, not the Studio UI.', health: '/health', studio: 'https://foxrex.co/studio/' });
       if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.1.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
       if (!authed(req)) return send(res, 401, { error: "unauthorized" });
+      if (await cms.handle(req, res, url, { send, body })) return;
       if (p === '/creative/status' && req.method === 'GET') return send(res, 200, await creative.status());
       if (p === '/creative/revisions' && req.method === 'GET') return send(res, 200, creative.data.revisions.filter(r => r.contentId === url.searchParams.get('contentId')));
       if (/^\/creative\/(ideate|plan|critique)$/.test(p) && req.method === 'POST') return send(res, 200, await creative.run(p.split('/')[2], await body(req)));
@@ -209,9 +212,9 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
       }
       if (p === "/jobs" && req.method === "GET") return send(res, 200, store.list(Infinity).filter(j => (!url.searchParams.get("content_id") || j.content_id === url.searchParams.get("content_id")) && (!url.searchParams.get('quote_id') || j.quote_id === url.searchParams.get('quote_id'))).map(publicJob));
       send(res, 404, { error: "not found" });
-    } catch (e) { send(res, e.status || 500, { error: e.status ? e.message : 'internal', message: e.message }); }
+    } catch (e) { send(res, e.status || 500, { error: e.status ? e.message : 'internal', message: e.message, ...(e.errors ? { errors: e.errors } : {}), ...(e.code ? { code: e.code } : {}), ...(e.publication ? { publication: e.publication } : {}), ...(e.current != null ? { current: e.current } : {}), ...(e.currentVersion ? { currentVersion: e.currentVersion } : {}) }); }
   });
-  return { server, store, runner, registry, health, creative };
+  return { server, store, runner, registry, health, creative, cms };
 }
 /** Never return reference image bytes or internals to the client. */
 const publicJob = j => { const { input_assets, ...rest } = j; return { ...rest, input_assets: (input_assets || []).map(({ dataUrl, ...a }) => a) }; };

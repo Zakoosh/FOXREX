@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { checkFeed } from '../../tools/site/check-feed.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const read = rel => fs.readFileSync(path.join(root, rel), 'utf8');
@@ -47,16 +48,20 @@ test('relative links and assets on every page resolve to real files', () => {
   }
 });
 
-test('no fabricated market data ships with the site', () => {
+test('no fabricated market data ships with the site', async () => {
   const home = read('index.html');
   const pxs = [...home.matchAll(/data-px>([^<]*)</g)].map(m => m[1]);
   assert.equal(pxs.length, 6);
   assert.ok(pxs.every(v => v === '—'), 'ticker must start empty');
   assert.match(home, /Market feed not connected/);
-  const c = JSON.parse(read('data/content.json'));
-  if (c.gold && c.gold.price != null) assert.ok(c.gold.priceSource && c.gold.priceTime, 'gold price requires a source and time');
-  for (const a of c.analysis) assert.ok(a.symbol && a.title && a.publishedAt);
-  for (const r of c.signals.results) assert.ok(r.entry != null && r.exit != null && r.closedAt, 'signal results must be complete records');
+  // The publishing engine passes its candidate feed via FOXREX_FEED_PATH so what WOULD ship is what gets tested.
+  const feedPath = process.env.FOXREX_FEED_PATH || path.join(root, 'data/content.json');
+  const c = JSON.parse(fs.readFileSync(feedPath, 'utf8'));
+  const errors = checkFeed(c, { root, allowTestContent: false });
+  assert.deepEqual(errors, [], 'content feed must pass schema + integrity rules');
+  for (const it of c.items) if (it.price != null) assert.ok(it.priceSource && it.priceTime, 'price requires source and time');
+  const CMS = (await import('node:module')).createRequire(import.meta.url)('../../studio/cms-model.js');
+  assert.ok(!c.items.some(CMS.isFixture), 'test fixtures must never reach the public feed');
   for (const f of ['index.html', 'ar/index.html']) assert.ok([...read(f).matchAll(/data-px>([^<]*)</g)].every(m => m[1] === '—'), `${f} ticker must start empty`);
   const text = ALL.map(f => read(f).replace(/<(script|style)[\s\S]*?<\/\1>/g, '').replace(/<[^>]+>/g, ' ')).join(' ');
   assert.ok(!/\d+(\.\d+)?\s*%/.test(text), 'no percentage figures (performance, accuracy, returns) in public copy');
