@@ -116,6 +116,48 @@ For the final flagship version, commission a REX model that matches the approved
 | Needs a 3D model | the REX bust / walk above |
 | Image sequences | none required |
 
+## Owner review tools (development only)
+
+Open `/experience/?review=1`. The review panel is never loaded without that parameter: `js/review.js` is imported only when it is present.
+
+**One command on your machine** (from a checkout of `claude/experience-lab`):
+- macOS / Linux: `./experience/review-local.sh`
+- Windows: `powershell -ExecutionPolicy Bypass -File experience\review-local.ps1`
+
+This starts `python -m http.server 5180` on 127.0.0.1, leaves it running, and opens `http://localhost:5180/experience/?review=1` in Chrome.
+
+The panel has:
+- **Scene navigator.** Buttons and keys `1`–`9`, `0`, `-` jump to the eleven review moments:
+
+  | Key | Moment | Key | Moment |
+  |---|---|---|---|
+  | `1` | Noise | `7` | Risk gate |
+  | `2` | REX first contact (replays the intro from 3.8 s) | `8` | Decision |
+  | `3` | Data formation | `9` | Replay |
+  | `4` | Technical | `0` | Live |
+  | `5` | ML | `-` | System |
+  | `6` | Reasoning | | |
+
+  Other keys: `R` shows REX in the Observation scene; `←` / `→` fine-scrub; `H` hides the panel.
+- **Renderer diagnostics:**
+  - browser, WebGL version, unmasked GPU renderer, and hardware vs software rasteriser;
+  - device pixel ratio, screen and viewport;
+  - live fps, worst frame, DPR, particle count and estimated refresh rate;
+  - draw calls, triangles, GPU resources, JS heap (Chrome only) and error count.
+- **Benchmark journey.** A steady 45-second scroll through the whole film. It reports:
+  - average fps, 1% low, p50/p99 frame time, worst frame, and frames over 33 ms and 50 ms;
+  - the DPR range, particle tier, heap before and after, and errors.
+
+  **Copy report** puts the JSON on the clipboard.
+
+**Adaptive quality** (`adaptQuality` in `js/engine.js`):
+- It starts at full quality: device DPR up to 2, and the particle tier for the viewport.
+- It works relative to the display's refresh interval, so it behaves the same at 60, 120 and 144 Hz.
+- First it lowers resolution, with a floor of 0.75 on desktop and 0.6 on mobile. It recovers after sustained fast frames, so a single stall does not lower quality permanently.
+- Only if the device is still too slow at the lowest DPR does it drop one particle tier (×0.62).
+- Fog, lighting, REX geometry and post-processing are never reduced.
+- Scene groups outside the current and next scene stay asleep, meaning they are not rendered.
+
 ## Data
 
 Everything market-like is **DEMO_DATA** (`js/demo-data.js`) and labelled on screen ("DEMO / CINEMATIC DATA — not live market data").

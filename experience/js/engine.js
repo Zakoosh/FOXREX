@@ -77,7 +77,8 @@ function resize() {
   A = W / H; S = H / 2;
   NV = MOBILE ? 64 : 110;
   const n = GL ? (RM ? (MOBILE ? 1200 : 2400) : W < 760 ? 1800 : W < 1200 ? 3200 : 5200) : RM ? (MOBILE ? 700 : 1400) : W < 760 ? 1000 : W < 1200 ? 1800 : 2600;
-  if (n !== N) initParticles(n);
+  const nt = GL ? Math.round(n * pTier) : n;
+  if (nt !== N) initParticles(nt);
   document.getElementById('xp-scroll').style.height = (MOBILE ? 1500 : 1700) + 'vh';
 }
 function initParticles(n) {
@@ -428,12 +429,23 @@ function glFrame(t, dt, sc, lp, next, mu, rex) {
   });
 }
 /* adaptive pixel ratio: keep the frame budget, never shimmer back and forth */
+// Adaptive quality, relative to the display's own refresh interval (60, 120, 144 Hz…), so a 60 Hz desktop can
+// recover after a one-off stall (e.g. a shader compiling when a scene first wakes). Step 1: resolution (DPR).
+// Step 2, only if the device is still too slow at the lowest DPR: one particle tier down. Nothing else is lowered.
+let vsync = 16.7, fastChecks = 0, slowStrikes = 0, stableChecks = 0, dprCeil = Infinity, pTier = 1;
+const adaptLog = [];
 function adaptQuality(now) {
-  const ms = now - (adaptQuality.last || now); adaptQuality.last = now; if (ms > 0 && ms < 250) frameMs = frameMs * 0.94 + ms * 0.06;
+  const ms = now - (adaptQuality.last || now); adaptQuality.last = now;
+  if (ms > 0 && ms < 250) { frameMs = frameMs * 0.94 + Math.min(ms, vsync * 3) * 0.06; vsync = clamp(Math.min(vsync + 0.001, frameMs), 6.5, 16.7); }
   if (++frameCount % 90 !== 0) return;
-  const maxD = DPR, minD = MOBILE ? 0.6 : 0.75;
-  if (frameMs > 24 && dprLive > minD) { dprLive = Math.max(minD, +(dprLive * 0.85).toFixed(2)); GL.resize(W, H, dprLive); }
-  else if (frameMs < 13 && dprLive < maxD) { dprLive = Math.min(maxD, +(dprLive * 1.1).toFixed(2)); GL.resize(W, H, dprLive); }
+  const maxD = Math.min(DPR, dprCeil), minD = MOBILE ? 0.6 : 0.75, before = dprLive;
+  if (frameMs > vsync * 1.4 && dprLive > minD) { dprCeil = dprLive; dprLive = Math.max(minD, +(dprLive * 0.85).toFixed(2)); fastChecks = stableChecks = 0; }
+  else if (frameMs < vsync * 1.1 && dprLive < maxD) { if (++fastChecks >= 2) { dprLive = Math.min(maxD, +(dprLive * 1.1).toFixed(2)); fastChecks = 0; } }
+  else fastChecks = 0;
+  if (frameMs < vsync * 1.1 && ++stableChecks >= 20) { dprCeil = Infinity; stableChecks = 0; }   // ~30 s stable: allow full resolution again
+  if (dprLive !== before) { GL.resize(W, H, dprLive); adaptLog.push({ t: +(now / 1000).toFixed(1), dpr: dprLive, frameMs: +frameMs.toFixed(1) }); }
+  slowStrikes = dprLive <= minD + 0.001 && frameMs > vsync * 1.5 ? slowStrikes + 1 : 0;
+  if (slowStrikes >= 3 && pTier === 1) { pTier = 0.62; slowStrikes = 0; resize(); adaptLog.push({ t: +(now / 1000).toFixed(1), particles: N }); }
 }
 function dockU() { return cur.id === 'live' ? smooth(0.32, 0.58, cur.lp) : 0; }
 
@@ -830,6 +842,13 @@ async function boot() {
   $('#xp-live-status').textContent = api ? '' : `${T.unavailable} · ${T.demoValues}`;
   root.classList.add('xp-ready'); if (RM) root.classList.add('xp-rm');
   window.FOXREX_XP = { state: () => ({ p: cur.p, target: cur.target, id: cur.id, lp: cur.lp, gl: !!GL, dpr: dprLive, frameMs }) };   // read-only QA/diagnostics
+  // development-only owner review tools (?review=1): scene navigator + renderer diagnostics. Never loaded otherwise.
+  if (params.get('review') === '1') import('./review.js').then(m => m.mountReview({
+    SCENES, renderer: GL && GL.renderer,
+    jump(id, u) { const s = SCENES[IDX[id]], max = document.documentElement.scrollHeight - innerHeight, v = id === 'opening' ? 0 : s.a + (s.b - s.a) * u;   // opening: u = seconds into the intro
+      scrollTo({ top: v * max, behavior: 'auto' }); cur.p = cur.target = v; if (id === 'opening') { introT = u; t0 = performance.now(); } },
+    info: () => ({ N, dpr: dprLive, dprMax: DPR, frameMs, vsync, pTier, gl: !!GL, mobile: MOBILE, rm: RM, scene: cur.id, lp: cur.lp, adaptLog: adaptLog.slice(-6) })
+  })).catch(e => console.warn('review tools failed to load:', e.message));
   requestAnimationFrame(t => { last = t; t0 = t; frame(t); });
 }
 boot().catch(e => { root.classList.remove('xp-ready'); root.classList.add('xp-failed'); console.warn('FOXREX experience fallback:', e.message); });
