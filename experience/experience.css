@@ -314,3 +314,9 @@ html.xp-gl .st--line{font-weight:500;letter-spacing:-.015em;color:rgba(255,255,2
   .xp-live .mk .px{font-size:clamp(14px,0.95vw,22px)}
   .xp-live h2{font-size:clamp(26px,2.4vw,56px)}
 }
+
+/* ------------------------------------------------ v2 · 01 MARKET NOISE → 02 REX OBSERVES */
+.st--observe{display:flex;flex-direction:column}
+.st--observe .st-q{color:var(--muted)}
+html:not(.xp-ready) #xp-gl{display:none}
+.st--observe{font-size:clamp(30px,4.4vw,76px);bottom:14vh}
