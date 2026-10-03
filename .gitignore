@@ -17,3 +17,17 @@ worker/data/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# FOXREX experience: local REX asset handoff. Raw Higgsfield masters, derived candidates, approved local copies
+# and local review state are never committed automatically (promoting an approved asset is an explicit decision).
+experience/assets/rex/inbox/*
+!experience/assets/rex/inbox/README.md
+experience/assets/rex/processed/*
+!experience/assets/rex/processed/README.md
+experience/assets/rex/approved/*
+!experience/assets/rex/approved/README.md
+experience/assets/rex/rex-assets.json
+experience/assets/rex/review-decisions.json
+
+# Python bytecode
+**/__pycache__/

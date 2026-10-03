@@ -1,0 +1,58 @@
+/* All visible words of the experience, per language. The Arabic edition only needs this file completed:
+   layout direction comes from <html dir>, while charts, prices, timelines and symbols stay LTR (isolated). */
+const EN = {
+  demo: 'DEMO / CINEMATIC DATA — not live market data',
+  skip: 'Skip the film', scroll: 'Scroll to enter', sound: 'Sound', on: 'on', off: 'off',
+  nav: { intel: 'Intelligence', tech: 'Technology', live: 'Live', rex: 'REX', enter: 'Enter FOXREX' },
+  scenes: ['Signal', 'Market noise', 'Observation', 'The data awakens', 'Enter FOXREX', 'Technical vision', 'Market memory', 'FOXREX ML', 'Reasoning', 'Risk gate', 'The decision', 'Decision replay', 'Ask REX', 'Live intelligence', 'The FOXREX system'],
+  noise1: 'The market is noise.', noise2: 'Until you know what to look for.',
+  observe2: ['Observe everything.', 'Chase nothing.'], scenes2: ['Market noise', 'REX observes'],
+  observe: ['Observe.', 'Filter.', 'Connect.', 'Understand.'],
+  streams: 'Ten streams of evidence. One intelligence.', streamsSub: 'The intelligence was always there. It was watching.',
+  enter: 'Enter FOXREX',
+  layers: ['Technical engine', 'Market memory', 'ML engine', 'AI reasoning', 'Risk context', 'Decision engine'],
+  tech: 'Raw market → structured understanding',
+  steps: [['Raw price', 'XAUUSD · 1 minute'], ['EMA 20', 'Short-term direction'], ['EMA 50', 'Trend structure'], ['EMA 200', 'The regime'], ['Bollinger 20,2', 'Volatility becomes visible'], ['RSI 14', 'Momentum'], ['MACD 12,26,9', 'Momentum shift'], ['ATR 14', 'Range per bar'], ['ADX 14', 'Trend strength'], ['Volume', 'Participation'], ['Market structure', 'HH · HL · LH · LL'], ['BOS + retest', 'The level breaks — and holds']],
+  memory: 'Have I seen this before?', memorySub: 'Current structure, matched against past market states.',
+  mlStages: ['Candles', 'Observations', 'Feature vectors', 'Feature space', 'Clusters', 'Walk-forward validation', 'Probability'],
+  ml: 'FOXREX learns from market behavior.',
+  reason: 'Evidence converges. Some of it disagrees.', wait: 'FOXREX waits.', waitSub: 'Waiting is a decision.',
+  risk1: 'Intelligence is not just knowing when to trade.', risk2: 'It is knowing when not to.',
+  decisionQ: 'Clarity.', conf: 'Confidence', riskL: 'Risk', inval: 'Invalidation', target: 'Target', rr: 'Reward / risk', why: 'Reasoning',
+  replayQ: 'Why did FOXREX make this decision?', replayHint: 'Scrub time — see what FOXREX knew at that moment.', knew: 'What FOXREX knew', state: 'Decision state',
+  askQ: 'Why?', askSub: 'FOXREX explains its decisions.',
+  liveQ: 'Live intelligence', liveSub: 'Story becomes product.', unavailable: 'MARKET DATA UNAVAILABLE', demoValues: 'Values shown are DEMO / CINEMATIC DATA',
+  liveFields: { trend: 'Trend', regime: 'Regime', vol: 'Volatility', signal: 'Signal state', ai: 'AI state', conf: 'Confidence', fresh: 'Data freshness' },
+  system: ['FOXREX does not just generate signals.', 'It observes.', 'It learns.', 'It reasons.', 'It measures risk.', 'It explains.'],
+  stations: ['Markets', 'Data', 'Technical engine', 'Market memory', 'ML', 'AI reasoning', 'Risk', 'Decision', 'Explanation'],
+  tagline: ['Trade smarter.', 'Go further.'], back: 'Return to foxrex.co', again: 'Enter again'
+};
+const AR = {
+  demo: 'بيانات عرض سينمائية — ليست بيانات سوق مباشرة',
+  skip: 'تخطَّ الفيلم', scroll: 'مرّر للدخول', sound: 'الصوت', on: 'تشغيل', off: 'إيقاف',
+  nav: { intel: 'الذكاء', tech: 'التقنية', live: 'مباشر', rex: 'REX', enter: 'ادخل FOXREX' },
+  scenes: ['إشارة', 'ضجيج السوق', 'الملاحظة', 'البيانات تستيقظ', 'ادخل FOXREX', 'الرؤية الفنية', 'ذاكرة السوق', 'تعلّم FOXREX', 'الاستدلال', 'بوابة المخاطر', 'القرار', 'إعادة القرار', 'اسأل REX', 'الذكاء المباشر', 'منظومة FOXREX'],
+  noise1: 'السوق ضجيج.', noise2: 'حتى تعرف عمّا تبحث.',
+  observe2: ['لاحِظ كل شيء.', 'لا تطارد شيئًا.'], scenes2: ['ضجيج السوق', 'REX يراقب'],
+  observe: ['لاحِظ.', 'صفِّ.', 'اربط.', 'افهم.'],
+  streams: 'عشرة تيارات من الأدلة. ذكاء واحد.', streamsSub: 'الذكاء كان هنا دائمًا. كان يراقب.',
+  enter: 'ادخل FOXREX',
+  layers: ['المحرك الفني', 'ذاكرة السوق', 'محرك التعلّم الآلي', 'الاستدلال الذكي', 'سياق المخاطر', 'محرك القرار'],
+  tech: 'سوق خام ← فهم منظَّم',
+  steps: [['السعر الخام', 'XAUUSD · دقيقة'], ['EMA 20', 'الاتجاه القصير'], ['EMA 50', 'بنية الاتجاه'], ['EMA 200', 'النظام العام'], ['Bollinger 20,2', 'التقلب يصبح مرئيًا'], ['RSI 14', 'الزخم'], ['MACD 12,26,9', 'تحوّل الزخم'], ['ATR 14', 'مدى الشمعة'], ['ADX 14', 'قوة الاتجاه'], ['الحجم', 'المشاركة'], ['بنية السوق', 'HH · HL · LH · LL'], ['BOS + إعادة الاختبار', 'المستوى ينكسر — ثم يصمد']],
+  memory: 'هل رأيت هذا من قبل؟', memorySub: 'البنية الحالية مقارنةً بحالات سوق سابقة.',
+  mlStages: ['الشموع', 'المشاهدات', 'متجهات الخصائص', 'فضاء الخصائص', 'العناقيد', 'التحقق المتقدّم', 'الاحتمال'],
+  ml: 'FOXREX يتعلّم من سلوك السوق.',
+  reason: 'الأدلة تتقارب. وبعضها يتعارض.', wait: 'FOXREX ينتظر.', waitSub: 'الانتظار قرار.',
+  risk1: 'الذكاء ليس أن تعرف متى تتداول فقط.', risk2: 'بل أن تعرف متى لا تتداول.',
+  decisionQ: 'وضوح.', conf: 'الثقة', riskL: 'المخاطرة', inval: 'مستوى الإلغاء', target: 'الهدف', rr: 'العائد / المخاطرة', why: 'الاستدلال',
+  replayQ: 'لماذا اتخذ FOXREX هذا القرار؟', replayHint: 'حرّك الزمن — وشاهد ما كان يعرفه FOXREX في تلك اللحظة.', knew: 'ما كان يعرفه FOXREX', state: 'حالة القرار',
+  askQ: 'لماذا؟', askSub: 'FOXREX يشرح قراراته.',
+  liveQ: 'الذكاء المباشر', liveSub: 'القصة تصبح منتجًا.', unavailable: 'بيانات السوق غير متاحة', demoValues: 'القيم المعروضة بيانات عرض سينمائية',
+  liveFields: { trend: 'الاتجاه', regime: 'النظام', vol: 'التقلب', signal: 'حالة الإشارة', ai: 'حالة الذكاء', conf: 'الثقة', fresh: 'حداثة البيانات' },
+  system: ['FOXREX لا يولّد الإشارات فقط.', 'إنه يلاحظ.', 'يتعلّم.', 'يستدل.', 'يقيس المخاطر.', 'ويشرح.'],
+  stations: ['الأسواق', 'البيانات', 'المحرك الفني', 'ذاكرة السوق', 'التعلّم الآلي', 'الاستدلال', 'المخاطر', 'القرار', 'الشرح'],
+  tagline: ['تداول أذكى...', 'فرص أكبر'], back: 'العودة إلى foxrex.co', again: 'ادخل مجددًا'
+};
+export const LANG = new URLSearchParams(location.search).get('lang') === 'ar' ? 'ar' : 'en';
+export const T = LANG === 'ar' ? AR : EN;
