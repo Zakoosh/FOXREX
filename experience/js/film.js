@@ -13,6 +13,13 @@ const KEY = ['luma', 'alpha', 'packed'].includes(params.get('key')) ? params.get
 // review only: a same-origin manifest override for pipeline tests (?review=1&rex=path/to/manifest.json)
 const REX_MANIFEST = params.get('review') === '1' && /^[\w./-]+\.json$/.test(params.get('rex') || '') && !(params.get('rex') || '').includes('..') ? new URL(params.get('rex'), location.href).href : new URL('../assets/rex/rex-assets.json', import.meta.url).href;
 const RM = params.get('motion') === 'reduced' || matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* review-only framing controls, used by /experience/rex-review/ to show a REX candidate in context:
+   embed=1 (no review panel) · p=<0..1> lock the film at a moment · exp=<x> exposure · zoom=<x> close crop on REX's
+   eyes · focusrex=1 focus pulled to REX, no fog · chrome=0 world only (the DEMO label stays) · dpr=<x> cap */
+const REVIEW = params.get('review') === '1';
+const num = (k, d, a, b) => (REVIEW && params.has(k) && isFinite(+params.get(k)) ? Math.min(b, Math.max(a, +params.get(k))) : d);
+const RV = { embed: REVIEW && params.get('embed') === '1', lockP: num('p', null, 0, 1), exp: num('exp', 1, 0.1, 3), zoom: num('zoom', 1, 1, 6),
+  focusRex: REVIEW && params.get('focusrex') === '1', bare: REVIEW && params.get('chrome') === '0', dpr: num('dpr', null, 0.5, 2) };
 const root = document.documentElement, $ = s => document.querySelector(s);
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, u) => a + (b - a) * u;
@@ -64,16 +71,22 @@ function state(t, p) {
   const select = RM ? (p > 0.84 ? 1 : 0) : smooth(0.82, 0.9, p);
   const cu = smooth(0.635, 0.775, p);
   const calActor = p > 0.62 && p < 0.79 ? { x: lerp(0.85, -0.55, cu), y: -0.08, d: lerp(1.9, 1.35, cu), w: 1.7, a: Math.sin(Math.PI * cu) * 0.75 } : null;
+  let fFocus = focus, breatheK = RM ? 0 : breathe;
+  if (RV.focusRex) {   // review: pull focus to the most visible REX shot and stop the breathing
+    const main = rexShots(p, focus, aperture).filter(e => e.a > 0.01).sort((x, y) => y.a - x.a)[0];
+    if (main) { fFocus = main.d; breatheK = 0; }
+  }
   const s = {
-    t, intro, openOn: top, openA: top ? 1 : 0,
+    t, intro, openOn: top, openA: top ? 1 : 0, zoom: RV.zoom,
     travel: RM ? piece(p, TRAVEL) : piece(p, TRAVEL) + (top ? ease(clamp(intro / 11)) * 1.2 : 1.2),
     drift: RM ? 0 : lerp(1, 0.35, smooth(0.38, 0.55, p)),
     field: field * (1 - 0.15 * smooth(0.5, 0.62, p)), fragA: field * (1 - 0.35 * smooth(0.45, 0.6, p)), heroA: scrolled * (1 - smooth(0.4, 0.55, p)),
-    breathe: RM ? 0 : breathe, focus, aperture, select, selectA: 0.95, chartAnchor: [-0.3, 0.3, 3.35, 0.92], calActor,
-    pathA: smooth(0.87, 0.93, p), exposure: 1,
+    breathe: breatheK, focus: fFocus, aperture, select, selectA: 0.95, chartAnchor: [-0.3, 0.3, 3.35, 0.92], calActor,
+    pathA: smooth(0.87, 0.93, p), exposure: RV.exp,
     camX: RM ? 0 : Math.sin(t * 0.07) * 0.05 + pointer.x * 0.04, camY: RM ? 0 : Math.sin(t * 0.05) * 0.025 - pointer.y * 0.025
   };
-  s.rex = rexShots(p, focus, aperture);
+  s.rex = rexShots(p, fFocus, aperture);
+  if (RV.exp !== 1 || RV.focusRex) for (const e of s.rex) { e.expo *= RV.exp; if (RV.focusRex) e.fog = 0; }   // custom REX shader is not tone-mapped
   return s;
 }
 
@@ -81,8 +94,11 @@ function state(t, p) {
 function frame(now) {
   const t = (now - t0) / 1000, dt = Math.min(0.05, (now - last) / 1000 || 0.016); last = now; introT += dt;
   frameMs = frameMs * 0.92 + Math.min(100, dt * 1000) * 0.08;
-  cur.target = clamp(scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight));
-  cur.p = RM ? cur.target : cur.p + (cur.target - cur.p) * (1 - Math.pow(0.002, dt));
+  if (RV.lockP !== null) { cur.p = cur.target = RV.lockP; if (RV.lockP > 0.012) introT = Math.max(introT, 12); }
+  else {
+    cur.target = clamp(scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight));
+    cur.p = RM ? cur.target : cur.p + (cur.target - cur.p) * (1 - Math.pow(0.002, dt));
+  }
   const k = cur.p < SCENES[1].a ? 0 : 1; if (k !== cur.k) { cur.k = k; document.body.dataset.scene = SCENES[k].id; }
   GL.frame(state(t, cur.p));
   updateDom(cur.p);
@@ -127,7 +143,7 @@ function updateDom(p) {
 /* ------------------------------------------------------------------ sizing + boot */
 function resize() {
   W = innerWidth; H = innerHeight; A = W / H; MOBILE = W < 760;
-  DPR = Math.min(devicePixelRatio || 1, MOBILE ? 1.5 : 2); dprLive = Math.min(dprLive || DPR, DPR);
+  DPR = Math.min(devicePixelRatio || 1, MOBILE ? 1.5 : 2, RV.dpr || 2); dprLive = Math.min(dprLive || DPR, DPR);
   GL.resize(W, H, dprLive);
   document.getElementById('xp-scroll').style.height = (MOBILE ? 700 : 900) + 'vh';
 }
@@ -144,8 +160,9 @@ async function boot() {
   addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { pointer.x = e.clientX / innerWidth - 0.5; pointer.y = e.clientY / innerHeight - 0.5; } }, { passive: true });
   $('#xp-sound').addEventListener('click', ev => { const on = Sound.toggle(); ev.currentTarget.setAttribute('aria-pressed', on); ev.currentTarget.querySelector('[data-state]').textContent = on ? T.on : T.off; });
   root.classList.add('xp-ready'); if (RM) root.classList.add('xp-rm');
+  if (RV.bare) root.classList.add('xp-bare'); if (RV.embed) root.classList.add('xp-embed');
   window.FOXREX_XP = { state: () => ({ p: cur.p, target: cur.target, id: SCENES[cur.k].id, gl: true, dpr: dprLive, frameMs, intro: introT, rex: GL.rex.info() }) };
-  if (params.get('review') === '1') import('./review.js').then(m => m.mountReview({
+  if (REVIEW && !RV.embed) import('./review.js').then(m => m.mountReview({
     MOMENTS, renderer: GL.renderer,
     jump(p) { const max = document.documentElement.scrollHeight - innerHeight; scrollTo({ top: p * max, behavior: 'auto' }); cur.p = cur.target = p; if (p < 0.01) { introT = 0; } },
     info: () => ({ dpr: dprLive, dprMax: DPR, frameMs, vsync, mobile: MOBILE, rm: RM, scene: SCENES[cur.k].id, p: cur.p, rex: GL.rex.info() })

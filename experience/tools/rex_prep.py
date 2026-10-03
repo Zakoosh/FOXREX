@@ -19,6 +19,29 @@ def run(args):
     print('ffmpeg', ' '.join(args[1:]) if args[0] == FF else ' '.join(args), flush=True)
     subprocess.run(args, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
 
+def prep(shot, colour, out, matte=None, matte_from_alpha=False, width=1920, start=0, dur=None, crf_webm=24, crf_mp4=18):
+    """Encode one shot; returns {name: path} of the files written."""
+    if not FF: raise RuntimeError('ffmpeg not found (set FFMPEG)')
+    os.makedirs(out, exist_ok=True)
+    o = lambda suffix: os.path.join(out, f'{shot}-{suffix}')
+    trim = (['-ss', str(start)] if start else []) + (['-t', str(dur)] if dur else [])
+    scale = f'scale={width}:-2:flags=lanczos'
+    vp9 = ['-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', str(crf_webm), '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2', '-an']
+    h264 = ['-c:v', 'libx264', '-preset', 'slow', '-crf', str(crf_mp4), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an']
+    done = {}
+    # luma (colour over black)
+    run([FF, '-y', *trim, '-i', colour, '-vf', f'{scale},format=yuv420p', *vp9, '-pix_fmt', 'yuv420p', o('luma.webm')]); done['luma.webm'] = o('luma.webm')
+    run([FF, '-y', *trim, '-i', colour, '-vf', scale, *h264, o('luma.mp4')]); done['luma.mp4'] = o('luma.mp4')
+    run([FF, '-y', *trim, '-i', colour, '-vf', scale, '-frames:v', '1', '-q:v', '3', o('poster.jpg')]); done['poster.jpg'] = o('poster.jpg')
+    if matte:
+        m = '[1:v]alphaextract,format=gray' if matte_from_alpha else '[1:v]format=gray'
+        mm = f'{m},{scale}[m];[0:v]{scale},format=yuv420p[c]'
+        run([FF, '-y', *trim, '-i', colour, *trim, '-i', matte, '-filter_complex', f'{mm};[m]format=yuv420p[m2];[c][m2]vstack[v]', '-map', '[v]', *vp9, '-pix_fmt', 'yuv420p', o('packed.webm')]); done['packed.webm'] = o('packed.webm')
+        run([FF, '-y', *trim, '-i', colour, *trim, '-i', matte, '-filter_complex', f'{mm};[m]format=yuv420p[m2];[c][m2]vstack[v]', '-map', '[v]', *h264, o('packed.mp4')]); done['packed.mp4'] = o('packed.mp4')
+        run([FF, '-y', *trim, '-i', colour, *trim, '-i', matte, '-filter_complex', f'{mm};[c][m]alphamerge,format=yuva420p[v]', '-map', '[v]', *vp9, '-pix_fmt', 'yuva420p', '-auto-alt-ref', '0', o('alpha.webm')]); done['alpha.webm'] = o('alpha.webm')
+        run([FF, '-y', *trim, '-i', colour, *trim, '-i', matte, '-filter_complex', f'{mm};[c][m]alphamerge[v]', '-map', '[v]', '-frames:v', '1', o('alpha-poster.png')]); done['alpha-poster.png'] = o('alpha-poster.png')
+    return done
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('shot'); ap.add_argument('colour'); ap.add_argument('out')
@@ -28,23 +51,7 @@ def main():
     ap.add_argument('--crf-webm', type=int, default=24); ap.add_argument('--crf-mp4', type=int, default=18)
     a = ap.parse_args()
     if not FF: sys.exit('ffmpeg not found (set FFMPEG)')
-    os.makedirs(a.out, exist_ok=True)
-    o = lambda suffix: os.path.join(a.out, f'{a.shot}-{suffix}')
-    trim = (['-ss', str(a.start)] if a.start else []) + (['-t', str(a.dur)] if a.dur else [])
-    scale = f'scale={a.width}:-2:flags=lanczos'
-    vp9 = ['-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', str(a.crf_webm), '-row-mt', '1', '-deadline', 'good', '-cpu-used', '2', '-an']
-    h264 = ['-c:v', 'libx264', '-preset', 'slow', '-crf', str(a.crf_mp4), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an']
-    # luma (colour over black)
-    run([FF, '-y', *trim, '-i', a.colour, '-vf', f'{scale},format=yuv420p', *vp9, '-pix_fmt', 'yuv420p', o('luma.webm')])
-    run([FF, '-y', *trim, '-i', a.colour, '-vf', scale, *h264, o('luma.mp4')])
-    run([FF, '-y', *trim, '-i', a.colour, '-vf', scale, '-frames:v', '1', '-q:v', '3', o('poster.jpg')])
-    if a.matte:
-        m = '[1:v]alphaextract,format=gray' if a.matte_from_alpha else '[1:v]format=gray'
-        mm = f'{m},{scale}[m];[0:v]{scale},format=yuv420p[c]'
-        run([FF, '-y', *trim, '-i', a.colour, *trim, '-i', a.matte, '-filter_complex', f'{mm};[m]format=yuv420p[m2];[c][m2]vstack[v]', '-map', '[v]', *vp9, '-pix_fmt', 'yuv420p', o('packed.webm')])
-        run([FF, '-y', *trim, '-i', a.colour, *trim, '-i', a.matte, '-filter_complex', f'{mm};[m]format=yuv420p[m2];[c][m2]vstack[v]', '-map', '[v]', *h264, o('packed.mp4')])
-        run([FF, '-y', *trim, '-i', a.colour, *trim, '-i', a.matte, '-filter_complex', f'{mm};[c][m]alphamerge,format=yuva420p[v]', '-map', '[v]', *vp9, '-pix_fmt', 'yuva420p', '-auto-alt-ref', '0', o('alpha.webm')])
-        run([FF, '-y', *trim, '-i', a.colour, *trim, '-i', a.matte, '-filter_complex', f'{mm};[c][m]alphamerge[v]', '-map', '[v]', '-frames:v', '1', o('alpha-poster.png')])
+    prep(a.shot, a.colour, a.out, a.matte, a.matte_from_alpha, a.width, a.start, a.dur, a.crf_webm, a.crf_mp4)
     print('done:', a.out)
 
 if __name__ == '__main__':

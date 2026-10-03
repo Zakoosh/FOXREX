@@ -320,3 +320,6 @@ html.xp-gl .st--line{font-weight:500;letter-spacing:-.015em;color:rgba(255,255,2
 .st--observe .st-q{color:var(--muted)}
 html:not(.xp-ready) #xp-gl{display:none}
 .st--observe{font-size:clamp(30px,4.4vw,76px);bottom:14vh}
+/* review-only framings used by /experience/rex-review/ (?review=1&chrome=0 / &embed=1); the DEMO label always stays */
+.xp-bare .xp-nav,.xp-bare .xp-rail,.xp-bare .xp-overlay,.xp-bare .xp-skip{display:none!important}
+.xp-embed .xp-hint{display:none!important}

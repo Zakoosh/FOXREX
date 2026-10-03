@@ -139,7 +139,7 @@ export async function createMarket(canvas, opt) {
   /* ------------------------------------------------------------------ frame */
   let W = 1, H = 1, dpr = 1;
   function resize(w, h, pr) { W = w; H = h; dpr = pr; renderer.setPixelRatio(pr); renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); haze.material.uniforms.uPx.value = 2 * pr; rex.resize(w * pr, h * pr); }
-  const focusState = { d: 5.5 }, attn = { k: -1, until: 0 };
+  const focusState = { d: 5.5 }, attn = { k: -1, until: 0 }, zoomC = { x: 0.5, y: 0.5, set: false };
   function placeDOF(sharp, soft, x, y, d, w, h, a, focusD, ap, grow = 1) {
     const coc = Math.abs(d - focusD) * ap, b = smooth(0.1, 0.65, coc), fog = Math.exp(-0.0022 * d * d * d);
     sharp.position.set(x, y, -d); soft.position.set(x, y, -d); sharp.scale.set(w, h, 1); soft.scale.set(w * grow, h * grow, 1);
@@ -151,6 +151,14 @@ export async function createMarket(canvas, opt) {
   function frame(s) {
     camera.position.set(s.camX || 0, s.camY || 0, 0); camera.lookAt(s.camX * 0.35 || 0, s.camY * 0.35 || 0, -100);
     renderer.toneMappingExposure = s.exposure ?? 1;
+    if (s.zoom > 1) {   // review close crop: a true-resolution view offset centred on REX's eye (not an upscale)
+      if (camera.view && camera.view.enabled) camera.clearViewOffset();
+      camera.updateMatrixWorld();
+      const eye = rex.eyeWorld();
+      if (eye) { const v = eye.clone().project(camera), k = zoomC.set ? 0.12 : 1; zoomC.x = lerp(zoomC.x, (v.x + 1) / 2, k); zoomC.y = lerp(zoomC.y, (1 - v.y) / 2, k); zoomC.set = true; }
+      const fw = W / s.zoom, fh = H / s.zoom;
+      camera.setViewOffset(W, H, clamp(zoomC.x * W - fw / 2, 0, W - fw), clamp(zoomC.y * H - fh / 2, 0, H - fh), fw, fh);
+    } else if (camera.view && camera.view.enabled) camera.clearViewOffset();
     const A = W / H, ap = s.aperture;
     // focus: breathing in the noise; attention catches one panel at a time and lets it go
     let fTarget = s.focus;

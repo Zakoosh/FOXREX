@@ -1,0 +1,45 @@
+{
+  "about": "Registry of Higgsfield generations made for the experience REX shots. Metadata only: no media, no download URLs. tools/rex_ingest.py uses it to recognise files dropped into assets/rex/inbox/ by their Higgsfield job id (Higgsfield file names contain it: hf_YYYYMMDD_HHMMSS_<job-id>.png).",
+  "character": { "element": "REX-MASTER", "element_id": "a9854611-9030-4a9d-b1da-ad7e1185e80e" },
+  "generations": [
+    {
+      "shot": "R-01",
+      "stage": "key still (start frame for image-to-video; R-01 is planned as VIDEO)",
+      "job_id": "f63f198e-f137-49eb-bdec-dc0b252d6163",
+      "variant": "f63f198e",
+      "type": "image",
+      "status": "completed",
+      "model": "cinematic_studio_2_5",
+      "resolution": "2k",
+      "width": 2752,
+      "height": 1536,
+      "aspect_ratio": "16:9",
+      "seed": 105786,
+      "created_utc": "2026-10-01T22:57:02Z",
+      "file": "hf_20261001_225702_f63f198e-f137-49eb-bdec-dc0b252d6163.png",
+      "preview_file": "hf_20261001_225702_f63f198e-f137-49eb-bdec-dc0b252d6163_min.webp",
+      "prompt_id": "R-01-eyes-v1"
+    },
+    {
+      "shot": "R-01",
+      "stage": "key still (start frame for image-to-video; R-01 is planned as VIDEO)",
+      "job_id": "ea61ffd4-e8d7-4366-88ff-4a1cbf719b5d",
+      "variant": "ea61ffd4",
+      "type": "image",
+      "status": "completed",
+      "model": "cinematic_studio_2_5",
+      "resolution": "2k",
+      "width": 2752,
+      "height": 1536,
+      "aspect_ratio": "16:9",
+      "seed": 469908,
+      "created_utc": "2026-10-01T22:57:02Z",
+      "file": "hf_20261001_225702_ea61ffd4-e8d7-4366-88ff-4a1cbf719b5d.png",
+      "preview_file": "hf_20261001_225702_ea61ffd4-e8d7-4366-88ff-4a1cbf719b5d_min.webp",
+      "prompt_id": "R-01-eyes-v1"
+    }
+  ],
+  "prompts": {
+    "R-01-eyes-v1": "Extreme low-key cinematic close-up of <<<a9854611-9030-4a9d-b1da-ad7e1185e80e>>> in total darkness. Only the two sharp amber eyes are visible, softly self-luminous, vertical slit pupils, with a faint thread of orange-and-white fur catching a thin teal rim light (#2FE0B8) along the brow and the edge of one ear. The rest of the face dissolves into pure black. Calm, intelligent, watchful expression, looking straight past the camera. 135mm lens, very shallow depth of field, eye level, eyes centred in a 16:9 frame occupying the middle third. Pure black background (#000000), no environment, no floor, no smoke, no particles, no text, no numbers, no charts, no UI, no logos, no lens flare. Realistic premium 3D character render, same face, eye shape, eye colour and fur markings as the reference."
+  }
+}

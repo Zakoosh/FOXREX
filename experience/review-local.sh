@@ -12,7 +12,7 @@ if curl -fsS -o /dev/null "http://localhost:${PORT}/experience/" 2>/dev/null; th
   echo "Port ${PORT} is already serving /experience/ — reusing it (make sure it is THIS checkout)."
 else
   PY="$(command -v python3 || command -v python)"
-  nohup "$PY" -m http.server "$PORT" --bind 127.0.0.1 >"${TMPDIR:-/tmp}/foxrex-review-server.log" 2>&1 &
+  nohup "$PY" "$ROOT/experience/tools/rex_review_server.py" --port "$PORT" >"${TMPDIR:-/tmp}/foxrex-review-server.log" 2>&1 &
   echo "Server started (pid $!) → leave it running; stop later with: kill $!"
   for _ in $(seq 1 20); do curl -fsS -o /dev/null "http://localhost:${PORT}/experience/" 2>/dev/null && break; sleep 0.25; done
 fi
@@ -22,3 +22,4 @@ case "$(uname -s)" in
 esac
 echo "Opened: $URL"
 echo "Normal (no review panel): http://localhost:${PORT}/experience/"
+echo "REX asset review (in context): http://localhost:${PORT}/experience/rex-review/"
