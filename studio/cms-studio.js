@@ -6,7 +6,9 @@
 (function () {
   'use strict';
   const C = window.FOXREX_CMS;
-  const TYPES_ORDER = ['MORNING_BRIEF', 'GOLD_FOCUS', 'EVENT', 'US_OPEN', 'MARKET_RECAP', 'ANALYSIS', 'NEWS', 'SIGNAL', 'SIGNAL_RESULT', 'LEARN', 'REX_EXPLAINS', 'REX_NOTE', 'ASK_REX'];
+  /* New content uses the v3 types. Legacy types (US_OPEN, LEARN, REX_NOTE, ASK_REX) stay editable and filterable; they publish as their v3 type. */
+  const TYPES_ORDER = ['MORNING_BRIEF', 'GOLD_FOCUS', 'EVENT', 'US_SESSION_PREVIEW', 'MARKET_RECAP', 'ANALYSIS', 'WEEKLY_OUTLOOK', 'NEWS', 'TRADING_IDEA', 'SIGNAL', 'SIGNAL_RESULT', 'REX_EXPLAINS'];
+  const LEGACY_TYPES = ['US_OPEN', 'LEARN', 'REX_NOTE', 'ASK_REX'];
   const ST_AR = { IDEA: 'فكرة', DRAFT: 'مسودة', REVIEW: 'قيد المراجعة', APPROVED: 'معتمد', SCHEDULED: 'مجدول', PUBLISHED: 'منشور', ARCHIVED: 'مؤرشف' };
   const ST_CLS = { IDEA: 'st-IDEA', DRAFT: 'st-DRAFT', REVIEW: 'st-IN_REVIEW', APPROVED: 'st-APPROVED', SCHEDULED: 'st-SCHEDULED', PUBLISHED: 'st-PUBLISHED', ARCHIVED: 'st-ARCHIVED' };
   const E = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -33,7 +35,7 @@
   async function loadPubs() { const s = X(); try { s.pubs = await api('GET', '/api/publications'); } catch (e) { s.err = e.message; s.pubs = s.pubs || []; } }
   async function openRecord(id) {
     const s = X(); s.busy = true; render();
-    try { s.rec = await api('GET', '/api/content/' + encodeURIComponent(id)); s.draft = JSON.parse(JSON.stringify(s.rec)); s.dirty = false; s.err = ''; s.recPubs = await api('GET', '/api/publications?contentId=' + encodeURIComponent(id)); }
+    try { s.rec = await api('GET', '/api/content/' + encodeURIComponent(id)); s.draft = JSON.parse(JSON.stringify(s.rec)); s.dirty = false; s.err = ''; s.recPubs = await api('GET', '/api/publications?contentId=' + encodeURIComponent(id)); s.recPermalink = ((s.recPubs || []).find(p => p.result === 'SUCCESS' && p.canonicalUrl) || {}).canonicalUrl || null; }
     catch (e) { s.err = e.message; }
     s.busy = false; go('cmsedit');
   }
@@ -98,7 +100,7 @@
       <button class="btn pri" data-act="cms-new">إنشاء مسودة</button><button class="btn" data-act="cms-new" data-idea="1">حفظ كفكرة</button></div></section>
     <section class="panel" style="margin-bottom:14px"><div class="cms-filters">
       <label class="cms-f" style="flex:1 1 200px"><span>بحث</span><input type="search" id="cms-q" data-cfq value="${E(s.q)}" placeholder="عنوان، رمز، معرّف…" dir="auto"></label>
-      ${sel('type', 'النوع', TYPES_ORDER.map(t => [t, typeLabel(t)]))}
+      ${sel('type', 'النوع', TYPES_ORDER.concat(LEGACY_TYPES).map(t => [t, typeLabel(t)]))}
       ${sel('status', 'الحالة', C.STATES.map(x => [x, ST_AR[x]]))}
       ${sel('language', 'اللغة', [['en', 'English'], ['ar', 'العربية']])}
       ${sel('symbol', 'الرمز', syms.map(x => [x, x]))}
@@ -153,10 +155,18 @@
     const t = C.TYPES[d.type], f = 'fields.';
     s.errors = C.validateRecord(d, 'publish');
     const valid = !s.errors.length, acts = allowedActions(r, { dirty: s.dirty, valid });
-    const trading = ['GOLD_FOCUS', 'ANALYSIS'].includes(d.type);
+    const trading = ['GOLD_FOCUS', 'ANALYSIS', 'WEEKLY_OUTLOOK'].includes(d.type);
+    const takeaway = fld('خلاصة REX', f + 'takeaway', 'area', { rows: 2 });
+    const freshness = t.marketSensitive ? [fld('البيانات حتى (اختياري)', f + 'dataAsOf', 'datetime', { hint: 'وقت صحة المستويات — افتراضيًا وقت السعر أو النشر' }), fld('صالح حتى', f + 'validUntil', 'datetime', { req: d.type === 'TRADING_IDEA', hint: 'بعده لا يُعرض كمحتوى حالي' })] : [];
     const typeSpecific = {
       GOLD_FOCUS: [fld('حالة السوق', f + 'marketState', 'text', { req: 1 }), fld('الدعم الرئيسي', f + 'keySupport', 'list', { req: 1, ph: '2350, 2335' }), fld('المقاومة الرئيسية', f + 'keyResistance', 'list', { req: 1 }), fld('المستوى المهم', f + 'importantLevel', 'text', { ltr: 1 })],
       ANALYSIS: [fld('الإطار الزمني', f + 'timeframe', 'text', { ltr: 1, hint: 'H4, D1…' }), fld('المستويات الرئيسية', f + 'keyLevels', 'list')],
+      WEEKLY_OUTLOOK: [fld('الإطار الزمني', f + 'timeframe', 'text', { ltr: 1, hint: 'W1' }), fld('المستويات الرئيسية', f + 'keyLevels', 'list')],
+      TRADING_IDEA: [fld('الموقف', f + 'stance', 'select', { req: 1, options: C.STANCE.map(x => [x, x]) }), fld('المنطقة', f + 'zone', 'text', { ltr: 1, hint: 'مطلوبة لـ BUY/SELL' }), fld('الأهداف', f + 'targets', 'list'), fld('الإطار الزمني', f + 'timeframe', 'text', { ltr: 1 }),
+        fld('الشرط', f + 'condition', 'area', { req: 1, rows: 2 }), fld('مستوى الإلغاء', f + 'invalidation', 'area', { req: 1, rows: 2 }), fld('المنطق', f + 'rationale', 'area', { req: 1, rows: 4 })],
+      MORNING_BRIEF: [fld('قراءة المكتب: حالة السوق', f + 'deskRegime', 'text'), fld('الدولار', f + 'deskUsd', 'text'), fld('العوائد', f + 'deskYields', 'text'), fld('التقلب', f + 'deskVolatility', 'text'), fld('الحدث التالي', f + 'deskNextEvent', 'text')],
+      REX_EXPLAINS: [fld('الصيغة', f + 'format', 'select', { req: 1, options: C.REX_FORMATS.map(x => [x, x]) }), takeaway],
+      LEARN: [takeaway], REX_NOTE: [takeaway], ASK_REX: [takeaway],
       NEWS: [fld('الأهمية', f + 'importance', 'select', { req: 1, options: C.IMPORTANCE.map(x => [x, x]) }), fld('الأسواق المتأثرة', f + 'affectedMarkets', 'list', { ph: 'XAUUSD, DXY' }), fld('وقت الحدث', f + 'eventTime', 'datetime')],
       EVENT: [fld('الأهمية', f + 'importance', 'select', { req: 1, options: C.IMPORTANCE.map(x => [x, x]) }), fld('الأسواق المتأثرة', f + 'affectedMarkets', 'list'), fld('وقت الحدث', f + 'eventTime', 'datetime')],
       SIGNAL: [fld('الاتجاه', f + 'direction', 'select', { req: 1, options: C.DIRECTION.map(x => [x, x]) }), fld('الدخول', f + 'entry', 'text', { req: 1, ltr: 1 }), fld('وقف الخسارة', f + 'stopLoss', 'text', { req: 1, ltr: 1 }),
@@ -164,6 +174,7 @@
       SIGNAL_RESULT: [fld('معرّف الإشارة الأصلية', f + 'signalId', 'text', { req: 1, ltr: 1 }), fld('الاتجاه', f + 'direction', 'select', { req: 1, options: C.DIRECTION.map(x => [x, x]) }), fld('الدخول', f + 'entry', 'text', { req: 1, ltr: 1 }),
         fld('الخروج', f + 'exit', 'text', { req: 1, ltr: 1 }), fld('النتيجة', f + 'outcome', 'select', { req: 1, options: C.OUTCOME.map(x => [x, x]) }), fld('وقت الإغلاق', f + 'closedAt', 'datetime', { req: 1 }), fld('ملاحظات النتيجة', f + 'resultNotes', 'area', { req: 1, rows: 2 })]
     }[d.type] || [];
+    typeSpecific.push(...freshness);
     const other = d.language === 'en' ? 'ar' : 'en', sib = (r.translations || []).find(x => x.language === other);
     const pubs = s.recPubs || [];
     return header(`${E(typeLabel(d.type))} <small class="ltr">${E(d.type)}</small>`, `<span class="ltr">${E(d.id)}</span>`) + `
@@ -184,13 +195,13 @@
     ${r.aiGenerated ? `<div class="warnbox">مسودة مولّدة بالذكاء الاصطناعي (${E(r.aiGenerated.provider)} / ${E(r.aiGenerated.model)}). راجع كل جملة ومصدر قبل الإرسال. ${(r.aiGenerated.warnings || []).map(E).join(' ')}</div>` : ''}
     <div class="cms-grid"><div>
       ${section('المحتوى', 'Content', fld('العنوان', 'title', 'text', { req: 1 }) + fld('الملخص', 'summary', 'area', { req: 1, rows: 3 }) + fld('النص', 'body', 'area', { req: !!t.body, rows: 10, hint: 'نص عادي — سطر فارغ بين الفقرات. لا HTML.' }))}
-      ${section('التصنيف', 'Classification', `<div class="fg">${fld('الفئة', 'category', d.type === 'NEWS' ? 'select' : d.type === 'ANALYSIS' ? 'select' : 'text', { req: ['NEWS', 'ANALYSIS'].includes(d.type), ltr: 1, options: (d.type === 'NEWS' ? C.NEWS_CATEGORIES : C.ANALYSIS_CATEGORIES).map(x => [x, x]) })}${fld('السوق', 'market', 'text', { ltr: 1 })}${fld('الرمز', 'symbol', 'text', { ltr: 1, req: ['ANALYSIS', 'SIGNAL', 'SIGNAL_RESULT'].includes(d.type), hint: t.fixedSymbol ? 'ثابت: ' + t.fixedSymbol : '' })}${fld('الوسوم', 'tags', 'list')}</div>`)}
+      ${section('التصنيف', 'Classification', `<div class="fg">${fld('الفئة', 'category', d.type === 'NEWS' ? 'select' : d.type === 'ANALYSIS' ? 'select' : 'text', { req: ['NEWS', 'ANALYSIS'].includes(d.type), ltr: 1, options: (d.type === 'NEWS' ? C.NEWS_CATEGORIES : C.ANALYSIS_CATEGORIES).map(x => [x, x]) })}${fld('السوق', 'market', 'text', { ltr: 1 })}${fld('الرمز', 'symbol', 'text', { ltr: 1, req: ['ANALYSIS', 'SIGNAL', 'SIGNAL_RESULT', 'TRADING_IDEA'].includes(d.type), hint: t.fixedSymbol ? 'ثابت: ' + t.fixedSymbol : '' })}${fld('الوسوم', 'tags', 'list')}</div>`)}
       ${trading || typeSpecific.length ? section(trading ? 'السياق التداولي' : 'تفاصيل النوع', trading ? 'Trading context' : 'Type details', `<div class="fg">${trading ? fld('الاتجاه', 'bias', 'select', { req: 1, options: C.BIAS.map(x => [x, x]) }) : ''}${typeSpecific.join('')}</div>${trading ? fld('السيناريو الصاعد', f + 'bullishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('السيناريو الهابط', f + 'bearishScenario', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) + fld('مستوى الإلغاء', f + 'invalidation', 'area', { req: d.type === 'GOLD_FOCUS', rows: 2 }) +
         `<div class="fg">${fld('السعر (اختياري)', f + 'price', 'number', { hint: 'يتطلب مصدرًا ووقتًا' })}${fld('مصدر السعر', f + 'priceSource', 'text', { ltr: 1 })}${fld('وقت السعر', f + 'priceTime', 'datetime')}</div>` : ''}`) : ''}
       ${section('المصادر', 'Sources', sourcesEditor())}
       ${section('المخاطر', 'Risk', fld('إفصاح المخاطر', 'riskDisclosure', 'area', { req: !!t.risk, rows: 2 }))}
     </div><div>
-      ${section('النشر', 'Publishing', `<dl class="kv"><dt>اللغة</dt><dd>${d.language === 'ar' ? 'العربية' : 'English'}</dd><dt>قسم الموقع</dt><dd class="ltr">${E(t.section || '—')}</dd><dt>الوجهات</dt><dd>${C.destinations(d.type).map(p => `<a class="ltr" target="_blank" rel="noopener" href="${E(C.pageUrl(p, d.language, 'https://foxrex.co'))}">${E(C.pageUrl(p, d.language, ''))}</a>`).join('<br>') || '—'}</dd>
+      ${section('النشر', 'Publishing', `${fld('التوقيع (اختياري)', 'byline', 'text', { hint: 'افتراضيًا: FOXREX Desk — لا تستخدم اسمًا غير حقيقي' })}${fld('القصة الرئيسية', 'lead', 'select', { options: [['true', 'نعم — What Matters Now']] })}<dl class="kv"><dt>الطبقة</dt><dd class="ltr">${E(t.layer || '—')}</dd><dt>الرابط الدائم</dt><dd class="ltr">${r.live && s.recPermalink ? `<a target="_blank" rel="noopener" href="${E(s.recPermalink)}">${E(s.recPermalink)}</a>` : 'يُحدَّد عند أول نشر ثم لا يتغير'}</dd><dt>اللغة</dt><dd>${d.language === 'ar' ? 'العربية' : 'English'}</dd><dt>قسم الموقع</dt><dd class="ltr">${E(t.section || '—')}</dd><dt>الوجهات</dt><dd>${C.destinations(d.type).map(p => `<a class="ltr" target="_blank" rel="noopener" href="${E(C.pageUrl(p, d.language, 'https://foxrex.co'))}">${E(C.pageUrl(p, d.language, ''))}</a>`).join('<br>') || '—'}</dd>
         <dt>نسخة النشر</dt><dd class="num">${r.publishing ? r.publishing.publishVersion : 0}</dd><dt>آخر نشر</dt><dd>${fmt(r.publishing && r.publishing.lastPublishedAt)}</dd><dt>معتمد من</dt><dd>${E(r.audit && r.audit.approvedBy || '—')} ${r.approvedAt ? '· ' + fmt(r.approvedAt) : ''}</dd></dl>`)}
       ${section('الترجمة', 'Translation', `<p class="hint">كل لغة سجل مستقل يحتاج مراجعته واعتماده الخاص.</p>${sib ? `<p><button class="linkish" data-act="cms-open" data-id="${E(sib.id)}">${other.toUpperCase()} · ${E(sib.title || '(بدون عنوان)')}</button> ${st(sib.status)}</p>` :
         `<p class="hint">لا توجد نسخة ${other === 'ar' ? 'عربية' : 'إنجليزية'}.</p><div class="row"><button class="btn" data-act="cms-translate" data-id="${E(d.id)}" data-mode="blank">مسودة ترجمة فارغة</button><button class="btn" data-act="cms-translate" data-id="${E(d.id)}" data-mode="ai">${other === 'ar' ? 'توليد مسودة عربية (AI)' : 'Generate English draft (AI)'}</button></div><p class="hint">مخرجات الذكاء الاصطناعي تُحفظ كمسودة فقط — لا اعتماد ولا نشر تلقائي.</p>`}`)}
@@ -205,7 +216,7 @@
   function sourcesEditor() {
     const d = X().draft; d.sourceReferences = d.sourceReferences || [];
     return `<p class="hint">مطلوبة للأخبار والأحداث والأسعار والإحصاءات. لا تُقبل ادعاءات بلا مصدر.</p>` + d.sourceReferences.map((s, i) =>
-      `<div class="cms-src">${fld('الاسم', `sourceReferences.${i}.name`, 'text', { ltr: 1 })}${fld('الرابط', `sourceReferences.${i}.url`, 'text', { ltr: 1 })}${fld('نُشر', `sourceReferences.${i}.publishedAt`, 'datetime')}<button class="btn sm" data-act="cms-src-del" data-i="${i}">حذف</button></div>`).join('') +
+      `<div class="cms-src">${fld('الاسم', `sourceReferences.${i}.name`, 'text', { ltr: 1 })}${fld('الرابط', `sourceReferences.${i}.url`, 'text', { ltr: 1 })}${fld('الناشر', `sourceReferences.${i}.publisher`, 'text', { ltr: 1 })}${fld('نوع المصدر', `sourceReferences.${i}.sourceType`, 'select', { options: C.SOURCE_TYPES.map(x => [x, x]) })}${fld('نُشر', `sourceReferences.${i}.publishedAt`, 'datetime')}<button class="btn sm" data-act="cms-src-del" data-i="${i}">حذف</button></div>`).join('') +
       '<button class="btn sm" data-act="cms-src-add">إضافة مصدر</button>' + ((X().errors || []).some(e => e.field === 'sourceReferences') ? `<p class="cms-err">${E(X().errors.find(e => e.field === 'sourceReferences').message)}</p>` : '');
   }
 
@@ -255,6 +266,7 @@
     modal(`<div class="cms-prev"><div class="cms-prev__side">
       <h2>معاينة قبل النشر</h2>
       <dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(typeLabel(r.type))} — ${E(e.title)}</dd><dt>اللغة</dt><dd>${r.language === 'ar' ? 'العربية' : 'English'}</dd>
+        <dt>الرابط الدائم</dt><dd class="ltr">${E(m.pv.canonicalUrl || '—')}</dd><dt>الطبقة</dt><dd class="ltr">${E(e.layer || '—')}</dd>
         <dt>الوجهات</dt><dd>${m.pv.destinations.map(d => `<button class="chip" data-act="cms-prev-page" data-page="${E(d.page)}" aria-pressed="${d.page === m.page}">${E(d.page)}</button>`).join(' ')}</dd>
         <dt>الملخص</dt><dd dir="auto">${E(e.summary)}</dd>${e.body ? `<dt>النص</dt><dd dir="auto" class="cms-clip">${E(e.body.slice(0, 400))}${e.body.length > 400 ? '…' : ''}</dd>` : ''}
         ${e.image ? `<dt>الصورة</dt><dd class="ltr">${E(e.image.src)}<br>alt: ${E(e.image.alt)}</dd>` : ''}
@@ -272,7 +284,7 @@
     const m = X().modal, r = m.rec, e = m.pv.entry;
     modal(`<h2>نشر هذا المحتوى؟</h2><dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(typeLabel(r.type))} — ${E(e.title)}</dd><dt>اللغة</dt><dd>${r.language === 'ar' ? 'العربية' : 'English'}</dd>
       <dt>الوجهات</dt><dd>${m.pv.destinations.map(d => E(d.page)).join('، ')}</dd><dt>النسخة</dt><dd class="num">v${e.publishVersion}</dd></dl>
-      <p class="warnbox">سيؤدي هذا إلى تحديث ملف المحتوى العام لـ FOXREX (data/content.json) وإنشاء commit ودفعه إلى GitHub Pages.</p>
+      <p class="warnbox">سيؤدي هذا إلى تحديث ملف المحتوى العام لـ FOXREX (data/content.json) وتوليد الصفحة الدائمة (${E(m.pv.canonicalUrl || '')}) والأرشيف وخريطة الموقع، ثم إنشاء commit ودفعه إلى GitHub Pages.</p>
       <div class="row"><button class="btn" data-act="cms-close">إلغاء</button><button class="btn pri" data-act="cms-publish">نشر</button></div><div id="cms-pub-out"></div>`);
   }
   async function doPublish(dryRun) {

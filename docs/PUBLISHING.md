@@ -10,7 +10,7 @@ Worker (operator machine, 127.0.0.1:8787)  — authoritative CMS store + publish
         │  worker/data/cms/records.json · publications.json   (git-ignored, never public)
         ▼
 PUBLISH_REPO_DIR (clean clone of Zakoosh/FOXREX)
-        │  data/content.json → checks → commit → git push (machine's own credentials, never forced)
+        │  data/content.json (v3) → checks → generate permanent pages (tools/site/build.mjs) → one commit → git push (machine's own credentials, never forced)
         ▼
 GitHub Pages → https://foxrex.co/  and  https://foxrex.co/ar/   (static; visitors never call the worker)
 ```
@@ -31,20 +31,27 @@ GitHub Pages → https://foxrex.co/  and  https://foxrex.co/ar/   (static; visit
 
 Save ≠ Approve ≠ Publish. AI can only create **DRAFT** translations; there is no AI or automatic approval path. Each language is its own record (`language` = `en` | `ar`, shared `translationGroupId`, e.g. `gold-focus-2026-09-30-xauusd-en` / `-ar`) and needs its own review and approval.
 
-## Content types → destinations
+## Content types → permanent URLs (content model v3)
 
-Defined once in `studio/cms-model.js` (`TYPES`), used by Studio, the engine and the tests.
+Defined once in `studio/cms-model.js` (`TYPES`, `routeFor`) and used by Studio, the engine, the site generator and the
+tests. Every published item gets a permanent page: English at `/<urlPath>`, Arabic at `/ar/<urlPath>`. The full rules
+are in `CONTENT-ROUTING.md`; the model is in `CONTENT-BACKBONE-V3.md`.
 
-| Type | Website section | Pages |
+| Type (layer) | Permanent path | Also listed on |
 |---|---|---|
-| MORNING_BRIEF · US_OPEN · MARKET_RECAP | Daily Desk slot | home |
-| GOLD_FOCUS | Gold Focus (+ Daily Desk gold slot) | home, gold |
-| EVENT | Daily Desk + News | home, news |
-| ANALYSIS | Latest Analysis | home, analysis |
-| NEWS | Market News | home, news |
-| SIGNAL · SIGNAL_RESULT | Signals / Recent results | signals |
-| LEARN · REX_EXPLAINS · REX_NOTE · ASK_REX | Learn / REX | learn |
-| REEL · STORY · CAROUSEL · CAMPAIGN | social only — never on the website | — |
+| MORNING_BRIEF · US_SESSION_PREVIEW (legacy US_OPEN) · MARKET_RECAP · EVENT (Market Intelligence) | `desk/<date>/<slot>/` | home desk, `desk/` archive, (EVENT: news) |
+| GOLD_FOCUS (Trading + Market Intelligence) | `gold/<date>/` | home, gold, `desk/` archive |
+| ANALYSIS · WEEKLY_OUTLOOK (Market Intelligence) | `analysis/<slug>/` | home, analysis, (`analysis/weekly-outlook/`) |
+| NEWS (Market Intelligence) | `news/<slug>/` | home, news |
+| TRADING_IDEA · SIGNAL (Trading Intelligence) | `signals/<slug>/` | home, signals |
+| SIGNAL_RESULT (Trading Intelligence) | `signals/results/<slug>/` | signals, `signals/results/` |
+| REX_EXPLAINS (legacy LEARN · REX_NOTE · ASK_REX) (Market Intelligence) | note → `desk/<date>/rex-note/`, else `learn/<slug>/` | learn |
+| REEL · STORY · CAROUSEL · CAMPAIGN | social only — never on the website, no URL | — |
+
+The URL is fixed at first publication. Titles can change, but the slug cannot (`SLUG_LOCKED`). EN and AR share the
+path. A path held by another item, or a second desk piece for the same day, is refused with `409 ROUTE_COLLISION`.
+Unpublishing leaves a noindex "withdrawn" notice at the URL and removes the item from every listing and from the
+sitemap.
 
 ## Validation (enforced in Studio **and** again server-side)
 
@@ -60,10 +67,10 @@ Defined once in `studio/cms-model.js` (`TYPES`), used by Studio, the engine and 
 ## Publishing guarantees
 
 - **Approval gate** — only APPROVED (or due SCHEDULED) records with a recorded approver and passing validation.
-- **Dry run** — `PUBLISH_MODE=dry-run` (default) and the Studio "Dry run" button: validation, candidate feed, schema + site tests, diff preview; no write, commit or push.
+- **Dry run** — `PUBLISH_MODE=dry-run` (default) and the Studio "Dry run" button: validation, permanent URL, candidate feed, schema + site tests, diff preview and the list of pages that would be generated; no write, commit or push.
 - **Optimistic concurrency** — Studio sends the feed version it previewed; if `data/content.json` changed, the engine answers `409 CONFLICT` ("Published content changed since this item was loaded. Refresh before publishing.") and writes nothing.
 - **Idempotency** — each request carries `Idempotency-Key: publish:<id>@r<revision>`; a repeated successful request returns the original publication and creates no commit or duplicate entry.
-- **Transactional** — the repo must be on `PUBLISH_BRANCH`, clean, and fast-forwardable. Failed checks, commit or push restore the previous HEAD; the record stays APPROVED for retry and the failure is logged.
+- **Transactional** — the repo must be on `PUBLISH_BRANCH`, clean, and fast-forwardable. The feed and the pages generated from it are committed together (`Permanent-Url` trailer). Failed checks, generation, commit or push restore the previous HEAD and remove the generated files; the record stays APPROVED for retry and the failure is logged.
 - **Versioning** — every publication increments `publishVersion`; editing a published item creates a new DRAFT while the live version keeps serving until republished.
 - **Audit** — per-record history plus a publication log (`publicationId`, content, language, type, version, requested/published times, commit SHA, actor, destinations, result, error). Commits carry `Content-Id`, `Publish-Version`, `Publication-Id`, `Approved-By`, `Published-By` trailers.
 - **Deployment status** — `PUBLISHING → COMMITTED → PUSHED → DEPLOYING → LIVE`. LIVE is set only after the public feed at `PUBLIC_FEED_URL` actually contains the new version ("Check deployment" in the Publication Center).
