@@ -4,17 +4,34 @@
      Arabic   → /ar/         <html lang="ar" dir="rtl">
    Each edition is real, URL-addressable HTML with its own canonical, hreflang, titles and
    Open Graph. Arabic is composed for Arabic (styles/ar.css, --ar-* tokens), not toggled.
-   Usage: node tools/site/build.mjs          (writes files)
-          node tools/site/build.mjs --check  (exits 1 if committed output is stale)
+   Published content (data/content.json, schema v3) becomes permanent pages: every item at its
+   urlPath (EN) and /ar/<urlPath> (AR), withdrawn-item notices, and archives that exist only when
+   they have items. The list of generated content files is kept in data/generated-content.json so a
+   page that no longer belongs to the feed is removed — never left behind as an orphan.
+   Usage: node tools/site/build.mjs                (writes files)
+          node tools/site/build.mjs --check        (exits 1 if committed output is stale)
+          node tools/site/build.mjs --plan         (prints the files that would change as JSON; writes nothing)
+          --feed <file>  build from another feed (default data/content.json)
+          --out <dir>    write into another directory (default the repository root)
    No dependencies. Output uses relative URLs so it works on foxrex.co and a local server. */
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { SITE, MARKETS, SCHEDULE, SCHEDULE_EXTRA, ANALYSIS_CATEGORIES, NEWS_CATEGORIES, REX } from './content.mjs';
 import { esc, enText, arText } from './text.mjs';
+import { contentPages, GENERATED_MARK } from './content-pages.mjs';
 
+const require = createRequire(import.meta.url);
+const CMS = require('../../studio/cms-model.js');
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
-const CHECK = process.argv.includes('--check');
+const ARGS = process.argv.slice(2);
+const argVal = k => { const i = ARGS.indexOf(k); return i >= 0 ? ARGS[i + 1] : null; };
+const CHECK = ARGS.includes('--check');
+const PLAN = ARGS.includes('--plan');
+const OUT = path.resolve(argVal('--out') || ROOT);
+const FEED_FILE = path.resolve(argVal('--feed') || path.join(ROOT, 'data/content.json'));
+const MANIFEST = 'data/generated-content.json';
 const UPDATED = { en: '30 September 2026', ar: '30 سبتمبر 2026' };
 
 /* ---------- language context ---------- */
@@ -52,7 +69,12 @@ const absUrl = (p, lang) => { const o = outPath(p, lang); return SITE.origin + (
 /* ---------- layout ---------- */
 function head(p, r) {
   const ar = AR();
-  const url = absUrl(p, LANG);
+  const url = p.canonical || absUrl(p, LANG);
+  const alternates = p.alternates
+    ? p.alternates.map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${esc(a.href)}">`).join('\n')
+    : `<link rel="alternate" hreflang="en" href="${absUrl(p, 'en')}">\n<link rel="alternate" hreflang="ar" href="${absUrl(p, 'ar')}">\n<link rel="alternate" hreflang="x-default" href="${absUrl(p, 'en')}">`;
+  const hasOtherLang = !p.alternates || p.alternates.some(a => a.hreflang === (ar ? 'en' : 'ar'));
+  const article = p.article ? `\n<meta property="article:published_time" content="${esc(p.article.published)}">\n<meta property="article:modified_time" content="${esc(p.article.modified)}">\n<meta property="article:section" content="${esc(p.article.section)}">` : '';
   const pt = ar ? (p.titleAr ?? p.title) : p.title;
   const title = pt ? `${pt} — FOXREX` : (ar ? 'FOXREX — تداول أذكى... فرص أكبر' : 'FOXREX — Trade Smarter. Go Further.');
   const desc = ar ? (p.descriptionAr || SITE.descriptionAr) : (p.description || SITE.description);
@@ -67,15 +89,13 @@ function head(p, r) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${url}">
-<link rel="alternate" hreflang="en" href="${absUrl(p, 'en')}">
-<link rel="alternate" hreflang="ar" href="${absUrl(p, 'ar')}">
-<link rel="alternate" hreflang="x-default" href="${absUrl(p, 'en')}">
+${alternates}${p.noindex ? '\n<meta name="robots" content="noindex">' : ''}${p.kind ? '\n' + GENERATED_MARK : ''}
 <meta name="theme-color" content="#0B1320">
 <meta name="color-scheme" content="dark">
 <link rel="icon" type="image/png" sizes="32x32" href="${r}assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="${r}assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="${r}site.webmanifest">
-<meta property="og:type" content="website">
+<meta property="og:type" content="${p.ogType || 'website'}">
 <meta property="og:site_name" content="FOXREX">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
@@ -84,8 +104,7 @@ function head(p, r) {
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${ar ? 'FOXREX — تداول أذكى... فرص أكبر' : 'FOXREX — Trade smarter. Go further.'}">
-<meta property="og:locale" content="${ar ? 'ar_AR' : 'en_US'}">
-<meta property="og:locale:alternate" content="${ar ? 'en_US' : 'ar_AR'}">
+<meta property="og:locale" content="${ar ? 'ar_AR' : 'en_US'}">${hasOtherLang ? `\n<meta property="og:locale:alternate" content="${ar ? 'en_US' : 'ar_AR'}">` : ''}${article}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
@@ -97,7 +116,7 @@ ${preload}
 <link rel="stylesheet" href="${r}styles/base.css">
 <link rel="stylesheet" href="${r}styles/components.css">
 <link rel="stylesheet" href="${r}styles/public.css">
-${ar ? `<link rel="stylesheet" href="${r}styles/ar.css">\n` : ''}${p.jsonld ? `<script type="application/ld+json">${JSON.stringify(p.jsonld(ar))}</script>\n` : ''}</head>`;
+${ar ? `<link rel="stylesheet" href="${r}styles/ar.css">\n` : ''}${p.jsonld && p.jsonld(ar) ? `<script type="application/ld+json">${JSON.stringify(p.jsonld(ar)).replace(/</g, '\\u003c')}</script>\n` : ''}</head>`;
 }
 
 const logo = b => `<a class="fx-logo" href="${b || './'}" aria-label="${AR() ? 'FOXREX — الرئيسية' : 'FOXREX home'}"><img src="${LOGO_SRC}" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>`;
@@ -161,11 +180,11 @@ function page(p) {
   const b = r + (AR() ? 'ar/' : '');
   LOGO_SRC = `${r}assets/brand/foxrex-mark.png`;
   const altOut = outPath(p, AR() ? 'en' : 'ar');
-  const alt = r + (altOut ? altOut + '/' : '') || './';
+  const alt = p.altHref != null ? (r + p.altHref) || './' : r + (altOut ? altOut + '/' : '') || './';
   const scripts = ['scripts/public/site.js', ...(p.scripts || [])].map(s => `<script src="${r}${s}" defer></script>`).join('\n');
   return `${head(p, r)}
 <body data-root="${r}" data-page="${p.id}" data-lang="${LANG}">
-${header(p.id, r, b, alt)}
+${header(p.active || p.id, r, b, alt)}
 <main id="main">
 ${p.body(r, b)}
 </main>
@@ -553,7 +572,14 @@ legal('risk-disclosure', 'Risk Disclosure', 'إفصاح المخاطر', 'Risks 
 <h2>العملات الرقمية</h2>
 <p>قد تكون الأصول الرقمية غير منظمة في بلدك، ويمكن أن تفقد معظم قيمتها أو كلها.</p>`);
 
+/* ---------- published content: permanent pages, withdrawn notices, archives ---------- */
+let FEED;
+try { FEED = CMS.normalizeFeed(JSON.parse(fs.readFileSync(FEED_FILE, 'utf8'))); }
+catch (e) { console.error(`Cannot build content pages from ${FEED_FILE}: ${e.message}`); process.exit(1); }
+const CONTENT = contentPages(FEED, { SITE, I });
+
 /* ---------- other generated files ---------- */
+const contentSitemap = CONTENT.sitemap.map(u => `  <url><loc>${esc(u.loc)}</loc>${u.alternates.map(a => `<xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${esc(a.href)}"/>`).join('')}${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}<changefreq>${u.freq}</changefreq><priority>${u.priority}</priority></url>`).join('\n');
 const sitemapUrls = PAGES.map(p => {
   const pri = p.id === 'home' ? '1.0' : ['privacy', 'terms', 'risk-disclosure'].includes(p.id) ? '0.3' : '0.8';
   const freq = ['home', 'analysis', 'news', 'gold'].includes(p.id) ? 'daily' : 'monthly';
@@ -562,30 +588,55 @@ const sitemapUrls = PAGES.map(p => {
 }).join('\n');
 const extra = {
   'robots.txt': `User-agent: *\nAllow: /\nDisallow: /studio/\nDisallow: /foxrex-studio.html\n\nSitemap: ${SITE.origin}/sitemap.xml\n`,
-  'sitemap.xml': `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${sitemapUrls}\n</urlset>\n`,
+  'sitemap.xml': `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${sitemapUrls}${contentSitemap ? '\n' + contentSitemap : ''}\n</urlset>\n`,
   'site.webmanifest': JSON.stringify({ name: 'FOXREX', short_name: 'FOXREX', description: SITE.description, start_url: '/', display: 'standalone', background_color: '#0B1320', theme_color: '#0B1320', icons: [{ src: '/assets/brand/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: '/assets/brand/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] }, null, 2) + '\n'
 };
 
-/* ---------- write / check ---------- */
+/* ---------- write / check / plan ---------- */
 const outputs = new Map();
 for (const lang of ['en', 'ar']) {
   LANG = lang;
   for (const p of PAGES) { const o = outPath(p, lang); outputs.set(o ? `${o}/index.html` : 'index.html', page(p)); }
 }
+const generated = [];
+for (const p of CONTENT.pages) {
+  LANG = p.lang;
+  const rel = `${outPath(p, p.lang)}/index.html`;
+  if (outputs.has(rel)) { console.error(`Content page ${p.id} would overwrite ${rel}`); process.exit(1); }
+  outputs.set(rel, page(p)); generated.push(rel);
+}
 LANG = 'en';
 for (const [k, v] of Object.entries(extra)) outputs.set(k, v);
+generated.sort();
+outputs.set(MANIFEST, JSON.stringify({ schemaVersion: 1, note: 'Generated by tools/site/build.mjs from data/content.json. Do not edit.', files: generated }, null, 2) + '\n');
 
-const stale = [];
+// Content pages from a previous build that the feed no longer produces are removed (only files carrying the generated mark).
+const prevManifest = (() => { try { return JSON.parse(fs.readFileSync(path.join(OUT, MANIFEST), 'utf8')).files || []; } catch { return []; } })();
+const orphans = prevManifest.filter(f => !outputs.has(f) && /^[a-z0-9/_-]+\/index\.html$/.test(f) && fs.existsSync(path.join(OUT, f)) && fs.readFileSync(path.join(OUT, f), 'utf8').includes(GENERATED_MARK));
+
+const stale = [], written = [];
 for (const [rel, html] of outputs) {
-  const file = path.join(ROOT, rel);
+  const file = path.join(OUT, rel);
   const cur = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null;
   if (cur === html) continue;
-  if (CHECK) { stale.push(rel); continue; }
+  if (CHECK || PLAN) { stale.push(rel); continue; }
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, html);
+  written.push(rel);
   console.log('wrote', rel);
 }
+if (PLAN) {
+  console.log(JSON.stringify({ write: stale, remove: orphans, contentPages: generated.length }, null, 2));
+  process.exit(0);
+}
 if (CHECK) {
-  if (stale.length) { console.error('Stale generated site files (run node tools/site/build.mjs):\n  ' + stale.join('\n  ')); process.exit(1); }
-  console.log(`Public site output is up to date (${outputs.size} files).`);
+  if (stale.length || orphans.length) { console.error('Stale generated site files (run node tools/site/build.mjs):\n  ' + [...stale, ...orphans.map(o => `${o} (orphan)`)].join('\n  ')); process.exit(1); }
+  console.log(`Public site output is up to date (${outputs.size} files, ${generated.length} content pages).`);
+} else {
+  for (const o of orphans) {
+    fs.rmSync(path.join(OUT, o));
+    let dir = path.dirname(path.join(OUT, o));
+    while (dir.startsWith(OUT) && dir !== OUT && !fs.readdirSync(dir).length) { fs.rmdirSync(dir); dir = path.dirname(dir); }
+    console.log('removed', o);
+  }
 }

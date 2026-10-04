@@ -61,7 +61,8 @@ const remoteLog = repo => git(repo.remote, 'log', '--format=%H %s', 'main').spli
 
 test('schema + integrity: valid entries of every website type pass; broken ones fail', () => {
   const at = '2026-09-30T08:00:00Z';
-  const mk = (type, extra) => ({ ...CMS.toFeedEntry({ ...CMS.blankRecord(type, 'en', at, 'x'), id: `${type.toLowerCase().replace(/_/g, '-')}-x-en`, translationGroupId: `${type.toLowerCase().replace(/_/g, '-')}-x`, slug: 'x', title: 'Title', summary: 'Summary', body: 'Body', ...extra }, at, 1) });
+  // v3: each entry gets its own permanent path (slug per type), so the fixtures never collide.
+  const mk = (type, extra) => ({ ...CMS.toFeedEntry({ ...CMS.blankRecord(type, 'en', at, 'x'), id: `${type.toLowerCase().replace(/_/g, '-')}-x-en`, translationGroupId: `${type.toLowerCase().replace(/_/g, '-')}-x`, slug: type.toLowerCase().replace(/_/g, '-'), title: 'Title', summary: 'Summary', body: 'Body', ...extra }, at, 1) });
   const good = [
     mk('MORNING_BRIEF'), mk('US_OPEN'), mk('MARKET_RECAP'), mk('LEARN'), mk('REX_EXPLAINS'), mk('REX_NOTE'), mk('ASK_REX'),
     mk('EVENT', { sourceReferences: [{ name: 'BLS', url: 'https://www.bls.gov/cpi/' }], fields: { importance: 'HIGH', affectedMarkets: ['XAUUSD'] } }),
@@ -71,7 +72,7 @@ test('schema + integrity: valid entries of every website type pass; broken ones 
     mk('SIGNAL', { symbol: 'XAUUSD', riskDisclosure: 'Risk.', fields: { direction: 'BUY', entry: '2380', stopLoss: '2360', targets: ['2400'], riskMessage: 'Risk 1%.', analysisContext: 'Context.' } }),
     mk('SIGNAL_RESULT', { symbol: 'XAUUSD', fields: { signalId: 'signal-x-en', direction: 'BUY', entry: '2380', exit: '2400', outcome: 'TARGET_HIT', closedAt: at, resultNotes: 'Closed at target.' } })
   ];
-  const feed = { schemaVersion: 2, updated: at, publication: null, items: good };
+  const feed = { schemaVersion: 3, updated: at, publication: null, items: good, withdrawn: [] };
   assert.deepEqual(checkFeed(feed, { root: ROOT, now: Date.parse(at) }), []);
   const bad = (entry, re) => assert.ok(checkFeed({ ...feed, items: [entry] }, { root: ROOT, now: Date.parse(at) }).some(e => re.test(e)), `expected ${re}`);
   bad({ ...good[8], sources: [] }, /sources/);
