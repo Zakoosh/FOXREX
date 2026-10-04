@@ -1,14 +1,26 @@
 # FOXREX — Information Architecture
 
-**Status:** planning proposal for owner review, 2026-10-04. It defines structure only, not visual design.
+**Status:** revised after owner decisions, 2026-10-04 (direction approved; see `FOXREX-WEBSITE-BLUEPRINT.md` §0). It
+defines structure only, not visual design.
 Related documents: `FOXREX-SITEMAP.md` (URLs), `FOXREX-CONTENT-MODEL.md` (types), `FOXREX-LAUNCH-CONTENT-PLAN.md` (priorities).
 
 ---
 
 ## 1. What the website is
 
-FOXREX is a **market-intelligence and trading-media publication**, organised around a daily editorial desk and anchored
-on gold and the major USD markets. It is published in Arabic and English as two first-class editions.
+FOXREX is a **live financial publication** for market and trading intelligence, organised around a daily editorial
+desk. Launch coverage is **gold, FX and major macro events**, for a primary audience of **Arabic-speaking retail
+traders**, with English as a first-class edition. The architecture is **not** Arabic-only and **not** gold/FX-only:
+instruments, filters and URLs come from a symbol registry, so indices, crypto, commodities and broader global markets
+are added as coverage grows, without restructuring.
+
+FOXREX is built as **three connected layers**, visible throughout the site:
+
+| Layer | Question | On the site |
+|---|---|---|
+| **A. Market Data** | What is happening? | Market Pulse, `/markets/`, live values on hubs (system-produced, freshness-labelled) |
+| **B. Market Intelligence** | Why is it happening, and what matters? | What Matters Now, the Desk, News, Analysis, REX |
+| **C. Trading Intelligence** | What setup, scenario or decision follows? | Gold Focus levels and scenarios, Trading Ideas, Signals, Results |
 
 Every screen must help a reader answer four questions:
 
@@ -20,10 +32,12 @@ Every screen must help a reader answer four questions:
 | **What does FOXREX think matters?** | The desk's lead story, bias and scenarios, trading ideas and signals with their risk |
 
 Organising principles:
-1. **Editorial first, data second, product third.** The desk produces the content and data supports it.
+1. **A publication, not a landing page.** The homepage answers what is happening, why, what matters today and what to
+   watch next. Brand promotion is secondary.
 2. **One canonical home per thing.** Gold has one hub, every published item has one URL, and filters stay filters
    rather than becoming pages.
-3. **No empty pages at launch.** A page exists only when real content or real data can fill it.
+3. **No empty pages and no empty sections.** A page exists only when real content or real data can fill it; a section
+   with nothing current is omitted (graceful absence rules: `FOXREX-WEBSITE-BLUEPRINT.md` §6).
 4. **Status is always visible.** Data shows its source, time and freshness. Capabilities show LIVE / BETA / RESEARCH / PLANNED.
 5. **Every published item has a permalink** in both languages.
 
@@ -48,9 +62,12 @@ The proposal you gave me has 7 top-level sections and about 36 sub-pages.
 ### Header (primary): 6 items + language + 1 action
 
 ```
-FOXREX   Markets   Gold   Analysis   News   Signals   Learn          العربية   Join on Telegram
+[FOXREX logo → home]   Markets   Gold   Analysis   News   Signals   Learn          [العربية / English]   Join Telegram
 ```
 
+- **"FOXREX" is not a navigation label.** The logo links home, as on every publication; there is no "FOXREX"
+  menu. Company information lives in the footer (owner decision 17). There is no strong UX reason to put it in the header:
+  returning readers come for markets, not for the company.
 - **Order** follows the reader's questions: what is happening (Markets), the anchor instrument (Gold), what FOXREX thinks
   (Analysis), why it is happening (News), what to do about it with risk (Signals), and understanding it (Learn).
 - **No dropdown mega-menus at launch.** Sub-navigation lives inside each section as filters, which is how a premium
@@ -79,31 +96,31 @@ Plus the persistent short risk statement and a link to the full disclosure.
 ```
 HOME (Today at FOXREX)
 │
-├── MARKETS ──────────── /markets/                         P0  overview: pulse (when live) + what each instrument is
+├── MARKETS [A] ──────── /markets/                         P0  overview: pulse (when live) + what each instrument is, grouped by asset class (registry-driven)
 │     ├── instrument     /markets/<symbol>/                P1  e.g. /markets/eurusd/ — data + related analysis/news
 │     └── calendar       /calendar/                        P1  economic calendar (requires a calendar data source)
 │
-├── GOLD ─────────────── /gold/                            P0  the Gold hub: today's Gold Focus + gold analysis/news + drivers
+├── GOLD [A+B+C] ─────── /gold/                            P0  flagship hub: today's Gold Focus + gold analysis/news + drivers
 │     └── gold focus     /gold/<yyyy-mm-dd>/               P0  permalink of each day's Gold Focus
 │
-├── ANALYSIS ─────────── /analysis/                        P0  list, filters: instrument · method (technical/macro) · format
+├── ANALYSIS [B] ─────── /analysis/                        P0  list, filters: instrument · method (technical/macro) · format
 │     ├── article        /analysis/<slug>/                 P0
 │     └── weekly outlook /analysis/weekly-outlook/         P1  archive of the Weekly Outlook format
 │
-├── NEWS ─────────────── /news/                            P0  "news that matters", filters: high impact · central banks · economy · commodities · FX · crypto
+├── NEWS [B] ─────────── /news/                            P0  "news that matters", filters: high impact · central banks · economy · commodities · FX · crypto
 │     └── story          /news/<slug>/                     P0
 │
-├── SIGNALS ──────────── /signals/                         P0  active ideas/signals + recent outcomes + risk statement
+├── SIGNALS [C] ──────── /signals/                         P0  active ideas/signals + recent outcomes + risk statement
 │     ├── methodology    /signals/methodology/             P0  how signals are produced, managed, recorded; risk rules
 │     ├── signal         /signals/<id>/                    P1  one signal with its full update history
 │     └── results        /signals/results/                 P1  every closed result, losses included (no win-rate claims)
 │
-├── LEARN ────────────── /learn/                           P0  REX's lessons, topic filters: basics · technical · macro · risk
+├── LEARN [B] ────────── /learn/                           P0  REX's lessons, topic filters: basics · technical · macro · risk
 │     ├── lesson         /learn/<slug>/                    P0  (5 lessons exist today)
 │     └── glossary       /learn/glossary/                  P2
 │
-├── DESK (archive) ───── /desk/                            P1  every desk piece by date
-│     └── piece          /desk/<yyyy-mm-dd>/<slot>/        P0  morning-brief · event · us-open · rex-note · market-recap
+├── DESK [B] (archive) ─ /desk/                            P1  every desk piece by date (only once it has ~2 weeks of content; no empty archives)
+│     └── piece          /desk/<yyyy-mm-dd>/<slot>/        P0  morning-brief · event · us-session-preview · rex-note · market-recap
 │
 └── FOXREX (footer)
       ├── /about/                                          P0  incl. Meet REX
@@ -113,35 +130,40 @@ HOME (Today at FOXREX)
       └── /risk-disclosure/ · /terms/ · /privacy/          P0
 ```
 
-The Arabic edition mirrors every path under `/ar/` (see `FOXREX-SITEMAP.md`).
+The Arabic edition mirrors every path under `/ar/` (see `FOXREX-SITEMAP.md`). Layer tags: [A] Market Data,
+[B] Market Intelligence, [C] Trading Intelligence.
 
 ## 5. Homepage architecture (content, not visual design)
 
-The homepage is **"Today at FOXREX"**: a front page edited by the desk. Sections are listed in priority order. Each
-section has a purpose, a source and a rule for empty or stale content. **A section with nothing current to show
-collapses; it does not show a placeholder.**
+The homepage behaves like a **live financial publication's front page**, not a landing page advertising FOXREX. A
+returning reader should understand, from the top of the page: **what is happening (A), why (B), what matters today
+(B), what to watch next (B + A)**, then **what follows for trading (C)**.
 
-| # | Section | Purpose | Content | Source | When empty or stale |
+Sections exist only because they answer those questions, not because a content type exists. **A section with nothing
+current is omitted.** It never shows "not published yet", "coming soon", "no data" or "feed unavailable".
+
+| # | Section | Layer | Answers | Content | Omitted when |
 |---|---|---|---|---|---|
-| 01 | **Market Pulse** | What is happening, in 3 seconds | XAUUSD, DXY, EURUSD, GBPUSD, USDJPY, BTCUSD; later US10Y, WTI, SPX500/NAS100. Price, change (only if the provider gives the basis), freshness state, source, time | Market Data API (live layer) | **Hidden entirely until a provider is connected.** Per symbol: DELAYED, STALE, CLOSED or UNAVAILABLE is shown as a word, never as a number |
-| 02 | **What Matters Now** | The one dominant story | 1 lead: headline, 2-line why-it-matters, affected markets, link. Plus 2–3 supporting developments (one line each) | Editorial: the desk's current lead (any type flagged `lead`), normally the latest desk piece or high-impact news | Falls back to the latest desk piece. If nothing has been published in 24 h of trading time, the section is hidden |
-| 03 | **Today at FOXREX** | The daily desk, operational | A timeline of today's slots: published items link to their permalink, upcoming slots show only their time, and "Event of the Day" appears only when scheduled | Editorial: desk types | Slots that are not yet due show the time only. Missed slots are not shown. No "not yet published" ×5 |
-| 04 | **Gold Focus** | The anchor instrument | Today's market state, trend/bias, key support, important level, key resistance, bullish and bearish scenarios, technical context, macro driver, invalidation, "levels as of" time. Live XAUUSD shown separately with its own label | Editorial `GOLD_FOCUS` + live XAUUSD | Older than its validity: shown with a dated "Last Gold Focus: <date>" label, never as today's. None at all: section hidden |
-| 05 | **Latest Analysis** | Serious ideas | 3–4 cards: instrument, bias, timeframe, headline, thesis, key levels, published time, attribution | Editorial `ANALYSIS` | Hidden if none in the last 7 days |
-| 06 | **Desk Read / Market Intelligence** | FOXREX's differentiator: the state of the market at a glance | **Launch (editorial):** regime (risk-on/off/mixed), USD state, yields, volatility tone, next high-impact event, each with the desk's one-line read and time. **Later (computed, P2):** the same fields derived from data, with their method and status shown | Launch: fields in the Morning Brief. Later: the data layer | Older than today's Morning Brief: hidden |
-| 07 | **News That Matters** | Filtered context, not a feed | 3–5 stories, each with what happened, why it matters, markets affected and what to watch next | Editorial `NEWS` | Hidden if nothing in 48 h |
-| 08 | **Signals & Trading Ideas** | Structured ideas with risk | Latest 1–3: instrument, BUY / SELL / WAIT, entry, stop, targets, risk, status, context, timestamp. Link to methodology and results | Editorial `SIGNAL` / `TRADING_IDEA` + `SIGNAL_RESULT` | Hidden if none active. The methodology link always remains |
-| 09 | **REX Explains** | Understanding, with personality | The latest REX piece, ideally tied to today's move ("why gold fell"), plus 2 evergreen lessons | Editorial `REX_EXPLAINS` | Evergreen lessons always available |
-| 10 | **How FOXREX works** | Truthful technology and method | One line per capability with LIVE / BETA / RESEARCH / PLANNED, linking to `/technology/` and `/methodology/` | Static and owner-confirmed | Always present (P1). At launch, a single line in About |
-| 11 | **Community** | Where to follow | Telegram (primary), Instagram, Facebook | Static | — |
-| 12 | **Risk & footer** | Professional disclosure | Short risk statement, link to the full disclosure, legal links | Static | — |
+| 01 | **Market Pulse** | A | What is happening? | Compact strip: XAUUSD, DXY, EURUSD, GBPUSD, USDJPY, BTCUSD (registry-driven, extensible). Value, change (if the provider supplies the basis), freshness status, source, time | No provider connected; per symbol, STALE/UNAVAILABLE values are dropped from the strip |
+| 02 | **What Matters Now** | B | Why? What matters today? | The lead: headline, 2-line why-it-matters, affected markets, link. Plus 2–3 supporting developments | No FRESH lead or desk item |
+| 03 | **Today & Watch Next** | B + A | What to watch next? | Today's published desk items (linked) + the next 1–3 scheduled events, with times computed from each market's own clock and shown in IST | Nothing published today and nothing scheduled |
+| 04 | **Gold Focus** | B + C | The flagship | Market state, bias, support / important level / resistance, both scenarios, technical context, macro driver, invalidation, "levels as of". Live XAUUSD separate and labelled | None in 7 days (an older one appears dated and de-emphasised) |
+| 05 | **Desk Read** | B | What regime are we in? | Launch: editorial regime · USD · yields · volatility · next high-impact event, from the Morning Brief. Later: data-derived, labelled BETA | No Morning Brief today |
+| 06 | **Trading Ideas & Signals** | C | What follows for trading? | Active ideas/signals (BUY / SELL / WAIT, entry, stop, targets, risk, status, time); the latest result | Nothing active and no result in 7 days |
+| 07 | **Latest Analysis** | B | What does FOXREX think? | 3–4 cards: instrument, bias, timeframe, headline, thesis, attribution | None in 7 days |
+| 08 | **News That Matters** | B | Why? | 3–5 four-part stories | None in 48 h |
+| 09 | **REX Explains** | B | Understanding | A REX note tied to today's move, when one exists | No current REX note (no evergreen filler on the homepage) |
+| 10 | **Community + Risk** | — | — | Telegram, Instagram, Facebook; short risk statement and legal links | Never |
 
-**Notes on your proposed homepage:**
-- **06 Market Intelligence** cannot be computed honestly yet: there is no yield data, no candles for volatility and no calendar.
-  At launch it becomes the **Desk Read**, an editorial, timestamped judgement written with the Morning Brief. It
-  becomes data-derived later, labelled BETA until validated.
-- **10 FOXREX Technology** is low on the reading path. It earns a single strip, not a showcase.
-- **01 Market Pulse with placeholder dashes is worse than no pulse.** Hide it until data is live.
+**Removed from the homepage proposal:** "How FOXREX works / Technology" (brand promotion; it moves to the footer and
+`/technology/` P1, with verified statuses only).
+
+**Notes:**
+- **Desk Read** cannot be computed honestly yet (no yields, candles or calendar data). At launch it is an editorial,
+  timestamped judgement written with the Morning Brief.
+- **Market Pulse with placeholder dashes is worse than no pulse.** It stays omitted until data is live.
+- If almost everything is omitted (a cold start), the page still has 02/03/04 from the P0 minimum daily desk. That is
+  why the launch gate requires the desk to run first (`FOXREX-LAUNCH-CONTENT-PLAN.md`).
 
 ## 6. Page-level content architecture (summary)
 

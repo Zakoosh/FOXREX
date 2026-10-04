@@ -1,149 +1,265 @@
-# FOXREX — Website Blueprint (owner master)
+# FOXREX — Website Blueprint (implementation decision document)
 
-**Status:** for owner review, 2026-10-04. Planning only. Nothing is implemented, production is unchanged, and the
-visual identity and REX-MASTER are untouched.
+**Status:** revision 2, 2026-10-04. The direction is **approved by the owner**, subject to the decisions below. This is
+documentation only: nothing is implemented, production is unchanged, and the visual identity and REX-MASTER are
+untouched.
 **Detail lives in:** `WEBSITE-CONTENT-AUDIT.md` · `FOXREX-INFORMATION-ARCHITECTURE.md` · `FOXREX-CONTENT-MODEL.md` ·
 `FOXREX-EDITORIAL-SYSTEM.md` · `FOXREX-STUDIO-PUBLISHING-MAP.md` · `FOXREX-SITEMAP.md` · `FOXREX-LAUNCH-CONTENT-PLAN.md`.
+Where a detail document and this one disagree, **this document wins**.
 
 ---
 
-## 1. What the site is
-A **bilingual market-intelligence and trading-media publication**, run by a daily editorial desk and anchored on gold
-and the major USD markets. Every page answers four questions: **What is happening? Why? What to watch next? What does
-FOXREX think matters?** It is a publication first: data supports it, and products (signals) sit on top with their risk shown.
+## 0. OWNER DECISIONS
 
-**Today's problem (audit):** the structure is sound and honest, but the site is mostly empty states, nothing has its
-own URL, and there is no archive. The fix is content and structure, not a redesign.
+### APPROVED
+| # | Decision |
+|---|---|
+| 1 | **Audience:** primary launch audience is Arabic-speaking retail traders. Launch editorial coverage is gold, FX and major macro events. The architecture is **not** Arabic-only and **not** gold/FX-only: it extends to indices, crypto, commodities and global markets. English is a first-class edition |
+| 2 | **15:30 slot = "US Session Preview".** It is never described as the US market open. Actual open coverage is event-driven and computed from New York time (DST-aware) |
+| 3 | **Hero:** English-only messaging on `/`, Arabic-native messaging on `/ar/`. The Arabic tagline is removed from the English hero. No mixed-language branding decoration unless approved later |
+| 7 | **Three connected layers:** A. Market Data · B. Market Intelligence · C. Trading Intelligence, visible in the sitemap, homepage, content model and Studio |
+| 8 | **The homepage is a live financial publication**, not a landing page. Brand promotion is secondary |
+| 9 | **Graceful absence:** sections are omitted when there is nothing current. No "not published yet", "coming soon", "no data" or "feed unavailable" |
+| 10 | **Permalinks are P0** for every durable editorial item |
+| 11 | **Gold is a first-class top-level destination** (`/gold/`); Gold Focus is the flagship product |
+| 12 | **REX is the editorial explanation personality**, used only where he adds value. No filler |
+| 14 | **One source item → website canonical → Telegram / Instagram / Story / Carousel.** Studio is the operational CMS. No disconnected pipelines |
+| 15 | **Freshness model:** `dataAsOf`, `sourceTimestamp`, `receivedAt`, `validUntil`, `freshnessStatus` LIVE / FRESH / AGING / STALE / UNAVAILABLE |
+| 16 | **Focused launch scope:** a working product over page count. No empty archives |
+| 17 | **Header without a "FOXREX" label:** Markets · Gold · Analysis · News · Signals · Learn · language · Join Telegram |
 
-## 2. Audience
-- **Primary (proposed; owner to confirm):** Arabic-speaking retail traders, focused on gold and FX, who want a daily,
-  trustworthy read with clear levels and risk.
-- **Secondary:** English-speaking traders following the same desk.
-- **Tertiary:** learners who arrive through REX lessons and stay for the daily desk.
+### PENDING (owner input required; nothing may be invented)
+| Item | State |
+|---|---|
+| Legal entity, company name, registration, regulator, licence, jurisdiction, office, legal status | **TBD — OWNER INPUT REQUIRED.** Legal pages remain draft until owner/legal review |
+| Signals commercial model (free / member / premium) | **TBD.** Architecture supports PUBLIC / MEMBER / PREMIUM; no paywall and no pricing claims now |
+| Capability statuses: trading engine, decision system, ML, AI reasoning, risk engine, execution, market-data infrastructure | **STATUS REQUIRES SYSTEM VERIFICATION** (§13). None is described publicly until verified |
+| Market data provider and credentials (PR #6) | Owner action; until then there are no live widgets |
+| Economic calendar data source | Owner action; until then events are entered by the desk with a source |
+| Daily desk capacity beyond the P0 minimum | Owner/desk decision; adds slots without redesign |
 
-## 3. Navigation
+### NOT IN CURRENT SCOPE
+- Website implementation, redesign, mockups, visual identity work.
+- The cinematic Experience (PR #7, draft, not continued) and the **Market Noise** storytelling concept (P2, future; not built).
+- REX generation, Higgsfield, credits.
+- PR #6 (Market Data Layer) changes and merges; PR #8 merge.
+- Accounts, login, paywall, pricing, broker/execution integration, automated social posting.
+
+---
+
+## 1. Final architecture
+
 ```
-Header:  FOXREX   Markets   Gold   Analysis   News   Signals   Learn          العربية   Join on Telegram
+                        ┌──────────────────────────────────────────────┐
+  providers ───────────▶│ A. MARKET DATA  (Market API, quality gate,   │───────────── real-time path ──────────────┐
+  calendar source       │    freshness: LIVE/FRESH/AGING/STALE/UNAVAIL)│   (bypasses Studio: measured, not written)│
+                        └───────────────────────┬──────────────────────┘                                           │
+                                                │ snapshot into priceRef (value + source + times)                  │
+                                                ▼                                                                  │
+                        ┌──────────────────────────────────────────────┐                                           │
+                        │ B. MARKET INTELLIGENCE                       │                                           │
+                        │    why it is happening, what matters         │                                           │
+                        │    (Brief, Preview, Recap, News, Analysis,   │                                           │
+                        │     Event, REX)                              │                                           │
+                        └───────────────────────┬──────────────────────┘                                           │
+                                                ▼                                                                  │
+                        ┌──────────────────────────────────────────────┐                                           │
+                        │ C. TRADING INTELLIGENCE                      │                                           │
+                        │    setups, scenarios, decisions              │                                           │
+                        │    (Gold Focus levels, Trading Ideas,        │                                           │
+                        │     Signals, Results)                        │                                           │
+                        └───────────────────────┬──────────────────────┘                                           │
+                                                ▼                                                                  │
+                        ┌──────────────────────────────────────────────┐                                           │
+                        │ EDITORIAL ENGINE / STUDIO                    │                                           │
+                        │ IDEA→DRAFT→REVIEW→APPROVED→SCHEDULED→        │                                           │
+                        │ PUBLISHED→ARCHIVED · human approval · EN+AR  │                                           │
+                        └───────────────────────┬──────────────────────┘                                           │
+                                                ▼                                                                  │
+                        ┌──────────────────────────────────────────────┐                                           │
+                        │ WEBSITE (canonical)  foxrex.co · /ar/        │◀──────────────────────────────────────────┘
+                        │ permalinks · hubs · homepage                 │   live widgets render API data directly,
+                        └───────┬────────────────┬────────────────┬────┘   labelled with source, time and status
+                                ▼                ▼                ▼
+                            Telegram         Instagram      Social (Story · Carousel · Reel)
+                        derivatives rendered from the approved canonical item, always linking back to it
+```
+
+- **The real-time path** (Market Pulse, live XAUUSD on `/gold/`, `/markets/` table) goes API → browser. It never goes
+  through Studio, and it is never typed into editorial content.
+- **Breaking News** goes through the same Studio approval, with Telegram as the fastest derivative. There is no
+  unapproved fast lane for editorial content.
+
+## 2. What the site is
+A **live financial publication** for market and trading intelligence, run by a daily editorial desk. Every visit
+answers: **What is happening? Why? What matters today? What should I watch next?** Then: what follows for trading,
+with its risk.
+
+## 3. Audience and coverage
+- **Primary:** Arabic-speaking retail traders. **Secondary:** English-speaking traders; both are first-class editions.
+- **Launch coverage:** gold (flagship), FX majors, major macro events (central banks, CPI, NFP…).
+- **Extensible by design:** instruments come from a symbol registry with an `assetClass`. Indices, crypto, commodities
+  and global markets are added as registry entries, with filters and `/markets/<symbol>/` pages, and no new structure.
+
+## 4. Navigation
+```
+[logo → home]   Markets   Gold   Analysis   News   Signals   Learn        [العربية | English]   Join Telegram
 Footer:  FOXREX (About + Meet REX, Methodology*, Technology*, Contact) · Coverage · Legal · Follow      (* P1)
 ```
-Gold moves into the header. Company pages move to the footer. There are no mega-menus: sub-sections are filters.
+No mega-menus. Sub-sections are filters. The language switch keeps the reader on the same page.
 
-## 4. Homepage structure: "Today at FOXREX"
-| # | Section | Rule |
-|---|---|---|
-| 01 | Market Pulse | **Hidden until a data provider is live** |
-| 02 | What Matters Now | The desk's lead story |
-| 03 | Today at FOXREX | Today's desk timeline; missed slots are not shown |
-| 04 | Gold Focus | Today's; if older, labelled with its date |
-| 05 | Latest Analysis | Last 7 days |
-| 06 | Desk Read | Editorial at launch (regime, USD, yields, volatility, next event); data-derived later |
-| 07 | News That Matters | Four-part format, last 48 h |
-| 08 | Signals & Trading Ideas | Only when real; methodology link always present |
-| 09 | REX Explains | Today's REX note + evergreen lessons |
-| 10 | How FOXREX works | Capability statuses (P1) |
-| 11 | Community | Telegram, Instagram, Facebook |
-| 12 | Risk & footer | Always |
+## 5. Homepage (live publication)
+| # | Section | Layer | Answers |
+|---|---|---|---|
+| 01 | Market Pulse | A | What is happening? |
+| 02 | What Matters Now (the desk's lead) | B | Why? What matters today? |
+| 03 | Today & Watch Next (desk items + next events, DST-aware times) | B + A | What to watch next? |
+| 04 | Gold Focus (flagship) | B + C | Gold: context, levels, scenarios |
+| 05 | Desk Read (regime · USD · yields · volatility · next event) | B | What regime are we in? |
+| 06 | Trading Ideas & Signals | C | What follows for trading, with risk |
+| 07 | Latest Analysis | B | What does FOXREX think? |
+| 08 | News That Matters | B | Why? |
+| 09 | REX Explains (only when current and useful) | B | Understanding |
+| 10 | Community + Risk | — | — |
 
-**Every section collapses when it has nothing current. No placeholders.**
+There is no technology or brand showcase on the homepage. Section rules are in `FOXREX-STUDIO-PUBLISHING-MAP.md` §3.
 
-## 5. Page hierarchy
-```
-/                     Home
-/markets/             (P1: /markets/<symbol>/, /calendar/)
-/gold/                /gold/<date>/
-/analysis/            /analysis/<slug>/          (P1: /analysis/weekly-outlook/)
-/news/                /news/<slug>/
-/signals/             /signals/methodology/      (P1: /signals/<id>/, /signals/results/)
-/learn/               /learn/<slug>/             (P2: /learn/glossary/)
-/desk/<date>/<slot>/  (P1: /desk/ archive)
-/about/  /contact/  /risk-disclosure/  /terms/  /privacy/   (P1: /methodology/, /technology/)
-```
+## 6. Graceful absence rules
+1. **A section renders only when it has something current to say.** Otherwise it is **omitted**: no heading, no frame,
+   no placeholder.
+2. **Never render** "not published yet", "coming soon", "no data", "feed unavailable", dashes or zeros standing in for values.
+3. **Live data absent** (no provider, or UNAVAILABLE): the widget is omitted. Individual STALE / UNAVAILABLE symbols
+   drop out of the strip; the rest stay.
+4. **Editorial past its validity:** follows `stalePolicy`: omitted from current-state surfaces, or shown once, clearly
+   dated and de-emphasised ("Last Gold Focus: 3 Oct"). It is never presented as today's.
+5. **Missed desk slots** are not shown. Future slots appear only as a time in "Today & Watch Next", never as an empty card.
+6. **Hubs and lists** (`/analysis/`, `/news/`, `/signals/`): with no recent items, they show their latest items with dates,
+   or their evergreen content (methodology, lessons). They are never an empty frame.
+7. **Archives and secondary pages** (`/desk/`, `/signals/results/`, `/markets/<symbol>/`, weekly outlook) **are not built
+   until they have items**, and they are not in the sitemap or navigation until then.
+8. **Minimum viable front page:** the P0 daily desk (Brief, Gold Focus, Recap, News) guarantees 02 / 03 / 04 on every
+   trading day. The launch gate exists so the page is never mostly absent.
+9. **Telegram and community links are static** and always present. They are the only "follow" calls to action.
 
-## 6. Content types
-| Type | Layer |
+## 7. Page hierarchy and P0 final
+| Layer | P0 (launch) | P1 (when real) | P2 |
+|---|---|---|---|
+| — | `/` Home | | |
+| A | `/markets/` (pulse when live; instrument guide) | `/markets/<symbol>/`, `/calendar/` | more instruments / asset classes |
+| A+B+C | `/gold/`, `/gold/<date>/` (flagship) | | |
+| B | `/analysis/`, `/analysis/<slug>/` | `/analysis/weekly-outlook/` | |
+| B | `/news/`, `/news/<slug>/` | | |
+| B | `/desk/<date>/morning-brief/`, `/desk/<date>/market-recap/` | `/desk/` archive; `us-session-preview`, `event`, `rex-note` slots | |
+| C | `/signals/`, `/signals/methodology/` | `/signals/<id>/`, `/signals/results/` | |
+| B | `/learn/`, `/learn/<slug>/` (5 lessons) | Ask REX answers | `/learn/glossary/` |
+| — | `/about/`, `/contact/`, legal ×3 (draft until review), `sitemap.xml` | `/methodology/`, `/technology/` (verified only) | RSS, search |
+
+All of it is mirrored at `/ar/…` with identical Latin slugs.
+**P0 capabilities:** per-item permalinks and pre-rendered pages; v3 feed with archive indexes; the homepage restructure
+with graceful absence and freshness; the new header; attribution.
+
+## 8. Content types by layer
+| Layer | Types |
 |---|---|
-| Market Snapshot | Data |
-| Morning Brief | Editorial |
-| Gold Focus | Editorial |
-| Analysis (incl. Weekly Outlook format) | Editorial |
-| News | Editorial |
-| Economic Event | Data + editorial |
-| Trading Idea (new; may say WAIT) | Editorial |
-| Signal | Editorial |
-| Signal Result | Editorial |
-| REX Explains (lesson / note / Q&A) | Editorial |
-| US Open | Editorial |
-| Market Recap | Editorial |
+| **A. Market Data** | Market Snapshot · Economic Event (data part) |
+| **B. Market Intelligence** | Morning Brief · US Session Preview · Market Recap · News · Economic Event (editorial) · Analysis (+ Weekly Outlook) · REX Explains (lesson / note / Q&A) |
+| **C. Trading Intelligence** | Gold Focus levels/scenarios (flagship, B + C) · Trading Idea (BUY / SELL / WAIT) · Signal · Signal Result |
+| Social-only derivatives | Reel · Story · Carousel · Campaign (with `parentId`, never on the website) |
 
-Social-only (never on the site): Reel, Story, Carousel, Campaign.
+## 9. Permalinks (P0)
+Every durable editorial item has:
+- a **stable ID** (`<translationGroupId>-<lang>`)
+- a **canonical URL** (`urlPath`, immutable after first publish)
+- **`publishedAt`** (never changes) and **`updatedAt`** (shown as "Updated")
+- a **language relationship** (`translationGroupId` + hreflang pair)
+- **source and attribution** (`sources[]`, `origin`)
+- **archive discoverability** (section list + monthly archive index + sitemap)
 
-Every market-sensitive item carries `dataAsOf`, its source, `validUntil` and a stale policy.
+Published URLs never 404: they are withdrawn with a notice, never deleted.
 
-## 7. Daily cycle (Istanbul time)
-| Time | Slot | Launch status |
+## 10. Daily cycle and the US session model (Istanbul time)
+| Time (IST) | Slot | Launch |
 |---|---|---|
 | 09:00 | Morning Brief | **P0** |
 | 11:00 | Gold Focus | **P0** |
 | 14:00 | Event of the Day (only when relevant) | P1 |
-| 15:30 | US Open (really a US-session preview: the cash open is 16:30/17:30 IST) | P1 |
+| 15:30 | **US Session Preview** | P1 |
 | realtime | Breaking / Data Released | **P0** |
-| 19:00 | REX Note | P1 |
+| 19:00 | REX Note (only when it adds value) | P1 |
 | 22:30 | Market Recap | **P0** |
 
-**One content system:** the website item is canonical, and Telegram and social are rendered from it and link back to it.
-A missed slot is skipped, never back-filled.
+**US session model:** Istanbul slot times are editorial. Other markets' times are **computed from their own timezone**
+and shown in IST. Türkiye has no DST; New York does:
 
-## 8. Studio → Website flow
-`IDEA → DRAFT → REVIEW → APPROVED → SCHEDULED → PUBLISHED → ARCHIVED`. This lifecycle already exists. Each type maps to
-one canonical permalink plus derived surfaces (homepage, hubs, filters). Publishing (designed, **not implemented**) must
-produce the feed entry, a pre-rendered permalink page, a sitemap update and a Telegram text. Permalinks never 404.
-Signals are never deleted.
+| | US daylight time (≈ Mar–Nov) | US standard time |
+|---|---|---|
+| US data 08:30 ET | 15:30 IST | 16:30 IST |
+| US cash open 09:30 ET | 16:30 IST | 17:30 IST |
 
-## 9. Live data vs editorial
-- **Data** (quotes, freshness, calendar) comes only from the Market Data API and is rendered live with source, time
-  and state. It is never stored in editorial content.
-- **Editorial** prices are **snapshots with an "as of" time**. Levels are analysis, not prices.
-- **No provider means no live widgets.** Stale editorial is labelled with its date and never shown as current.
+The 15:30 preview states the computed open time. In winter it publishes before the 08:30 ET data and says so. Open
+coverage, when warranted, is an event-driven News or Event item at the computed time. A missed slot is skipped, never
+back-filled.
 
-## 10. EN / AR
-English is at `/…` and Arabic at `/ar/…`, with **the same Latin slugs**. They are paired items: the same facts, levels
-and sources, written natively in Arabic, not literally translated. Each language is approved on its own, and the
-language switch keeps you on the same page. Typography is unchanged (IBM Plex Sans Arabic + Inter, Latin runs isolated).
+## 11. Studio → Website flow
+The lifecycle `IDEA → DRAFT → REVIEW → APPROVED → SCHEDULED → PUBLISHED → ARCHIVED` already exists. Each type has one
+canonical permalink and derived surfaces. Studio groups types by layer and applies stricter validation to Trading
+Intelligence. The publishing contract (designed, **not implemented**) produces the feed entry, a pre-rendered page, a
+sitemap update and derivative payloads (Telegram text, Instagram caption, Story frame, Carousel slides) that the
+operator posts. Every record carries `access`; only `PUBLIC` publishes at launch.
 
-## 11. P0 / P1 / P2
-- **P0:**
-  - Home, markets, gold (+ daily permalinks), analysis (+ articles), news (+ stories), signals and signals/methodology,
-    learn (+ 5 lessons), desk Morning Brief and Recap permalinks, about, contact, legal, sitemap.
-  - Per-item permalinks, the v3 feed, the homepage restructure, Gold in the navigation, attribution.
-- **P1:**
-  - Live Market Pulse, instrument pages, calendar, signal pages and results, the desk archive.
-  - The US Open, REX Note and Event slots, Weekly Outlook, methodology and technology pages, Telegram derivatives.
-- **P2:**
-  - Computed Desk Read, glossary, search, RSS, extra instruments, automated social.
-  - The Experience and Market Noise storytelling.
+## 12. Freshness model
+| Status | Meaning (data / editorial) | Display |
+|---|---|---|
+| **LIVE** | Real-time source, within the live window / never editorial | Quote styling, "Live · source" |
+| **FRESH** | Delayed or recent value / within validity | Value + explicit "as of" time |
+| **AGING** | Getting old, or market closed / past half of validity | Value + time, de-emphasised; "Closed · last <time>" |
+| **STALE** | Beyond the stale window / past `validUntil` | **Never in quote styling.** Omitted, or plain dated text |
+| **UNAVAILABLE** | No value or rejected / — | Omitted |
 
-## 12. What to remove
-- Content blocks: the hero pillar list, the 5 "not yet published" cards, the empty ticker placeholder and the empty
-  homepage blocks.
-- Claims and promises: the Ask REX empty tab, "WhatsApp coming soon", and the vague "Why FOXREX" claims.
-- Duplicates: the duplicated signals explainer and the duplicated gold copy.
-- Housekeeping: the `/foxrex-studio.html` stub, and internal docs served publicly (verify).
+The fields are `dataAsOf`, `sourceTimestamp` (age is measured from this), `receivedAt` and `validUntil`.
+`freshnessStatus` is computed at render time and never stored by hand. `marketState` (OPEN / CLOSED) is separate.
+**A stale value never looks like a current live quote.** Full definitions and the mapping from PR #6's states are in
+`FOXREX-CONTENT-MODEL.md` §1.1.
 
-## 13. What to keep
-- The honest data posture: freshness states, no fabricated numbers and no performance claims.
-- The bilingual `/ar/` architecture and its typography.
-- The 5 REX lessons, the About principles and Meet REX, and the signal contract (stop and risk always).
-- The Studio approval gate and audit trail.
-- The approved FOXREX identity and REX-MASTER, unchanged.
+## 13. Capability claims (evidence-based)
+Every branch of the repository was inspected. **No evidence** was found for a trading engine, decision system, ML,
+market-analysis AI reasoning, risk engine or execution. Market-data infrastructure is built and tested in unmerged
+PR #6, with no provider connected. All seven are **STATUS REQUIRES SYSTEM VERIFICATION**, and the public site
+describes none of them until verified. Supportable wording today: "AI may assist drafting; a person reviews everything
+before publication." The evidence table is in `FOXREX-LAUNCH-CONTENT-PLAN.md` §7.
 
-## 14. What to build next (after owner approval)
-1. **Approve this blueprint**, and confirm the audience, the 15:30 slot framing and the hero tagline.
-2. **v3 content contract + per-item permalinks** (engine + build), docs-to-code with tests. No visual redesign.
-3. **Homepage restructure** to "Today at FOXREX" using the existing design system, with collapse-when-empty.
-4. **Navigation and footer update**, `/signals/methodology/`, lessons as permalinks, sitemap and hreflang.
-5. **Run the desk for 10 trading days** (Brief, Gold Focus, Recap, EN + AR) as the launch gate.
-6. **In parallel (owner):** provider credentials for PR #6, a calendar source, the legal entity and jurisdiction, and
-   capability statuses.
+## 14. Signals and access
+Signals are Trading Intelligence: entry, stop (always), targets, risk, context, a public update history, and results
+recorded with losses. Every record carries `access: PUBLIC | MEMBER | PREMIUM`. **At launch everything is PUBLIC.**
+URLs never depend on tier, and there is no paywall, pricing or performance claim. The commercial model is pending the owner.
 
-**Owner decisions needed:** primary audience · 15:30 slot framing · hero Arabic tagline in EN · legal entity and
-jurisdiction · capability statuses (trading engine, ML, decision system) · signals free or paid.
+## 15. EN / AR
+English is at `/…` and Arabic at `/ar/…`, with **the same Latin slugs**. They are paired items with the same facts,
+levels, sources and times; the Arabic is written natively, not literally translated. Each language is approved
+separately. Each edition has its own hero (English-only / Arabic-native). Typography is unchanged: IBM Plex Sans
+Arabic + Inter, with Latin runs isolated.
+
+## 16. REX
+REX is the **editorial intelligence and explanation personality**. He appears for explanation, education,
+interpretation, market context and selected commentary. He never gives entries, stops or targets. There is no daily
+quota and no filler, and he is not a decorative section. REX-MASTER is unchanged.
+
+## 17. What to remove / keep
+- **Remove (content blocks):** the hero pillar list; the Arabic tagline in the English hero; the 5 "not yet published"
+  cards; the empty ticker placeholder; empty homepage blocks.
+- **Remove (claims and promises):** the empty Ask REX tab; "WhatsApp coming soon"; the "Why FOXREX" claims and "AI
+  Intelligence — In development".
+- **Remove (duplicates):** the homepage technology/brand showcase; the duplicated signals explainer and gold copy.
+- **Remove (housekeeping):** the `/foxrex-studio.html` stub; internal docs served publicly (verify).
+- **Keep:** the honest data posture; the `/ar/` architecture and typography; the 5 lessons; the About principles and
+  Meet REX; the signal contract; the Studio approval gate and audit trail; the approved identity.
+
+## 18. What to build next (after this blueprint is accepted)
+1. **v3 content contract** in `studio/cms-model.js` + schema: layer, access, `urlPath`, freshness fields,
+   `US_SESSION_PREVIEW`, `TRADING_IDEA`, REX formats. Tests first.
+2. **Permalinks and pre-rendered item pages** in the build and the publishing engine; archive indexes; sitemap and hreflang.
+3. **Homepage restructure** with graceful absence and freshness, using the existing design system (no redesign);
+   the new header and footer; per-edition hero copy.
+4. **Run the P0 desk for 10 trading days** (Brief, Gold Focus, Recap, News; EN + AR) as the launch gate.
+5. **Owner, in parallel:** legal entity and jurisdiction, provider credentials (PR #6), a calendar source, and
+   capability verification.

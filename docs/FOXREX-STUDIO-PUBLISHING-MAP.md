@@ -27,46 +27,70 @@ any edit to REVIEW / APPROVED / SCHEDULED / PUBLISHED → back to DRAFT, approva
 
 The rules stay as they are: Save ≠ Approve ≠ Publish. No AI approval path. Each language is approved on its own.
 
-## 2. Type → website destination (v3 contract)
+## 2. Layers and the one-source rule
+
+```
+A. MARKET DATA ─────────── Market API ──────────────────────────────────────────▶ website live widgets
+   (not a Studio type; bypasses the editorial pipeline; no approval, because it is measured, not written)
+
+B. MARKET INTELLIGENCE ─┐
+                        ├─▶ Studio (IDEA → … → PUBLISHED) ─▶ WEBSITE canonical item ─┬─▶ Telegram
+C. TRADING INTELLIGENCE ┘      one record per language                               ├─▶ Instagram post
+                                                                                     ├─▶ Story
+                                                                                     └─▶ Carousel
+```
+
+- **One source item produces every output.** Derivatives carry `parentId` and are rendered from the parent's approved
+  fields. There are no separate, disconnected pipelines for the website, Telegram and social.
+- **Studio surfaces the layer.** The library, filters and validation group types as Market Intelligence or Trading
+  Intelligence. Trading Intelligence types get the stricter checks (stop, invalidation, risk message).
+- **Market Data never enters Studio as content.** Studio only *snapshots* it into `priceRef` (value + source +
+  `sourceTimestamp` + `receivedAt`) when the desk writes.
+- **Access tier.** Every record carries `access` (`PUBLIC` | `MEMBER` | `PREMIUM`). The engine publishes `PUBLIC` only
+  and rejects anything else until the owner approves a commercial model. No paywall and no pricing claims.
+
+## 2.1 Type → website destination (v3 contract)
 
 `canonical` is the item's single permalink. `surfaces` are the lists and hubs that show it, and they are derived; they
 are never separate copies.
 
-| Studio type | Canonical URL (EN; AR = `/ar` + same) | Surfaces (lists / hubs / homepage) | Telegram derivative | Social derivative |
+| Studio type | Canonical URL (EN; AR = `/ar` + same) | Surfaces (lists / hubs / homepage) | Telegram derivative | Instagram / Story / Carousel derivative |
 |---|---|---|---|---|
-| `MORNING_BRIEF` | `/desk/<date>/morning-brief/` | Home 02 lead, 03 timeline, 06 Desk Read · `/desk/` | Yes | Optional card |
+| `MORNING_BRIEF` | `/desk/<date>/morning-brief/` | Home 02 lead, 03 timeline, 05 Desk Read · `/desk/` | Yes | Optional card |
 | `GOLD_FOCUS` | `/gold/<date>/` | Home 04 · `/gold/` (current + archive) · Home 03 | Yes (no entries/stops) | Levels card |
 | `EVENT` | `/desk/<date>/event/` | Home 03 (+02 on the day) · `/news/?f=high-impact` · `/calendar/` (P1) | Yes | Story card |
-| `US_OPEN` | `/desk/<date>/us-open/` | Home 03 (+02 if lead) · `/desk/` | Yes | Optional |
+| `US_SESSION_PREVIEW` (v2 `US_OPEN`) | `/desk/<date>/us-session-preview/` | Home 03 (+02 if lead) · `/desk/` | Yes | Optional |
 | `MARKET_RECAP` | `/desk/<date>/market-recap/` | Home 02/03 overnight · `/desk/` | Yes | Optional |
-| `NEWS` | `/news/<slug>/` | Home 02 (if lead) / 07 · `/news/` · `/markets/<symbol>/` (P1) | Yes (primary for breaking) | Major only |
-| `ANALYSIS` | `/analysis/<slug>/` | Home 05 · `/analysis/` · `/gold/` if XAUUSD · `/markets/<symbol>/` (P1) | Yes (summary) | Optional |
-| `ANALYSIS` `format=weekly-outlook` *(P1)* | `/analysis/<slug>/` | `/analysis/weekly-outlook/` · Home 05 pinned on Mon | Yes | Carousel |
-| `TRADING_IDEA` *(new)* | `/signals/<id>/` (P1; before that, anchor on `/signals/`) | Home 08 · `/signals/` | Yes (signal channel) | No |
-| `SIGNAL` | `/signals/<id>/` (P1; before that `/signals/#<id>`) | Home 08 · `/signals/` | Yes (signal channel, always with stop + risk) | **No** |
+| `NEWS` | `/news/<slug>/` | Home 02 (if lead) / 08 · `/news/` · `/markets/<symbol>/` (P1) | Yes (primary for breaking) | Major only |
+| `ANALYSIS` | `/analysis/<slug>/` | Home 07 · `/analysis/` · `/gold/` if XAUUSD · `/markets/<symbol>/` (P1) | Yes (summary) | Optional |
+| `ANALYSIS` `format=weekly-outlook` *(P1)* | `/analysis/<slug>/` | `/analysis/weekly-outlook/` · Home 07 pinned on Mon | Yes | Carousel |
+| `TRADING_IDEA` *(new)* | `/signals/<id>/` (P1; before that, anchor on `/signals/`) | Home 06 · `/signals/` | Yes (signal channel) | No |
+| `SIGNAL` | `/signals/<id>/` (P1; before that `/signals/#<id>`) | Home 06 · `/signals/` | Yes (signal channel, always with stop + risk) | **No** |
 | `SIGNAL_RESULT` | the parent signal's URL (a result is a state of the signal) | `/signals/` recent outcomes · `/signals/results/` (P1) | Yes (update post) | **No** |
-| `REX_EXPLAINS` `format=note` | `/desk/<date>/rex-note/` | Home 09 · `/learn/` latest | Yes | **REX reel/carousel** |
-| `REX_EXPLAINS` `format=lesson` | `/learn/<slug>/` | Home 09 evergreen · `/learn/` by topic | When new | Carousel |
+| `REX_EXPLAINS` `format=note` (only when it adds value) | `/desk/<date>/rex-note/` | Home 09 · `/learn/` latest | Yes | **REX reel/carousel** |
+| `REX_EXPLAINS` `format=lesson` | `/learn/<slug>/` | `/learn/` by topic (not homepage filler) | When new | Carousel |
 | `REX_EXPLAINS` `format=qa` (Ask REX, P1) | `/learn/<slug>/` | `/learn/` | Yes | Optional |
-| `REEL` · `STORY` · `CAROUSEL` · `CAMPAIGN` | **none: social only, never on the website** (existing rule) | — | — | itself |
+| `REEL` · `STORY` · `CAROUSEL` · `CAMPAIGN` | **none: social only, never on the website** (existing rule). Each carries `parentId` → its canonical item, unless it is a standalone brand campaign | — | — | itself |
 
-**Legacy mapping:** v2 `LEARN`, `REX_NOTE` and `ASK_REX` become `REX_EXPLAINS` with `format` lesson / note / qa. The v2
+**Legacy mapping:** v2 `US_OPEN` becomes `US_SESSION_PREVIEW`. v2 `LEARN`, `REX_NOTE` and `ASK_REX` become `REX_EXPLAINS` with `format` lesson / note / qa. The v2
 `PAGE_PATH` list (home, gold, analysis, news, learn, signals) becomes the derived `surfaces`.
 
 ## 3. Homepage slot resolution (deterministic, no manual placement)
 
 The homepage is computed from published items. Nobody hand-places items.
 
-| Home section | Rule |
-|---|---|
-| 02 What Matters Now | The newest item with `lead=true` whose `validUntil` has not passed; else the newest desk item from today; else hidden |
-| 03 Today at FOXREX | Today's (IST) desk items in slot order; future slots show their time only; missed slots are omitted |
-| 04 Gold Focus | The newest `GOLD_FOCUS`; if `validUntil` has passed → "Last Gold Focus: <date>" label; none → hidden |
-| 05 Latest Analysis | The 3–4 newest `ANALYSIS` from the last 7 days |
-| 06 Desk Read | `deskRead` from today's `MORNING_BRIEF`; otherwise hidden |
-| 07 News That Matters | The 3–5 newest `NEWS` from the last 48 h, high impact first |
-| 08 Signals & Ideas | Active `SIGNAL` / `TRADING_IDEA`, then the most recent result |
-| 09 REX Explains | The newest `REX_EXPLAINS` note + 2 evergreen lessons |
+| Home section (see `FOXREX-WEBSITE-BLUEPRINT.md` §5) | Layer | Rule |
+|---|---|---|
+| 01 Market Pulse | A | Market API only (bypasses Studio). Symbols that are LIVE/FRESH/AGING; the whole strip is omitted when no provider is connected |
+| 02 What Matters Now | B | The newest item with `lead=true` that is FRESH; else the newest FRESH desk item from today; else omitted |
+| 03 Today & Watch Next | B (+A) | Today's (IST) published desk items in slot order + the next 1–3 scheduled events (times computed from each market's own timezone). Missed slots are omitted |
+| 04 Gold Focus | B + C | The newest `GOLD_FOCUS` while FRESH or AGING; once STALE → "Last Gold Focus: <date>" (dated, de-emphasised); none in 7 days → omitted |
+| 05 Desk Read | B | `deskRead` from today's `MORNING_BRIEF`; otherwise omitted |
+| 06 Trading Ideas & Signals | C | Active `TRADING_IDEA` / `SIGNAL`, then the most recent result; none active → only the most recent result (if within 7 days), else omitted |
+| 07 Latest Analysis | B | The 3–4 newest `ANALYSIS` from the last 7 days; else omitted |
+| 08 News That Matters | B | The 3–5 newest `NEWS` from the last 48 h, high impact first; else omitted |
+| 09 REX Explains | B | Only a REX note FRESH today, or one tied to a current lead; otherwise omitted (evergreen lessons live on `/learn/`, not as homepage filler) |
+| 10 Community + Risk | — | Static, always |
 
 The **lead** flag is an editorial field set at approval time, so the desk can choose the lead without touching layout.
 

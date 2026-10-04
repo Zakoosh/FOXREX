@@ -12,12 +12,17 @@ Related: `FOXREX-CONTENT-MODEL.md` (fields), `FOXREX-STUDIO-PUBLISHING-MAP.md` (
 ```
              ┌──────────────────────────── ONE CANONICAL ITEM (Studio record, EN + AR pair) ────────────────────────────┐
  inputs ───▶ │ structured fields (bias, levels, scenarios, sources, dataAsOf…) + body + summary + lead + social block  │
-             └───────────────┬──────────────────────────────┬─────────────────────────────────┬────────────────────────┘
-                             │                              │                                 │
-                     WEBSITE (canonical)            TELEGRAM (derivative)             SOCIAL (derivative)
-                     permalink + hub + home slot    short post + link to permalink    caption / card / reel script
+             └──────────────────────────────────────────────┬───────────────────────────────────────────────────────────┘
+                                                            ▼
+                                          WEBSITE canonical article / item (permalink)
+                          ┌──────────────────┬──────────────┴───┬──────────────────┐
+                          ▼                  ▼                  ▼                  ▼
+                      Telegram          Instagram post       Story            Carousel
+                    (text + link)     (caption + card)   (frame + link)   (slides from fields)
 ```
 
+- **One source item, many outputs. No separate disconnected pipelines** (owner decision 14). Studio is the operational
+  CMS and editorial desk behind every output.
 - **The website item is the source of truth.** Telegram and social posts are *derived from* the approved item, rendered
   from its structured fields, and always link back to the permalink.
 - **A derivative never states anything that is not in the approved canonical item** (no new levels, no new claims).
@@ -31,14 +36,20 @@ Related: `FOXREX-CONTENT-MODEL.md` (fields), `FOXREX-STUDIO-PUBLISHING-MAP.md` (
 
 | Time (IST) | Slot | Type | Website destination | Always? |
 |---|---|---|---|---|
-| **09:00** | Morning Brief | `MORNING_BRIEF` | `/desk/<date>/morning-brief/` · Home 02/03/06 | Every trading day |
+| **09:00** | Morning Brief | `MORNING_BRIEF` | `/desk/<date>/morning-brief/` · Home 02/03/05 | Every trading day |
 | **11:00** | Gold Focus | `GOLD_FOCUS` | `/gold/<date>/` · `/gold/` · Home 04 | Every trading day |
 | **14:00** | Event of the Day | `EVENT` | `/desk/<date>/event/` · Home 03 · `/news/` filter | **Only when a high-impact event is scheduled** |
-| **15:30** | US Open | `US_OPEN` | `/desk/<date>/us-open/` · Home 03 | Every US trading day |
-| realtime | Breaking / Data Released | `NEWS` (`breaking=true`) | `/news/<slug>/` · Home 02 (as lead) / 07 | When it happens and matters |
-| **19:00** | REX Explains / REX Note | `REX_EXPLAINS` (`format=note`) | `/desk/<date>/rex-note/` → canonical `/learn/<slug>/` when evergreen · Home 09 | Every trading day |
+| **15:30** | US Session Preview | `US_SESSION_PREVIEW` (v2 `US_OPEN`) | `/desk/<date>/us-session-preview/` · Home 03 | Every US trading day |
+| realtime | Breaking / Data Released | `NEWS` (`breaking=true`) | `/news/<slug>/` · Home 02 (as lead) / 08 | When it happens and matters |
+| **19:00** | REX Explains / REX Note | `REX_EXPLAINS` (`format=note`) | `/desk/<date>/rex-note/` → canonical `/learn/<slug>/` when evergreen · Home 09 | **Only when REX adds value** (no quota, no filler) |
 | **22:30** | Market Recap | `MARKET_RECAP` | `/desk/<date>/market-recap/` · Home 02/03 | Every trading day |
 | Sunday 20:00 | Weekly Outlook *(P1)* | `ANALYSIS` (`format=weekly-outlook`) | `/analysis/<slug>/` · `/analysis/weekly-outlook/` | Weekly |
+
+**Timezone rule.** Istanbul slot times are the editorial schedule. Anything tied to another market's clock (US cash
+open 09:30 New York, US data 08:30 New York, European open, central-bank decision times) is **computed from that
+market's own timezone and calendar**, then shown in IST. Türkiye has no DST; New York and London do, so their IST
+times shift by one hour twice a year (and for a few weeks in March and Oct/Nov when US and EU change on different dates).
+Never hardcode another market's event as a fixed IST time.
 
 Weekend: no desk slots. Crypto news can still publish as `NEWS`. The homepage shows Friday's Recap, labelled with its date.
 
@@ -66,7 +77,7 @@ ever a DRAFT and always human-reviewed. "Data" means the Market Data API (PR #6,
   6. What would change the view
   7. Risk line
 - **Responsible system:** Desk writes, Assist may draft from sourced inputs, Data supplies the snapshot. Approved in Studio.
-- **Website:** `/desk/<date>/morning-brief/`. Becomes Home 02 lead (until a newer lead exists), fills Home 06 Desk Read,
+- **Website:** `/desk/<date>/morning-brief/`. Becomes Home 02 lead (until a newer lead exists), fills Home 05 Desk Read,
   and is the first item in Home 03.
 - **Telegram:** 5–7 lines: headline · lead sentence · 3 levels · next event time · link.
 - **Social:** carousel or story card "Today at FOXREX" (lead + 3 things to watch) linking to the site.
@@ -99,17 +110,21 @@ ever a DRAFT and always human-reviewed. "Data" means the Market Data API (PR #6,
 - **Telegram:** "Today 15:30 IST: US CPI. Consensus X (source). Why it matters…" + link.
 - **Social:** a story countdown card (time + why it matters).
 
-### 3.4 15:30 — US Open
-- **Purpose:** what changed since the morning, going into the New York session.
-- **Timing note (owner decision):** the US cash equity open is 16:30 IST while the US is on daylight time and 17:30 IST
-  in winter. 15:30 IST matches the 08:30 ET US data releases (summer). So 15:30 is a **US session preview**, not the
-  open. Keep 15:30 and frame it as "into the US session", or move the slot to follow the open by 15 minutes.
+### 3.4 15:30 — US Session Preview
+- **Purpose:** what changed since the morning, going into the New York session. **It is a preview. It is never described
+  as the US market open.**
+- **Timing (owner decision 2):** the slot is an editorial time (15:30 IST). The US cash equity open is computed from
+  New York time (09:30 ET = 16:30 IST during US daylight time, 17:30 IST otherwise) and is shown in the piece as
+  "US cash open: <computed IST time>". US data releases at 08:30 ET land at 15:30 IST in summer and 16:30 IST in
+  winter, so in winter the preview publishes *before* the data, and says so.
+- **Actual open coverage** (when a move warrants it) is event-driven: a `NEWS` or `EVENT` item keyed to the computed
+  open time, not a permanent slot.
 - **Inputs:** moves since the Morning Brief (Data snapshot); any releases (News items); index futures and USD state.
-- **Output:** one `US_OPEN` item.
+- **Output:** one `US_SESSION_PREVIEW` item.
 - **Template:** headline · what changed since 09:00 · the Morning Brief view: still valid or revised (explicitly) ·
   levels into the open (with `dataAsOf`) · what to watch for the rest of the session · risk line.
 - **Responsible system:** Desk + Data.
-- **Website:** `/desk/<date>/us-open/` · Home 03 · becomes Home 02 lead if it supersedes the Morning Brief lead.
+- **Website:** `/desk/<date>/us-session-preview/` · Home 03 · becomes Home 02 lead if it supersedes the Morning Brief lead.
 - **Telegram:** 4–5 lines + link.
 - **Social:** optional. Not every slot needs a social derivative.
 
@@ -124,7 +139,7 @@ ever a DRAFT and always human-reviewed. "Data" means the Market Data API (PR #6,
   markets affected · what to watch next.
 - **Responsible system:** Desk. Assist may draft from the sourced release. **AI-generated news is never publishable**
   (existing rule). It needs a source name and `https://` URL.
-- **Website:** `/news/<slug>/` · Home 02 (lead while it is the dominant story) and Home 07.
+- **Website:** `/news/<slug>/` · Home 02 (lead while it is the dominant story) and Home 08.
 - **Telegram:** **primary channel for speed.** The figure, a one-line why-it-matters, and the link.
 - **Social:** only for major events (a story card).
 
@@ -134,10 +149,12 @@ ever a DRAFT and always human-reviewed. "Data" means the Market Data API (PR #6,
 - **Output:** one `REX_EXPLAINS` item, `format=note` (tied to today) or `format=lesson` (evergreen).
 - **Template:** the question ("Why did gold fall today?") · the short answer · the mechanism explained simply · what to
   watch next time · link to the evergreen lesson · a "REX explains, he does not advise" line.
-- **Rules:** REX never gives entries, stops, targets or trade instructions. He references the desk's analysis by link.
+- **Rules:** REX is the editorial explanation personality, not a decorative section. A REX Note is published only when
+  there is something worth explaining (a notable move, a confusing release, a recurring reader question). On a quiet
+  day there is no REX Note. REX never gives entries, stops, targets or trade instructions. He references the desk's analysis by link.
   REX is the existing approved REX-MASTER identity; nothing here changes him.
 - **Responsible system:** Desk (REX voice guide) + Assist draft.
-- **Website:** `/desk/<date>/rex-note/` · Home 09. A note that becomes evergreen is promoted to `/learn/<slug>/`, which
+- **Website:** `/desk/<date>/rex-note/` · Home 09 (only while current). A note that becomes evergreen is promoted to `/learn/<slug>/`, which
   becomes the canonical URL, and the desk URL then redirects there.
 - **Telegram:** the question + the one-line answer + link.
 - **Social:** **the strongest social format.** A REX reel/carousel script (separate `REEL` or `CAROUSEL` record) built
@@ -162,16 +179,23 @@ ever a DRAFT and always human-reviewed. "Data" means the Market Data API (PR #6,
   the stop and a risk line and links to `/signals/methodology/`.
 - No win rates, profit totals or performance claims anywhere (existing rule).
 
-## 4. Live data vs editorial intelligence (Phase 9)
+## 4. The three layers: data, market intelligence, trading intelligence (Phase 9)
 
-Two layers that never mix in storage:
+| Layer | Question | Slots and types |
+|---|---|---|
+| **A. Market Data** | What is happening? | Market Pulse, quotes, calendar: no slot, continuous, system-produced |
+| **B. Market Intelligence** | Why, and what matters? | Morning Brief, US Session Preview, Event of the Day, News, Market Recap, Analysis, REX |
+| **C. Trading Intelligence** | What setup or scenario follows? | Gold Focus levels and scenarios, Trading Ideas, Signals, Signal Results |
 
-| | **Live / structured market data** | **Editorial intelligence** |
+A and the two editorial layers (B, C) never mix in storage:
+
+| | **Live / structured market data (A)** | **Editorial intelligence (B + C)** |
 |---|---|---|
 | What | Quotes, change, freshness, calendar events (P1), candles (later) | Briefs, Gold Focus, analysis, news, REX, signals |
 | Source | Market Data API (PR #6): provider → quality gate → `/api/market/*` | Studio records → approval → publishing engine → static feed |
 | Updates | Continuously, in the browser via the API | Only when a human publishes |
-| Shown as | Values with **source · time · state** (LIVE / DELAYED / STALE / CLOSED / UNAVAILABLE) | Text with its **published time** and **"levels as of"** time |
+| Shown as | Values with **source · time · freshnessStatus** (LIVE / FRESH / AGING / STALE / UNAVAILABLE, `FOXREX-CONTENT-MODEL.md` §1.1) | Text with its **published time** and **"levels as of"** time |
+| Pipeline | **Bypasses the editorial pipeline**: API → browser, no Studio approval (it is measured, not written) | Studio → approval → publish |
 | Stored in | Not in the repo, not in the CMS | `data/content.json` (v3: split feed) |
 
 **Rules:**
@@ -191,6 +215,6 @@ Two layers that never mix in storage:
 A full trading day is 5 scheduled desk items + 0–1 event + 0–n news, × 2 languages ≈ **12–16 approvals per day**. That
 is a lot for one operator. Recommendation for launch:
 - **Minimum daily commitment (P0):** Morning Brief, Gold Focus, Market Recap, plus News when it matters.
-- **Add when capacity allows (P1):** US Open, REX Note daily, Event of the Day.
+- **Add when capacity allows (P1):** US Session Preview, Event of the Day, REX Note (when it adds value).
 - Better to publish three reliable slots every day than seven slots irregularly. The homepage collapses missing slots,
   so the commitment can grow without redesign.

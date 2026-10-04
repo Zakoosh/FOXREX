@@ -175,13 +175,13 @@ document capped at 500 items, so it cannot serve as a long-term archive.
 | 6 | The Signals explanation (Analysis first / Delivered on Telegram / Managed in public / Results recorded) is duplicated between the homepage and `/signals/`. | Medium |
 | 7 | "Why FOXREX" makes vague capability claims ("Speed", "Research", "Data") that are not tied to a LIVE / BETA / RESEARCH / PLANNED status. Only "AI Intelligence — In development" is labelled. | Medium |
 | 8 | The hero 5-pillar list (Market Intelligence, Technical Analysis, Trading Signals, Economic News, Education) repeats the navigation. | Low |
-| 9 | The English hero repeats the Arabic tagline («تداول أذكى... فرص أكبر»). This may be an intentional bilingual brand device; owner to confirm. | Low |
+| 9 | The English hero repeats the Arabic tagline («تداول أذكى... فرص أكبر»). **Owner decision:** remove it; English-only hero in EN, Arabic-native hero in AR. | Low |
 | 10 | The Ask REX tab has no content. | Low |
 | 11 | "WhatsApp channel: coming soon". | Low |
 | 12 | The static "What moves gold" section on `/gold/` overlaps the lesson *Why does gold react to yields?* | Low |
 | 13 | `/foxrex-studio.html` is a legacy redirect stub. | Low |
 | 14 | Internal operating documents may be published from the Pages root (`GENERATION.md`, `VERIFICATION.md`, `docs/`, `worker/`). | Medium (hygiene) |
-| 15 | Legal pages name no legal entity, jurisdiction or conflict-of-interest policy. | Medium (trust) |
+| 15 | Legal pages name no legal entity, jurisdiction or conflict-of-interest policy. **Owner decision:** TBD — OWNER INPUT REQUIRED; legal pages stay draft until owner/legal review; nothing is invented. | Medium (trust) |
 | 16 | No author or attribution model: analysis cannot say who or what produced it (desk, analyst, system-assisted). | High (trust) |
 
 ## 13. What is genuinely good and should be kept

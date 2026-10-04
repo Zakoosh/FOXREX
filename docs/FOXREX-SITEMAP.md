@@ -1,6 +1,6 @@
 # FOXREX — Sitemap (EN + AR)
 
-**Status:** final proposed URL structure for owner review, 2026-10-04. Not implemented.
+**Status:** final URL structure, revised after owner decisions, 2026-10-04. Not implemented.
 **P0** = launch, **P1** = next once its data or content exists, **P2** = later. "Exists" means the page is live today.
 
 ## 1. URL rules
@@ -15,6 +15,15 @@
    If only one language of an item exists, there is no hreflang pair, and the language switch goes to the section
    page in the other edition.
 7. Filters are query parameters (`/news/?f=central-banks`), not pages, and are `noindex`.
+8. **No empty archives.** An archive or listing URL (`/desk/`, `/signals/results/`, `/analysis/weekly-outlook/`,
+   `/markets/<symbol>/`) is generated only once it has real items; until then it is not in the build or the sitemap.
+9. **Extensible coverage.** `/markets/<symbol>/` and instrument filters come from the symbol registry, so indices,
+   crypto, commodities and other markets need no new URL pattern.
+10. **Access tiers do not change URLs.** If Signals later become MEMBER or PREMIUM, the permalink stays the same and
+    the page shows what the tier allows. At launch everything is PUBLIC.
+11. **Layers in the URL space:** Market Data [A] lives at `/markets/`; Market Intelligence [B] at `/news/`,
+    `/analysis/`, `/desk/` and `/learn/`; Trading Intelligence [C] at `/signals/`. `/gold/` is the flagship that
+    spans all three.
 
 ## 2. Full URL list
 
@@ -47,16 +56,16 @@
 | `/desk/<yyyy-mm-dd>/` | `/ar/desk/<yyyy-mm-dd>/` | One day's desk | P1 | — |
 | `/desk/<yyyy-mm-dd>/morning-brief/` | `/ar/desk/<yyyy-mm-dd>/morning-brief/` | Morning Brief | **P0** | — |
 | `/desk/<yyyy-mm-dd>/event/` | `/ar/desk/<yyyy-mm-dd>/event/` | Event of the Day | P1 | — |
-| `/desk/<yyyy-mm-dd>/us-open/` | `/ar/desk/<yyyy-mm-dd>/us-open/` | US Open | P1 | — |
+| `/desk/<yyyy-mm-dd>/us-session-preview/` | `/ar/desk/<yyyy-mm-dd>/us-session-preview/` | US Session Preview | P1 | — |
 | `/desk/<yyyy-mm-dd>/rex-note/` | `/ar/desk/<yyyy-mm-dd>/rex-note/` | REX Note | P1 | — |
 | `/desk/<yyyy-mm-dd>/market-recap/` | `/ar/desk/<yyyy-mm-dd>/market-recap/` | Market Recap | **P0** | — |
 | `/about/` | `/ar/about/` | About + Meet REX | **P0** | exists |
 | `/methodology/` | `/ar/methodology/` | Editorial, data and AI methodology | P1 | — |
 | `/technology/` | `/ar/technology/` | Capabilities with LIVE/BETA/RESEARCH/PLANNED | P1 | — |
 | `/contact/` | `/ar/contact/` | Contact | **P0** | exists |
-| `/risk-disclosure/` | `/ar/risk-disclosure/` | Risk Disclosure | **P0** | exists |
-| `/terms/` | `/ar/terms/` | Terms of Use | **P0** | exists |
-| `/privacy/` | `/ar/privacy/` | Privacy Policy | **P0** | exists |
+| `/risk-disclosure/` | `/ar/risk-disclosure/` | Risk Disclosure | **P0** (draft until owner/legal review) | exists |
+| `/terms/` | `/ar/terms/` | Terms of Use | **P0** (draft until owner/legal review) | exists |
+| `/privacy/` | `/ar/privacy/` | Privacy Policy | **P0** (draft until owner/legal review) | exists |
 | `/404.html` | (shared) | Not found | **P0** | exists |
 | `/sitemap.xml` | (includes `/ar/`) | XML sitemap | **P0** | — |
 | `/feed.xml` · `/ar/feed.xml` | | RSS of desk + analysis + news | P2 | — |
