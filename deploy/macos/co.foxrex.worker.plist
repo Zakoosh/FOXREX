@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- FOXREX worker as a launchd agent (macOS operator machine). Replace /Users/OPERATOR and the node path.
+     Install: cp deploy/macos/co.foxrex.worker.plist ~/Library/LaunchAgents/
+              launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/co.foxrex.worker.plist
+     Stop:    launchctl bootout gui/$(id -u)/co.foxrex.worker   (sends SIGTERM → graceful shutdown)
+     Note: an agent only runs while the Mac is on and the user is logged in — not an always-on host. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>co.foxrex.worker</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/local/bin/node</string>
+    <string>src/server.js</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/OPERATOR/FOXREX/worker</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>NODE_ENV</key><string>production</string>
+    <key>GIT_TERMINAL_PROMPT</key><string>0</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><dict><key>SuccessfulExit</key><false/></dict>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>ExitTimeOut</key><integer>30</integer>
+  <key>StandardOutPath</key><string>/Users/OPERATOR/Library/Logs/foxrex-worker.log</string>
+  <key>StandardErrorPath</key><string>/Users/OPERATOR/Library/Logs/foxrex-worker.err.log</string>
+  <key>Umask</key><integer>63</integer>
+</dict>
+</plist>
