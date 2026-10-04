@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REX Asset Review</title>
+<!-- Local owner review tool (development only). Not linked from the site, not in the sitemap, not indexed. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/brand/favicon-32.png">
+<link rel="stylesheet" href="../../styles/fonts.css">
+<style>
+:root{--bg:#06090F;--panel:#0B1320;--line:rgba(255,255,255,.1);--txt:#E6EAF0;--mute:#8592A3;--teal:#00D4A7;--amber:#F5B942;--red:#FF5C7A;--pad:20px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 Inter,system-ui,sans-serif}
+button,select,textarea{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:5;background:rgba(6,9,15,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px var(--pad);display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+h1{margin:0;font-size:13px;letter-spacing:.18em;font-weight:600}
+.tag{display:inline-block;padding:1px 6px;border-radius:3px;background:var(--amber);color:#111;font-size:10px;font-weight:700;letter-spacing:.08em;margin-left:8px;vertical-align:2px}
+.chip{font-size:12px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.chip.ok{color:var(--teal);border-color:rgba(0,212,167,.4)}.chip.warn{color:var(--amber);border-color:rgba(245,185,66,.4)}
+.tabs{display:flex;gap:6px}.tabs button{background:none;border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer}
+.tabs button[aria-pressed=true]{border-color:var(--teal);color:var(--teal)}.tabs button:disabled{opacity:.35;cursor:not-allowed}
+main{padding:16px var(--pad) 60px;max-width:1800px;margin:0 auto}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+@media (max-width:1100px){.bar{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card h2{margin:0 0 6px;font-size:12px;letter-spacing:.14em;color:var(--mute);font-weight:600}
+.vid{font-size:20px;font-weight:600;margin:0}.vid small{font-size:13px;color:var(--mute);font-weight:400;margin-left:8px}
+dl.meta{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:2px 14px;margin:10px 0 0;font-size:12.5px}
+dl.meta dt{color:var(--mute)}dl.meta dd{margin:0;word-break:break-all}
+ul.checks{list-style:none;margin:10px 0 0;padding:0;font-size:12.5px}ul.checks li{padding:2px 0 2px 64px;text-indent:-64px}
+ul.checks b{display:inline-block;width:56px;text-indent:0;font-size:10.5px;letter-spacing:.08em}
+.l-ok b{color:var(--teal)}.l-info b{color:var(--mute)}.l-warn b{color:var(--amber)}.l-error b{color:var(--red)}
+details.prompt{margin-top:8px;font-size:12px;color:var(--mute)}details.prompt p{margin:6px 0 0;color:var(--txt)}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:12px;font-size:12.5px;color:var(--mute)}
+.ctl select{background:#0F1A2A;border:1px solid var(--line);border-radius:6px;padding:4px 6px}
+.ctl label{display:flex;gap:6px;align-items:center}
+.decide textarea{width:100%;min-height:58px;background:#0F1A2A;border:1px solid var(--line);border-radius:6px;padding:8px;resize:vertical}
+.btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.btns button{border:1px solid var(--line);background:#0F1A2A;border-radius:8px;padding:12px 6px;font-weight:600;letter-spacing:.1em;cursor:pointer}
+.btns .ap{border-color:rgba(0,212,167,.55);color:var(--teal)}.btns .rj{border-color:rgba(255,92,122,.55);color:var(--red)}
+.btns button:hover{filter:brightness(1.25)}.btns button:disabled{opacity:.4;cursor:not-allowed}
+.status{margin-top:10px;font-size:12.5px;color:var(--mute)}.status b{color:var(--txt)}
+.state-approve{color:var(--teal)!important}.state-reject{color:var(--red)!important}
+.small{font-size:12px;color:var(--mute)}.small a,.small button.link{color:var(--teal);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:20px}
+@media (max-width:1100px){.grid{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.panel .hd{display:flex;gap:10px;align-items:baseline;padding:9px 12px;border-bottom:1px solid var(--line)}
+.panel .hd b{color:var(--teal);font-size:13px}.panel .hd span{font-size:13px}.panel .hd em{font-style:normal;color:var(--mute);font-size:12px;margin-left:auto;text-align:right}
+.panel .hd a{color:var(--mute);font-size:12px}
+.stage{position:relative;background:#000;overflow:hidden}
+.stage iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;background:#000}
+.stage .ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--mute);font-size:12px}
+.orig{display:grid;place-items:center;background:#000}.orig img,.orig video{display:block;max-width:100%;max-height:70vh}
+.orig.grey{background:#3a3f47}.orig.checker{background:repeating-conic-gradient(#2a2e35 0 25%,#1a1d22 0 50%) 0 0/24px 24px}
+.lift img,.lift video{filter:brightness(4) contrast(1.05)}
+.mob{display:flex;justify-content:center;background:#03050a;padding:14px 0}
+.mob .stage{border-radius:28px;border:6px solid #1b2230;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+.empty{max-width:880px}.empty code,.empty pre{background:#0F1A2A;border:1px solid var(--line);border-radius:6px;padding:2px 6px}
+.empty pre{padding:10px 12px;overflow:auto}
+.note{border-left:3px solid var(--amber);padding:6px 10px;margin:10px 0;background:rgba(245,185,66,.06);font-size:13px}
+kbd{font:11px ui-monospace,Consolas,monospace;border:1px solid var(--line);border-radius:3px;padding:0 4px;color:var(--mute)}
+</style>
+</head>
+<body>
+<header>
+  <h1>REX ASSET REVIEW<span class="tag">LOCAL · DEV ONLY</span></h1>
+  <nav class="tabs" id="tabs" aria-label="Shots"></nav>
+  <span class="chip" id="server">checking local server…</span>
+  <span class="small" style="margin-left:auto">Keys: <kbd>A</kbd> approve · <kbd>R</kbd> reject · <kbd>N</kbd> next variant · <kbd>L</kbd> lift shadows</span>
+</header>
+<main id="app"><p class="small">Loading…</p></main>
+<script type="module" src="rex-review.js"></script>
+</body>
+</html>

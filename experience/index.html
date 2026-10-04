@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FOXREX — Inside the market (experimental prototype)</title>
+<meta name="description" content="Experimental cinematic prototype: the market as noise, and the intelligence observing it. Demonstration data only.">
+<!-- Isolated prototype: not linked from production pages, not in the sitemap, not indexed. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0B1320">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
+<link rel="preload" href="../assets/fonts/inter-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../styles/fonts.css">
+<link rel="stylesheet" href="experience.css">
+<script>document.documentElement.classList.add('js');</script>
+<script type="module" src="js/film.js"></script>
+</head>
+<body data-scene="noise">
+<a class="xp-skip" href="#xp-fallback" data-t="skip">Skip the film</a>
+
+<!-- The world: one canvas, one continuous market -->
+<canvas id="xp-gl" aria-hidden="true"></canvas>
+<div class="xp-lens" aria-hidden="true"><i class="xp-grain"></i></div>
+<div id="xp-scroll" aria-hidden="true"></div>
+
+<header id="xp-nav" class="xp-nav">
+  <a class="xp-mark" href="../" aria-label="FOXREX home"><img src="../assets/brand/foxrex-mark.png" width="175" height="146" alt=""><span>FOXREX</span></a>
+  <button id="xp-sound" class="xp-sound" type="button" aria-pressed="false"><span data-t="sound">Sound</span> · <span data-state data-t="off">off</span></button>
+</header>
+
+<div id="xp-rail" class="xp-rail" aria-hidden="true"><i></i><span id="xp-rail-num">01</span><span id="xp-rail-name"></span></div>
+<p class="xp-demo" role="note" data-t="demo">DEMO / CINEMATIC DATA — not live market data</p>
+
+<div id="xp-overlay" class="xp-overlay">
+  <p id="xp-hint" class="xp-hint" data-t="scroll">Scroll to enter</p>
+</div>
+
+<!-- Fallback: the story as text (no JavaScript, no WebGL, or an error). Screen readers get this narrative too. -->
+<main id="xp-fallback" class="xp-fallback">
+  <h1>Inside the market</h1>
+  <p class="demo">Experimental prototype · demonstration data only · not live market data.</p>
+  <ol>
+    <li><h2>Market noise</h2><p>Prices, candles, volume, the economic calendar, yields, headlines and the order book — all at once, at every depth. The market is noise. Until you know what to look for.</p></li>
+    <li><h2>REX observes</h2><p>Inside the noise, something is watching: REX, the intelligence of FOXREX. It does not chase. It observes everything, and the market it looks at becomes clear.</p></li>
+  </ol>
+  <p><a href="../">Return to foxrex.co</a></p>
+</main>
+</body>
+</html>
