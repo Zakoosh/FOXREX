@@ -71,7 +71,7 @@
     "assets/brand/foxrex-mark.png"
   ],
   "validation": {
-    "status": "PENDING_COMMIT_VERIFICATION",
+    "status": "VERIFIED_AFTER_COMMIT",
     "checks": {
       "bilingual_pairs": true,
       "risk_disclosure_on_every_item": true,
@@ -84,7 +84,9 @@
       "Primary source pages not fetchable; figures from search summaries",
       "US CPI date conflict (Oct 13 vs Oct 14)",
       "Prices are snapshots, not live quotes"
-    ]
+    ],
+    "verifiedCommit": "ee0f261a07a93b52d5dec93a9365b99cbc3985e5"
   },
-  "packageStatus": "PENDING"
+  "packageStatus": "CONTENT_PLAN_READY",
+  "pullRequest": "https://github.com/Zakoosh/FOXREX/pull/10"
 }
