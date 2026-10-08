@@ -1,0 +1,90 @@
+{
+  "runId": "run-20261008-daily-01",
+  "date": "2026-10-08",
+  "generatedAt": "2026-10-08T07:46:34Z",
+  "note": "Primary pages could not be fetched (network resolution failed for WebFetch). Figures come from search-result summaries and must be re-checked against live data before any publication. No live tick was available; all prices are time-boxed snapshots, not current quotes.",
+  "sources": [
+    {
+      "id": "S1",
+      "name": "Investing.com XAU/USD",
+      "url": "https://www.investing.com/currencies/xau-usd",
+      "retrievedAt": "2026-10-08T07:46:34Z",
+      "sourceTimestamp": "2026-10-08 (intraday snapshots; exact time not captured)",
+      "supports": [
+        "XAUUSD ~4,102.55 and ~4,084.24 in two snapshots",
+        "day range 4,066.57–4,170.20",
+        "previous close 4,163.97",
+        "52-week range ~3,886–5,595"
+      ],
+      "verification": "search-result summary only; page not fetchable from this environment"
+    },
+    {
+      "id": "S2",
+      "name": "FXStreet — Gold Price Forecast: XAU/USD retraces gains and nears two-month lows at $4,104",
+      "url": "https://www.fxstreet.com/news/gold-price-forecast-xau-usd-retraces-gains-and-nears-two-month-lows-at-4-104-202610070946",
+      "retrievedAt": "2026-10-08T07:46:34Z",
+      "sourceTimestamp": "2026-10-07 (URL slug 202610070946; treat as ~09:46 UTC, unconfirmed)",
+      "supports": [
+        "XAUUSD near two-month low around 4,104; ~4,119 at time of writing"
+      ],
+      "verification": "search-result summary only"
+    },
+    {
+      "id": "S3",
+      "name": "TradingKey — Gold (XAUUSD)",
+      "url": "https://www.tradingkey.com/markets/commodities/gold",
+      "retrievedAt": "2026-10-08T07:46:34Z",
+      "sourceTimestamp": "2026-10-08 Asian session",
+      "supports": [
+        "gold near 4,120 in Asian session Oct 8",
+        "low of 4,066.35 the previous day"
+      ],
+      "verification": "search-result summary only"
+    },
+    {
+      "id": "S4",
+      "name": "Admiral Markets — ECB Accounts 8 October 2026",
+      "url": "https://admiralmarkets.com/analytics/traders-blog/ecb-monetary-policy-meeting-accounts-on-8-october-2026",
+      "retrievedAt": "2026-10-08T07:46:34Z",
+      "sourceTimestamp": "2026-10-08",
+      "supports": [
+        "ECB accounts of the Sep 9–10 meeting due Oct 8, 13:30 CEST (=14:30 Istanbul)"
+      ],
+      "verification": "search-result summary only"
+    },
+    {
+      "id": "S5",
+      "name": "Federal Reserve — October 2026 calendar",
+      "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+      "retrievedAt": "2026-10-08T07:46:34Z",
+      "sourceTimestamp": "n/a (schedule page)",
+      "supports": [
+        "FOMC minutes of Sep 15–16 meeting scheduled Oct 7, 2:00 pm ET (already released)"
+      ],
+      "verification": "search-result summary; official source"
+    },
+    {
+      "id": "S6",
+      "name": "eco3min — Next US CPI release (cites BLS calendar)",
+      "url": "https://eco3min.fr/en/next-us-cpi-release/",
+      "retrievedAt": "2026-10-08T07:46:34Z",
+      "sourceTimestamp": "n/a (schedule page)",
+      "supports": [
+        "US September CPI Wed Oct 14, 8:30 ET (=15:30 Istanbul)",
+        "PPI Oct 15; import/export prices Oct 16"
+      ],
+      "verification": "search-result summary; one other site listed Oct 13 — confirm on bls.gov before publishing the date"
+    },
+    {
+      "id": "S7",
+      "name": "eco3min — US Macro Calendar",
+      "url": "https://eco3min.fr/en/macro-calendar/",
+      "retrievedAt": "2026-10-08T07:46:34Z",
+      "sourceTimestamp": "n/a",
+      "supports": [
+        "FOMC decision Oct 28; ECB decision Oct 29"
+      ],
+      "verification": "search-result summary only; not used in public copy"
+    }
+  ]
+}
