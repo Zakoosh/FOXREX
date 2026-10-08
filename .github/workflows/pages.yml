@@ -1,4 +1,4 @@
-# Publish only the public site. Internal files (worker/, docs/, tools/, scripts/, README.md, SECURITY.md, GENERATION.md,
+# Publish only the public site. Internal files (worker/, docs/, tools/, scripts/ except scripts/public/, README.md, SECURITY.md, GENERATION.md,
 # VERIFICATION.md) stay in the repository. Takes effect only after Settings -> Pages -> Source = "GitHub Actions".
 name: pages
 on:
@@ -26,6 +26,8 @@ jobs:
           cp -r index.html 404.html CNAME robots.txt sitemap.xml site.webmanifest .nojekyll \
                 about analysis ar assets contact data gold learn markets news privacy \
                 risk-disclosure signals styles terms studio foxrex-studio.html _site/
+          # the public pages load their JavaScript from scripts/public/; the rest of scripts/ stays out
+          mkdir -p _site/scripts && cp -r scripts/public _site/scripts/
       - uses: actions/upload-pages-artifact@v3
       - id: deployment
         uses: actions/deploy-pages@v4
