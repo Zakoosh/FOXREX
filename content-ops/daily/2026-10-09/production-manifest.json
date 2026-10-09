@@ -2,7 +2,7 @@
  "runId": "run-20261009-foxrex-daily-01",
  "date": "2026-10-09",
  "createdAt": "2026-10-09T00:00:00Z",
- "status": "PENDING_COMMIT_VERIFICATION",
+ "status": "CONTENT_PLAN_READY",
  "contentIds": [
   "C01",
   "C02",
@@ -91,6 +91,7 @@
   "factsVerified": "SECONDARY_ONLY_NEEDS_HUMAN_CHECK"
  },
  "github": {
+  "verifiedCommit": "379c8e4b492a229fdec569f10695462fc6eec65e", "pullRequest": "https://github.com/Zakoosh/FOXREX/pull/12",
   "branch": "claude/nifty-volta-77axkw"
  }
 }
