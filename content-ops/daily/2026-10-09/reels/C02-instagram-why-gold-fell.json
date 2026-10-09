@@ -1,0 +1,58 @@
+{
+ "contentId": "C02",
+ "platform": "instagram",
+ "format": "reel",
+ "durationSec": 25,
+ "aspect": "9:16",
+ "scenes": [
+  {
+   "t": "0-3",
+   "en": "Gold hit a two-month low. Why?",
+   "ar": "الذهب عند أدنى مستوى في شهرين. لماذا؟",
+   "visual": "REX looks at a falling price line (stylised, no numbers in-image)",
+   "factIds": [
+    "F1"
+   ]
+  },
+  {
+   "t": "3-9",
+   "en": "The Fed minutes kept another hike possible.",
+   "ar": "محضر الفيدرالي أبقى احتمال رفع آخر قائماً.",
+   "visual": "Document card slides in; stamp 'FOMC minutes'",
+   "factIds": [
+    "F4"
+   ]
+  },
+  {
+   "t": "9-15",
+   "en": "Higher rates and a strong dollar weigh on gold.",
+   "ar": "الفائدة المرتفعة والدولار القوي يضغطان على الذهب.",
+   "visual": "Scale diagram: yield+dollar vs gold",
+   "factIds": [
+    "F5",
+    "F6"
+   ]
+  },
+  {
+   "t": "15-21",
+   "en": "Then oil eased, yields slipped, and gold bounced.",
+   "ar": "ثم تراجع النفط وانخفضت العوائد فارتد الذهب.",
+   "visual": "Oil arrow down, yield arrow down, gold arrow up",
+   "factIds": [
+    "F2",
+    "F3"
+   ]
+  },
+  {
+   "t": "21-25",
+   "en": "Watch US CPI, Oct 14, 15:30 Istanbul. Educational only.",
+   "ar": "راقب مؤشر التضخم الأميركي 14 أكتوبر 15:30 إسطنبول. محتوى تعليمي فقط.",
+   "visual": "Calendar end card + FOXREX logo + risk line",
+   "factIds": [
+    "F8"
+   ]
+  }
+ ],
+ "voiceover": "Text-to-speech/voice not available in pipeline; record voiceover separately or use captions only.",
+ "productionNotes": "Rendered video unavailable in this repo's worker; storyboard only. Overlay numbers/text in editor."
+}
