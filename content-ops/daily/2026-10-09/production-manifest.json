@@ -1,0 +1,96 @@
+{
+ "runId": "run-20261009-foxrex-daily-01",
+ "date": "2026-10-09",
+ "createdAt": "2026-10-09T00:00:00Z",
+ "status": "PENDING_COMMIT_VERIFICATION",
+ "contentIds": [
+  "C01",
+  "C02",
+  "C03",
+  "C04",
+  "C05",
+  "C06"
+ ],
+ "contentCount": 6,
+ "files": [
+  {
+   "path": "ar/C01-instagram-caption.md",
+   "sha256": "3bbe46d8d2eb5613efd64bc3d561feda0bbc722fc761548181838759219f952b"
+  },
+  {
+   "path": "ar/C02-instagram-reel-caption.md",
+   "sha256": "3d6721576a36e995f18470fcbfbc99eb5dabd9c6512293d70b24668d63187947"
+  },
+  {
+   "path": "ar/C03-facebook-week-ahead.md",
+   "sha256": "1b45a852d7bb60329b49c26330fb2394b1b54152faac98a03f15aa0c2ed118ed"
+  },
+  {
+   "path": "ar/C04-facebook-rex-explains.md",
+   "sha256": "38872f1ca7be8b2dbcf921dcfbb116de1d3fbe08994c0c692a1c959b91e2ae5e"
+  },
+  {
+   "path": "ar/C05-telegram-brief.md",
+   "sha256": "76c5f1360deb8a0769f2534c461989384fb2899dc1224693265b19e666fc8daf"
+  },
+  {
+   "path": "ar/C06-telegram-poll.md",
+   "sha256": "10bce4e9e54690531ca37ed605007968a930f9c74d207fafc686a8dcd4da67e7"
+  },
+  {
+   "path": "carousels/C01-instagram-gold-yields-dollar.json",
+   "sha256": "c0fed27201263164bff371fcf184f783d9e41752654cb63083f5f38a0f4297f4"
+  },
+  {
+   "path": "content-plan.json",
+   "sha256": "15f3c34f18c14a2435eb862893b27b7522f043913e3aba31fb349ee670ef2b1c"
+  },
+  {
+   "path": "en/C01-instagram-caption.md",
+   "sha256": "f1e58c49a80f6251eed4abda32ec08976a2a8b1423f0404aea62a8edcad92287"
+  },
+  {
+   "path": "en/C02-instagram-reel-caption.md",
+   "sha256": "a8a908f7680f7b654403a2d0dfa6c85c0e9ef4fb955cf9d4559f7bb7ca479e12"
+  },
+  {
+   "path": "en/C03-facebook-week-ahead.md",
+   "sha256": "c08062f9f6e50a71e970805e5812e8814f228212bcad6d0194d85938684b8952"
+  },
+  {
+   "path": "en/C04-facebook-rex-explains.md",
+   "sha256": "d8c805079872c71c4cfbae0167f407856b9ae5785c4b260cda45301d041a13c6"
+  },
+  {
+   "path": "en/C05-telegram-brief.md",
+   "sha256": "893636adbe2358ec5a997faa10f5051b4fcc5c19dfe849c35d01b090c98f1212"
+  },
+  {
+   "path": "en/C06-telegram-poll.md",
+   "sha256": "e4279bf3f3b02b3d2df05e28c4443e86f9e04255b0bee7a4052e83a76de75f11"
+  },
+  {
+   "path": "market-brief.md",
+   "sha256": "3f1ad5e12cccbc2e1dfbcdb6e47fcd004ebc4971ef98f211dc9416cabee119e0"
+  },
+  {
+   "path": "reels/C02-instagram-why-gold-fell.json",
+   "sha256": "9da5ed631a8144cad3987158aedcb2047c8553aeabdbe225ed862d01966cfbcd"
+  },
+  {
+   "path": "sources.json",
+   "sha256": "295e7d6ed0cc9563afcffd6d417c9d0ab2921e611a1e0a8a2e79fac7c9695fdf"
+  }
+ ],
+ "validation": {
+  "factRefsAndFilesResolve": true,
+  "errors": [],
+  "riskLinePresent": true,
+  "arabicWesternDigits": true,
+  "noSignalsOrLevels": true,
+  "factsVerified": "SECONDARY_ONLY_NEEDS_HUMAN_CHECK"
+ },
+ "github": {
+  "branch": "claude/nifty-volta-77axkw"
+ }
+}

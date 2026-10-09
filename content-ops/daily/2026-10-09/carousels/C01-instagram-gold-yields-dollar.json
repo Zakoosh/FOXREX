@@ -1,0 +1,61 @@
+{
+ "contentId": "C01",
+ "platform": "instagram",
+ "aspect": "4:5 1080x1350",
+ "slides": [
+  {
+   "n": 1,
+   "en": "Gold this week: caught between yields and the dollar",
+   "ar": "الذهب هذا الأسبوع: بين العوائد والدولار",
+   "factIds": [],
+   "visual": "Cover: REX (assets/rex/rex-arms.jpg style reference) between two opposing arrows, dark navy #0B1320, mint #00D4A7 accent"
+  },
+  {
+   "n": 2,
+   "en": "Oct 7–8: gold near a two-month low (~$4,120). Dollar index near an 18-month high. 10-year yield near its highest since 2002.",
+   "ar": "7–8 أكتوبر: الذهب قرب أدنى مستوى في شهرين (~4,120$). مؤشر الدولار قرب أعلى مستوى في 18 شهراً. عائد السندات لأجل 10 سنوات قرب أعلى مستوى منذ 2002.",
+   "factIds": [
+    "F1",
+    "F5",
+    "F6"
+   ],
+   "visual": "Three clean stat tiles (price/DXY/yield), Inter numerals, 'as of' footer"
+  },
+  {
+   "n": 3,
+   "en": "Why it matters: the Fed minutes kept another hike on the table. Gold pays no yield, so higher rates are a headwind.",
+   "ar": "لماذا يهم؟ محضر الفيدرالي أبقى احتمال رفع إضافي مطروحاً. والذهب لا يدفع عائداً، فارتفاع الفائدة يضغط عليه.",
+   "factIds": [
+    "F4"
+   ],
+   "visual": "Simple balance-scale diagram: rates up → gold weight"
+  },
+  {
+   "n": 4,
+   "en": "Oct 9: gold bounced to ~$4,170–4,190 as oil eased and yields slipped. One day, not a trend.",
+   "ar": "9 أكتوبر: ارتد الذهب إلى ~4,170–4,190$ مع تراجع النفط وانخفاض العوائد. يوم واحد، وليس اتجاهاً.",
+   "factIds": [
+    "F2",
+    "F3"
+   ],
+   "visual": "Single rebound arrow, small caption 'one day'"
+  },
+  {
+   "n": 5,
+   "en": "Next test: US CPI, Wed Oct 14, 15:30 Istanbul time. We'll map the scenarios, not guess the number.",
+   "ar": "الاختبار القادم: مؤشر أسعار المستهلك الأميركي الأربعاء 14 أكتوبر 15:30 بتوقيت إسطنبول. سنرسم السيناريوهات ولن نخمّن الرقم.",
+   "factIds": [
+    "F8"
+   ],
+   "visual": "Calendar card: 14 OCT · 15:30 IST · US CPI"
+  },
+  {
+   "n": 6,
+   "en": "Educational content, not investment advice. Leveraged trading carries a high risk of loss.",
+   "ar": "محتوى تعليمي وليس نصيحة استثمارية. التداول بالرافعة المالية ينطوي على مخاطر خسارة عالية.",
+   "factIds": [],
+   "visual": "Risk line on plain dark card with FOXREX mark"
+  }
+ ],
+ "productionNotes": "Overlay all text and numbers in an editor with official logo; do not render text or figures inside AI image pixels. AR uses IBM Plex Sans Arabic, Western digits, Inter for symbols."
+}
