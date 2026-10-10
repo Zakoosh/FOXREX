@@ -1,0 +1,40 @@
+{
+  "contentId": "reel-ar-001",
+  "language": "ar",
+  "platform": "instagram_reels",
+  "aspect": "9:16 1080x1920",
+  "durationSec": 30,
+  "safeMargins": "250px top / 300px bottom",
+  "voiceover": "none (on-screen text + licensed music chosen by owner)",
+  "scenes": [
+    {
+      "time": "0-3s",
+      "onScreenText": "هوك: «أسبوع CPI... رقم واحد قد يحرّك الذهب»",
+      "visual": "انتقال سريع لتقويم على خلفية داكنة"
+    },
+    {
+      "time": "3-10s",
+      "onScreenText": "الأربعاء 14 أكتوبر: CPI الأمريكي يشكّل توقعات الفائدة.",
+      "visual": "بطاقة تقويم بإبراز تيل"
+    },
+    {
+      "time": "10-20s",
+      "onScreenText": "لماذا يهتم الذهب؟ توقعات الفائدة الأعلى قد تضغط على أصل لا يدرّ عائداً.",
+      "visual": "رسم سهم بسيط بدون مستويات أسعار"
+    },
+    {
+      "time": "20-27s",
+      "onScreenText": "استعد ولا تتوقع: اعرف الوقت وخطط للمخاطر.",
+      "visual": "بطاقة ختام بشخصية REX (أصل موجود)"
+    },
+    {
+      "time": "27-30s",
+      "onScreenText": "تابع FOXREX. محتوى تعليمي فقط وليس نصيحة مالية. التداول ينطوي على مخاطر عالية بالخسارة.",
+      "visual": "الشعار + TRADE SMARTER. GO FURTHER."
+    }
+  ],
+  "imagePrompts": [
+    "Dark navy #0B1320 abstract trading-calendar grid, teal #00D4A7 glow on one highlighted date, empty space in upper third for text, no text rendered, no logos, no price numbers"
+  ],
+  "generation": "NOT_GENERATED (no paid/credit generation run; owner approval needed per Studio policy)"
+}

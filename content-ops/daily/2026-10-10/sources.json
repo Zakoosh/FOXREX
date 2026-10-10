@@ -1,0 +1,140 @@
+{
+  "runId": "run-20261010-daily-01",
+  "date": "2026-10-10",
+  "limitations": "Direct page fetches failed (DNS/network). All facts derive from search-result summaries; every item needs human verification against primary sources (BLS, Federal Reserve) before publication.",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Forex Economic Calendar Overview: Key Events for the Next Trading Week (12.10.2026–18.10.2026)",
+      "publisher": "LiteFinance",
+      "url": "https://www.litefinance.org/blog/analysts-opinions/weekly-economic-calendar-for-12102026-18102026/",
+      "sourceTimestamp": null,
+      "retrievedVia": "web search summary (page fetch blocked)",
+      "supports": [
+        "F2"
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "S2",
+      "title": "What to Look Out for in Economic Data This Week (October 12-16)",
+      "publisher": "Kiplinger",
+      "url": "https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar",
+      "sourceTimestamp": null,
+      "retrievedVia": "web search summary (page fetch blocked)",
+      "supports": [
+        "F2",
+        "F3",
+        "F4"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "S3",
+      "title": "Gold Price Today: XAUUSD Holds $4,145 Despite a Hawkish Fed",
+      "publisher": "Vantage Markets",
+      "url": "https://www.vantagemarkets.com/market-news/gold-price-today-xauusd-fed-minutes-iran-october-9-2026/",
+      "sourceTimestamp": "2026-10-09 (from URL)",
+      "retrievedVia": "web search summary (page fetch blocked)",
+      "supports": [
+        "F1",
+        "F5"
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "S4",
+      "title": "Gold posts first weekly gain in three weeks — can $4,200 hold through CPI?",
+      "publisher": "Mitrade",
+      "url": "https://mitrade.com/insights/commodity-analysis/gold/gold-first-weekly-gain-real-yields-ease-20261010J1348",
+      "sourceTimestamp": "2026-10-10 (from URL)",
+      "retrievedVia": "web search summary (page fetch blocked)",
+      "supports": [
+        "F1"
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "S5",
+      "title": "Forex Today: the FOMC Minutes should shed further detail on the latest Fed decision",
+      "publisher": "FXStreet",
+      "url": "https://www.fxstreet.com/news/forex-today-the-fomc-minutes-should-shed-further-detail-on-the-latest-fed-decision-202610061829",
+      "sourceTimestamp": "2026-10-06 18:29 (from URL)",
+      "retrievedVia": "web search summary (page fetch blocked)",
+      "supports": [
+        "F5"
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "S6",
+      "title": "US Dollar Price Forecast: Fed Minutes Back (DXY, GBP/USD, EUR/USD)",
+      "publisher": "FXEmpire",
+      "url": "https://www.fxempire.com/forecasts/article/us-dollar-price-forecast-fed-minutes-back-dxy-can-gbp-usd-and-eur-usd-recover-1636695",
+      "sourceTimestamp": null,
+      "retrievedVia": "web search summary (page fetch blocked)",
+      "supports": [
+        "F5"
+      ],
+      "confidence": "low"
+    }
+  ],
+  "facts": [
+    {
+      "id": "F1",
+      "type": "fact",
+      "text": "Spot gold was reported trading roughly between $4,150 and $4,200/oz on 9 Oct 2026; one outlet frames it as gold's first weekly gain in three weeks. Exact levels differ by source/time.",
+      "sources": [
+        "S3",
+        "S4"
+      ],
+      "verification": "UNVERIFIED_NUMBERS - do not publish exact price"
+    },
+    {
+      "id": "F2",
+      "type": "fact",
+      "text": "US data week of 12-16 Oct 2026: September CPI on Wed 14 Oct; PPI, retail sales and Philadelphia Fed index on Thu 15 Oct; import prices and industrial production on Fri 16 Oct.",
+      "sources": [
+        "S1",
+        "S2"
+      ],
+      "verification": "single-aggregator; confirm on BLS release schedule before publishing"
+    },
+    {
+      "id": "F3",
+      "type": "fact",
+      "text": "The Fed raised rates by 25 bp at its late-September meeting to 3.75-4.00%, reported as its first hike in three years. Next FOMC decision listed for 28 Oct.",
+      "sources": [
+        "S2"
+      ],
+      "verification": "confirm on federalreserve.gov"
+    },
+    {
+      "id": "F4",
+      "type": "fact",
+      "text": "Headline inflation expected to stay elevated on higher gasoline prices (Kiplinger). Aggregator lists a 3.6% y/y headline forecast; figures vary by provider.",
+      "sources": [
+        "S2"
+      ],
+      "verification": "UNVERIFIED_NUMBERS - do not publish forecast figure"
+    },
+    {
+      "id": "F5",
+      "type": "fact",
+      "text": "FOMC minutes (released ~7 Oct) were reported as showing most officials viewed another hike as likely appropriate by year-end; higher yields and rate expectations are reported as a headwind for gold.",
+      "sources": [
+        "S3",
+        "S5",
+        "S6"
+      ],
+      "verification": "sources conflict on yield/DXY levels; no levels used"
+    }
+  ],
+  "interpretations": [
+    {
+      "id": "I1",
+      "type": "interpretation",
+      "text": "CPI on 14 Oct is the week's main volatility catalyst for XAUUSD and USD pairs because it feeds directly into rate-hike expectations. This is FOXREX framing, not a forecast of direction."
+    }
+  ]
+}
