@@ -84,5 +84,6 @@
       "no invented assets"
     ]
   },
-  "packageStatus": "PENDING_COMMIT_VERIFICATION"
+  "packageStatus": "CONTENT_PLAN_READY",
+  "verifiedCommit": "fb638cea8f374dc4d809b87a6d483f3a40e163f1"
 }
