@@ -1,0 +1,40 @@
+{
+  "contentId": "reel-en-001",
+  "language": "en",
+  "platform": "instagram_reels",
+  "aspect": "9:16 1080x1920",
+  "durationSec": 30,
+  "safeMargins": "250px top / 300px bottom",
+  "voiceover": "none (on-screen text + licensed music chosen by owner)",
+  "scenes": [
+    {
+      "time": "0-3s",
+      "onScreenText": "Hook: text 'CPI week. 3 days. 1 number that moves gold.'",
+      "visual": "Fast calendar wipe, dark bg"
+    },
+    {
+      "time": "3-10s",
+      "onScreenText": "Wed 14 Oct: US CPI. It shapes rate expectations.",
+      "visual": "Calendar card, teal highlight"
+    },
+    {
+      "time": "10-20s",
+      "onScreenText": "Why gold cares: higher rate expectations can pressure a non-yielding asset.",
+      "visual": "Simple arrow diagram, no price levels"
+    },
+    {
+      "time": "20-27s",
+      "onScreenText": "Prepare, don't predict: know the time, plan the risk.",
+      "visual": "REX mascot (existing asset) end card"
+    },
+    {
+      "time": "27-30s",
+      "onScreenText": "Follow FOXREX. Educational content only, not financial advice. Trading carries a high risk of loss.",
+      "visual": "Logo + 'TRADE SMARTER. GO FURTHER.'"
+    }
+  ],
+  "imagePrompts": [
+    "Dark navy #0B1320 abstract trading-calendar grid, teal #00D4A7 glow on one highlighted date, empty space in upper third for text, no text rendered, no logos, no price numbers"
+  ],
+  "generation": "NOT_GENERATED (no paid/credit generation run; owner approval needed per Studio policy)"
+}

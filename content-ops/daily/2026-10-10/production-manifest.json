@@ -1,0 +1,88 @@
+{
+  "runId": "run-20261010-daily-01",
+  "date": "2026-10-10",
+  "createdAt": "2026-10-10",
+  "contentIds": [
+    "ig-en-001",
+    "fb-en-001",
+    "tg-en-001",
+    "car-en-001",
+    "reel-en-001",
+    "ig-ar-001",
+    "fb-ar-001",
+    "tg-ar-001",
+    "car-ar-001",
+    "reel-ar-001"
+  ],
+  "contentCount": 10,
+  "files": [
+    {
+      "path": "ar/facebook-post.md",
+      "sha256": "071651448aa26e11a8771547d9932da307fd83c1332a1f31257bc04af1bd23d3"
+    },
+    {
+      "path": "ar/instagram-caption.md",
+      "sha256": "dc16c8fb749d202967af35bd11efcf74b244a1b28d93d645d0f1b1ccc01de3f9"
+    },
+    {
+      "path": "ar/telegram-post.md",
+      "sha256": "4bbaa3036cca3f68cfe099359be00f22213a6328a674ed2a66dfec63556cf63b"
+    },
+    {
+      "path": "carousels/ar-cpi-week.json",
+      "sha256": "0f50175b722486369b86bbf80e5dd90b000013f8689806d38360aa8a3cf21bec"
+    },
+    {
+      "path": "carousels/en-cpi-week.json",
+      "sha256": "287930ced005cf907d71c2d7b8a893d03006cacf4248b3530172c68f2eed1796"
+    },
+    {
+      "path": "content-plan.json",
+      "sha256": "9f156e52c14e3c940515b265f69a268e9baf279b9adb4d1009a081a3930e82e9"
+    },
+    {
+      "path": "en/facebook-post.md",
+      "sha256": "766bc3cd85ad2624f34799745f7ce2e77ee538c8c065d3c2159e4f0c458a295e"
+    },
+    {
+      "path": "en/instagram-caption.md",
+      "sha256": "77bac7e9a21f1484c000c63decd09dd91e2ebe66fc5fe6f6bd7facf5fcb73a05"
+    },
+    {
+      "path": "en/telegram-post.md",
+      "sha256": "77913a49f421d5e6f18fac0bdcd0c320fb99da0274403ede748840463bc0b116"
+    },
+    {
+      "path": "market-brief.md",
+      "sha256": "cb91174714c68b41976a6c7fe242b46195e8d4b332712cb629291766cdf63703"
+    },
+    {
+      "path": "reels/ar-cpi-week.json",
+      "sha256": "9d604e658f56c0f877f87987c0a2b93f7b64142f859029f0da925954806c3300"
+    },
+    {
+      "path": "reels/en-cpi-week.json",
+      "sha256": "8cbb725c9e0e6dac5b2c41018e7368ebead2e177ddd3631daa2b637bc0d2ba2d"
+    },
+    {
+      "path": "sources.json",
+      "sha256": "883ca49f85bc6cbdeec6178ad67be6243700bd0b1cd345da9f5a5ac9a12de9cb"
+    }
+  ],
+  "validation": {
+    "status": "PASS_WITH_WARNINGS",
+    "errors": [],
+    "warnings": [
+      "All market facts from search summaries; primary sources not fetched",
+      "Exact gold price, yields, CPI forecast deliberately excluded",
+      "Media not generated; image prompts only"
+    ],
+    "checks": [
+      "risk line on every text item",
+      "no entry/SL/TP or advice terms",
+      "brand colors/fonts per tokens.css",
+      "no invented assets"
+    ]
+  },
+  "packageStatus": "PENDING_COMMIT_VERIFICATION"
+}
