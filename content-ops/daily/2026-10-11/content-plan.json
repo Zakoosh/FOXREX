@@ -1,0 +1,127 @@
+{
+  "runId": "foxrex-20261011-001",
+  "date": "2026-10-11",
+  "timezone": "Europe/Istanbul",
+  "slot": "Weekly Outlook (Sunday)",
+  "theme": "CPI week ahead and why gold reacts to yields",
+  "status": "DRAFT_FOR_HUMAN_REVIEW",
+  "publishing": "NOT_PUBLISHED",
+  "items": [
+    {
+      "contentId": "fx-20261011-c1-instagram",
+      "title": "CPI week: what moves gold",
+      "format": "carousel",
+      "platform": "instagram",
+      "angle": "Carousel; educational chain from inflation to gold. 7 slides.",
+      "languages": {
+        "en": {
+          "file": "carousels/c1-ig-carousel-en.json"
+        },
+        "ar": {
+          "file": "carousels/c1-ig-carousel-ar.json"
+        }
+      },
+      "imagePrompt": "Vertical 4:5 editorial illustration, dark navy #0B1320 background, subtle teal #00D4A7 accents, friendly fox mascot REX (match assets/rex/rex-arms.jpg) beside a large abstract calendar. Leave top third and bottom quarter empty for typography. No text, no numbers, no logos, no real brands.",
+      "suggestedPublishTimeIST": "2026-10-11 20:30",
+      "factsUsed": [
+        "F1",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "riskLine": true,
+      "requiresHumanApprovalBeforePublish": true,
+      "openChecks": [
+        "Confirm CPI date/time on BLS",
+        "Owner to confirm risk wording"
+      ]
+    },
+    {
+      "contentId": "fx-20261011-c2-instagram",
+      "title": "REX explains: why gold reacts to yields",
+      "format": "reel",
+      "platform": "instagram",
+      "angle": "30s storyboard; no render.",
+      "languages": {
+        "en": {
+          "file": "reels/c2-ig-reel-en.json"
+        },
+        "ar": {
+          "file": "reels/c2-ig-reel-ar.json"
+        }
+      },
+      "imagePrompt": "Vertical 9:16 animated-style scenes, dark navy with teal highlights, REX mascot (match assets/rex/rex-arms.jpg) explaining abstract line charts and a seesaw metaphor. Large clear zones top 250px and bottom 300px. No text, no numbers.",
+      "suggestedPublishTimeIST": "2026-10-12 19:00",
+      "factsUsed": [
+        "F1",
+        "F3",
+        "F5"
+      ],
+      "riskLine": true,
+      "requiresHumanApprovalBeforePublish": true,
+      "openChecks": [
+        "Confirm CPI date/time on BLS",
+        "Owner to confirm risk wording"
+      ]
+    },
+    {
+      "contentId": "fx-20261011-c3-facebook",
+      "title": "Week ahead in plain language",
+      "format": "post",
+      "platform": "facebook",
+      "angle": "Conversational text post with a question to drive comments.",
+      "languages": {
+        "en": {
+          "file": "en/c3-facebook.md"
+        },
+        "ar": {
+          "file": "ar/c3-facebook.md"
+        }
+      },
+      "imagePrompt": "Landscape 1200x630 flat card, dark slate #1F2937, small teal calendar icon, abstract gold-toned bar shape. Large empty area for post-production text. No text, no numbers.",
+      "suggestedPublishTimeIST": "2026-10-11 21:00",
+      "factsUsed": [
+        "F1",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "riskLine": true,
+      "requiresHumanApprovalBeforePublish": true,
+      "openChecks": [
+        "Confirm CPI date/time on BLS",
+        "Owner to confirm risk wording"
+      ]
+    },
+    {
+      "contentId": "fx-20261011-c4-telegram",
+      "title": "Sunday weekly outlook",
+      "format": "message",
+      "platform": "telegram",
+      "angle": "Concise, scannable, speed-oriented.",
+      "languages": {
+        "en": {
+          "file": "en/c4-telegram.md"
+        },
+        "ar": {
+          "file": "ar/c4-telegram.md"
+        }
+      },
+      "imagePrompt": "No image required; optional 1280x720 text card in brand colors rendered in post-production.",
+      "suggestedPublishTimeIST": "2026-10-11 20:00",
+      "factsUsed": [
+        "F1",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "riskLine": true,
+      "requiresHumanApprovalBeforePublish": true,
+      "openChecks": [
+        "Confirm CPI date/time on BLS",
+        "Owner to confirm risk wording",
+        "Confirm the quoted close range with a licensed feed"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "runId": "foxrex-20261011-001",
+  "contentId": "fx-20261011-c2-ig-reel-ar",
+  "platform": "instagram",
+  "format": "reel",
+  "language": "ar",
+  "durationSec": 30,
+  "aspect": "9:16 1080x1920",
+  "safeZones": "250px top, 300px bottom",
+  "status": "storyboard_only_no_render",
+  "voiceover": "Calm, clear, educational. No hype, no advice.",
+  "audio": "Licensed/royalty-free only; not selected.",
+  "scenes": [
+    {
+      "start": 0,
+      "end": 3,
+      "role": "Hook",
+      "onScreenText": "لماذا يتحرك الذهب عندما تتحرك العوائد؟",
+      "visual": "REX tilts head at a glowing teal line chart (abstract, no numbers)."
+    },
+    {
+      "start": 3,
+      "end": 10,
+      "role": "Idea 1",
+      "onScreenText": "الذهب لا يدفع فائدة. أما السندات فتدفع.",
+      "visual": "Split frame: gold bar icon vs bond certificate icon."
+    },
+    {
+      "start": 10,
+      "end": 18,
+      "role": "Idea 2",
+      "onScreenText": "عندما ترتفع العوائد، يصبح الاحتفاظ بالذهب أغلى من حيث الفرصة الضائعة. وعندما تتراجع، يخف هذا الضغط.",
+      "visual": "Seesaw animation: yields up, gold side lifts; reversed."
+    },
+    {
+      "start": 18,
+      "end": 25,
+      "role": "Context",
+      "onScreenText": "الجمعة الماضية: تراجعت العوائد وارتد الذهب. هذه علاقة وليست ضمانًا.",
+      "visual": "Two simple arrows, no price levels."
+    },
+    {
+      "start": 25,
+      "end": 30,
+      "role": "CTA",
+      "onScreenText": "CPI يوم الأربعاء، 15:30 بتوقيت إسطنبول. تابع FOXREX.",
+      "visual": "Brand lockup, risk line bottom."
+    }
+  ],
+  "captionText": "لماذا يتفاعل الذهب مع العوائد؟ شرح سريع من REX قبل بيانات CPI يوم الأربعاء.\n\nمحتوى تعليمي وليس نصيحة استثمارية. التداول ينطوي على مخاطر عالية بالخسارة.\n#XAUUSD #الذهب #FOXREX",
+  "coverText": "الذهب والعوائد"
+}
