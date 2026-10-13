@@ -1,0 +1,66 @@
+{
+  "contentId": "FX-20261013-C1-IG-CAROUSEL",
+  "canvas": "1080x1350",
+  "safeMarginPx": 96,
+  "brand": {
+    "bg": "#0B1320",
+    "text": "#E5E7EB",
+    "accent": "#00D4A7",
+    "caution": "#F5B942",
+    "fontEN": "Inter",
+    "fontAR": "IBM Plex Sans Arabic"
+  },
+  "imageGuidance": "Backgrounds only; leave clean space for typography added in post. Do not render any text, numbers or logos inside generated images. Use assets/brand/foxrex-mark.png for the mark; do not redraw it.",
+  "slides": [
+    {
+      "n": 1,
+      "role": "hook",
+      "en": "CPI tomorrow.\nWhat is the market watching?",
+      "ar": "تقرير التضخم غدًا...\nماذا يراقب السوق؟",
+      "imagePrompt": "Dark navy (#0B1320) abstract financial backdrop, soft teal (#00D4A7) light grid fading toward the corner, subtle calendar-page motif, cinematic, minimal, large empty area in the upper two thirds for headline text, no text, no numbers, no logos"
+    },
+    {
+      "n": 2,
+      "role": "when",
+      "en": "When: Wed 14 Oct\n15:30 Istanbul (08:30 New York)\nUS September CPI",
+      "ar": "الموعد: الأربعاء 14 أكتوبر\n15:30 بتوقيت إسطنبول (08:30 نيويورك)\nتقرير CPI الأمريكي لشهر سبتمبر",
+      "imagePrompt": "Dark navy backdrop with a minimal teal clock-dial outline, thin lines, lots of negative space centre-left, no text or digits"
+    },
+    {
+      "n": 3,
+      "role": "context",
+      "en": "Why now?\nThe Fed raised rates 25 bp on 16 Sep to 3.75–4.00%.\nInflation data now feeds the 27–28 Oct meeting.",
+      "ar": "لماذا الآن؟\nرفع الفيدرالي الفائدة 25 نقطة أساس في 16 سبتمبر إلى 3.75–4.00%.\nوبيانات التضخم تغذي اجتماع 27–28 أكتوبر.",
+      "imagePrompt": "Dark navy backdrop, abstract stepped staircase of thin teal lines rising left to right, minimal, empty space for text, no text"
+    },
+    {
+      "n": 4,
+      "role": "interpretation",
+      "en": "Why FX and gold care\nThe dollar hit an 18-month high on 12 Oct.\nA hotter print may extend it. A softer one may ease it.\nGold has been under pressure from the stronger dollar.",
+      "ar": "لماذا يهم الفوركس والذهب؟\nبلغ الدولار أعلى مستوى في 18 شهرًا يوم 12 أكتوبر.\nقراءة أعلى من المتوقع قد تدعمه، وأقل قد تخفف الضغط.\nوالذهب تحت ضغط الدولار الأقوى.",
+      "imagePrompt": "Dark navy backdrop, two thin abstract lines (one teal, one muted gold #F5B942) diverging gently, no axes, no numbers, no text, ample empty space"
+    },
+    {
+      "n": 5,
+      "role": "watch+risk",
+      "en": "What to watch\nHeadline vs core. Versus consensus. The dollar and yield reaction.\nNot a signal.",
+      "ar": "ما الذي نراقبه\nالعام مقابل الأساسي. مقارنةً بالتوقعات. وردّ فعل الدولار والعوائد.\nهذا ليس توصية.",
+      "imagePrompt": "Dark navy backdrop, minimal teal magnifier-ring outline, wide empty area, no text"
+    }
+  ],
+  "closingFrame": {
+    "en": "FOXREX · TRADE SMARTER. GO FURTHER.",
+    "ar": "FOXREX",
+    "riskLine": {
+      "en": "Educational market commentary, not investment advice or a signal. Trading leveraged products carries a high risk of loss.",
+      "ar": "محتوى تعليمي عن الأسواق وليس نصيحة استثمارية ولا توصية. التداول بالمنتجات ذات الرافعة المالية ينطوي على مخاطر خسارة عالية."
+    }
+  },
+  "factRefs": [
+    "F1",
+    "F2",
+    "F3",
+    "F5",
+    "F6"
+  ]
+}
