@@ -55,8 +55,9 @@
       "publishAllowed=false"
     ],
     "factVerification": "SECONDARY_SEARCH_SUMMARIES_ONLY — human confirmation required before publishing",
-    "githubVerification": "PENDING"
+    "githubVerification": "PASSED — fresh read via GitHub API of commit 4cb260967e843eac6354aeb0b3f7767280e1055e"
   },
-  "status": "PENDING_GITHUB_VERIFICATION",
-  "published": false
+  "status": "CONTENT_PLAN_READY",
+  "published": false,
+  "verifiedCommit": "4cb260967e843eac6354aeb0b3f7767280e1055e"
 }
