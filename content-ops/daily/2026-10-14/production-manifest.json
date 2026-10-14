@@ -1,0 +1,71 @@
+{
+  "run_id": "run-2026-10-14-ecd3ee01",
+  "date": "2026-10-14",
+  "generated_at": "2026-10-14T06:39:03Z",
+  "status": "PENDING_VERIFICATION",
+  "commit_sha": null,
+  "branch": "claude/nifty-volta-k5te8l",
+  "content_ids": [
+    "FX-20261014-001",
+    "FX-20261014-002",
+    "FX-20261014-003",
+    "FX-20261014-004",
+    "FX-20261014-005",
+    "FX-20261014-006"
+  ],
+  "content_count": 6,
+  "files": [
+    "ar/FX-20261014-001-instagram-carousel.md",
+    "ar/FX-20261014-002-instagram-reel.md",
+    "ar/FX-20261014-003-facebook-post.md",
+    "ar/FX-20261014-004-facebook-post.md",
+    "ar/FX-20261014-005-telegram-message.md",
+    "ar/FX-20261014-006-telegram-message.md",
+    "carousels/FX-20261014-001-cpi-day.json",
+    "content-plan.json",
+    "en/FX-20261014-001-instagram-carousel.md",
+    "en/FX-20261014-002-instagram-reel.md",
+    "en/FX-20261014-003-facebook-post.md",
+    "en/FX-20261014-004-facebook-post.md",
+    "en/FX-20261014-005-telegram-message.md",
+    "en/FX-20261014-006-telegram-message.md",
+    "market-brief.md",
+    "reels/FX-20261014-002-gold-vs-dollar.json",
+    "sources.json"
+  ],
+  "file_sha256": {
+    "market-brief.md": "ab41ac35536a85b8e160dd1d736626a64a419be0c0030da3f9319f45642f13b2",
+    "sources.json": "ee66f537095ad9261a58ad7c3b6b16e128bed6bc24554e9dd64fccc64fb20de0",
+    "content-plan.json": "d3cf80b8308fcc8b99d349b8421adc0bddde1e6570bd464b55cc7125a9eebc24",
+    "en/FX-20261014-001-instagram-carousel.md": "2df9ef871be85819ac6ae1babb7a1b6802b5fca7cbf5d2501fc2a09dc826c064",
+    "ar/FX-20261014-001-instagram-carousel.md": "5269db9e710313de1597f6aec5af9d5287e0eebbdbb68ce6b4bc58fff8925d8f",
+    "carousels/FX-20261014-001-cpi-day.json": "1977bbd534deb49464e230e8e8ff0e806f0db7cbe5d4eaaa4d7c1625b3a969b8",
+    "en/FX-20261014-002-instagram-reel.md": "d947a6070acdb5aebc4e674f2c44ef052ffe59450c64c8e2c799cffb698aff34",
+    "ar/FX-20261014-002-instagram-reel.md": "d9c646ae37e63349e5b855a4ee520c92015c5f7d02bf602c76cb21fc5f833a5d",
+    "reels/FX-20261014-002-gold-vs-dollar.json": "df9226cc29d5c7a4aba1dc811e8dd58123661b0e4229553f065cf657f2174e6c",
+    "en/FX-20261014-003-facebook-post.md": "bc8756651a8fcd9b9d1a8a35b582aac2da6c1c82b22f6dbfa00b9ae50dbf1537",
+    "ar/FX-20261014-003-facebook-post.md": "81dda1c1c0066ed69466cf60fcc69917eb3e4be326b325b8e43d325e3dbccba9",
+    "en/FX-20261014-004-facebook-post.md": "8b0ee2c376c91b3e1b84b37ee5dabdbf45dcf390ff8156c149df96b2a6f39d57",
+    "ar/FX-20261014-004-facebook-post.md": "0bb20d3177d15c2f963aff0ae25c86c84219afe59450b40f3a2f413278c38f35",
+    "en/FX-20261014-005-telegram-message.md": "2e247134b65b59164f96f98ab3907f25b13f2308d8cf8fa0a9dfcd492f2af480",
+    "ar/FX-20261014-005-telegram-message.md": "a83ec4da0c7f6a97c64ca5cd3afddc5e4716b0bca4d07a7fb05c1dedc0df6d32",
+    "en/FX-20261014-006-telegram-message.md": "e1b4b625768e9779dcfe018e8899cd76825e87fa0834addcb1980e5bd83a283d",
+    "ar/FX-20261014-006-telegram-message.md": "b19b8a229bf297922c8055adf8700b5e215f723db028a563150eb7003c63fa6e"
+  },
+  "validation": {
+    "checks": {
+      "all_referenced_files_exist": true,
+      "risk_line_in_all_copy": true,
+      "no_trade_instructions_or_guarantees": true,
+      "pairs_ar_en_complete": true,
+      "no_invented_levels": true,
+      "sources_primary_verified": false
+    },
+    "warnings": [
+      "All market figures come from search-result snippets; primary pages could not be fetched (network blocked). Human verification required.",
+      "Risk line is a draft pending owner approval.",
+      "Items are pre-CPI-release (15:30 Istanbul); re-check before posting."
+    ]
+  },
+  "published": false
+}
