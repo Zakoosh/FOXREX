@@ -1,9 +1,9 @@
 {
   "run_id": "run-2026-10-14-ecd3ee01",
   "date": "2026-10-14",
-  "generated_at": "2026-10-14T06:39:03Z",
-  "status": "PENDING_VERIFICATION",
-  "commit_sha": null,
+  "generated_at": "2026-10-14T06:39:22Z",
+  "status": "CONTENT_PLAN_READY",
+  "commit_sha": "a9b1f06989b42944fd3e540d88f8380b238633b8",
   "branch": "claude/nifty-volta-k5te8l",
   "content_ids": [
     "FX-20261014-001",
