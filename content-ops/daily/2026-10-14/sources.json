@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-14",
+  "run_id": "run-2026-10-14-ecd3ee01",
+  "collected_at": "2026-10-14T06:38:52Z",
+  "collection_method": "WebSearch result summaries only. Direct page fetch (WebFetch/curl) was blocked by the sandbox network policy (DNS failure / proxy 403), so NO primary page was opened. All figures are unverified secondary snippets.",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "September CPI report: What to expect",
+      "publisher": "CNBC",
+      "url": "https://www.cnbc.com/2026/10/13/september-consumer-price-index-inflation.html",
+      "published": "2026-10-13",
+      "tier": "secondary",
+      "accessed": "2026-10-14T06:38:52Z",
+      "fetch_status": "search_snippet_only",
+      "claims": [
+        "Dow Jones economists expect Sept CPI +0.6% m/m and 3.6% y/y; release 2026-10-14 08:30 ET"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "US CPI preview: 14 investment bank forecasters see energy lifting headline to 3.6%, core held near 0.2%",
+      "publisher": "InvestingLive",
+      "url": "https://investinglive.com/news/us-cpi-preview-14-investment-bank-forecasters-see-energy-lifting-headline-to-3-6-core-held-near-0-2/",
+      "published": "2026-10 (date not confirmed)",
+      "tier": "secondary",
+      "accessed": "2026-10-14T06:38:52Z",
+      "fetch_status": "search_snippet_only",
+      "claims": [
+        "Bank forecasters: headline ~3.6% y/y, core ~0.2% m/m"
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "US CPI September 2026: Forecast, Core CPI and Fed Odds",
+      "publisher": "Admiral Markets",
+      "url": "https://admiralmarkets.com/analytics/traders-blog/us-cpi-preview-september-2026-forecasts-and-the-core-cpi-outlook",
+      "published": "2026-10 (date not confirmed)",
+      "tier": "secondary",
+      "accessed": "2026-10-14T06:38:52Z",
+      "fetch_status": "search_snippet_only",
+      "claims": [
+        "Core CPI forecast +0.2% m/m, ~2.5% y/y",
+        "Core at/above ~0.24-0.3% could firm Fed hike pricing; 0.2% or less could keep Fed on hold until December (source's interpretation)"
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "Gold Price Analysis Today (gold drops, dollar high, CPI)",
+      "publisher": "Mitrade",
+      "url": "https://www.mitrade.com/insights/commodity-analysis/gold/gold-drops-dollar-high-cpi",
+      "published": "2026-10-13",
+      "tier": "secondary",
+      "accessed": "2026-10-14T06:38:52Z",
+      "fetch_status": "search_snippet_only",
+      "claims": [
+        "Gold ~ $4,157 on Oct 13 morning",
+        "Dollar at 18-month high; 10-year Treasury yield ~5.24%"
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "XAUUSD Gold - Currency Exchange Rate Live Price Chart",
+      "publisher": "Trading Economics",
+      "url": "https://tradingeconomics.com/xauusd:cur",
+      "published": "2026-10-13 (last update per snippet)",
+      "tier": "secondary",
+      "accessed": "2026-10-14T06:38:52Z",
+      "fetch_status": "search_snippet_only",
+      "claims": [
+        "Gold ~ $4,150.45, about -0.5% on the day (Oct 13)"
+      ]
+    },
+    {
+      "id": "S6",
+      "title": "October 2026 Economic Calendar: US CPI, FOMC, ECB, BoC and More",
+      "publisher": "ndfxbonus.com",
+      "url": "https://www.ndfxbonus.com/2026/10/october-2026-economic-calendar-us-cpi.html",
+      "published": "2026-10 (date not confirmed)",
+      "tier": "low",
+      "accessed": "2026-10-14T06:38:52Z",
+      "fetch_status": "search_snippet_only",
+      "claims": [
+        "FOMC decision Oct 28 18:00 GMT; ECB Oct 29; Fed range 3.75%-4.00% after September hike (sources inconsistent on meeting dates)"
+      ]
+    },
+    {
+      "id": "S7",
+      "title": "Week Ahead 13-16 October 2026",
+      "publisher": "MQL5",
+      "url": "https://www.mql5.com/en/blogs/post/777352",
+      "published": "2026-10 (date not confirmed)",
+      "tier": "secondary",
+      "accessed": "2026-10-14T06:38:52Z",
+      "fetch_status": "search_snippet_only",
+      "claims": [
+        "Thu Oct 15: US PPI, retail sales, jobless claims"
+      ]
+    }
+  ]
+}
