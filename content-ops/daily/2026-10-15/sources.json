@@ -1,0 +1,71 @@
+{
+  "run_id": "frx-run-20261015-01",
+  "date": "2026-10-15",
+  "retrieved_at": "2026-10-15T00:00:00Z",
+  "limitations": "Direct page fetches failed (DNS). All data comes from web-search result snippets. No figure was verified against a primary source (BLS, Federal Reserve, a price vendor). Publish copy avoids unverified figures.",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Week ahead: US inflation and retail sales lead a busy economic calendar (investingLive)",
+      "url": "https://investinglive.com/news/week-ahead-us-inflation-and-retail-sales-lead-a-busy-economic-calendar-be-aware/",
+      "type": "secondary-calendar",
+      "retrieved_via": "web search snippet (direct fetch failed: DNS)",
+      "source_timestamp": "week of 2026-10-12 (exact time not available)",
+      "supports": [
+        "CPI Wed Oct 14 08:30 ET",
+        "Retail sales/PPI Thu Oct 15 08:30 ET",
+        "FOMC decision Oct 28 14:00 ET"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "S2",
+      "title": "October 2026 U.S. Economic Calendar (fedratecalc.com)",
+      "url": "https://fedratecalc.com/us-economic-calendar/october-2026/",
+      "type": "secondary-calendar",
+      "retrieved_via": "web search snippet",
+      "source_timestamp": "unknown",
+      "supports": [
+        "FOMC Oct 27-28 meeting"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "S3",
+      "title": "Gold Price Today (Kitco)",
+      "url": "http://www.kitco.com/charts/gold",
+      "type": "price-quote",
+      "retrieved_via": "web search snippet (direct fetch failed: DNS)",
+      "source_timestamp": "2026-10-15 02:16 ET (per snippet)",
+      "supports": [
+        "Spot gold ~4,133.80 USD/oz"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "S4",
+      "title": "Gold Price Forecast (LiteFinance)",
+      "url": "https://www.litefinance.org/blog/analysts-opinions/gold-price-prediction-forecast/daily-and-weekly/",
+      "type": "price-quote",
+      "retrieved_via": "web search snippet",
+      "source_timestamp": "2026-10-15 (time unknown)",
+      "supports": [
+        "Gold ~4,145.65 USD/oz"
+      ],
+      "confidence": "low"
+    },
+    {
+      "id": "S5",
+      "title": "Gold Rates & Silver Rates Today 15/10/2026 (Goodreturns)",
+      "url": "https://www.goodreturns.in/news/gold-rates-silver-rates-today-15-10-2026-spot-gold-silver-price-mcx-gold-24k-22k-18k-gold-prices-1541639.html",
+      "type": "secondary-news",
+      "retrieved_via": "web search snippet",
+      "source_timestamp": "2026-10-15",
+      "supports": [
+        "Report: spot gold up ~1% near 4,160; US CPI higher than expected"
+      ],
+      "confidence": "low",
+      "note": "Single regional outlet; CPI claim NOT used in publishable copy."
+    }
+  ]
+}
