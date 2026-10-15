@@ -1,0 +1,88 @@
+{
+  "run_id": "frx-run-20261015-01",
+  "date": "2026-10-15",
+  "generated_at": "2026-10-15T00:00:00Z",
+  "status": "PENDING_COMMIT",
+  "content_count": 10,
+  "content_ids": [
+    "frx-20261015-in-ar-post",
+    "frx-20261015-in-en-post",
+    "frx-20261015-fa-ar-post",
+    "frx-20261015-fa-en-post",
+    "frx-20261015-te-ar-post",
+    "frx-20261015-te-en-post",
+    "frx-20261015-ig-en-carousel",
+    "frx-20261015-ig-ar-carousel",
+    "frx-20261015-ig-en-reel",
+    "frx-20261015-ig-ar-reel"
+  ],
+  "files": [
+    {
+      "path": "ar/fb-post.md",
+      "sha256": "cfb358b7b267e9ad5d44a5a22c83165eb59d7b2f64b0483cdb18bfb383fd9a45"
+    },
+    {
+      "path": "ar/ig-post.md",
+      "sha256": "7c5e2c1c0962b984af67612367b5a510ea14200b913b90647e3f2334077e34c1"
+    },
+    {
+      "path": "ar/tg-post.md",
+      "sha256": "c5f85c198c45088ea0a5d6fd2e42e6af9473235f55d5f96bd79d72ab2264b7aa"
+    },
+    {
+      "path": "carousels/gold-inflation-ar.md",
+      "sha256": "8d41f672fb7243fb84683ab0aceb1b2528b8fa19100cdef99a7bfd60c08a2f4c"
+    },
+    {
+      "path": "carousels/gold-inflation-en.md",
+      "sha256": "3db3e8630e44605eeb90787392cd0edd586de54551685b448de831ee8a8e37e3"
+    },
+    {
+      "path": "content-plan.json",
+      "sha256": "dba56159cad307ece3606767b5c207c623593ed561a3039e60b9cbb9de0961f6"
+    },
+    {
+      "path": "en/fb-post.md",
+      "sha256": "04094fe052cc97efb41a436f7ff2bdab8b17887ac793916712c6d5147929e5ed"
+    },
+    {
+      "path": "en/ig-post.md",
+      "sha256": "ad4c234279eff62c66981b7a8b1a6fb9315a686d7da7dc65169dfcf38f6329b4"
+    },
+    {
+      "path": "en/tg-post.md",
+      "sha256": "c02b86a892ab251c2acce31a0f86f0f9e4d92feb207e4360b3e743947d6095f0"
+    },
+    {
+      "path": "market-brief.md",
+      "sha256": "c1012163a50d031fb4d1cea831ae7986b17bcca9f23a189432a121e30fe2d8d7"
+    },
+    {
+      "path": "reels/gold-inflation-ar.md",
+      "sha256": "1dc76bf1e563d3dbe249b5508ce98807fb81ad91089e17789b136be6f5920748"
+    },
+    {
+      "path": "reels/gold-inflation-en.md",
+      "sha256": "2b6a08cefa58728251550669a4789372b42d1ba0c08c612d8e0bee7e737aa0c7"
+    },
+    {
+      "path": "sources.json",
+      "sha256": "79b9e58a7990ba2ba0bd907aeb692a729a738e7ca7baa24d38dbed0ab8425bfa"
+    }
+  ],
+  "validation": {
+    "status": "PASSED_WITH_WARNINGS",
+    "checks": {
+      "all_required_files_present": true,
+      "ar_en_pairs": true,
+      "risk_disclaimer_in_all_copy": true,
+      "no_unverified_figures_in_copy": true,
+      "no_publishing_performed": true,
+      "primary_sources_verified": false
+    },
+    "warnings": [
+      "Sources are secondary, obtained from search snippets; direct fetch unavailable.",
+      "Gold ~4.1k mention in Telegram copy is approximate and vendor-dependent; remove if not re-verified before publishing."
+    ]
+  }
+}
