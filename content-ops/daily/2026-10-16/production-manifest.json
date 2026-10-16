@@ -45,6 +45,8 @@
       "Gold levels avoided due to feed conflicts"
     ]
   },
-  "status": "PENDING_COMMIT_VERIFICATION",
-  "publishing": "none — human review required"
+  "status": "CONTENT_PLAN_READY",
+  "publishing": "none — human review required",
+  "contentCommitSha": "e0f93219c1ca77ee92e52cf349ff50cbf1d96fed",
+  "verifiedByFreshRead": true
 }
