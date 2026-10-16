@@ -1,0 +1,61 @@
+{
+  "runId": "run-20261016-daily-01",
+  "generatedAt": "2026-10-16T06:38:37Z",
+  "note": "Direct page fetches were blocked in this environment (DNS/proxy 403); facts below come from search-result summaries of these pages and were NOT confirmed against primary sources (BLS, Fed). Human fact-check required before publishing.",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "Wall St slides as hot CPI data fuels rate-hike bets (Reuters, via Investing.com/Detroit News syndication)",
+      "url": "https://www.detroitnews.com/story/business/2026/10/14/wall-street-slides-as-hot-cpi-data-fuels-rate-hike-bets/92248454007/",
+      "published": "2026-10-14",
+      "accessed": "2026-10-16",
+      "access_method": "web search summary (page fetch blocked)",
+      "tier": "secondary"
+    },
+    {
+      "id": "S2",
+      "title": "Dollar hits fresh 18-month high as hot inflation boosts Fed hike expectation (CNBC)",
+      "url": "https://www.cnbc.com/2026/10/14/dollar-languishes-as-focus-turns-to-cpi-fed-speakers.html",
+      "published": "2026-10-14",
+      "accessed": "2026-10-16",
+      "access_method": "web search summary (page fetch blocked)",
+      "tier": "secondary"
+    },
+    {
+      "id": "S3",
+      "title": "Gold Price Forecast: XAU/USD Rejected at $4,160 as Hot CPI Keeps $4,117 Support in Focus (FX Leaders)",
+      "url": "https://www.fxleaders.com/news/2026/10/15/gold-price-forecast-xau-usd-4160-resistance-4117-support/",
+      "published": "2026-10-15",
+      "accessed": "2026-10-16",
+      "access_method": "web search summary (page fetch blocked)",
+      "tier": "secondary"
+    },
+    {
+      "id": "S4",
+      "title": "Gold (XAU) Price Today (FXEmpire)",
+      "url": "https://www.fxempire.com/commodities/gold",
+      "published": "2026-10-16T00:44Z (quote timestamp per search summary)",
+      "accessed": "2026-10-16",
+      "access_method": "web search summary (page fetch blocked)",
+      "tier": "secondary"
+    },
+    {
+      "id": "S5",
+      "title": "Treasuries Slump as Hot Inflation Lifts Fed Rate-Hike Bets (Bloomberg)",
+      "url": "https://www.bloomberg.com/news/articles/2026-10-14/us-treasuries-slump-as-hot-inflation-lifts-fed-rate-hike-bets",
+      "published": "2026-10-14",
+      "accessed": "2026-10-16",
+      "access_method": "web search headline only",
+      "tier": "secondary"
+    },
+    {
+      "id": "S6",
+      "title": "October 2026 Economic Calendar (ndfxbonus) — FOMC Oct 28",
+      "url": "https://www.ndfxbonus.com/2026/10/october-2026-economic-calendar-us-cpi.html",
+      "published": "2026-10",
+      "accessed": "2026-10-16",
+      "access_method": "web search summary (page fetch blocked)",
+      "tier": "tertiary"
+    }
+  ]
+}

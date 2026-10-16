@@ -1,0 +1,50 @@
+{
+  "runId": "run-20261016-daily-01",
+  "date": "2026-10-16",
+  "generatedAt": "2026-10-16T06:38:37Z",
+  "branch": "claude/nifty-volta-rfqdgb",
+  "contentCount": 8,
+  "contentIds": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08"
+  ],
+  "files": [
+    "market-brief.md",
+    "sources.json",
+    "content-plan.json",
+    "carousels/C01-instagram-ar-gold-cpi.md",
+    "ar/C01-instagram-caption.md",
+    "carousels/C02-instagram-en-gold-cpi.md",
+    "en/C02-instagram-caption.md",
+    "reels/C03-reel-en-3-things-gold-watches.md",
+    "reels/C04-reel-ar-3-things-gold-watches.md",
+    "en/C05-facebook-post.md",
+    "ar/C06-facebook-post.md",
+    "en/C07-telegram-weekend-watchlist.md",
+    "ar/C08-telegram-weekend-watchlist.md"
+  ],
+  "validation": {
+    "status": "PASSED_WITH_WARNINGS",
+    "checks": {
+      "fileExists": true,
+      "allItemsHaveDisclaimer": true,
+      "noSignalsOrLevelsOrPerformanceClaims": true,
+      "arabicNoEasternDigits": true,
+      "factsCitedWithSources": true,
+      "primarySourceVerification": "FAILED_NOT_POSSIBLE",
+      "easternDigitFiles": []
+    },
+    "warnings": [
+      "Market facts from search summaries only; page fetches blocked",
+      "Gold levels avoided due to feed conflicts"
+    ]
+  },
+  "status": "PENDING_COMMIT_VERIFICATION",
+  "publishing": "none — human review required"
+}
