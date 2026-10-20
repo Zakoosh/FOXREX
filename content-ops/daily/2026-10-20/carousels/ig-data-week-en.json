@@ -1,0 +1,40 @@
+{
+  "content_id": "CT-20261020-CAR-EN",
+  "platform": "instagram",
+  "format": "carousel",
+  "lang": "en",
+  "style": "FOXREX brand: accent #00D4A7, IBM Plex Sans Arabic for Arabic, Inter for Latin/digits, no letter-spacing on Arabic, Western digits. Use existing assets only (assets/brand/foxrex-mark.png, foxrex-lockup.jpg). No invented logos, no charts of real price data, no people/fake testimonials.",
+  "slides": [
+    {
+      "n": 1,
+      "text": "No Fed this week. Lots of data.",
+      "image_prompt": "Dark navy minimal cover, teal #00D4A7 accent, abstract calendar grid, space for headline, no text rendered"
+    },
+    {
+      "n": 2,
+      "text": "Canada, UK and Japan inflation + global flash PMIs",
+      "image_prompt": "Teal line icons: calendar, globe, gauge on dark background"
+    },
+    {
+      "n": 3,
+      "text": "Gold on Oct 19: $4,141–$4,190 depending on provider",
+      "image_prompt": "Three neutral placeholder bars labelled by provider, no real chart"
+    },
+    {
+      "n": 4,
+      "text": "Why the gap? Different provider, different timestamp. Always cite both.",
+      "image_prompt": "Clock and source-tag motif in teal line art"
+    },
+    {
+      "n": 5,
+      "text": "Follow FOXREX for structured analysis with clear risk. Educational content, not investment advice. Trading involves risk.",
+      "image_prompt": "Closing card, space reserved for assets/brand/foxrex-lockup.jpg"
+    }
+  ],
+  "gate": [
+    "Refresh gold price and as-of time",
+    "Confirm calendar days/times in IST against primary sources",
+    "Confirm FOMC Oct 27–28 on federalreserve.gov",
+    "Human approval in Studio"
+  ]
+}
