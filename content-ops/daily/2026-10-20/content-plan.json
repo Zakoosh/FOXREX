@@ -1,0 +1,138 @@
+{
+  "run_id": "run-20261020-routine01",
+  "date": "2026-10-20",
+  "theme": "Reading a data-heavy week without a Fed decision",
+  "publishing": "NOT published; draft for human review",
+  "items": [
+    {
+      "content_id": "CT-20261020-IG-AR",
+      "platform": "instagram",
+      "lang": "ar",
+      "file": "ar/instagram-caption.md",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-FB-AR",
+      "platform": "facebook",
+      "lang": "ar",
+      "file": "ar/facebook-post.md",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-TG-AR",
+      "platform": "telegram",
+      "lang": "ar",
+      "file": "ar/telegram-post.md",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-IG-EN",
+      "platform": "instagram",
+      "lang": "en",
+      "file": "en/instagram-caption.md",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-FB-EN",
+      "platform": "facebook",
+      "lang": "en",
+      "file": "en/facebook-post.md",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-TG-EN",
+      "platform": "telegram",
+      "lang": "en",
+      "file": "en/telegram-post.md",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-CAR-AR",
+      "platform": "instagram",
+      "lang": "ar",
+      "file": "carousels/ig-data-week-ar.json",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-CAR-EN",
+      "platform": "instagram",
+      "lang": "en",
+      "file": "carousels/ig-data-week-en.json",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-REEL-AR",
+      "platform": "instagram",
+      "lang": "ar",
+      "file": "reels/reel-data-week-ar.json",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    },
+    {
+      "content_id": "CT-20261020-REEL-EN",
+      "platform": "instagram",
+      "lang": "en",
+      "file": "reels/reel-data-week-en.json",
+      "status": "draft",
+      "requires": [
+        "Refresh gold price and as-of time",
+        "Confirm calendar days/times in IST against primary sources",
+        "Confirm FOMC Oct 27–28 on federalreserve.gov",
+        "Human approval in Studio"
+      ]
+    }
+  ]
+}

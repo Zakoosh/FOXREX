@@ -1,0 +1,40 @@
+{
+  "content_id": "CT-20261020-CAR-AR",
+  "platform": "instagram",
+  "format": "carousel",
+  "lang": "ar",
+  "style": "FOXREX brand: accent #00D4A7, IBM Plex Sans Arabic for Arabic, Inter for Latin/digits, no letter-spacing on Arabic, Western digits. Use existing assets only (assets/brand/foxrex-mark.png, foxrex-lockup.jpg). No invented logos, no charts of real price data, no people/fake testimonials.",
+  "slides": [
+    {
+      "n": 1,
+      "text": "أسبوع بلا فيدرالي... لكنه مليء بالبيانات",
+      "image_prompt": "Dark navy minimal cover, subtle teal #00D4A7 glow, abstract calendar grid, empty space for Arabic headline, no text rendered, no logos"
+    },
+    {
+      "n": 2,
+      "text": "التضخم في كندا وبريطانيا واليابان + مؤشرات PMI العالمية",
+      "image_prompt": "Minimal icons row of calendar, globe, gauge in teal line art on dark background"
+    },
+    {
+      "n": 3,
+      "text": "الذهب 19/10: 4,141–4,190$ حسب المزوّد",
+      "image_prompt": "Three simple labeled bars as neutral placeholders for providers, no price chart, dark background"
+    },
+    {
+      "n": 4,
+      "text": "لماذا يختلف السعر؟ الوقت والمزوّد. اذكر دائماً المصدر.",
+      "image_prompt": "Clock and source tag motif, teal line art"
+    },
+    {
+      "n": 5,
+      "text": "تابع FOXREX للتحليل المنظم بمخاطر واضحة. محتوى تعليمي وليس نصيحة استثمارية. التداول ينطوي على مخاطر.",
+      "image_prompt": "Closing card using assets/brand/foxrex-lockup.jpg area reserved, dark background"
+    }
+  ],
+  "gate": [
+    "Refresh gold price and as-of time",
+    "Confirm calendar days/times in IST against primary sources",
+    "Confirm FOMC Oct 27–28 on federalreserve.gov",
+    "Human approval in Studio"
+  ]
+}

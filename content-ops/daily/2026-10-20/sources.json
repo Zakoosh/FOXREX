@@ -1,0 +1,73 @@
+{
+  "run_id": "run-20261020-routine01",
+  "date": "2026-10-20",
+  "sources": [
+    {
+      "id": "S1",
+      "publisher": "CNBC Select",
+      "title": "The price of gold today, Oct. 19, 2026",
+      "url": "https://www.cnbc.com/select/the-price-of-gold-today-oct-19-2026/",
+      "claim": "Spot gold $4,161.54/oz at 9:00 a.m. ET, Oct 19, slightly below prior Friday same time",
+      "source_timestamp": "2026-10-19T09:00-04:00",
+      "retrieval": "search-snippet only (direct fetch failed: DNS)",
+      "confidence": "medium"
+    },
+    {
+      "id": "S2",
+      "publisher": "Trading Economics",
+      "title": "Gold - Price - Chart - Historical Data - News",
+      "url": "https://tradingeconomics.com/commodity/gold",
+      "claim": "Gold 4,140.74 USD/oz on Oct 19, down 0.62% on the day",
+      "source_timestamp": "2026-10-19",
+      "retrieval": "search-snippet only",
+      "confidence": "medium"
+    },
+    {
+      "id": "S3",
+      "publisher": "Forbes Advisor",
+      "title": "Gold Price Today: October 19, 2026",
+      "url": "https://www.forbes.com/advisor/investing/gold-price/",
+      "claim": "Gold $4,163.61 at 8:27 a.m. ET; day range ~$4,158–$4,190",
+      "source_timestamp": "2026-10-19T08:27-04:00",
+      "retrieval": "search-snippet only",
+      "confidence": "medium"
+    },
+    {
+      "id": "S4",
+      "publisher": "Newsquawk",
+      "title": "Week in Focus 19-23rd October 2026: UK, Japan and Canada inflation, China activity data and global flash PMIs",
+      "url": "https://www.newsquawk.com/headlines/week-in-focus-19-23rd-october-2026-highlights-include-uk-japan-and-canada-inflation-china-activity-data-and-global-flash-pmis-",
+      "claim": "Week of Oct 19–23 headlines: UK, Japan and Canada inflation, China activity data, global flash PMIs",
+      "source_timestamp": "2026-10-19 (approx., from URL/title)",
+      "retrieval": "search-snippet only",
+      "confidence": "medium"
+    },
+    {
+      "id": "S5",
+      "publisher": "Thrive in Markets",
+      "title": "Calendar week of 2026-10-19",
+      "url": "https://thriveinmarkets.com/calendar/2026-10-19/",
+      "claim": "Headline events: Canada CPI, UK CPI, US housing starts, October flash PMIs, ahead of FOMC; no times/consensus listed",
+      "source_timestamp": "2026-10-19",
+      "retrieval": "search-snippet only",
+      "confidence": "low-medium"
+    },
+    {
+      "id": "S6",
+      "publisher": "Search summary of secondary previews",
+      "title": "FOMC Oct 27–28; blackout Oct 17–29; UK labour Tue, UK CPI Wed, UK retail sales + flash PMIs Fri",
+      "url": "https://primexbt.com/market-research/week-ahead-fomc-minutes-uk-canada-inflation-global-flash-pmis-and-a-re-escalating-middle-east/",
+      "claim": "Secondary-source calendar details; NOT confirmed against Fed/ONS/StatCan primary calendars",
+      "source_timestamp": "unknown",
+      "retrieval": "search-summary only; the cited page may be from a different week",
+      "confidence": "low"
+    }
+  ],
+  "unverified_excluded": [
+    "US CPI 3.7% y/y and PPI 6.3% (single secondary preview)",
+    "gold all-time high ~$5,600 (unverified)",
+    "UK CPI 3.4% forecast (headline only)",
+    "any release times or consensus figures"
+  ],
+  "limitations": "Direct page fetches failed (DNS) in this environment; all figures come from web-search snippets. No primary sources (Fed, BLS, ONS, StatCan) were reachable. Refresh before publishing."
+}
