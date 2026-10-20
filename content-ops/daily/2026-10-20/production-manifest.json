@@ -85,5 +85,6 @@
       "Calendar days/times unverified vs primary sources"
     ]
   },
-  "package_status": "PENDING_VERIFICATION"
+  "package_status": "CONTENT_PLAN_READY",
+  "verified_commit": "d2d6a0137aa140c9d840d9158bb76cf48c7eb7d3"
 }
