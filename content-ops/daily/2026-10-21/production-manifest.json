@@ -1,0 +1,70 @@
+{
+  "runId": "run-20261021-fxr-daily-01",
+  "date": "2026-10-21",
+  "generatedAt": "2026-10-21T00:00:00Z",
+  "branch": "claude/nifty-volta-03bxke",
+  "contentIds": [
+    "FXR-20261021-C01",
+    "FXR-20261021-R01",
+    "FXR-20261021-F01",
+    "FXR-20261021-T01"
+  ],
+  "contentCount": 4,
+  "pieceCount": 8,
+  "files": [
+    {
+      "path": "content-ops/daily/2026-10-21/market-brief.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/sources.json"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/content-plan.json"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/carousels/FXR-20261021-C01-en.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/carousels/FXR-20261021-C01-ar.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/reels/FXR-20261021-R01-en.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/reels/FXR-20261021-R01-ar.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/en/FXR-20261021-F01-facebook.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/ar/FXR-20261021-F01-facebook.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/en/FXR-20261021-T01-telegram.md"
+    },
+    {
+      "path": "content-ops/daily/2026-10-21/ar/FXR-20261021-T01-telegram.md"
+    }
+  ],
+  "validation": {
+    "status": "PASSED_WITH_WARNINGS",
+    "checks": {
+      "allFilesPresent": true,
+      "jsonValid": true,
+      "bilingualAREN": true,
+      "platformCopyDiffers": true,
+      "noPricesInCopy": true,
+      "noSignalsOrPerformance": true,
+      "riskLineOnEveryPiece": true,
+      "noPublishing": true,
+      "brandAssetsOnlyFromRepo": true
+    },
+    "warnings": [
+      "Sources read only as search summaries; none verified against primary publishers.",
+      "Central-bank dates unconfirmed; copy hedges with 'reported'.",
+      "Images/video not generated; prompts and storyboards only."
+    ]
+  },
+  "packageStatus": "PENDING_COMMIT_VERIFICATION",
+  "publishStatus": "NOT_PUBLISHED"
+}

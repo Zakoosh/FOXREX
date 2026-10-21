@@ -1,0 +1,97 @@
+{
+  "runId": "run-20261021-fxr-daily-01",
+  "date": "2026-10-21",
+  "timezone": "Europe/Istanbul",
+  "strategy": "Quiet data week into dense central-bank week; educational rate/gold angle. No prices, levels, signals or performance claims.",
+  "items": [
+    {
+      "contentId": "FXR-20261021-C01",
+      "platform": "instagram",
+      "format": "carousel",
+      "topic": "Quiet week, loud central-bank week",
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "files": [
+        "carousels/FXR-20261021-C01-en.md",
+        "carousels/FXR-20261021-C01-ar.md"
+      ],
+      "factRefs": [
+        "S1",
+        "S2",
+        "S6"
+      ],
+      "claimsPrices": false,
+      "claimsPerformance": false,
+      "status": "DRAFT_PENDING_HUMAN_REVIEW",
+      "publish": false
+    },
+    {
+      "contentId": "FXR-20261021-R01",
+      "platform": "instagram",
+      "format": "reel",
+      "topic": "REX explains: gold and interest rates",
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "files": [
+        "reels/FXR-20261021-R01-en.md",
+        "reels/FXR-20261021-R01-ar.md"
+      ],
+      "factRefs": [
+        "S3"
+      ],
+      "claimsPrices": false,
+      "claimsPerformance": false,
+      "status": "DRAFT_PENDING_HUMAN_REVIEW",
+      "publish": false
+    },
+    {
+      "contentId": "FXR-20261021-F01",
+      "platform": "facebook",
+      "format": "post",
+      "topic": "Week-planning checklist before central-bank run",
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "files": [
+        "en/FXR-20261021-F01-facebook.md",
+        "ar/FXR-20261021-F01-facebook.md"
+      ],
+      "factRefs": [
+        "S1",
+        "S2"
+      ],
+      "claimsPrices": false,
+      "claimsPerformance": false,
+      "status": "DRAFT_PENDING_HUMAN_REVIEW",
+      "publish": false
+    },
+    {
+      "contentId": "FXR-20261021-T01",
+      "platform": "telegram",
+      "format": "text",
+      "topic": "Daily desk brief",
+      "languages": [
+        "ar",
+        "en"
+      ],
+      "files": [
+        "en/FXR-20261021-T01-telegram.md",
+        "ar/FXR-20261021-T01-telegram.md"
+      ],
+      "factRefs": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "claimsPrices": false,
+      "claimsPerformance": false,
+      "status": "DRAFT_PENDING_HUMAN_REVIEW",
+      "publish": false
+    }
+  ]
+}
