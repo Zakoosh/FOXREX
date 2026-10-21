@@ -1,0 +1,78 @@
+{
+  "runId": "run-20261021-fxr-daily-01",
+  "date": "2026-10-21",
+  "verificationNote": "Direct page fetches were blocked in this environment; all sources were read only as web-search summaries. No source was confirmed against a primary publisher (Fed, ECB, BoJ, BLS). Prices and rate levels are therefore NOT used in publishable copy. Several sources conflict (Fed target range 3.50–3.75% vs 3.75–4.00%; December-hike probability; FOMC date). Human verification against federalreserve.gov is required before any figure is published.",
+  "sources": [
+    {
+      "id": "S1",
+      "title": "U.S. economic calendar preview: key releases for the week of Oct 19–23, 2026",
+      "publisher": "Investing.com",
+      "url": "https://in.investing.com/news/stock-market-news/us-economic-calendar-preview-key-releases-for-the-week-of-oct-1923-2026-93CH-5641075",
+      "accessedVia": "web search summary (direct fetch blocked)",
+      "sourceTimestamp": "unknown",
+      "tier": "secondary",
+      "verified": false,
+      "usedFor": "Light US data week: no CPI, payrolls or FOMC decision; jobless claims and flash PMIs highest-impact."
+    },
+    {
+      "id": "S2",
+      "title": "EURUSD Near 1.1224, USDJPY at 158.46: Fed, ECB and BoJ This Week",
+      "publisher": "Vantage Markets",
+      "url": "https://www.vantagemarkets.com/market-news/eurusd-usdjpy-fed-ecb-boj-decisions-october-20-2026/",
+      "accessedVia": "web search summary (direct fetch blocked)",
+      "sourceTimestamp": "2026-10-20 (URL date; time unknown)",
+      "tier": "secondary",
+      "verified": false,
+      "usedFor": "Central-bank cluster the following week (Fed, ECB, BoJ)."
+    },
+    {
+      "id": "S3",
+      "title": "Gold price analysis (Gold, Hormuz, housing, tokenized, WGC)",
+      "publisher": "Mitrade",
+      "url": "https://www.mitrade.com/insights/commodity-analysis/gold/gold-hormuz-housing-tokenized-wgc",
+      "accessedVia": "web search summary (direct fetch blocked)",
+      "sourceTimestamp": "morning of 2026-10-21 per summary",
+      "tier": "secondary",
+      "verified": false,
+      "usedFor": "Gold reported near the week's low; rates pressure."
+    },
+    {
+      "id": "S4",
+      "title": "Gold Price Today",
+      "publisher": "Kitco",
+      "url": "http://www.kitco.com/charts/gold",
+      "accessedVia": "web search summary (direct fetch blocked)",
+      "sourceTimestamp": "2026-10-21 02:16 ET per summary",
+      "tier": "secondary",
+      "verified": false,
+      "usedFor": "Reported spot bid ~4,117 (not used in captions)."
+    },
+    {
+      "id": "S5",
+      "title": "XAU/USD",
+      "publisher": "Investing.com",
+      "url": "https://www.investing.com/currencies/xau-usd",
+      "accessedVia": "web search summary (direct fetch blocked)",
+      "sourceTimestamp": "2026-10-21 per summary; may be stale",
+      "tier": "secondary",
+      "verified": false,
+      "usedFor": "Reported ~4,125, day range 4,111.71–4,155.45 (not used in captions)."
+    },
+    {
+      "id": "S6",
+      "title": "FOMC Minutes October 2026: Release Time and What to Watch",
+      "publisher": "Admiral Markets",
+      "url": "https://admiralmarkets.com/analytics/traders-blog/fomc-minutes-october-2026",
+      "accessedVia": "web search summary (direct fetch blocked)",
+      "sourceTimestamp": "early Oct 2026 (futures data of 5 Oct)",
+      "tier": "secondary",
+      "verified": false,
+      "usedFor": "FOMC listed 27–28 Oct, decision 2:00 pm ET 28 Oct; target range reporting conflicts across sources."
+    }
+  ],
+  "conflicts": [
+    "Fed target range: Admiral Markets summary says 3.75–4.00%; two calendar sites say 3.50–3.75%.",
+    "FOMC date: most calendars 27–28 Oct; one source claims no October meeting.",
+    "Vantage/Litefinance summaries claim 'new Fed Chair Kevin Warsh'; a July 2026 Reuters-style item also names him, but unverified here."
+  ]
+}
