@@ -3,7 +3,7 @@
   "date": "2026-10-22",
   "createdAt": "2026-10-22T06:38:44.993Z",
   "branch": "claude/nifty-volta-2uybqp",
-  "status": "COMMITTED_UNVERIFIED",
+  "status": "CONTENT_PLAN_READY",
   "contentIds": [
     "FX-20261022-C01",
     "FX-20261022-C02",
@@ -98,5 +98,10 @@
       "Release times for Oct 23 PMIs not confirmed",
       "Fed 21:00 Istanbul time computed, not sourced"
     ]
+  },
+  "verification": {
+    "verifiedCommit": "ac167201a1a4869e9fdaa02c0e8659d9d4ce6bee",
+    "method": "fresh read via GitHub API of manifest and sample file at pushed commit",
+    "verifiedAt": "2026-10-22T06:39:05.341Z"
   }
 }
