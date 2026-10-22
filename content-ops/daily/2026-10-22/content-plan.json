@@ -1,0 +1,114 @@
+{
+  "runId": "run-20261022-daily-01",
+  "date": "2026-10-22",
+  "generatedAt": "2026-10-22T06:38:44.993Z",
+  "publishing": "NONE — nothing published; all items DRAFT pending human review",
+  "items": [
+    {
+      "id": "FX-20261022-C01",
+      "type": "carousel",
+      "platform": "instagram",
+      "topic": "Gold vs weaker dollar",
+      "files": {
+        "en": "en/instagram-C01-caption.md",
+        "ar": "ar/instagram-C01-caption.md",
+        "carouselEn": "carousels/C01-carousel-en.md",
+        "carouselAr": "carousels/C01-carousel-ar.md"
+      },
+      "status": "DRAFT",
+      "languages": [
+        "en",
+        "ar"
+      ],
+      "sources": [
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "riskLine": true,
+      "distinctPerPlatform": true,
+      "suggestedSlotIST": "11:00"
+    },
+    {
+      "id": "FX-20261022-C02",
+      "type": "reel",
+      "platform": "instagram",
+      "topic": "Why gold ignores a softer dollar",
+      "files": {
+        "en": "en/instagram-C02-reel-caption.md",
+        "ar": "ar/instagram-C02-reel-caption.md",
+        "reelEn": "reels/C02-reel-en.md",
+        "reelAr": "reels/C02-reel-ar.md"
+      },
+      "status": "DRAFT",
+      "languages": [
+        "en",
+        "ar"
+      ],
+      "sources": [
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "riskLine": true,
+      "distinctPerPlatform": true,
+      "suggestedSlotIST": "19:00"
+    },
+    {
+      "id": "FX-20261022-C03",
+      "type": "post",
+      "platform": "facebook",
+      "topic": "Central-bank week ahead",
+      "files": {
+        "en": "en/facebook-C03.md",
+        "ar": "ar/facebook-C03.md"
+      },
+      "status": "DRAFT",
+      "languages": [
+        "en",
+        "ar"
+      ],
+      "sources": [
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "riskLine": true,
+      "distinctPerPlatform": true,
+      "suggestedSlotIST": "14:00"
+    },
+    {
+      "id": "FX-20261022-C04",
+      "type": "post",
+      "platform": "telegram",
+      "topic": "Daily brief",
+      "files": {
+        "en": "en/telegram-C04.md",
+        "ar": "ar/telegram-C04.md"
+      },
+      "status": "DRAFT",
+      "languages": [
+        "en",
+        "ar"
+      ],
+      "sources": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "riskLine": true,
+      "distinctPerPlatform": true,
+      "suggestedSlotIST": "09:00"
+    }
+  ]
+}
