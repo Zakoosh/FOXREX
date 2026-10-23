@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-23",
+  "runId": "run-20261023-daily-01",
+  "retrievedAt": "2026-10-23T06:40:00Z",
+  "note": "Direct page fetches failed (network ENOTFOUND). All claims come from web-search result summaries and are UNVERIFIED against primary pages. Re-verify before publishing.",
+  "sources": [
+    {
+      "id": "S1",
+      "publisher": "TradingView",
+      "title": "XAUUSD Chart — Gold Spot Price Today",
+      "url": "https://in.tradingview.com/symbols/XAUUSD/",
+      "sourceTimestamp": "2026-10-23 (per search summary)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Spot ~4,014 as of Oct 23; ATH 5,602.225 on Jan 29, 2026; 52-wk range ~3,886–5,595"
+    },
+    {
+      "id": "S2",
+      "publisher": "Investing.com",
+      "title": "XAU/USD",
+      "url": "https://www.investing.com/currencies/xau-usd",
+      "sourceTimestamp": "2026-10-23 (per search summary)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Spot ~4,013; day range 3,986.84–4,032.55"
+    },
+    {
+      "id": "S3",
+      "publisher": "MQL5 / Mitrade / Tradersunion",
+      "title": "Gold quote pages",
+      "url": "https://www.mql5.com/en/quotes/metals/xauusd",
+      "sourceTimestamp": "mixed; Tradersunion 4,143.02 dated 2026-10-19",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Quotes ~4,121–4,143 conflict with S1/S2 — timestamps inconsistent"
+    },
+    {
+      "id": "S4",
+      "publisher": "Investing.com",
+      "title": "U.S. economic calendar preview: key releases for the week of Oct 19–23, 2026",
+      "url": "https://www.investing.com/news/stock-market-news/us-economic-calendar-preview-key-releases-for-the-week-of-oct-1923-2026-93CH-4958178",
+      "sourceTimestamp": "week of 2026-10-19",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "No CPI, payrolls or FOMC this week; jobless claims and flash PMIs key"
+    },
+    {
+      "id": "S5",
+      "publisher": "LiteFinance",
+      "title": "Weekly economic calendar 19.10.2026–25.10.2026",
+      "url": "https://www.litefinance.org/blog/analysts-opinions/weekly-economic-calendar-for-19102026-25102026/",
+      "sourceTimestamp": "week of 2026-10-19",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Fri Oct 23: UK retail sales, flash PMIs (DE, EZ, UK, US)"
+    },
+    {
+      "id": "S6",
+      "publisher": "LiteFinance",
+      "title": "Forex Economic Calendar Overview 26.10.2026–01.11.2026",
+      "url": "https://www.litefinance.org/blog/analysts-opinions/weekly-economic-calendar-for-26102026-01112026/",
+      "sourceTimestamp": "week of 2026-10-26",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Fed Wed Oct 28; ECB Thu Oct 29; BoJ Fri Oct 30; Q3 GDP/PCE Thu Oct 29"
+    },
+    {
+      "id": "S7",
+      "publisher": "Admiral Markets",
+      "title": "Central Bank Super Week: Fed, ECB, BoJ, BoC, RBNZ Guide",
+      "url": "https://admiralmarkets.com/analytics/traders-blog/central-bank-super-week-october-2026",
+      "sourceTimestamp": "October 2026 (day unknown)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Five G10 banks 01:00 GMT Wed Oct 28 to ~03:00 GMT Fri Oct 30; Fed hold base case; ~15% hike odds (FedWatch); ECB hold 70/73 (Reuters poll); BoJ hike <5% priced; Fed 14:00 ET"
+    },
+    {
+      "id": "S8",
+      "publisher": "NDFXbonus",
+      "title": "October 2026 Economic Calendar: US CPI, FOMC, ECB, BoC and More",
+      "url": "https://www.ndfxbonus.com/2026/10/october-2026-economic-calendar-us-cpi.html",
+      "sourceTimestamp": "October 2026",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Calendar cross-check; ECB deposit-rate level differs from other sources"
+    },
+    {
+      "id": "S9",
+      "publisher": "FXStreet / Investing.com / StoneX",
+      "title": "Gold & yields coverage Oct 18–22",
+      "url": "https://www.fxstreet.com/news/gold-declines-below-4-150-as-elevated-oil-prices-reinforce-prospects-of-further-fed-tightening-202610202324",
+      "sourceTimestamp": "2026-10-18 to 2026-10-22",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": "Yield and dollar direction conflicts by day; oil cited as inflation driver — not used numerically"
+    }
+  ],
+  "conflicts": [
+    "Gold spot: ~4,013–4,014 (S1,S2, Oct 23) vs ~4,121–4,143 (S3)",
+    "Fed rate level: 4.00% vs 3.75–4.00% range",
+    "ECB deposit rate: 2.25% vs 2.50%",
+    "Fed October hike odds differ across outlets"
+  ]
+}
