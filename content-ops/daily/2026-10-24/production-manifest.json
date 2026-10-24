@@ -1,0 +1,87 @@
+{
+  "runId": "run-20261024-5325cb1b",
+  "date": "2026-10-24",
+  "createdAt": "2026-10-24T06:39:58Z",
+  "contentIds": [
+    "fx-20261024-ig-ar-weekahead",
+    "fx-20261024-ig-en-weekahead",
+    "fx-20261024-fa-ar-weekahead",
+    "fx-20261024-fa-en-weekahead",
+    "fx-20261024-te-ar-weekahead",
+    "fx-20261024-te-en-weekahead",
+    "fx-20261024-ig-car-weekahead",
+    "fx-20261024-ig-reel-rex-cb"
+  ],
+  "contentCount": 8,
+  "files": [
+    {
+      "path": "ar/facebook.md",
+      "sha256": "75347e59e3b9eddc5ea6ea5a533d661c163ee3e57fbb946eeaeac68c64c6d57b",
+      "bytes": 1134
+    },
+    {
+      "path": "ar/instagram.md",
+      "sha256": "cecd1716cac6d391d82c3512bb3b43a4cf2166d853fcd3b830a0c48bd0057bbe",
+      "bytes": 1422
+    },
+    {
+      "path": "ar/telegram.md",
+      "sha256": "fce9cd28ba12a5154833fb07ae598d8f6e1d3f51c31850d1befbf8f8bb63029c",
+      "bytes": 1124
+    },
+    {
+      "path": "carousels/week-ahead-carousel.json",
+      "sha256": "9788ad0df5b32f7eae402226f08d495d84464d7961b17eb12c597f58072fba38",
+      "bytes": 3983
+    },
+    {
+      "path": "content-plan.json",
+      "sha256": "da52d8ac600cd090e6d9896fa92f51573dc0cfe64b6d837d1a66526a0f7d80ee",
+      "bytes": 3692
+    },
+    {
+      "path": "en/facebook.md",
+      "sha256": "d1132007fab91a2e00ed00630c7b68b9c0574438616f773ce3278debc6f00dcf",
+      "bytes": 712
+    },
+    {
+      "path": "en/instagram.md",
+      "sha256": "73f8fc50f591db1896897fd5acf65f061b319d4b8625ecd649f9ef792db4b3a2",
+      "bytes": 838
+    },
+    {
+      "path": "en/telegram.md",
+      "sha256": "21d4e77e260b3fc69368a0ec94836a03d9be6a86382bc509dedbff0fbfbc237a",
+      "bytes": 656
+    },
+    {
+      "path": "market-brief.md",
+      "sha256": "be8c6f3f5517890c25d8d6544ade442abcbb7bd4d21ef268910c2869d93baf46",
+      "bytes": 3092
+    },
+    {
+      "path": "reels/rex-central-bank-gold.json",
+      "sha256": "231225ed6d60a9d1a5f18da65e7888e3423a02330ea1004a5a834eb241e51a84",
+      "bytes": 3794
+    },
+    {
+      "path": "sources.json",
+      "sha256": "84089adf5b6740ca1b8a2a1e9b554eda53cf491f8c9f6220db739328f53b6d30",
+      "bytes": 4279
+    }
+  ],
+  "validation": {
+    "status": "LOCAL_CHECKS_PASSED",
+    "checks": {
+      "jsonParses": true,
+      "riskLinePresent": true,
+      "noUnverifiedRateLevels": true,
+      "noInventedPrices": true,
+      "noEntriesOrTargets": true,
+      "arabicNoEasternDigits": true
+    },
+    "humanFactCheckRequired": true
+  },
+  "packageStatus": "PENDING",
+  "note": "CONTENT_PLAN_READY is set only after commit and fresh read-back (reported in PR/run report, not self-asserted here)."
+}
