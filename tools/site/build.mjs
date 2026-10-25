@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url';
 import { SITE, MARKETS, SCHEDULE, SCHEDULE_EXTRA, ANALYSIS_CATEGORIES, NEWS_CATEGORIES, REX } from './content.mjs';
 import { esc, enText, arText } from './text.mjs';
 import { contentPages, GENERATED_MARK } from './content-pages.mjs';
+import { calendarBody, validateCalendar } from '../editorial/calendar.mjs';
 
 const require = createRequire(import.meta.url);
 const CMS = require('../../studio/cms-model.js');
@@ -59,7 +60,7 @@ const I = {
 
 const NAV = [
   ['markets', 'Markets', 'الأسواق'], ['analysis', 'Analysis', 'التحليلات'], ['news', 'News', 'الأخبار'],
-  ['learn', 'Learn', 'تعلّم'], ['signals', 'Signals', 'الإشارات']
+  ['calendar', 'Calendar', 'التقويم'], ['learn', 'Learn', 'تعلّم'], ['signals', 'Signals', 'الإشارات']
 ];
 
 /* ---------- URL helpers ---------- */
@@ -282,6 +283,12 @@ function signalsBlock(b, full) {
 
 /* ---------- pages ---------- */
 const PAGES = [];
+// Static cards make articles discoverable without JavaScript.
+function editorialShelf(b) {
+  const items = FEED.items.filter(e => e.language === LANG && e.access === 'PUBLIC').sort((a,b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 6);
+  return `<section class="section section--tight"><div class="wrap">${sectionHead(t('From the desk', 'من مكتب التحرير'), t('Latest brief & articles', 'أحدث الموجزات والمقالات'), '', more(`${b}calendar/`, 'Economic calendar', 'التقويم الاقتصادي'))}<div class="grid grid--3">${items.map(e => `<article class="fx-card"><p class="fx-card__meta"><time datetime="${esc(e.publishedAt)}">${esc(e.editorialDate)}</time> · ${t('FOXREX Desk', 'مكتب FOXREX')}</p><h3><a href="${b}${esc(e.urlPath)}">${AR() ? arText(e.title) : enText(e.title)}</a></h3><p>${AR() ? arText(e.summary) : enText(e.summary)}</p></article>`).join('')}</div></div></section>`;
+}
+
 
 function heroEn(b) {
   return `<section class="hero">
@@ -328,6 +335,7 @@ PAGES.push({ id: 'home', path: '', scripts: ['scripts/public/market.js', 'script
   body: (r, b) => `
 ${AR() ? heroAr(b) : heroEn(b)}
 ${ticker()}
+${editorialShelf(b)}
 
 <section class="section">
   <div class="wrap">
@@ -577,6 +585,11 @@ let FEED;
 try { FEED = CMS.normalizeFeed(JSON.parse(fs.readFileSync(FEED_FILE, 'utf8'))); }
 catch (e) { console.error(`Cannot build content pages from ${FEED_FILE}: ${e.message}`); process.exit(1); }
 const CONTENT = contentPages(FEED, { SITE, I });
+
+const CALENDAR = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/calendar.json'), 'utf8'));
+const calendarErrors = validateCalendar(CALENDAR);
+if (calendarErrors.length) throw new Error(calendarErrors.join('\n'));
+PAGES.push({ id: 'calendar', path: 'calendar', title: 'Economic calendar', titleAr: 'التقويم الاقتصادي', description: 'Official-source economic events in Istanbul time, with gold and FX context.', descriptionAr: 'أحداث اقتصادية بمصادر رسمية ومواعيد بتوقيت إسطنبول لمتابعي الذهب والفوركس.', scripts: ['scripts/public/calendar.js'], body: () => calendarBody(CALENDAR, LANG) });
 
 /* ---------- other generated files ---------- */
 const contentSitemap = CONTENT.sitemap.map(u => `  <url><loc>${esc(u.loc)}</loc>${u.alternates.map(a => `<xhtml:link rel="alternate" hreflang="${a.hreflang}" href="${esc(a.href)}"/>`).join('')}${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}<changefreq>${u.freq}</changefreq><priority>${u.priority}</priority></url>`).join('\n');

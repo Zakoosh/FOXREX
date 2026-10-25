@@ -27,6 +27,7 @@ function makeRepo() {
   for (const f of ['data/content.json', 'data/content.schema.json', 'studio/cms-model.js', 'tools/site/check-feed.mjs', 'tools/site/jsonschema.mjs']) {
     fs.mkdirSync(path.dirname(path.join(work, f)), { recursive: true }); fs.copyFileSync(path.join(ROOT, f), path.join(work, f));
   }
+  fs.writeFileSync(path.join(work,'data/content.json'), JSON.stringify(CMS.EMPTY_FEED()));
   fs.mkdirSync(path.join(work, 'assets/media'), { recursive: true }); fs.writeFileSync(path.join(work, 'assets/media/test-gold.png'), PNG);
   git(work, 'config', 'user.email', 'test@foxrex.invalid'); git(work, 'config', 'user.name', 'FOXREX test'); git(work, 'checkout', '--quiet', '-b', 'main');
   git(work, 'add', '-A'); git(work, 'commit', '--quiet', '-m', 'fixture repo'); git(work, 'push', '--quiet', 'origin', 'main');

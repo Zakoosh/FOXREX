@@ -93,9 +93,10 @@ test('CLI: dry run by default writes nothing; --write keeps a backup; nothing is
   assert.ok(!/child_process|execFile|spawn|fetch\(/.test(fs.readFileSync(CLI, 'utf8')), 'the tool cannot run git or publish: it only reads and writes one file');
 });
 
-test('the production feed is already v3, empty, and the migration reports no change for it', () => {
+test('the production feed is v3 and migration preserves every published item', () => {
   const prod = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/content.json'), 'utf8'));
-  assert.equal(prod.schemaVersion, 3); assert.deepEqual(prod.items, []); assert.deepEqual(prod.withdrawn, []);
+  assert.equal(prod.schemaVersion, 3); const before = JSON.stringify(prod);
   const r = spawnSync(process.execPath, [CLI], { encoding: 'utf8', cwd: ROOT });
-  assert.equal(r.status, 0, r.stderr); assert.match(r.stdout, /Already schema v3: 0 item\(s\)[\s\S]*no change needed/);
+  assert.equal(r.status, 0, r.stderr); assert.match(r.stdout, /Already schema v3: \d+ item\(s\)[\s\S]*no change needed/);
+  assert.equal(JSON.stringify(JSON.parse(fs.readFileSync(path.join(ROOT, 'data/content.json'), 'utf8'))), before);
 });

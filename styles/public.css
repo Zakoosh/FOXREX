@@ -199,3 +199,15 @@
 .hero h1,.hero__ar{text-align:left}
 [dir="rtl"] .hero h1,[dir="rtl"] .hero__ar{text-align:right}
 .slot__time{flex-direction:column;align-items:flex-start;gap:2px}
+
+/* Economic calendar: scroll within the table, never the document. */
+.calendar-filters { display:flex; flex-wrap:wrap; gap:24px; margin:24px 0; }
+.calendar-filters label { display:flex; align-items:center; gap:10px; }
+.calendar-filters select { font:inherit; color:var(--text, #e8edf5); background:#132033; padding:8px 12px; border:1px solid #38445a; border-radius:8px; }
+.calendar-scroll { max-width:100%; overflow-x:auto; border:1px solid #38445a; border-radius:12px; }
+.calendar-table { width:100%; min-width:820px; border-collapse:collapse; font-size:14px; }
+.calendar-table th, .calendar-table td { padding:16px 12px; text-align:start; border-bottom:1px solid #2d394c; vertical-align:top; }
+.calendar-table th { background:#132033; white-space:nowrap; }
+.calendar-table time { direction:ltr; display:inline-block; }
+.calendar-table small { display:inline-block; max-width:200px; opacity:.75; margin-top:6px; }
+[hidden] { display:none !important; }

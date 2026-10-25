@@ -1,6 +1,6 @@
 # FOXREX Publishing Engine & Studio CMS
 
-Studio is the editorial control plane; the public site is the presentation layer. Nothing reaches foxrex.co without a named operator approving it and explicitly confirming publication.
+Studio is the editorial control plane; the public site is the presentation layer. Studio publication requires a named operator approving and confirming publication. The separate [owner-authorized daily editorial pipeline](DAILY-EDITORIAL.md), authorized on 25 October 2026, may publish sourced website articles and calendar updates automatically; Studio gates are unchanged.
 
 ```
 FOXREX Studio (browser, /studio/)          — library, editor, review, preview, confirmation

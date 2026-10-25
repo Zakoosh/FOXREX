@@ -54,7 +54,7 @@ export function contentPages(feed, h) {
   const attribution = (lang, e) => {
     const a = e.attribution || {};
     const by = has(a.byline) && a.byline !== 'FOXREX Desk' ? L(lang, a.byline) : X(lang, 'FOXREX Desk', 'مكتب FOXREX');
-    const assist = a.assistance === 'ai-assisted' ? ` · ${X(lang, 'AI-assisted, reviewed by the desk', 'بمساعدة الذكاء الاصطناعي، وبمراجعة المكتب')}` : '';
+    const assist = a.assistance === 'ai-assisted' ? ` · ${X(lang, 'AI-assisted editorial', 'تحرير بمساعدة الذكاء الاصطناعي')}` : '';
     return `${X(lang, 'By', 'بقلم')} ${by}${assist}`;
   };
   const freshnessBlock = (lang, e) => {

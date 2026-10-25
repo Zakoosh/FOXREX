@@ -16,13 +16,14 @@ process.env.FOXREX_ALLOW_TEST_CONTENT = '1'; // isolated temp repos only
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', env: { ...process.env, GIT_TERMINAL_PROMPT: '0' } }).trim();
 const SITE_FILES = ['tools/site/build.mjs', 'tools/site/content.mjs', 'tools/site/text.mjs', 'tools/site/content-pages.mjs', 'tools/site/check-feed.mjs', 'tools/site/jsonschema.mjs',
-  'scripts/content/time.js', 'scripts/content/freshness.js', 'scripts/content/select.js', 'studio/cms-model.js', 'data/content.json', 'data/content.schema.json'];
+  'scripts/content/time.js', 'scripts/content/freshness.js', 'scripts/content/select.js', 'studio/cms-model.js', 'data/content.json', 'data/content.schema.json', 'tools/editorial/calendar.mjs', 'data/calendar.json'];
 
 function makeRepo() {
   const base = tmp(), remote = path.join(base, 'remote.git'), work = path.join(base, 'work');
   git(base, 'init', '--quiet', '--bare', '-b', 'main', remote);
   git(base, 'clone', '--quiet', remote, work);
   for (const f of SITE_FILES) { fs.mkdirSync(path.dirname(path.join(work, f)), { recursive: true }); fs.copyFileSync(path.join(ROOT, f), path.join(work, f)); }
+  fs.writeFileSync(path.join(work,'data/content.json'), JSON.stringify({schemaVersion:3,updated:null,publication:null,items:[],withdrawn:[]}));
   execFileSync(process.execPath, ['tools/site/build.mjs'], { cwd: work }); // the committed static site, as in production
   git(work, 'config', 'user.email', 'test@foxrex.invalid'); git(work, 'config', 'user.name', 'FOXREX test'); git(work, 'checkout', '--quiet', '-b', 'main');
   git(work, 'add', '-A'); git(work, 'commit', '--quiet', '-m', 'fixture site'); git(work, 'push', '--quiet', 'origin', 'main');
