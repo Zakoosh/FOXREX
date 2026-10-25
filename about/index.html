@@ -8,9 +8,10 @@
 <link rel="canonical" href="https://foxrex.co/about/">
 <link rel="alternate" hreflang="en" href="https://foxrex.co/about/">
 <link rel="alternate" hreflang="ar" href="https://foxrex.co/ar/about/">
+<link rel="alternate" hreflang="tr" href="https://foxrex.co/tr/about/">
 <link rel="alternate" hreflang="x-default" href="https://foxrex.co/about/">
 <meta name="theme-color" content="#0B1320">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
@@ -29,7 +30,7 @@
 <meta name="twitter:title" content="About — FOXREX">
 <meta name="twitter:description" content="About FOXREX — a market-intelligence and trading-education brand.">
 <meta name="twitter:image" content="https://foxrex.co/assets/brand/og-image.png">
-<script>document.documentElement.className+=" js";</script>
+<script>document.documentElement.className+=" js";try{var theme=localStorage.getItem("foxrex-theme");document.documentElement.dataset.theme=theme==="light"||theme==="dark"?theme:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="dark";}</script>
 <link rel="preload" href="../assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/inter-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../styles/fonts.css">
@@ -37,6 +38,8 @@
 <link rel="stylesheet" href="../styles/base.css">
 <link rel="stylesheet" href="../styles/components.css">
 <link rel="stylesheet" href="../styles/public.css">
+<link rel="stylesheet" href="../styles/editorial.css">
+<link rel="stylesheet" href="../styles/themes.css">
 </head>
 <body data-root="../" data-page="about" data-lang="en">
 <a class="skip" href="#main">Skip to content</a>
@@ -45,7 +48,8 @@
     <a class="fx-logo" href="../" aria-label="FOXREX home"><img src="../assets/brand/foxrex-mark.png" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>
     <nav class="site-nav" aria-label="Primary"><a href="../markets/">Markets</a><a href="../analysis/">Analysis</a><a href="../news/">News</a><a href="../calendar/">Calendar</a><a href="../learn/">Learn</a><a href="../signals/">Signals</a></nav>
     <div class="site-head__end">
-      <a class="lang-toggle" href="../ar/about/" hreflang="ar" lang="ar" data-lang-switch="ar">العربية</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Theme"><span aria-hidden="true">◐</span></button>
+      <nav class="language-picker" aria-label="Language"><a class="lang-toggle" href="../about/" hreflang="en" lang="en" data-lang-switch="en" aria-current="true" aria-label="English">EN</a><a class="lang-toggle" href="../ar/about/" hreflang="ar" lang="ar" data-lang-switch="ar" aria-label="العربية">ع</a><a class="lang-toggle" href="../tr/about/" hreflang="tr" lang="tr" data-lang-switch="tr" aria-label="Türkçe">TR</a></nav>
       <a class="fx-btn fx-btn--primary fx-btn--sm" href="https://t.me/fooxrex" target="_blank" rel="noopener">Join FOXREX</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu" data-menu-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -72,7 +76,7 @@
   <h2>What we do</h2>
   <p>We publish daily market analysis with a focus on gold, major FX pairs, indices and crypto; explain economic news and central-bank decisions; share FOXREX Signals on Telegram; and teach the concepts behind them through REX, our educational identity.</p>
   <h2>How we work</h2>
-  <ul><li><strong>No fake data.</strong> We never publish invented prices, performance, win rates or user numbers. When data is unavailable, we say so.</li><li><strong>Risk first.</strong> Every idea carries an invalidation level and a risk message.</li><li><strong>Transparent AI assistance.</strong> Daily editions use an owner-authorized automated workflow with source and technical checks; Studio retains its manual approval process.</li><li><strong>Education, not advice.</strong> Our content helps you think — it does not tell you what to do with your money.</li></ul>
+  <ul><li><strong>No fake data.</strong> We never publish invented prices, performance, win rates or user numbers. When data is unavailable, we say so.</li><li><strong>Risk first.</strong> Every idea carries an invalidation level and a risk message.</li><li><strong>Source-first publishing.</strong> Our articles link to their sources and distinguish confirmed facts from conditional analysis.</li><li><strong>Education, not advice.</strong> Our content helps you think — it does not tell you what to do with your money.</li></ul>
   <h2>Meet REX</h2>
   <p>REX is the FOXREX fox — our signature for educational content such as REX Explains, REX Note and Ask REX.</p>
 </div></section>
@@ -95,6 +99,7 @@
     </div>
   </div>
 </footer>
+<script src="../scripts/public/tr.js" defer></script>
 <script src="../scripts/public/site.js" defer></script>
 </body>
 </html>

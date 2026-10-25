@@ -22,7 +22,7 @@
   var last = {};
 
   var AR = document.documentElement.lang === 'ar';
-  function label(en, ar) { var span = document.createElement('span'); span.textContent = AR ? ar : en; return span.innerHTML; }
+  function label(en, ar) { var span = document.createElement('span'); span.textContent = AR ? ar : document.documentElement.lang === 'tr' ? (window.FOXREX_TR || {})[en] || en : en; return span.innerHTML; }
   function setState(state, en, ar) { if (!stateEl) return; stateEl.setAttribute('data-state', state); stateEl.innerHTML = label(en, ar); }
   function fmt(sym, n) {
     var dp = /JPY$/.test(sym) ? 3 : /^(XAU|BTC|DXY)/.test(sym) ? 2 : 5;

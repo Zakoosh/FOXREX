@@ -39,7 +39,7 @@ export const SCHEDULE = [
   { id: 'brief', time: '09:00', kind: 'brief', title: ['Morning Brief', 'الموجز الصباحي'], desc: ['What moved overnight, what matters today and the levels we are watching.', 'ما الذي تحرك في الليل، وما الذي يهم اليوم، والمستويات التي نراقبها.'] },
   { id: 'gold', time: '11:00', kind: 'gold', title: ['Gold Focus', 'تركيز الذهب'], desc: ['Structure, bias and scenarios for XAUUSD.', 'بنية الذهب XAUUSD واتجاهه والسيناريوهان المحتملان.'] },
   { id: 'event', time: '14:00', kind: 'event', title: ['The Event', 'الحدث'], desc: ['The key release or decision of the day, such as CPI or NFP — published only when relevant.', 'البيان الأهم في اليوم مثل CPI أو NFP، يُنشر فقط عندما يكون هناك حدث مؤثر.'] },
-  { id: 'open', time: '15:30', kind: 'open', title: ['US Open', 'افتتاح السوق الأمريكي'], desc: ['XAUUSD and the majors into the Wall Street open at 15:30.', 'تحليل XAUUSD قبل افتتاح وول ستريت عند 15:30'] },
+  { id: 'open', time: '15:30', kind: 'open', title: ['US Session Preview', 'استعراض الجلسة الأمريكية'], desc: ['Gold and major FX before the US session; market opening times vary with daylight saving.', 'قراءة الذهب والعملات قبل الجلسة الأمريكية؛ يتغير توقيت افتتاح السوق بحسب التوقيت الصيفي.'] },
   { id: 'recap', time: '22:30', kind: 'recap', title: ['Market Recap', 'ملخص السوق'], desc: ['How the day closed and what it means for tomorrow.', 'كيف أغلق اليوم، وماذا يعني ذلك لجلسة الغد.'] }
 ];
 export const SCHEDULE_EXTRA = [

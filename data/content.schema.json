@@ -302,7 +302,8 @@
         "language": {
           "enum": [
             "en",
-            "ar"
+            "ar",
+            "tr"
           ]
         },
         "translationGroupId": {
@@ -1155,7 +1156,8 @@
         "language": {
           "enum": [
             "en",
-            "ar"
+            "ar",
+            "tr"
           ]
         },
         "translationGroupId": {

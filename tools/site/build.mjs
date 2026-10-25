@@ -22,6 +22,7 @@ import { SITE, MARKETS, SCHEDULE, SCHEDULE_EXTRA, ANALYSIS_CATEGORIES, NEWS_CATE
 import { esc, enText, arText } from './text.mjs';
 import { contentPages, GENERATED_MARK } from './content-pages.mjs';
 import { calendarBody, validateCalendar } from '../editorial/calendar.mjs';
+import { TR, tr, turkishHtml } from './tr.mjs';
 
 const require = createRequire(import.meta.url);
 const CMS = require('../../studio/cms-model.js');
@@ -39,7 +40,7 @@ const UPDATED = { en: '30 September 2026', ar: '30 سبتمبر 2026' };
 let LANG = 'en';
 const AR = () => LANG === 'ar';
 /** Localised text: t(english, arabic). Arabic isolates Latin/number runs in <bdi class="lt">. "\n" → line break. */
-const t = (en, ar) => AR() ? arText(ar ?? en) : enText(en);
+const t = (en, ar) => AR() ? arText(ar ?? en) : enText(LANG === 'tr' ? tr(en) : en);
 const tp = pair => t(pair[0], pair[1]);
 
 const I = {
@@ -64,7 +65,7 @@ const NAV = [
 ];
 
 /* ---------- URL helpers ---------- */
-const outPath = (p, lang) => [lang === 'ar' ? 'ar' : '', p.path].filter(Boolean).join('/');
+const outPath = (p, lang) => [lang === 'ar' ? 'ar' : lang === 'tr' ? 'tr' : '', p.path].filter(Boolean).join('/');
 const absUrl = (p, lang) => { const o = outPath(p, lang); return SITE.origin + (o ? `/${o}/` : '/'); };
 
 /* ---------- layout ---------- */
@@ -73,17 +74,17 @@ function head(p, r) {
   const url = p.canonical || absUrl(p, LANG);
   const alternates = p.alternates
     ? p.alternates.map(a => `<link rel="alternate" hreflang="${a.hreflang}" href="${esc(a.href)}">`).join('\n')
-    : `<link rel="alternate" hreflang="en" href="${absUrl(p, 'en')}">\n<link rel="alternate" hreflang="ar" href="${absUrl(p, 'ar')}">\n<link rel="alternate" hreflang="x-default" href="${absUrl(p, 'en')}">`;
+    : `<link rel="alternate" hreflang="en" href="${absUrl(p, 'en')}">\n<link rel="alternate" hreflang="ar" href="${absUrl(p, 'ar')}">\n<link rel="alternate" hreflang="tr" href="${absUrl(p, 'tr')}">\n<link rel="alternate" hreflang="x-default" href="${absUrl(p, 'en')}">`;
   const hasOtherLang = !p.alternates || p.alternates.some(a => a.hreflang === (ar ? 'en' : 'ar'));
   const article = p.article ? `\n<meta property="article:published_time" content="${esc(p.article.published)}">\n<meta property="article:modified_time" content="${esc(p.article.modified)}">\n<meta property="article:section" content="${esc(p.article.section)}">` : '';
   const pt = ar ? (p.titleAr ?? p.title) : p.title;
   const title = pt ? `${pt} — FOXREX` : (ar ? 'FOXREX — تداول أذكى... فرص أكبر' : 'FOXREX — Trade Smarter. Go Further.');
-  const desc = ar ? (p.descriptionAr || SITE.descriptionAr) : (p.description || SITE.description);
+  const desc = ar ? (p.descriptionAr || p.description || SITE.descriptionAr) : (p.description || SITE.description);
   const og = ar ? 'og-image-ar.png' : 'og-image.png';
   const preload = (ar ? ['ibm-plex-sans-arabic-arabic-400-normal', 'ibm-plex-sans-arabic-arabic-700-normal'] : ['inter-latin-400-normal', 'inter-latin-800-normal'])
     .map(f => `<link rel="preload" href="${r}assets/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join('\n');
   return `<!doctype html>
-<html lang="${ar ? 'ar' : 'en'}" dir="${ar ? 'rtl' : 'ltr'}">
+<html lang="${LANG}" dir="${ar ? 'rtl' : 'ltr'}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -92,7 +93,7 @@ function head(p, r) {
 <link rel="canonical" href="${url}">
 ${alternates}${p.noindex ? '\n<meta name="robots" content="noindex">' : ''}${p.kind ? '\n' + GENERATED_MARK : ''}
 <meta name="theme-color" content="#0B1320">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
 <link rel="icon" type="image/png" sizes="32x32" href="${r}assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="${r}assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="${r}site.webmanifest">
@@ -101,39 +102,44 @@ ${alternates}${p.noindex ? '\n<meta name="robots" content="noindex">' : ''}${p.k
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="${SITE.origin}/assets/brand/${og}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="${SITE.origin}/${p.cover || `assets/brand/${og}`}">
+<meta property="og:image:width" content="${p.cover ? '1672' : '1200'}">
+<meta property="og:image:height" content="${p.cover ? '941' : '630'}">
 <meta property="og:image:alt" content="${ar ? 'FOXREX — تداول أذكى... فرص أكبر' : 'FOXREX — Trade smarter. Go further.'}">
-<meta property="og:locale" content="${ar ? 'ar_AR' : 'en_US'}">${hasOtherLang ? `\n<meta property="og:locale:alternate" content="${ar ? 'en_US' : 'ar_AR'}">` : ''}${article}
+<meta property="og:locale" content="${ar ? 'ar_AR' : LANG === 'tr' ? 'tr_TR' : 'en_US'}">${hasOtherLang ? `\n<meta property="og:locale:alternate" content="${ar ? 'en_US' : 'ar_AR'}">` : ''}${article}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(desc)}">
-<meta name="twitter:image" content="${SITE.origin}/assets/brand/${og}">
-<script>document.documentElement.className+=" js";</script>
+<meta name="twitter:image" content="${SITE.origin}/${p.cover || `assets/brand/${og}`}">
+<script>document.documentElement.className+=" js";try{var theme=localStorage.getItem("foxrex-theme");document.documentElement.dataset.theme=theme==="light"||theme==="dark"?theme:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="dark";}</script>
 ${preload}
 <link rel="stylesheet" href="${r}styles/fonts.css">
 <link rel="stylesheet" href="${r}styles/tokens.css">
 <link rel="stylesheet" href="${r}styles/base.css">
 <link rel="stylesheet" href="${r}styles/components.css">
 <link rel="stylesheet" href="${r}styles/public.css">
+<link rel="stylesheet" href="${r}styles/editorial.css">
+<link rel="stylesheet" href="${r}styles/themes.css">
 ${ar ? `<link rel="stylesheet" href="${r}styles/ar.css">\n` : ''}${p.jsonld && p.jsonld(ar) ? `<script type="application/ld+json">${JSON.stringify(p.jsonld(ar)).replace(/</g, '\\u003c')}</script>\n` : ''}</head>`;
 }
 
 const logo = b => `<a class="fx-logo" href="${b || './'}" aria-label="${AR() ? 'FOXREX — الرئيسية' : 'FOXREX home'}"><img src="${LOGO_SRC}" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>`;
 let LOGO_SRC = '';
 
-function header(active, r, b, alt) {
+function header(active, r, b, alt, p) {
   const link = ([k, en, ar]) => `<a href="${b}${k}/"${active === k ? ' aria-current="page"' : ''}>${t(en, ar)}</a>`;
-  const sw = AR()
-    ? `<a class="lang-toggle" href="${alt}" hreflang="en" lang="en" data-lang-switch="en">English</a>`
-    : `<a class="lang-toggle" href="${alt}" hreflang="ar" lang="ar" data-lang-switch="ar">العربية</a>`;
+  const sw = `<nav class="language-picker" aria-label="${t('Language','اللغة')}">${['en','ar','tr'].map(lang => {
+    const alternate = p.alternates?.find(a => a.hreflang === lang);
+    const target = p.kind ? (alternate ? alternate.href.replace(SITE.origin + '/', '') : CMS.hubPath(p.active === 'home' ? 'desk' : p.active || 'analysis', lang)) : (outPath(p, lang) ? outPath(p, lang) + '/' : '');
+    return `<a class="lang-toggle" href="${r}${target || './'}" hreflang="${lang}" lang="${lang}" data-lang-switch="${lang}"${LANG === lang ? ' aria-current="true"' : ''} aria-label="${{en:'English',ar:'العربية',tr:'Türkçe'}[lang]}">${{en:'EN',ar:'ع',tr:'TR'}[lang]}</a>`;
+  }).join('')}</nav>`;
   return `<a class="skip" href="#main">${t('Skip to content', 'انتقل إلى المحتوى')}</a>
 <header class="site-head">
   <div class="wrap">
     ${logo(b)}
     <nav class="site-nav" aria-label="${AR() ? 'التنقل الرئيسي' : 'Primary'}">${NAV.map(link).join('')}</nav>
     <div class="site-head__end">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="${t('Switch to light mode','تفعيل الوضع الفاتح')}" title="${t('Theme','المظهر')}"><span aria-hidden="true">◐</span></button>
       ${sw}
       <a class="fx-btn fx-btn--primary fx-btn--sm" href="${SITE.social.telegram.url}" target="_blank" rel="noopener">${t('Join FOXREX', 'انضم إلى FOXREX')}</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="${AR() ? 'القائمة' : 'Menu'}" data-menu-btn>${I.menu}</button>
@@ -160,7 +166,7 @@ function footer(r, b) {
       <div>
         ${logo(b)}
         ${AR() ? `<p class="site-foot__ar">${esc(SITE.taglineAr)}</p><p class="site-foot__tag">${SITE.tagline}</p>`
-               : `<p class="site-foot__tag">${SITE.tagline}</p><p style="margin-top:10px" lang="ar" dir="rtl">${esc(SITE.taglineAr)}</p>`}
+               : `<p class="site-foot__tag">${SITE.tagline}</p>${LANG === 'tr' ? '' : `<p style="margin-top:10px" lang="ar" dir="rtl">${esc(SITE.taglineAr)}</p>`}`}
         <div class="social" aria-label="${AR() ? 'حسابات FOXREX' : 'FOXREX social'}">${socialLinks()}</div>
       </div>
       ${col(t('Explore', 'استكشف'), [[`${b}markets/`, t('Markets', 'الأسواق')], [`${b}gold/`, t('Gold', 'الذهب')], [`${b}analysis/`, t('Analysis', 'التحليلات')], [`${b}news/`, t('News', 'الأخبار')], [`${b}learn/`, t('Learn', 'تعلّم')], [`${b}signals/`, t('Signals', 'الإشارات')]])}
@@ -178,14 +184,14 @@ function footer(r, b) {
 function page(p) {
   const o = outPath(p, LANG);
   const r = o ? '../'.repeat(o.split('/').length) : '';
-  const b = r + (AR() ? 'ar/' : '');
+  const b = r + (AR() ? 'ar/' : LANG === 'tr' ? 'tr/' : '');
   LOGO_SRC = `${r}assets/brand/foxrex-mark.png`;
   const altOut = outPath(p, AR() ? 'en' : 'ar');
   const alt = p.altHref != null ? (r + p.altHref) || './' : r + (altOut ? altOut + '/' : '') || './';
-  const scripts = ['scripts/public/site.js', ...(p.scripts || [])].map(s => `<script src="${r}${s}" defer></script>`).join('\n');
-  return `${head(p, r)}
+  const scripts = ['scripts/public/tr.js', 'scripts/public/site.js', ...(p.scripts || [])].map(s => `<script src="${r}${s}" defer></script>`).join('\n');
+  const html = `${head(p, r)}
 <body data-root="${r}" data-page="${p.id}" data-lang="${LANG}">
-${header(p.active || p.id, r, b, alt)}
+${header(p.active || p.id, r, b, alt, p)}
 <main id="main">
 ${p.body(r, b)}
 </main>
@@ -194,6 +200,7 @@ ${scripts}
 </body>
 </html>
 `;
+  return LANG === 'tr' ? turkishHtml(html) : html;
 }
 
 /* ---------- reusable blocks ---------- */
@@ -286,7 +293,7 @@ const PAGES = [];
 // Static cards make articles discoverable without JavaScript.
 function editorialShelf(b) {
   const items = FEED.items.filter(e => e.language === LANG && e.access === 'PUBLIC').sort((a,b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 6);
-  return `<section class="section section--tight"><div class="wrap">${sectionHead(t('From the desk', 'من مكتب التحرير'), t('Latest brief & articles', 'أحدث الموجزات والمقالات'), '', more(`${b}calendar/`, 'Economic calendar', 'التقويم الاقتصادي'))}<div class="grid grid--3">${items.map(e => `<article class="fx-card"><p class="fx-card__meta"><time datetime="${esc(e.publishedAt)}">${esc(e.editorialDate)}</time> · ${t('FOXREX Desk', 'مكتب FOXREX')}</p><h3><a href="${b}${esc(e.urlPath)}">${AR() ? arText(e.title) : enText(e.title)}</a></h3><p>${AR() ? arText(e.summary) : enText(e.summary)}</p></article>`).join('')}</div></div></section>`;
+  return `<section class="section section--tight"><div class="wrap">${sectionHead(t('Latest editions', 'أحدث الإصدارات'), t('Latest brief & articles', 'أحدث الموجزات والمقالات'), '', more(`${b}calendar/`, 'Economic calendar', 'التقويم الاقتصادي'))}<div class="grid grid--3">${items.map(e => `<article class="fx-card editorial-card">${e.image ? `<a href="${b}${esc(e.urlPath)}" tabindex="-1" aria-hidden="true"><img class="editorial-card__image" src="/${esc(e.image.src)}" alt="" width="1600" height="900" loading="lazy"></a>` : ''}<p class="fx-card__meta"><time datetime="${esc(e.publishedAt)}">${esc(e.editorialDate)}</time></p><h3><a href="${b}${esc(e.urlPath)}">${AR() ? arText(e.title) : enText(e.title)}</a></h3><p>${AR() ? arText(e.summary) : enText(e.summary)}</p></article>`).join('')}</div></div></section>`;
 }
 
 
@@ -296,7 +303,7 @@ function heroEn(b) {
     <div>
       <span class="fx-badge fx-badge--primary"><i></i>Market intelligence &amp; trading education</span>
       <h1><span>TRADE SMARTER.</span><span class="accent">GO FURTHER.</span></h1>
-      <p class="hero__ar" lang="ar" dir="rtl">${esc(SITE.taglineAr)}</p>
+      ${LANG === 'tr' ? '<p class="hero__ar">Altın ve döviz için net bir bakış.</p>' : `<p class="hero__ar" lang="ar" dir="rtl">${esc(SITE.taglineAr)}</p>`}
       <p class="hero__lead">FOXREX turns market noise into clear, structured intelligence — technical analysis, gold coverage, economic news and trading education, always published with its risk.</p>
       <div class="hero__ctas">
         <a class="fx-btn fx-btn--primary" href="${b}markets/">Explore Markets ${I.arrow}</a>
@@ -331,7 +338,7 @@ function heroAr(b) {
 }
 
 PAGES.push({ id: 'home', path: '', scripts: ['scripts/public/market.js', 'scripts/public/content.js'],
-  jsonld: ar => ({ '@context': 'https://schema.org', '@type': 'Organization', name: 'FOXREX', url: SITE.origin + (ar ? '/ar/' : '/'), inLanguage: ar ? 'ar' : 'en', logo: `${SITE.origin}/assets/brand/icon-512.png`, slogan: ar ? SITE.taglineAr : 'Trade smarter. Go further.', sameAs: Object.values(SITE.social).map(s => s.url).filter(Boolean) }),
+  jsonld: ar => ({ '@context': 'https://schema.org', '@type': 'Organization', name: 'FOXREX', url: SITE.origin + (ar ? '/ar/' : LANG === 'tr' ? '/tr/' : '/'), inLanguage: ar ? 'ar' : LANG, logo: `${SITE.origin}/assets/brand/icon-512.png`, slogan: ar ? SITE.taglineAr : 'Trade smarter. Go further.', sameAs: Object.values(SITE.social).map(s => s.url).filter(Boolean) }),
   body: (r, b) => `
 ${AR() ? heroAr(b) : heroEn(b)}
 ${ticker()}
@@ -390,7 +397,7 @@ ${editorialShelf(b)}
     <div class="why reveal">
       <div>${I.data}<h3>${t('Data', 'البيانات')}</h3><p>${t('Verified market data only. When a feed is not connected, we say so instead of showing estimates.', 'بيانات سوق موثقة فقط. وعندما لا يكون المصدر متصلًا نقول ذلك بوضوح بدل عرض تقديرات.')}</p></div>
       <div>${I.chart}<h3>${t('Market Analysis', 'تحليل الأسواق')}</h3><p>${t('Structure, levels and scenarios across gold, FX, indices and crypto.', 'البنية والمستويات والسيناريوهات للذهب والعملات والمؤشرات والعملات الرقمية.')}</p></div>
-      <div>${I.ai}<h3>${t('AI Intelligence', 'الذكاء الاصطناعي')} <span class="fx-badge fx-badge--ai" style="margin-inline-start:6px">${t('In development', 'قيد التطوير')}</span></h3><p>${t('AI assists research and writing. Owner-authorized daily editions are published automatically after source and technical checks.', 'يساعد الذكاء الاصطناعي في البحث والكتابة. تُنشر الإصدارات اليومية تلقائيًا بتفويض المالك بعد فحص المصادر والمتطلبات التقنية.')}</p></div>
+      <div>${I.ai}<h3>${t('Research workflow', 'منهج البحث')}</h3><p>${t('Source-based research, clear dates and consistent publication checks.', 'بحث يستند إلى المصادر، وتواريخ واضحة، وفحوص منتظمة قبل النشر.')}</p></div>
       <div>${I.shield}<h3>${t('Risk Awareness', 'الوعي بالمخاطر')}</h3><p>${t('Every idea ships with an invalidation level and a clear risk message.', 'كل فكرة تُنشر مع مستوى إلغاء ورسالة مخاطر واضحة.')}</p></div>
       <div>${I.bolt}<h3>${t('Speed', 'السرعة')}</h3><p>${t('A daily edition and a sourced calendar of selected high-impact releases.', 'إصدار يومي وتقويم موثّق لأحداث اقتصادية مختارة وعالية التأثير.')}</p></div>
       <div>${I.research}<h3>${t('Research', 'البحث')}</h3><p>${t('Macro drivers explained, so you understand the move — not just the level.', 'نشرح المحركات الاقتصادية لتفهم الحركة نفسها، لا المستوى فقط.')}</p></div>
@@ -486,13 +493,13 @@ PAGES.push({ id: 'about', path: 'about', title: 'About', titleAr: 'من نحن',
   <h2>ماذا نقدم</h2>
   <p>${arText('ننشر تحليلات يومية للأسواق مع تركيز خاص على الذهب وأزواج العملات الرئيسية والمؤشرات والعملات الرقمية، ونشرح الأخبار الاقتصادية وقرارات البنوك المركزية، ونشارك إشارات FOXREX على Telegram، ونعلّم المفاهيم التي تقف خلفها عبر REX، هويتنا التعليمية.')}</p>
   <h2>كيف نعمل</h2>
-  <ul><li><strong>لا بيانات وهمية.</strong> لا ننشر أسعارًا أو أداءً أو نسب نجاح أو أعداد مستخدمين مختلقة، وعندما لا تتوفر البيانات نقول ذلك.</li><li><strong>المخاطرة أولًا.</strong> كل فكرة تأتي مع مستوى إلغاء ورسالة مخاطر واضحة.</li><li><strong>وضوح استخدام الذكاء الاصطناعي.</strong> تُنشر الإصدارات اليومية تلقائيًا بتفويض المالك وبعد فحص المصادر والمتطلبات التقنية؛ ويحتفظ الاستوديو بمسار اعتماده اليدوي.</li><li><strong>تعليم، لا نصيحة.</strong> محتوانا يساعدك على التفكير، ولا يخبرك بما تفعله بأموالك.</li></ul>
+  <ul><li><strong>لا بيانات وهمية.</strong> لا ننشر أسعارًا أو أداءً أو نسب نجاح أو أعداد مستخدمين مختلقة، وعندما لا تتوفر البيانات نقول ذلك.</li><li><strong>المخاطرة أولًا.</strong> كل فكرة تأتي مع مستوى إلغاء ورسالة مخاطر واضحة.</li><li><strong>المصادر أولًا.</strong> تربط مقالاتنا المعلومات بمصادرها، وتفصل بين الوقائع المؤكدة والتحليل المشروط.</li><li><strong>تعليم، لا نصيحة.</strong> محتوانا يساعدك على التفكير، ولا يخبرك بما تفعله بأموالك.</li></ul>
   <h2>تعرّف على REX</h2>
   <p>${arText('REX هو ثعلب FOXREX، وتوقيعنا على المحتوى التعليمي: REX يشرح، وملاحظة REX، واسأل REX.')}</p>` : `
   <h2>What we do</h2>
   <p>We publish daily market analysis with a focus on gold, major FX pairs, indices and crypto; explain economic news and central-bank decisions; share FOXREX Signals on Telegram; and teach the concepts behind them through REX, our educational identity.</p>
   <h2>How we work</h2>
-  <ul><li><strong>No fake data.</strong> We never publish invented prices, performance, win rates or user numbers. When data is unavailable, we say so.</li><li><strong>Risk first.</strong> Every idea carries an invalidation level and a risk message.</li><li><strong>Transparent AI assistance.</strong> Daily editions use an owner-authorized automated workflow with source and technical checks; Studio retains its manual approval process.</li><li><strong>Education, not advice.</strong> Our content helps you think — it does not tell you what to do with your money.</li></ul>
+  <ul><li><strong>No fake data.</strong> We never publish invented prices, performance, win rates or user numbers. When data is unavailable, we say so.</li><li><strong>Risk first.</strong> Every idea carries an invalidation level and a risk message.</li><li><strong>Source-first publishing.</strong> Our articles link to their sources and distinguish confirmed facts from conditional analysis.</li><li><strong>Education, not advice.</strong> Our content helps you think — it does not tell you what to do with your money.</li></ul>
   <h2>Meet REX</h2>
   <p>REX is the FOXREX fox — our signature for educational content such as REX Explains, REX Note and Ask REX.</p>`}
 </div></section>` });
@@ -515,6 +522,7 @@ legal('privacy', 'Privacy Policy', 'سياسة الخصوصية', 'How the FOXRE
 <h2>What we collect</h2>
 <p>The website does not use accounts, contact forms, advertising trackers or analytics cookies. We do not sell personal data.</p>
 <h2>Stored on your device</h2>
+<p>The theme preference is saved on your device under the key <code>foxrex-theme</code>.</p>
 <p>If you switch language, your choice is saved in your browser's local storage under the key <code>foxrex-lang</code>. You can clear it at any time through your browser settings.</p>
 <h2>Third-party services</h2>
 <ul><li><strong>Hosting:</strong> the site is served by GitHub Pages, which may log technical request data such as IP addresses for security and operations.</li><li><strong>Fonts:</strong> fonts are hosted on foxrex.co itself; no third-party font service is contacted.</li><li><strong>Social platforms:</strong> links to Telegram, Instagram and Facebook take you to those services, which apply their own privacy policies.</li></ul>
@@ -596,10 +604,11 @@ const contentSitemap = CONTENT.sitemap.map(u => `  <url><loc>${esc(u.loc)}</loc>
 const sitemapUrls = PAGES.map(p => {
   const pri = p.id === 'home' ? '1.0' : ['privacy', 'terms', 'risk-disclosure'].includes(p.id) ? '0.3' : '0.8';
   const freq = ['home', 'analysis', 'news', 'gold'].includes(p.id) ? 'daily' : 'monthly';
-  const alts = `<xhtml:link rel="alternate" hreflang="en" href="${absUrl(p, 'en')}"/><xhtml:link rel="alternate" hreflang="ar" href="${absUrl(p, 'ar')}"/><xhtml:link rel="alternate" hreflang="x-default" href="${absUrl(p, 'en')}"/>`;
-  return ['en', 'ar'].map(l => `  <url><loc>${absUrl(p, l)}</loc>${alts}<changefreq>${freq}</changefreq><priority>${pri}</priority></url>`).join('\n');
+  const alts = `<xhtml:link rel="alternate" hreflang="en" href="${absUrl(p, 'en')}"/><xhtml:link rel="alternate" hreflang="ar" href="${absUrl(p, 'ar')}"/><xhtml:link rel="alternate" hreflang="tr" href="${absUrl(p, 'tr')}"/><xhtml:link rel="alternate" hreflang="x-default" href="${absUrl(p, 'en')}"/>`;
+  return ['en', 'ar', 'tr'].map(l => `  <url><loc>${absUrl(p, l)}</loc>${alts}<changefreq>${freq}</changefreq><priority>${pri}</priority></url>`).join('\n');
 }).join('\n');
 const extra = {
+  'scripts/public/tr.js': '/* Generated from data/locales/tr.json. */\nwindow.FOXREX_TR=' + JSON.stringify(TR) + ';\n',
   'robots.txt': `User-agent: *\nAllow: /\nDisallow: /studio/\nDisallow: /foxrex-studio.html\n\nSitemap: ${SITE.origin}/sitemap.xml\n`,
   'sitemap.xml': `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${sitemapUrls}${contentSitemap ? '\n' + contentSitemap : ''}\n</urlset>\n`,
   'site.webmanifest': JSON.stringify({ name: 'FOXREX', short_name: 'FOXREX', description: SITE.description, start_url: '/', display: 'standalone', background_color: '#0B1320', theme_color: '#0B1320', icons: [{ src: '/assets/brand/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: '/assets/brand/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] }, null, 2) + '\n'
@@ -607,7 +616,7 @@ const extra = {
 
 /* ---------- write / check / plan ---------- */
 const outputs = new Map();
-for (const lang of ['en', 'ar']) {
+for (const lang of ['en', 'ar', 'tr']) {
   LANG = lang;
   for (const p of PAGES) { const o = outPath(p, lang); outputs.set(o ? `${o}/index.html` : 'index.html', page(p)); }
 }

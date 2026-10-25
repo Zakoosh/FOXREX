@@ -102,7 +102,7 @@
       <label class="cms-f" style="flex:1 1 200px"><span>بحث</span><input type="search" id="cms-q" data-cfq value="${E(s.q)}" placeholder="عنوان، رمز، معرّف…" dir="auto"></label>
       ${sel('type', 'النوع', TYPES_ORDER.concat(LEGACY_TYPES).map(t => [t, typeLabel(t)]))}
       ${sel('status', 'الحالة', C.STATES.map(x => [x, ST_AR[x]]))}
-      ${sel('language', 'اللغة', [['en', 'English'], ['ar', 'العربية']])}
+      ${sel('language', 'اللغة', [['en', 'English'], ['ar', 'العربية'], ['tr', 'Türkçe']])}
       ${sel('symbol', 'الرمز', syms.map(x => [x, x]))}
       ${sel('category', 'الفئة', cats.map(x => [x, x]))}
       ${sel('market', 'السوق', [...new Set((s.list || []).map(r => r.market).filter(Boolean))].map(x => [x, x]))}
@@ -201,7 +201,7 @@
       ${section('المصادر', 'Sources', sourcesEditor())}
       ${section('المخاطر', 'Risk', fld('إفصاح المخاطر', 'riskDisclosure', 'area', { req: !!t.risk, rows: 2 }))}
     </div><div>
-      ${section('النشر', 'Publishing', `${fld('التوقيع (اختياري)', 'byline', 'text', { hint: 'افتراضيًا: FOXREX Desk — لا تستخدم اسمًا غير حقيقي' })}${fld('القصة الرئيسية', 'lead', 'select', { options: [['true', 'نعم — What Matters Now']] })}<dl class="kv"><dt>الطبقة</dt><dd class="ltr">${E(t.layer || '—')}</dd><dt>الرابط الدائم</dt><dd class="ltr">${r.live && s.recPermalink ? `<a target="_blank" rel="noopener" href="${E(s.recPermalink)}">${E(s.recPermalink)}</a>` : 'يُحدَّد عند أول نشر ثم لا يتغير'}</dd><dt>اللغة</dt><dd>${d.language === 'ar' ? 'العربية' : 'English'}</dd><dt>قسم الموقع</dt><dd class="ltr">${E(t.section || '—')}</dd><dt>الوجهات</dt><dd>${C.destinations(d.type).map(p => `<a class="ltr" target="_blank" rel="noopener" href="${E(C.pageUrl(p, d.language, 'https://foxrex.co'))}">${E(C.pageUrl(p, d.language, ''))}</a>`).join('<br>') || '—'}</dd>
+      ${section('النشر', 'Publishing', `${fld('التوقيع (اختياري)', 'byline', 'text', { hint: 'افتراضيًا: FOXREX Desk — لا تستخدم اسمًا غير حقيقي' })}${fld('القصة الرئيسية', 'lead', 'select', { options: [['true', 'نعم — What Matters Now']] })}<dl class="kv"><dt>الطبقة</dt><dd class="ltr">${E(t.layer || '—')}</dd><dt>الرابط الدائم</dt><dd class="ltr">${r.live && s.recPermalink ? `<a target="_blank" rel="noopener" href="${E(s.recPermalink)}">${E(s.recPermalink)}</a>` : 'يُحدَّد عند أول نشر ثم لا يتغير'}</dd><dt>اللغة</dt><dd>${d.language === 'ar' ? 'العربية' : d.language === 'tr' ? 'Türkçe' : 'English'}</dd><dt>قسم الموقع</dt><dd class="ltr">${E(t.section || '—')}</dd><dt>الوجهات</dt><dd>${C.destinations(d.type).map(p => `<a class="ltr" target="_blank" rel="noopener" href="${E(C.pageUrl(p, d.language, 'https://foxrex.co'))}">${E(C.pageUrl(p, d.language, ''))}</a>`).join('<br>') || '—'}</dd>
         <dt>نسخة النشر</dt><dd class="num">${r.publishing ? r.publishing.publishVersion : 0}</dd><dt>آخر نشر</dt><dd>${fmt(r.publishing && r.publishing.lastPublishedAt)}</dd><dt>معتمد من</dt><dd>${E(r.audit && r.audit.approvedBy || '—')} ${r.approvedAt ? '· ' + fmt(r.approvedAt) : ''}</dd></dl>`)}
       ${section('الترجمة', 'Translation', `<p class="hint">كل لغة سجل مستقل يحتاج مراجعته واعتماده الخاص.</p>${sib ? `<p><button class="linkish" data-act="cms-open" data-id="${E(sib.id)}">${other.toUpperCase()} · ${E(sib.title || '(بدون عنوان)')}</button> ${st(sib.status)}</p>` :
         `<p class="hint">لا توجد نسخة ${other === 'ar' ? 'عربية' : 'إنجليزية'}.</p><div class="row"><button class="btn" data-act="cms-translate" data-id="${E(d.id)}" data-mode="blank">مسودة ترجمة فارغة</button><button class="btn" data-act="cms-translate" data-id="${E(d.id)}" data-mode="ai">${other === 'ar' ? 'توليد مسودة عربية (AI)' : 'Generate English draft (AI)'}</button></div><p class="hint">مخرجات الذكاء الاصطناعي تُحفظ كمسودة فقط — لا اعتماد ولا نشر تلقائي.</p>`}`)}
@@ -262,10 +262,10 @@
   const FOCUS = { gold: '[data-gold-focus]', desk: '[data-editorial]', analysis: '[data-analysis-list]', news: '[data-news-list]', learn: '[data-learn-list]', signals: '[data-signal-list],[data-signal-results]' };
   function renderPreview() {
     const m = X().modal, r = m.rec, e = m.pv.entry, mode = m.pv.mode;
-    const src = '../' + (r.language === 'ar' ? 'ar/' : '') + (C.PAGE_PATH[m.page] || '') + '?preview=1';
+    const src = '../' + (r.language === 'ar' ? 'ar/' : r.language === 'tr' ? 'tr/' : '') + (C.PAGE_PATH[m.page] || '') + '?preview=1';
     modal(`<div class="cms-prev"><div class="cms-prev__side">
       <h2>معاينة قبل النشر</h2>
-      <dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(typeLabel(r.type))} — ${E(e.title)}</dd><dt>اللغة</dt><dd>${r.language === 'ar' ? 'العربية' : 'English'}</dd>
+      <dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(typeLabel(r.type))} — ${E(e.title)}</dd><dt>اللغة</dt><dd>${r.language === 'ar' ? 'العربية' : r.language === 'tr' ? 'Türkçe' : 'English'}</dd>
         <dt>الرابط الدائم</dt><dd class="ltr">${E(m.pv.canonicalUrl || '—')}</dd><dt>الطبقة</dt><dd class="ltr">${E(e.layer || '—')}</dd>
         <dt>الوجهات</dt><dd>${m.pv.destinations.map(d => `<button class="chip" data-act="cms-prev-page" data-page="${E(d.page)}" aria-pressed="${d.page === m.page}">${E(d.page)}</button>`).join(' ')}</dd>
         <dt>الملخص</dt><dd dir="auto">${E(e.summary)}</dd>${e.body ? `<dt>النص</dt><dd dir="auto" class="cms-clip">${E(e.body.slice(0, 400))}${e.body.length > 400 ? '…' : ''}</dd>` : ''}
@@ -282,7 +282,7 @@
   }
   function confirmPublish() {
     const m = X().modal, r = m.rec, e = m.pv.entry;
-    modal(`<h2>نشر هذا المحتوى؟</h2><dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(typeLabel(r.type))} — ${E(e.title)}</dd><dt>اللغة</dt><dd>${r.language === 'ar' ? 'العربية' : 'English'}</dd>
+    modal(`<h2>نشر هذا المحتوى؟</h2><dl class="kv"><dt>المحتوى</dt><dd dir="auto">${E(typeLabel(r.type))} — ${E(e.title)}</dd><dt>اللغة</dt><dd>${r.language === 'ar' ? 'العربية' : r.language === 'tr' ? 'Türkçe' : 'English'}</dd>
       <dt>الوجهات</dt><dd>${m.pv.destinations.map(d => E(d.page)).join('، ')}</dd><dt>النسخة</dt><dd class="num">v${e.publishVersion}</dd></dl>
       <p class="warnbox">سيؤدي هذا إلى تحديث ملف المحتوى العام لـ FOXREX (data/content.json) وتوليد الصفحة الدائمة (${E(m.pv.canonicalUrl || '')}) والأرشيف وخريطة الموقع، ثم إنشاء commit ودفعه إلى GitHub Pages.</p>
       <div class="row"><button class="btn" data-act="cms-close">إلغاء</button><button class="btn pri" data-act="cms-publish">نشر</button></div><div id="cms-pub-out"></div>`);

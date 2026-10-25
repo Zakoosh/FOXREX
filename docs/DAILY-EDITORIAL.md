@@ -8,8 +8,8 @@ The ChatGPT task **نشر FOXREX اليومي** runs each morning around 08:00 E
 
 ## Required package
 
-1. Current-day brief, gold and major FX, in Arabic and English. On weekends explicitly label it a weekend/outlook brief; do not manufacture a closing price or call it live.
-2. At least one original sourced bilingual article on gold, FX, macro or trading education. Check existing titles/URLs and vary the topic. All published items need permanent pages and must be discoverable.
+1. Current-day brief, gold and major FX, in Arabic, English and Turkish. On weekends explicitly label it a weekend/outlook brief; do not manufacture a closing price or call it live.
+2. At least one original sourced trilingual article on gold, FX, macro or trading education. Check existing titles/URLs and vary the topic. All published items need permanent pages and must be discoverable.
 3. Today's verified events and a rolling next-seven-day calendar. Official release dates and agency timezones take precedence. Coverage may be selective but must say so. Each event includes date/time (UTC stored, Europe/Istanbul displayed), country/currency, bilingual title, source and check time. Impact is an editorial judgment. Previous, consensus and actual must be null unless each has a source URL. Never publish an actual before release. A blank calendar filter means no listed verified events, not no global events.
 
 Use fresh primary research for important statements. Distinguish facts, sourced consensus and conditional interpretation. No invented prices, support/resistance, returns, probabilities or release times. Do not import the older Claude draft PRs without fresh verification. Do not copy source articles. Preserve brand/design and EN/AR pairing. No paid APIs, social posts or trade execution.
@@ -29,7 +29,7 @@ Create `content-ops/daily/YYYY-MM-DD/package.json` with:
 }
 ```
 
-Each record uses `type`, `language`, `slug`, `title`, `summary`, `body`, `sourceReferences` and type-specific `fields`. Sources require current-day `retrievedAt`. The pipeline generates IDs/groups and publication timestamps, validates CMS records and the entire canonical feed, and records `origin: scheduled-editorial` and AI assistance honestly. It never claims a human approved an AI-written item. Studio records cannot be overwritten by this pipeline. Signal and trading-idea publication are excluded. Each item requires EN+AR.
+Each record uses `type`, `language`, `slug`, `title`, `summary`, `body`, `sourceReferences` and type-specific `fields`. Sources require current-day `retrievedAt`. The pipeline generates IDs/groups and publication timestamps, validates CMS records and the entire canonical feed, and records `origin: scheduled-editorial` and AI assistance honestly. It never claims a human approved an AI-written item. Studio records cannot be overwritten by this pipeline. Signal and trading-idea publication are excluded. Each item requires EN+AR+TR.
 
 ```sh
 node tools/editorial/publish.mjs content-ops/daily/YYYY-MM-DD/package.json
@@ -44,10 +44,14 @@ npm run check
 
 Commit validated feed, calendar, generated pages, sitemap, manifest and daily provenance in **one atomic Git commit**, based on the current deployment head. Never force-push or replace concurrent work. Read the head again before updating its ref; if changed, rebuild from the new head. If git push is unavailable, GitHub `create_tree` + `create_commit` + non-forced `update_ref` can publish the same validated files. Do not mutate the public feed by hand or skip checks.
 
-Daily IDs use the editorial date and slug; identical retries do not add entries or increment versions. Within-day edits preserve first publication and URL. New evergreen articles must have new slugs; do not collide with existing permanent URLs. Preserve older content and Studio withdrawals. Market-sensitive copy needs `dataAsOf` and a reasonable `validUntil`. Article pages show source links and AI attribution; archives remain addressable.
+Daily IDs use the editorial date and slug; identical retries do not add entries or increment versions. Within-day edits preserve first publication and URL. New evergreen articles must have new slugs; do not collide with existing permanent URLs. Preserve older content and Studio withdrawals. Market-sensitive copy needs `dataAsOf` and a reasonable `validUntil`. Article pages show source links, dates, covers and contextual CTAs without public editor/AI labels; archives remain addressable.
 
 After the commit, inspect Pages build status, fetch the served public feed/calendar and open the exact article URLs. Report `COMMITTED`, `DEPLOYED`, and `LIVE_VERIFIED` separately. Never claim live success just because a commit exists. If research is insufficient, omit unsupported details and publish the verified subset with a clear coverage/data note. If deployment fails, report the real error.
 
 ## Calendar behavior
 
 `data/calendar.json` is validated before site generation by `tools/editorial/calendar.mjs`. `/calendar/` and `/ar/calendar/` contain static, crawlable rows; a small script filters today/next seven days/currency, updates across date boundaries, and shows a stale warning after 36 hours. Static rows are available without JavaScript. This is a daily editorial calendar, not a real-time actual-results feed.
+
+## Presentation requirements (owner update, 26 October 2026)
+
+Use the professional article template with topic-relevant owned covers, short paragraphs, useful first-line subheadings, a table of contents and calendar/Telegram CTAs. Keep source links, dates and internal provenance; do not display an editor or AI byline. Every new item must have Arabic, English and Turkish records and meaningful alt text. Preserve the semantic dark/light themes. Translate new Turkish labels in data/locales/tr.json and use localized dates. See EDITORIAL-EXPERIENCE.md.

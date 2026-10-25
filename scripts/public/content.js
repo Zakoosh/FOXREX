@@ -9,7 +9,7 @@
   'use strict';
   var root = document.body.getAttribute('data-root') || '';
   var TZ = 'Europe/Istanbul';
-  var LANG = document.documentElement.lang === 'ar' ? 'ar' : 'en';
+  var LANG = ['en','ar','tr'].indexOf(document.documentElement.lang) >= 0 ? document.documentElement.lang : 'en';
   var AR = LANG === 'ar';
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -29,14 +29,14 @@
     var s = typeof v === 'string' ? v : (AR ? (v.ar || v.en) : (v.en || v.ar)) || '';
     return AR ? arText(s) : esc(s);
   }
-  function T(en, ar) { return L({ en: en, ar: ar }); }
+  function T(en, ar) { return LANG === 'tr' ? L((window.FOXREX_TR || {})[en] || en) : L({ en: en, ar: ar }); }
   function has(v) { return typeof v === 'string' ? v.trim() !== '' : v != null; }
   function paras(s) { return String(s || '').split(/\n\s*\n/).map(function (p) { return p.trim() ? '<p>' + L(p.trim()).replace(/\n/g, '<br>') + '</p>' : ''; }).join(''); }
   function media(src) { return typeof src === 'string' && /^assets\/media\/[a-z0-9][a-z0-9\/_-]*\.(png|jpe?g|webp)$/.test(src) ? root + src : ''; }
   function https(u) { return typeof u === 'string' && /^https:\/\/[^\s<>"']+$/.test(u) ? u : ''; }
   function time(iso) {
     var d = new Date(iso); if (isNaN(d)) return '';
-    return '<time datetime="' + esc(d.toISOString()) + '" class="ltr num">' + esc(d.toLocaleString('en-GB', { timeZone: TZ, day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })) + ' IST</time>';
+    return '<time datetime="' + esc(d.toISOString()) + '" class="ltr num">' + esc(d.toLocaleString(AR ? 'ar-u-nu-latn' : LANG === 'tr' ? 'tr-TR' : 'en-GB', { timeZone: TZ, day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })) + ' ' + T('Istanbul', 'بتوقيت إسطنبول') + '</time>';
   }
   function istDate(d) { return new Date(d).toLocaleDateString('en-CA', { timeZone: TZ }); }
   var BIAS = { bullish: ['Bullish', 'صاعد'], bearish: ['Bearish', 'هابط'], neutral: ['Neutral', 'محايد'] };
@@ -48,7 +48,7 @@
     WEEKLY_OUTLOOK: ['Weekly Outlook', 'النظرة الأسبوعية'], TRADING_IDEA: ['Trading Idea', 'فكرة تداول'] };
   var REX_FORMAT = { explainer: 'REX EXPLAINS', lesson: 'REX EXPLAINS', note: 'REX NOTE', qa: 'ASK REX' };
   /* Permanent page of an item (same path in both editions, Arabic under /ar/). */
-  function href(e) { return e && typeof e.urlPath === 'string' && /^[a-z0-9][a-z0-9\/-]*\/$/.test(e.urlPath) ? root + (AR ? 'ar/' : '') + e.urlPath : ''; }
+  function href(e) { return e && typeof e.urlPath === 'string' && /^[a-z0-9][a-z0-9\/-]*\/$/.test(e.urlPath) ? root + (AR ? 'ar/' : LANG === 'tr' ? 'tr/' : '') + e.urlPath : ''; }
   function title(e) { var u = href(e); return u ? '<a href="' + esc(u) + '">' + L(e.title) + '</a>' : L(e.title); }
   var arrow = '<svg class="fx-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
@@ -159,7 +159,7 @@
 
   function learnCard(l) {
     var t = REX_FORMAT[l.format] || 'REX EXPLAINS';
-    return '<article class="fx-card rex-card" id="' + esc(l.slug) + '"><span class="fx-kicker">' + esc(t) + '</span><h3>' + title(l) + '</h3><p>' + L(l.summary) + '</p>' + more(l) +
+    return '<article class="fx-card rex-card" id="' + esc(l.slug) + '"><span class="fx-kicker">' + T(t, { 'REX EXPLAINS':'REX يشرح', 'REX NOTE':'ملاحظة REX', 'ASK REX':'اسأل REX' }[t] || t) + '</span><h3>' + title(l) + '</h3><p>' + L(l.summary) + '</p>' + more(l) +
       '<div class="fx-card__foot">' + time(l.publishedAt) + '</div></article>';
   }
 

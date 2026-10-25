@@ -8,9 +8,10 @@
 <link rel="canonical" href="https://foxrex.co/ar/">
 <link rel="alternate" hreflang="en" href="https://foxrex.co/">
 <link rel="alternate" hreflang="ar" href="https://foxrex.co/ar/">
+<link rel="alternate" hreflang="tr" href="https://foxrex.co/tr/">
 <link rel="alternate" hreflang="x-default" href="https://foxrex.co/">
 <meta name="theme-color" content="#0B1320">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="../site.webmanifest">
@@ -29,7 +30,7 @@
 <meta name="twitter:title" content="FOXREX — تداول أذكى... فرص أكبر">
 <meta name="twitter:description" content="FOXREX منصة عربية لذكاء الأسواق وتعليم التداول: تحليل فني، تغطية يومية للذهب، أخبار اقتصادية وإشارات FOXREX، مع وضوح كامل بشأن المخاطر.">
 <meta name="twitter:image" content="https://foxrex.co/assets/brand/og-image-ar.png">
-<script>document.documentElement.className+=" js";</script>
+<script>document.documentElement.className+=" js";try{var theme=localStorage.getItem("foxrex-theme");document.documentElement.dataset.theme=theme==="light"||theme==="dark"?theme:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="dark";}</script>
 <link rel="preload" href="../assets/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../styles/fonts.css">
@@ -37,6 +38,8 @@
 <link rel="stylesheet" href="../styles/base.css">
 <link rel="stylesheet" href="../styles/components.css">
 <link rel="stylesheet" href="../styles/public.css">
+<link rel="stylesheet" href="../styles/editorial.css">
+<link rel="stylesheet" href="../styles/themes.css">
 <link rel="stylesheet" href="../styles/ar.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"FOXREX","url":"https://foxrex.co/ar/","inLanguage":"ar","logo":"https://foxrex.co/assets/brand/icon-512.png","slogan":"تداول أذكى... فرص أكبر","sameAs":["https://t.me/fooxrex","https://www.instagram.com/foxrextrade","https://www.facebook.com/foxrextrade"]}</script>
 </head>
@@ -47,7 +50,8 @@
     <a class="fx-logo" href="../ar/" aria-label="FOXREX — الرئيسية"><img src="../assets/brand/foxrex-mark.png" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>
     <nav class="site-nav" aria-label="التنقل الرئيسي"><a href="../ar/markets/">الأسواق</a><a href="../ar/analysis/">التحليلات</a><a href="../ar/news/">الأخبار</a><a href="../ar/calendar/">التقويم</a><a href="../ar/learn/">تعلّم</a><a href="../ar/signals/">الإشارات</a></nav>
     <div class="site-head__end">
-      <a class="lang-toggle" href="../" hreflang="en" lang="en" data-lang-switch="en">English</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="تفعيل الوضع الفاتح" title="المظهر"><span aria-hidden="true">◐</span></button>
+      <nav class="language-picker" aria-label="اللغة"><a class="lang-toggle" href=".././" hreflang="en" lang="en" data-lang-switch="en" aria-label="English">EN</a><a class="lang-toggle" href="../ar/" hreflang="ar" lang="ar" data-lang-switch="ar" aria-current="true" aria-label="العربية">ع</a><a class="lang-toggle" href="../tr/" hreflang="tr" lang="tr" data-lang-switch="tr" aria-label="Türkçe">TR</a></nav>
       <a class="fx-btn fx-btn--primary fx-btn--sm" href="https://t.me/fooxrex" target="_blank" rel="noopener">انضم إلى <bdi class="lt" dir="ltr">FOXREX</bdi></a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="القائمة" data-menu-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -101,7 +105,7 @@
     <li class="fx-ticker__item" data-symbol="DXY"><span class="fx-sym">DXY</span><span><span class="fx-ticker__px" data-px>—</span> <span class="fx-ticker__chg" data-chg></span></span></li>
   </ul>
 </section>
-<section class="section section--tight"><div class="wrap"><div class="section-head reveal"><div><span class="fx-kicker">من مكتب التحرير</span><h2>أحدث الموجزات والمقالات</h2></div><a class="fx-link" href="../ar/calendar/">التقويم الاقتصادي <svg class="fx-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="grid grid--3"><article class="fx-card"><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time> · مكتب <bdi class="lt" dir="ltr">FOXREX</bdi></p><h3><a href="../ar/analysis/gold-fx-policy-week-2026-10-25/">الذهب والفوركس: اقرأ رسالة الفائدة قبل اختيار الاتجاه</a></h3><p>إطار عملي لفهم قرارات السياسة النقدية والبيانات القادمة، بدون أهداف سعرية أو مستويات مختلقة.</p></article><article class="fx-card"><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time> · مكتب <bdi class="lt" dir="ltr">FOXREX</bdi></p><h3><a href="../ar/learn/real-yields-and-gold/">ليش العوائد الحقيقية مهمة للذهب؟ ومتى بتضعف العلاقة؟</a></h3><p>درس مختصر عن تكلفة الفرصة وحدود تفسير الذهب بعامل واحد.</p></article><article class="fx-card"><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time> · مكتب <bdi class="lt" dir="ltr">FOXREX</bdi></p><h3><a href="../ar/desk/2026-10-25/morning-brief/">موجز الأحد: أجندة الأسبوع للذهب والفوركس</a></h3><p>الأحد <bdi class="lt" dir="ltr">25</bdi> أكتوبر: الاستعداد لقرارات البنوك المركزية وبيانات التضخم والنمو الأمريكية، بدون أسعار لحظية غير موثقة.</p></article></div></div></section>
+<section class="section section--tight"><div class="wrap"><div class="section-head reveal"><div><span class="fx-kicker">أحدث الإصدارات</span><h2>أحدث الموجزات والمقالات</h2></div><a class="fx-link" href="../ar/calendar/">التقويم الاقتصادي <svg class="fx-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="grid grid--3"><article class="fx-card editorial-card"><a href="../ar/analysis/gold-fx-policy-week-2026-10-25/" tabindex="-1" aria-hidden="true"><img class="editorial-card__image" src="/assets/media/macro-editorial-v1.webp" alt="" width="1600" height="900" loading="lazy"></a><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time></p><h3><a href="../ar/analysis/gold-fx-policy-week-2026-10-25/">الذهب والفوركس: اقرأ رسالة الفائدة قبل اختيار الاتجاه</a></h3><p>إطار عملي لفهم قرارات السياسة النقدية والبيانات القادمة، بدون أهداف سعرية أو مستويات مختلقة.</p></article><article class="fx-card editorial-card"><a href="../ar/learn/real-yields-and-gold/" tabindex="-1" aria-hidden="true"><img class="editorial-card__image" src="/assets/media/gold-editorial-v1.webp" alt="" width="1600" height="900" loading="lazy"></a><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time></p><h3><a href="../ar/learn/real-yields-and-gold/">لماذا تؤثر العوائد الحقيقية على الذهب؟ ومتى تضعف العلاقة؟</a></h3><p>درس مختصر عن تكلفة الفرصة وحدود تفسير الذهب بعامل واحد.</p></article><article class="fx-card editorial-card"><a href="../ar/desk/2026-10-25/morning-brief/" tabindex="-1" aria-hidden="true"><img class="editorial-card__image" src="/assets/media/macro-editorial-v1.webp" alt="" width="1600" height="900" loading="lazy"></a><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time></p><h3><a href="../ar/desk/2026-10-25/morning-brief/">موجز الأحد: أجندة الأسبوع للذهب والفوركس</a></h3><p>الأحد <bdi class="lt" dir="ltr">25</bdi> أكتوبر: الاستعداد لقرارات البنوك المركزية وبيانات التضخم والنمو الأمريكية، بدون أسعار لحظية غير موثقة.</p></article></div></div></section>
 
 <section class="section">
   <div class="wrap">
@@ -123,8 +127,8 @@
     <div class="fx-card__foot"><span class="fx-status" data-state="off" data-slot-status>لم يُنشر بعد اليوم</span></div>
   </article>
   <article class="fx-card slot reveal" data-kind="open" data-slot="open">
-    <div class="slot__time"><span class="fx-kicker">افتتاح السوق الأمريكي</span><b class="ltr num" data-slot-time="15:30">15:30 <abbr title="بتوقيت إسطنبول (UTC+3)">IST</abbr></b></div>
-    <h3 data-slot-title>تحليل <bdi class="lt" dir="ltr">XAUUSD</bdi> قبل افتتاح وول ستريت عند <bdi class="lt" dir="ltr">15:30</bdi></h3>
+    <div class="slot__time"><span class="fx-kicker">استعراض الجلسة الأمريكية</span><b class="ltr num" data-slot-time="15:30">15:30 <abbr title="بتوقيت إسطنبول (UTC+3)">IST</abbr></b></div>
+    <h3 data-slot-title>قراءة الذهب والعملات قبل الجلسة الأمريكية؛ يتغير توقيت افتتاح السوق بحسب التوقيت الصيفي.</h3>
     <div class="fx-card__foot"><span class="fx-status" data-state="off" data-slot-status>لم يُنشر بعد اليوم</span></div>
   </article>
   <article class="fx-card slot reveal" data-kind="recap" data-slot="recap">
@@ -225,7 +229,7 @@
     <div class="why reveal">
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v6.5c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V5.5M4.5 12v6.5c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V12"/></svg><h3>البيانات</h3><p>بيانات سوق موثقة فقط. وعندما لا يكون المصدر متصلًا نقول ذلك بوضوح بدل عرض تقديرات.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><h3>تحليل الأسواق</h3><p>البنية والمستويات والسيناريوهات للذهب والعملات والمؤشرات والعملات الرقمية.</p></div>
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><h3>الذكاء الاصطناعي <span class="fx-badge fx-badge--ai" style="margin-inline-start:6px">قيد التطوير</span></h3><p>يساعد الذكاء الاصطناعي في البحث والكتابة. تُنشر الإصدارات اليومية تلقائيًا بتفويض المالك بعد فحص المصادر والمتطلبات التقنية.</p></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><h3>منهج البحث</h3><p>بحث يستند إلى المصادر، وتواريخ واضحة، وفحوص منتظمة قبل النشر.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg><h3>الوعي بالمخاطر</h3><p>كل فكرة تُنشر مع مستوى إلغاء ورسالة مخاطر واضحة.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><h3>السرعة</h3><p>إصدار يومي وتقويم موثّق لأحداث اقتصادية مختارة وعالية التأثير.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><h3>البحث</h3><p>نشرح المحركات الاقتصادية لتفهم الحركة نفسها، لا المستوى فقط.</p></div>
@@ -264,6 +268,7 @@
     </div>
   </div>
 </footer>
+<script src="../scripts/public/tr.js" defer></script>
 <script src="../scripts/public/site.js" defer></script>
 <script src="../scripts/public/market.js" defer></script>
 <script src="../scripts/public/content.js" defer></script>

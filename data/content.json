@@ -1,13 +1,12 @@
 {
   "$schema": "./content.schema.json",
   "schemaVersion": 3,
-  "updated": "2026-10-25T20:41:57.984Z",
+  "updated": "2026-10-25T21:06:46.741Z",
   "publication": {
-    "id": "pub_a1442226c3351808a35555d2",
-    "at": "2026-10-25T20:41:57.984Z",
-    "contentId": "daily-2026-10-25-real-yields-and-gold-ar",
-    "action": "publish",
-    "version": 1
+    "id": "pub_a525215cdc927144e07883f8",
+    "at": "2026-10-25T21:06:46.741Z",
+    "contentId": "presentation-and-tr",
+    "action": "publish"
   },
   "items": [
     {
@@ -22,8 +21,8 @@
       "title": "الذهب والفوركس: اقرأ رسالة الفائدة قبل اختيار الاتجاه",
       "summary": "إطار عملي لفهم قرارات السياسة النقدية والبيانات القادمة، بدون أهداف سعرية أو مستويات مختلقة.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T20:41:57.984Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -78,6 +77,10 @@
         "dataAsOfBasis": "editor",
         "validUntil": "2026-10-31T20:59:59Z",
         "stalePolicy": "hide"
+      },
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "عمارة مالية بإضاءة زمردية وذهبية"
       }
     },
     {
@@ -92,8 +95,8 @@
       "title": "Gold and FX: read the policy message before choosing a direction",
       "summary": "A practical framework for interpreting the coming policy and data releases, without invented price targets.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T20:41:57.984Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -148,6 +151,10 @@
         "dataAsOfBasis": "editor",
         "validUntil": "2026-10-31T20:59:59Z",
         "stalePolicy": "hide"
+      },
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Financial architecture illuminated in emerald and gold"
       }
     },
     {
@@ -159,11 +166,11 @@
       "section": "learn",
       "slug": "real-yields-and-gold",
       "urlPath": "learn/real-yields-and-gold/",
-      "title": "ليش العوائد الحقيقية مهمة للذهب؟ ومتى بتضعف العلاقة؟",
+      "title": "لماذا تؤثر العوائد الحقيقية على الذهب؟ ومتى تضعف العلاقة؟",
       "summary": "درس مختصر عن تكلفة الفرصة وحدود تفسير الذهب بعامل واحد.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T20:41:57.984Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -175,7 +182,7 @@
       "author": {
         "name": "FOXREX Desk"
       },
-      "body": "العائد الحقيقي هو عائد السند بعد أخذ التضخم بالاعتبار. الذهب لا يدفع فائدة دورية، ولذلك قد يرفع تحسّن العائد المعدّل بالتضخم على الأصول المنافسة تكلفة الاحتفاظ به.\n\nهذا إطار للفهم، وليس قاعدة تداول آلية. يدرس بحث فيدرالي شيكاغو العوائد الحقيقية مع توقعات التضخم والتشاؤم بشأن الظروف الاقتصادية المقبلة. وينبّه مجلس الذهب العالمي إلى أن ارتفاع العوائد الحقيقية لا يضر الذهب بالضرورة عندما تؤثر عوامل طلب أخرى.\n\nطريقة قراءة عملية\nافحص أولًا إن كانت العوائد الاسمية وتوقعات التضخم تحركت معًا. ثم اسأل إن كانت معنويات المخاطرة أو طلب الذهب قد تغيرت. وأخيرًا قارن التفسير بحركة السعر الفعلية بدل افتراض أن العلاقة يجب أن تتحقق.\n\nمثال تعليمي\nإذا ارتفع العائد الاسمي، لكن توقعات التضخم ارتفعت أكثر، فقد ينخفض العائد الحقيقي الضمني. وصف الأمر فقط بأنه «ارتفاع العوائد» يُضيّع هذا الفرق. المثال لا يستخدم أرقام سوق حالية ولا يقدم توقعًا سعريًا.",
+      "body": "ما المقصود بالعائد الحقيقي؟\nالعائد الحقيقي هو عائد السند بعد أخذ التضخم بالاعتبار. الذهب لا يدفع فائدة دورية، ولذلك قد يرفع تحسّن العائد المعدّل بالتضخم على الأصول المنافسة تكلفة الاحتفاظ به.\n\nحدود العلاقة\nهذا إطار للفهم، وليس قاعدة تداول آلية. يدرس بحث فيدرالي شيكاغو العوائد الحقيقية مع توقعات التضخم والتشاؤم بشأن الظروف الاقتصادية المقبلة. وينبّه مجلس الذهب العالمي إلى أن ارتفاع العوائد الحقيقية لا يضر الذهب بالضرورة عندما تؤثر عوامل طلب أخرى.\n\nطريقة قراءة عملية\nافحص أولًا إن كانت العوائد الاسمية وتوقعات التضخم تحركت معًا. ثم اسأل إن كانت معنويات المخاطرة أو طلب الذهب قد تغيرت. وأخيرًا قارن التفسير بحركة السعر الفعلية بدل افتراض أن العلاقة يجب أن تتحقق.\n\nمثال تعليمي\nإذا ارتفع العائد الاسمي، لكن توقعات التضخم ارتفعت أكثر، فقد ينخفض العائد الحقيقي الضمني. وصف الأمر فقط بأنه «ارتفاع العوائد» يُضيّع هذا الفرق. المثال لا يستخدم أرقام سوق حالية ولا يقدم توقعًا سعريًا.",
       "tags": [
         "gold",
         "education"
@@ -194,7 +201,11 @@
           "sourceType": "official"
         }
       ],
-      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية."
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "سبائك ذهب بإضاءة زمردية"
+      }
     },
     {
       "id": "daily-2026-10-25-real-yields-and-gold-en",
@@ -208,8 +219,8 @@
       "title": "Why real yields matter for gold — and why the link can break",
       "summary": "A short lesson on opportunity cost and the limits of a single-factor explanation.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T20:41:57.984Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -221,7 +232,7 @@
       "author": {
         "name": "FOXREX Desk"
       },
-      "body": "A real yield measures a bond’s return after allowing for inflation. Gold does not pay a coupon, so a higher inflation-adjusted return on competing assets can raise the opportunity cost of holding it.\n\nThat is a useful framework, not a mechanical trading rule. Research by the Chicago Fed examines real rates alongside inflation expectations and pessimism about future economic conditions. The World Gold Council also cautions that higher real rates are not automatically negative for gold when other demand forces are active.\n\nA practical reading sequence\nCheck whether nominal yields and inflation expectations moved together. Then ask whether risk sentiment or demand for gold has changed. Finally, compare that explanation with observed prices rather than assuming the relationship must hold.\n\nEducational example\nIf a nominal yield rises while expected inflation rises by more, the implied real yield can fall. Calling that simply “higher yields” misses the distinction. This example uses no current market figures and makes no prediction.",
+      "body": "What is a real yield?\nA real yield measures a bond’s return after allowing for inflation. Gold does not pay a coupon, so a higher inflation-adjusted return on competing assets can raise the opportunity cost of holding it.\n\nThe limits of the relationship\nThat is a useful framework, not a mechanical trading rule. Research by the Chicago Fed examines real rates alongside inflation expectations and pessimism about future economic conditions. The World Gold Council also cautions that higher real rates are not automatically negative for gold when other demand forces are active.\n\nA practical reading sequence\nCheck whether nominal yields and inflation expectations moved together. Then ask whether risk sentiment or demand for gold has changed. Finally, compare that explanation with observed prices rather than assuming the relationship must hold.\n\nEducational example\nIf a nominal yield rises while expected inflation rises by more, the implied real yield can fall. Calling that simply “higher yields” misses the distinction. This example uses no current market figures and makes no prediction.",
       "tags": [
         "gold",
         "education"
@@ -240,7 +251,11 @@
           "sourceType": "official"
         }
       ],
-      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice."
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Gold bullion in emerald light"
+      }
     },
     {
       "id": "daily-2026-10-25-weekend-brief-2026-10-25-ar",
@@ -254,8 +269,8 @@
       "title": "موجز الأحد: أجندة الأسبوع للذهب والفوركس",
       "summary": "الأحد 25 أكتوبر: الاستعداد لقرارات البنوك المركزية وبيانات التضخم والنمو الأمريكية، بدون أسعار لحظية غير موثقة.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T20:41:57.984Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -306,6 +321,10 @@
         "dataAsOfBasis": "editor",
         "validUntil": "2026-10-26T08:00:00Z",
         "stalePolicy": "hide"
+      },
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "عمارة مالية بإضاءة زمردية وذهبية"
       }
     },
     {
@@ -320,8 +339,8 @@
       "title": "Weekend brief: the verified week-ahead agenda for gold and FX",
       "summary": "Sunday 25 October: prepare for central-bank decisions and US inflation and growth data. No live quotes are used.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T20:41:57.984Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -372,6 +391,204 @@
         "dataAsOfBasis": "editor",
         "validUntil": "2026-10-26T08:00:00Z",
         "stalePolicy": "hide"
+      },
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Financial architecture illuminated in emerald and gold"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-25-gold-fx-policy-week-2026-10-25",
+      "section": "analysis",
+      "slug": "gold-fx-policy-week-2026-10-25",
+      "urlPath": "analysis/gold-fx-policy-week-2026-10-25/",
+      "title": "Altın ve döviz: yön seçmeden önce faiz mesajını okuyun",
+      "summary": "Yaklaşan para politikası kararları ve ekonomik veriler için pratik bir değerlendirme çerçevesi.",
+      "publishedAt": "2026-10-25T21:06:46.741Z",
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Önce doğrulanmış bilgiler\nBu hafta Fed ve ECB kararlarıyla ABD büyüme, harcama ve istihdam maliyeti verileri bir araya geliyor. Sıralama önemlidir: perşembe verileri, çarşamba günkü Fed kararından sonra gelir ve mesajın nasıl yorumlandığını değiştirebilir.\n\nAltın: etki kanalını izleyin\nChicago Fed araştırması; reel faizleri, enflasyon beklentilerini ve gelecekteki ekonomik koşullara ilişkin kaygıları altın fiyatının önemli etkenleri arasında sayar. Para politikası sürprizi bu kanallardan etkili olur. Yalnızca faizin arttığını veya sabit kaldığını bilmek yeterli değildir.\n\nDöviz: iki politika yolunu karşılaştırın\nEUR/USD için çerçevemiz görelidir: ABD görünümündeki değişim, euro bölgesi görünümüyle birlikte okunmalıdır. Diğer başlıca dolar çiftlerinde ise doların genel tepkisini karşı para birimine özgü gelişmelerden ayırın. İlk sıçrama, kalıcı trendin kanıtı değildir.\n\nHangi durumda yorumu değiştiririz?\nİlk tepki basın toplantısı sırasında tersine dönerse başlangıçtaki yorumu yeniden değerlendirin. Güncel fiyat serisi doğrulanmadığı için bu yazıda destek, direnç veya giriş seviyesi yayımlanmamıştır.",
+      "symbol": "XAUUSD",
+      "category": "gold",
+      "bias": "neutral",
+      "tags": [
+        "gold",
+        "fx",
+        "macro"
+      ],
+      "sources": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "instruments": [
+        "XAUUSD"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T20:41:49Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "hide"
+      },
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Zümrüt ve altın ışıkla aydınlatılmış finans mimarisi"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-tr",
+      "type": "REX_EXPLAINS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-25-real-yields-and-gold",
+      "section": "learn",
+      "slug": "real-yields-and-gold",
+      "urlPath": "learn/real-yields-and-gold/",
+      "title": "Reel getiriler altın için neden önemlidir, ilişki ne zaman zayıflar?",
+      "summary": "Fırsat maliyeti ve altını tek bir etkene göre yorumlamanın sınırları üzerine kısa bir ders.",
+      "publishedAt": "2026-10-25T21:06:46.741Z",
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "format": "lesson",
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Reel getiri nedir?\nReel getiri, tahvil getirisinin enflasyon dikkate alındıktan sonraki karşılığıdır. Altın düzenli faiz ödemediği için alternatif varlıklarda enflasyondan arındırılmış getirinin yükselmesi, altın tutmanın fırsat maliyetini artırabilir.\n\nNeden kesin bir işlem kuralı değildir?\nChicago Fed araştırması reel getirileri, enflasyon beklentileri ve ekonomik geleceğe ilişkin kaygılarla birlikte inceler. Dünya Altın Konseyi de diğer talep etkenleri aktifken reel getirilerdeki yükselişin altını mutlaka olumsuz etkilemeyeceğini vurgular.\n\nPratik okuma sırası\nÖnce nominal getiriler ile enflasyon beklentilerinin birlikte hareket edip etmediğine bakın. Sonra risk iştahının veya altın talebinin değişip değişmediğini değerlendirin. Son olarak ilişkiyi zorunlu kabul etmek yerine açıklamayı gerçekleşen fiyat hareketiyle karşılaştırın.\n\nEğitim amaçlı örnek\nNominal getiri yükselirken enflasyon beklentisi daha fazla yükselirse, ima edilen reel getiri düşebilir. Bunu yalnızca “getiriler yükseldi” diye tanımlamak önemli ayrımı kaçırır. Bu örnek güncel piyasa verisi kullanmaz ve fiyat tahmini içermez.",
+      "tags": [
+        "gold",
+        "education"
+      ],
+      "sources": [
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "World Gold Council — gold and real rates",
+          "url": "https://www.gold.org/goldhub/research/gold-and-us-interest-rates-reality-check",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Zümrüt ışık altında altın külçeleri"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-weekend-brief-2026-10-25-tr",
+      "type": "MORNING_BRIEF",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-25-weekend-brief-2026-10-25",
+      "section": "desk",
+      "slug": "weekend-brief-2026-10-25",
+      "urlPath": "desk/2026-10-25/morning-brief/",
+      "title": "Hafta sonu bülteni: altın ve döviz için haftanın gündemi",
+      "summary": "25 Ekim Pazar: merkez bankası kararları ile ABD enflasyon ve büyüme verilerine hazırlık. Doğrulanmamış canlı fiyatlar kullanılmamıştır.",
+      "publishedAt": "2026-10-25T21:06:46.741Z",
+      "updatedAt": "2026-10-25T21:06:46.741Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "slot": "brief",
+      "body": "Doğrulanmış takvim — İstanbul saati\nFed kararı 28 Ekim Çarşamba günü 21.00'de, basın toplantısı 21.30'da planlanıyor. 29 Ekim Perşembe günü ABD ilk GSYH tahmini ve eylül ayı kişisel gelir ve harcamalar raporu 15.30'da açıklanacak. ECB kararı 16.15'te, ABD İstihdam Maliyeti Endeksi ise cuma günü 15.30'da yayımlanacak.\n\nPiyasa bağlamı\nAltında faiz kararı ile ardından gelen mesajı ayrı değerlendirin. EUR/USD için Fed ve ECB'nin yönlendirmelerini birlikte karşılaştırın. GBP/USD ve USD/JPY, doların genel hareketinden ve ABD tahvil getirilerinden de etkilenebilir. Diğer yerel veriler bu seçilmiş takvimin kapsamı dışındadır.\n\nKoşullu senaryolar\nPolitikada daha az sıkılık beklentisi oluşturan bir mesaj, reel getiriler de gerilerse altını destekleyebilir. Daha sıkı bir mesaj ters yönde etkili olabilir. Bunlar analitik senaryolardır; piyasanın mevcut fiyatlamasına ilişkin bir tespit değildir.\n\nVeri notu\nBu yazı hafta sonu hazırlık bültenidir. Canlı altın ve döviz fiyatları ile piyasa beklentileri doğrulanmadığı için kullanılmamıştır. Olası değişiklikler için takvimi ve resmî kaynakları kontrol edin.",
+      "sources": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BLS — October releases",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — decision release time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "freshness": {
+        "dataAsOf": "2026-10-25T20:41:49Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T08:00:00Z",
+        "stalePolicy": "hide"
+      },
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Zümrüt ve altın ışıkla aydınlatılmış finans mimarisi"
       }
     }
   ],

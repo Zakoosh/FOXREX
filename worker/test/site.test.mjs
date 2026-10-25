@@ -135,7 +135,8 @@ test('Arabic copy and bidi: specified headlines present, Latin/number runs isola
   const ar = read('ar/index.html');
   for (const line of ['تداول أذكى...', 'فرص أكبر', 'ذكاء الأسواق', 'اليوم في', 'كل ما تحتاجه لمتابعة يوم التداول.', 'الذهب... كل يوم تداول.', 'تحليل يساعدك على التحرك...<br>أو الانتظار.', 'ما الذي تحرك...<br>ولماذا يهم؟', 'أفكار تداول منظمة...<br>بمخاطر واضحة.', 'تعلّم مع', 'منظومة ذكاء للأسواق...<br>مبنية على نظام واحد.', 'انضم إلى مجتمع'])
     assert.ok(ar.includes(line), `missing Arabic copy: ${line}`);
-  assert.match(ar, /تحليل <bdi class="lt" dir="ltr">XAUUSD<\/bdi> قبل افتتاح وول ستريت عند <bdi class="lt" dir="ltr">15:30<\/bdi>/);
+  assert.match(ar, /قراءة الذهب والعملات قبل الجلسة الأمريكية/);
+  assert.ok(!ar.includes('قبل افتتاح وول ستريت عند'), 'preview is not mislabelled as the cash open');
   const { arText } = await import('../../tools/site/text.mjs');
   assert.equal(arText('صدر CPI أعلى من التوقعات'), 'صدر <bdi class="lt" dir="ltr">CPI</bdi> أعلى من التوقعات');
   assert.equal(arText('الذهب XAUUSD +0.42%'), 'الذهب <bdi class="lt" dir="ltr">XAUUSD +0.42%</bdi>');

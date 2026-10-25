@@ -10,6 +10,24 @@
     });
   });
 
+  /* The choice persists across languages and page loads. */
+  var themeButton = document.querySelector('[data-theme-toggle]');
+  var lang = document.documentElement.lang;
+  function themeLabel() {
+    if (!themeButton) return;
+    var light = document.documentElement.dataset.theme === 'light';
+    var label = lang === 'ar' ? (light ? 'تفعيل الوضع الداكن' : 'تفعيل الوضع الفاتح') : lang === 'tr' ? (light ? 'Koyu temaya geç' : 'Açık temaya geç') : (light ? 'Switch to dark mode' : 'Switch to light mode');
+    themeButton.setAttribute('aria-label', label); themeButton.setAttribute('title', label);
+    themeButton.setAttribute('aria-pressed', String(light));
+  }
+  if (themeButton) themeButton.addEventListener('click', function () {
+    var next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('foxrex-theme', next); } catch(e) {}
+    themeLabel();
+  });
+  themeLabel();
+
   /* Mobile navigation */
   var btn = document.querySelector('[data-menu-btn]');
   var nav = document.getElementById('mobile-nav');
