@@ -26,3 +26,20 @@ test('verified three-language intake publishes once across retries and subsequen
  const withoutLedger=prepareAutochartist(input,result.feed,{processedEvents:[]},{now:'2026-10-26T02:00:00Z'});assert.equal(withoutLedger.receipt.events.length,0);
  assert.equal(JSON.stringify(result.feed).includes('alerts@autochartist'),false);
 });
+
+// Regression: source-report illustrations must not be presented as OHLC charts.
+import {contentPages} from '../../tools/site/content-pages.mjs';
+test('Autochartist illustrations are distinct from candle charts and levels are localized',()=>{
+ const feed=read('data/content.json');
+ const result=contentPages(feed,{SITE:{origin:'https://foxrex.co',social:{telegram:{url:'https://t.me/fooxrex'}}},I:{arrow:''}});
+ for(const lang of ['en','ar','tr']){
+  const page=result.pages.find(p=>p.lang===lang&&p.path==='analysis/ac-22b0ed55eb7c1e4453c293a4');
+  const html=page.body('../../','/');
+  assert.ok(!html.includes('data-chart'));
+  assert.ok(!html.includes('Tap the chart'));
+  if(lang==='ar'){assert.ok(html.includes('الحد الأدنى للتقلب'));assert.ok(!html.includes('Lower volatility boundary'));}
+  if(lang==='tr')assert.ok(html.includes('Alt volatilite sınırı'));
+ }
+ const chart=result.pages.find(p=>p.lang==='en'&&p.path==='analysis/xauusd-w1-outlook-2026-10-26');
+ assert.ok(chart.body('../../','/').includes('data-chart'));
+});

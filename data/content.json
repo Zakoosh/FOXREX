@@ -1,13 +1,12 @@
 {
   "$schema": "./content.schema.json",
   "schemaVersion": 3,
-  "updated": "2026-10-25T23:21:56.169Z",
+  "updated": "2026-10-25T23:29:35.575Z",
   "publication": {
-    "id": "pub_6d0dea358ca74fccca2f54e3",
-    "at": "2026-10-25T23:21:56.169Z",
-    "contentId": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3-tr",
-    "action": "publish",
-    "version": 1
+    "id": "pub_9db9b7c86238b644f6a7e332",
+    "at": "2026-10-25T23:29:35.575Z",
+    "contentId": "presentation-and-tr",
+    "action": "publish"
   },
   "items": [
     {
@@ -8138,10 +8137,10 @@
       "slug": "xagusd-w1-outlook-2026-10-26",
       "urlPath": "analysis/xagusd-w1-outlook-2026-10-26/",
       "title": "XAGUSD: قراءة أسبوعية بالشموع ومستويات الدعم والمقاومة",
-      "summary": "إغلاق 53.920 ومحور 55.191؛ 4 شمعة مكتملة حتى 2026-10-23 مع سيناريوهات مشروطة.",
+      "summary": "إغلاق 53.920 ومحور 55.191؛ 4 شموع مكتملة حتى 2026-10-23 مع سيناريوهات مشروطة.",
       "publishedAt": "2026-10-25T23:00:30.391Z",
-      "updatedAt": "2026-10-25T23:00:30.391Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T23:29:35.575Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -8345,10 +8344,10 @@
       "slug": "xauusd-w1-outlook-2026-10-26",
       "urlPath": "analysis/xauusd-w1-outlook-2026-10-26/",
       "title": "XAUUSD: قراءة أسبوعية بالشموع ومستويات الدعم والمقاومة",
-      "summary": "إغلاق 3995.80 ومحور 4054.00؛ 4 شمعة مكتملة حتى 2026-10-23 مع سيناريوهات مشروطة.",
+      "summary": "إغلاق 3995.80 ومحور 4054.00؛ 4 شموع مكتملة حتى 2026-10-23 مع سيناريوهات مشروطة.",
       "publishedAt": "2026-10-25T23:00:30.391Z",
-      "updatedAt": "2026-10-25T23:00:30.391Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T23:29:35.575Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",

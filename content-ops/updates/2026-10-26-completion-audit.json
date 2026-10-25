@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-25T23:30:53.537383+00:00",
+  "baseCommit": "b3d712ff92f7ab7927ebdb954e34145a9f3236a4",
+  "checks": {
+    "feedItems": 192,
+    "originalGroups": 64,
+    "languages": [
+      "en",
+      "ar",
+      "tr"
+    ],
+    "newsPerLanguage": 25,
+    "technicalAnalysesPerLanguage": 31,
+    "latestEmailAnalysesPerLanguage": 6,
+    "workerTests": {
+      "passed": 144,
+      "failed": 0
+    },
+    "quoteTests": {
+      "passed": 4,
+      "failed": 0
+    },
+    "feedSchema": "passed",
+    "generatedOutput": "passed",
+    "syntaxCheck": "passed",
+    "servedCanonicalFeed": "matched baseline commit",
+    "homepageLightTheme": "browser verified with light gold artwork and real candle preview",
+    "rex": "browser verified persona change and risk calculator (100 risk, 20 units, 2R)",
+    "hourlyTask": {
+      "id": "6ade7fbb91348191a6d24412afed48c0",
+      "enabled": true,
+      "recordedLastRun": "completed",
+      "recordedScheduledFor": "2026-10-25T23:00:00Z",
+      "recordedCompletedAt": "2026-10-25T23:08:15.951052Z",
+      "note": "Recorded run output predates later content expansion and email publication."
+    },
+    "coverRegression": "passed: illustrative covers are not labelled charts; AR/TR source levels localized; true OHLC charts retain full-size links"
+  },
+  "changes": [
+    "Refreshed all six indicative quotes from configured public sources without errors",
+    "Corrected Arabic four-candle plural in the two weekly analyses through enrichment pipeline",
+    "Updated stale Autochartist intake documentation",
+    "Removed incorrect chart caption from Autochartist illustrations and localized source-level labels in Arabic and Turkish"
+  ],
+  "limits": [
+    "No independent same-instrument, near-time spot-price corroboration obtained; configured sources are verified indicative references, not executable prices.",
+    "No new consequential breaking development verified during the current search; no filler published.",
+    "No Telegram worker configured in the inspected Studio browser; no token or verified destination available and no delivery claimed.",
+    "Metricool discovery confirms not installed/connected; Facebook and Instagram publication remains pending."
+  ],
+  "mailIntake": {
+    "status": "matched six previously published trilingual analyses against latest connected report",
+    "excluded": [
+      "EURNZD and AUS200: source forecast windows expired",
+      "GBPUSD: no explicit forecast validity horizon"
+    ],
+    "sourceTimeDiscrepancy": "Report receipt precedes printed source detection time; retained and disclosed in published copy."
+  }
+}
