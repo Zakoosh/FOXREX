@@ -1,0 +1,71 @@
+{
+  "runId": "foxrex-20261011-001",
+  "contentId": "fx-20261011-c1-ig-carousel-en",
+  "platform": "instagram",
+  "format": "carousel",
+  "language": "en",
+  "direction": "ltr",
+  "typography": "Inter",
+  "spec": {
+    "canvas": "1080x1350",
+    "safeMargin": 96,
+    "background": "#0B1320",
+    "text": "#E5E7EB",
+    "accent": "#00D4A7",
+    "bearish": "#FF5C7A",
+    "caution": "#F5B942",
+    "imageRule": "Generated images leave clean space for typography; no text rendered inside generated images; do not mirror logo, REX or charts."
+  },
+  "slides": [
+    {
+      "n": 1,
+      "role": "Cover",
+      "headline": "CPI week.\nWhat moves gold?",
+      "body": "XAUUSD · Week of 12 Oct",
+      "visual": "Cover: dark navy field, REX looking at a calendar; clean upper third for headline."
+    },
+    {
+      "n": 2,
+      "role": "Last week",
+      "headline": "Gold bounced on Friday.",
+      "body": "US yields eased from a 24-year high and the dollar softened. One bounce is not a trend.",
+      "visual": "Minimal gold-toned abstract line shape, no price numbers."
+    },
+    {
+      "n": 3,
+      "role": "The catalyst",
+      "headline": "US CPI",
+      "body": "Wednesday 14 Oct · 15:30 IST (08:30 New York)",
+      "visual": "Large clock/calendar motif; time set in Inter."
+    },
+    {
+      "n": 4,
+      "role": "The chain",
+      "headline": "Inflation → Fed expectations → yields & USD → gold",
+      "body": "Gold reacts to yields and the dollar, not to CPI directly.",
+      "visual": "Four-step flow diagram in teal; arrows direction follows reading direction per language."
+    },
+    {
+      "n": 5,
+      "role": "Three outcomes",
+      "headline": "Above, in line, below expectations",
+      "body": "Each can move yields and USD. We explain how after release; we do not predict.",
+      "visual": "Three equal columns, neutral colour (no red/green implying direction)."
+    },
+    {
+      "n": 6,
+      "role": "Also this week",
+      "headline": "PPI + retail sales (Thu), import prices (Fri)",
+      "body": "Dates from secondary calendars. Verify with BLS.",
+      "visual": "Simple list on slate #1F2937 card."
+    },
+    {
+      "n": 7,
+      "role": "CTA",
+      "headline": "Follow for the CPI breakdown",
+      "body": "FOXREX · TRADE SMARTER. GO FURTHER.",
+      "visual": "Brand lockup from assets/brand/foxrex-lockup.jpg; risk line in caption area."
+    }
+  ],
+  "caption": "CPI week is here. Gold bounced on Friday as yields eased, and Wednesday's US inflation print is the next big read. Swipe for the chain from inflation to gold, and what we'll cover after release.\n\nEducational content, not investment advice. Trading carries a high risk of loss.\n\n#XAUUSD #Gold #Forex #CPI #FOXREX"
+}

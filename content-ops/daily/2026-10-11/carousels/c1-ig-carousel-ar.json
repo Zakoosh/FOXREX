@@ -1,0 +1,71 @@
+{
+  "runId": "foxrex-20261011-001",
+  "contentId": "fx-20261011-c1-ig-carousel-ar",
+  "platform": "instagram",
+  "format": "carousel",
+  "language": "ar",
+  "direction": "rtl",
+  "typography": "IBM Plex Sans Arabic 700 headline / 400 body; symbols, times, numbers in Inter LTR; letter-spacing 0",
+  "spec": {
+    "canvas": "1080x1350",
+    "safeMargin": 96,
+    "background": "#0B1320",
+    "text": "#E5E7EB",
+    "accent": "#00D4A7",
+    "bearish": "#FF5C7A",
+    "caution": "#F5B942",
+    "imageRule": "Generated images leave clean space for typography; no text rendered inside generated images; do not mirror logo, REX or charts."
+  },
+  "slides": [
+    {
+      "n": 1,
+      "role": "Cover",
+      "headline": "أسبوع CPI...\nما الذي يحرّك الذهب؟",
+      "body": "XAUUSD · أسبوع 12 أكتوبر",
+      "visual": "Cover: dark navy field, REX looking at a calendar; clean upper third for headline."
+    },
+    {
+      "n": 2,
+      "role": "Last week",
+      "headline": "ارتد الذهب يوم الجمعة.",
+      "body": "تراجعت العوائد الأمريكية من أعلى مستوى في 24 عامًا وضعف الدولار. ارتداد واحد ليس اتجاهًا.",
+      "visual": "Minimal gold-toned abstract line shape, no price numbers."
+    },
+    {
+      "n": 3,
+      "role": "The catalyst",
+      "headline": "بيانات CPI الأمريكية",
+      "body": "الأربعاء 14 أكتوبر · 15:30 بتوقيت إسطنبول (08:30 نيويورك)",
+      "visual": "Large clock/calendar motif; time set in Inter."
+    },
+    {
+      "n": 4,
+      "role": "The chain",
+      "headline": "التضخم ← توقعات الفيدرالي ← العوائد والدولار ← الذهب",
+      "body": "الذهب يتفاعل مع العوائد والدولار، وليس مع CPI مباشرة.",
+      "visual": "Four-step flow diagram in teal; arrows direction follows reading direction per language."
+    },
+    {
+      "n": 5,
+      "role": "Three outcomes",
+      "headline": "فوق التوقعات، مطابقة، دونها",
+      "body": "كل حالة قد تحرّك العوائد والدولار. نشرح بعد الصدور ولا نتنبأ.",
+      "visual": "Three equal columns, neutral colour (no red/green implying direction)."
+    },
+    {
+      "n": 6,
+      "role": "Also this week",
+      "headline": "PPI ومبيعات التجزئة (الخميس)، وأسعار الاستيراد (الجمعة)",
+      "body": "المواعيد من تقاويم ثانوية. تحقق عبر BLS.",
+      "visual": "Simple list on slate #1F2937 card."
+    },
+    {
+      "n": 7,
+      "role": "CTA",
+      "headline": "تابعنا لتحليل CPI بعد الصدور",
+      "body": "FOXREX · TRADE SMARTER. GO FURTHER.",
+      "visual": "Brand lockup from assets/brand/foxrex-lockup.jpg; risk line in caption area."
+    }
+  ],
+  "caption": "بدأ أسبوع CPI. ارتد الذهب يوم الجمعة مع تراجع العوائد، وبيانات التضخم الأمريكية يوم الأربعاء هي القراءة الكبرى التالية. اسحب لترى السلسلة من التضخم إلى الذهب، وما سنغطيه بعد الصدور.\n\nمحتوى تعليمي وليس نصيحة استثمارية. التداول ينطوي على مخاطر عالية بالخسارة.\n\n#XAUUSD #الذهب #فوركس #CPI #FOXREX"
+}

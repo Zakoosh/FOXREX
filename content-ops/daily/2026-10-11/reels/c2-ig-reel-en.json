@@ -1,0 +1,52 @@
+{
+  "runId": "foxrex-20261011-001",
+  "contentId": "fx-20261011-c2-ig-reel-en",
+  "platform": "instagram",
+  "format": "reel",
+  "language": "en",
+  "durationSec": 30,
+  "aspect": "9:16 1080x1920",
+  "safeZones": "250px top, 300px bottom",
+  "status": "storyboard_only_no_render",
+  "voiceover": "Calm, clear, educational. No hype, no advice.",
+  "audio": "Licensed/royalty-free only; not selected.",
+  "scenes": [
+    {
+      "start": 0,
+      "end": 3,
+      "role": "Hook",
+      "onScreenText": "Why does gold move when yields move?",
+      "visual": "REX tilts head at a glowing teal line chart (abstract, no numbers)."
+    },
+    {
+      "start": 3,
+      "end": 10,
+      "role": "Idea 1",
+      "onScreenText": "Gold pays no interest. Bonds do.",
+      "visual": "Split frame: gold bar icon vs bond certificate icon."
+    },
+    {
+      "start": 10,
+      "end": 18,
+      "role": "Idea 2",
+      "onScreenText": "When yields rise, holding gold costs more in what you give up. When they ease, that pressure fades.",
+      "visual": "Seesaw animation: yields up, gold side lifts; reversed."
+    },
+    {
+      "start": 18,
+      "end": 25,
+      "role": "Context",
+      "onScreenText": "Last Friday: yields eased, gold bounced. That is a link, not a guarantee.",
+      "visual": "Two simple arrows, no price levels."
+    },
+    {
+      "start": 25,
+      "end": 30,
+      "role": "CTA",
+      "onScreenText": "CPI is Wednesday, 15:30 IST. Follow FOXREX.",
+      "visual": "Brand lockup, risk line bottom."
+    }
+  ],
+  "captionText": "Why does gold react to yields? A quick REX explainer ahead of Wednesday's CPI.\n\nEducational content, not investment advice. Trading carries a high risk of loss.\n#XAUUSD #Gold #FOXREX",
+  "coverText": "Gold vs yields"
+}
