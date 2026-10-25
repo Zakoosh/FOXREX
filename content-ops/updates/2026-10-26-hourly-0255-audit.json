@@ -1,0 +1,153 @@
+{
+  "checkedAt": "2026-10-25T23:58:15.427838+00:00",
+  "baseCommit": "5443ca27232ecf8eba25f176ceec3197892b200b",
+  "quotes": [
+    {
+      "symbol": "XAUUSD",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "price": 3997.0,
+      "asOf": "2026-10-25T23:56:42Z",
+      "fetchedAt": "2026-10-25T23:57:08Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingChecked": true
+    },
+    {
+      "symbol": "XAGUSD",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "price": 54.073002,
+      "asOf": "2026-10-25T23:56:41Z",
+      "fetchedAt": "2026-10-25T23:57:08Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingChecked": true
+    },
+    {
+      "symbol": "EURUSD",
+      "currency": "USD",
+      "unit": "USD per EUR",
+      "price": 1.122,
+      "asOf": "2026-10-25T23:56:43Z",
+      "fetchedAt": "2026-10-25T23:57:16Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingChecked": true
+    },
+    {
+      "symbol": "GBPUSD",
+      "currency": "USD",
+      "unit": "USD per GBP",
+      "price": 1.3377,
+      "asOf": "2026-10-25T23:56:43Z",
+      "fetchedAt": "2026-10-25T23:57:16Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingChecked": true
+    },
+    {
+      "symbol": "USDJPY",
+      "currency": "JPY",
+      "unit": "JPY per USD",
+      "price": 156.848,
+      "asOf": "2026-10-25T23:57:15Z",
+      "fetchedAt": "2026-10-25T23:57:16Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingChecked": true
+    },
+    {
+      "symbol": "BTCUSD",
+      "currency": "USD",
+      "unit": "USD per BTC",
+      "price": 79861.859375,
+      "asOf": "2026-10-25T23:56:42Z",
+      "fetchedAt": "2026-10-25T23:57:08Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingChecked": true
+    }
+  ],
+  "independentChecks": [
+    {
+      "symbol": "BTCUSD",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?interval=1m&range=1d",
+      "price": 80091.09,
+      "asOf": "2026-10-25T23:57:31+00:00",
+      "snapshotPrice": 79861.859375,
+      "snapshotAsOf": "2026-10-25T23:56:42Z",
+      "timeGapSeconds": 49,
+      "differencePercent": 0.287,
+      "assessment": "Near-time indicative spot USD observations; different provider/composite venues and a 49-second gap prevent treating the difference as a proven price error."
+    },
+    {
+      "symbols": [
+        "XAUUSD",
+        "XAGUSD"
+      ],
+      "status": "not-independently-confirmed",
+      "sourceUrl": "https://data-asg.goldprice.org/dbXRates/USD",
+      "reason": "HTTP 403; futures were not substituted."
+    },
+    {
+      "symbols": [
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY"
+      ],
+      "status": "not-independently-confirmed",
+      "sourceUrl": "https://www.freeforexapi.com/api/live?pairs=EURUSD,GBPUSD,USDJPY",
+      "reason": "Request timed out; no near-time independent observation obtained."
+    },
+    {
+      "symbol": "BTCUSD",
+      "sourceUrl": "https://api.coinbase.com/v2/prices/BTC-USD/spot",
+      "status": "not-used-for-time-matched-validation",
+      "reason": "Response has no original observation timestamp."
+    }
+  ],
+  "calendar": {
+    "overdueUnverifiedWithin24Hours": []
+  },
+  "news": {
+    "materialNewDevelopmentVerified": false,
+    "action": "No filler published",
+    "checkedSources": [
+      "https://www.federalreserve.gov/newsevents.htm",
+      "https://www.ecb.europa.eu/press/pubbydate/html/index.en.html",
+      "https://www.boj.or.jp/en/whatsnew/index.htm",
+      "https://www.bankofengland.co.uk/news"
+    ],
+    "note": "Fresh official-source and financial-news searches found no corroborated new consequential event in this check."
+  },
+  "mail": {
+    "authenticatedSender": true,
+    "substantiveSectionsRead": 9,
+    "alreadyProcessed": 6,
+    "excludedExpired": 2,
+    "excludedMissingHorizon": 1,
+    "newPublishableEvents": 0,
+    "sourceTimezone": "Australia/Sydney",
+    "receiptBeforeDetection": "Already disclosed; unchanged."
+  },
+  "telegram": {
+    "status": "pending-configuration",
+    "deliveryAttempted": false,
+    "blocker": "No deployed authenticated integration and verified destination supplied by current configuration; existing pending state retained."
+  },
+  "social": {
+    "facebook": "pending-link",
+    "instagram": "pending-link",
+    "reminder": "Already recorded less than 24 hours ago; no duplicate reminder."
+  },
+  "validation": {
+    "marketTests": 4,
+    "workerTests": 146,
+    "feedItems": 192,
+    "feedSchema": "passed",
+    "buildCheck": "passed",
+    "syntax": "passed"
+  }
+}
