@@ -390,9 +390,9 @@ ${editorialShelf(b)}
     <div class="why reveal">
       <div>${I.data}<h3>${t('Data', 'البيانات')}</h3><p>${t('Verified market data only. When a feed is not connected, we say so instead of showing estimates.', 'بيانات سوق موثقة فقط. وعندما لا يكون المصدر متصلًا نقول ذلك بوضوح بدل عرض تقديرات.')}</p></div>
       <div>${I.chart}<h3>${t('Market Analysis', 'تحليل الأسواق')}</h3><p>${t('Structure, levels and scenarios across gold, FX, indices and crypto.', 'البنية والمستويات والسيناريوهات للذهب والعملات والمؤشرات والعملات الرقمية.')}</p></div>
-      <div>${I.ai}<h3>${t('AI Intelligence', 'الذكاء الاصطناعي')} <span class="fx-badge fx-badge--ai" style="margin-inline-start:6px">${t('In development', 'قيد التطوير')}</span></h3><p>${t('AI assists our research and content workflow. Every output is reviewed by a person before it is published.', 'يساعد الذكاء الاصطناعي في البحث وإنتاج المحتوى، ويُراجع كل مخرج بشريًا قبل نشره.')}</p></div>
+      <div>${I.ai}<h3>${t('AI Intelligence', 'الذكاء الاصطناعي')} <span class="fx-badge fx-badge--ai" style="margin-inline-start:6px">${t('In development', 'قيد التطوير')}</span></h3><p>${t('AI assists research and writing. Owner-authorized daily editions are published automatically after source and technical checks.', 'يساعد الذكاء الاصطناعي في البحث والكتابة. تُنشر الإصدارات اليومية تلقائيًا بتفويض المالك بعد فحص المصادر والمتطلبات التقنية.')}</p></div>
       <div>${I.shield}<h3>${t('Risk Awareness', 'الوعي بالمخاطر')}</h3><p>${t('Every idea ships with an invalidation level and a clear risk message.', 'كل فكرة تُنشر مع مستوى إلغاء ورسالة مخاطر واضحة.')}</p></div>
-      <div>${I.bolt}<h3>${t('Speed', 'السرعة')}</h3><p>${t('A fixed daily schedule plus real-time coverage of high-impact releases.', 'جدول يومي ثابت، وتغطية لحظية للبيانات عالية التأثير.')}</p></div>
+      <div>${I.bolt}<h3>${t('Speed', 'السرعة')}</h3><p>${t('A daily edition and a sourced calendar of selected high-impact releases.', 'إصدار يومي وتقويم موثّق لأحداث اقتصادية مختارة وعالية التأثير.')}</p></div>
       <div>${I.research}<h3>${t('Research', 'البحث')}</h3><p>${t('Macro drivers explained, so you understand the move — not just the level.', 'نشرح المحركات الاقتصادية لتفهم الحركة نفسها، لا المستوى فقط.')}</p></div>
     </div>
   </div>
@@ -486,13 +486,13 @@ PAGES.push({ id: 'about', path: 'about', title: 'About', titleAr: 'من نحن',
   <h2>ماذا نقدم</h2>
   <p>${arText('ننشر تحليلات يومية للأسواق مع تركيز خاص على الذهب وأزواج العملات الرئيسية والمؤشرات والعملات الرقمية، ونشرح الأخبار الاقتصادية وقرارات البنوك المركزية، ونشارك إشارات FOXREX على Telegram، ونعلّم المفاهيم التي تقف خلفها عبر REX، هويتنا التعليمية.')}</p>
   <h2>كيف نعمل</h2>
-  <ul><li><strong>لا بيانات وهمية.</strong> لا ننشر أسعارًا أو أداءً أو نسب نجاح أو أعداد مستخدمين مختلقة، وعندما لا تتوفر البيانات نقول ذلك.</li><li><strong>المخاطرة أولًا.</strong> كل فكرة تأتي مع مستوى إلغاء ورسالة مخاطر واضحة.</li><li><strong>الإنسان يراجع الذكاء الاصطناعي.</strong> يساعد الذكاء الاصطناعي في البحث والإنتاج، ويراجع شخص من الفريق كل محتوى قبل نشره.</li><li><strong>تعليم، لا نصيحة.</strong> محتوانا يساعدك على التفكير، ولا يخبرك بما تفعله بأموالك.</li></ul>
+  <ul><li><strong>لا بيانات وهمية.</strong> لا ننشر أسعارًا أو أداءً أو نسب نجاح أو أعداد مستخدمين مختلقة، وعندما لا تتوفر البيانات نقول ذلك.</li><li><strong>المخاطرة أولًا.</strong> كل فكرة تأتي مع مستوى إلغاء ورسالة مخاطر واضحة.</li><li><strong>وضوح استخدام الذكاء الاصطناعي.</strong> تُنشر الإصدارات اليومية تلقائيًا بتفويض المالك وبعد فحص المصادر والمتطلبات التقنية؛ ويحتفظ الاستوديو بمسار اعتماده اليدوي.</li><li><strong>تعليم، لا نصيحة.</strong> محتوانا يساعدك على التفكير، ولا يخبرك بما تفعله بأموالك.</li></ul>
   <h2>تعرّف على REX</h2>
   <p>${arText('REX هو ثعلب FOXREX، وتوقيعنا على المحتوى التعليمي: REX يشرح، وملاحظة REX، واسأل REX.')}</p>` : `
   <h2>What we do</h2>
   <p>We publish daily market analysis with a focus on gold, major FX pairs, indices and crypto; explain economic news and central-bank decisions; share FOXREX Signals on Telegram; and teach the concepts behind them through REX, our educational identity.</p>
   <h2>How we work</h2>
-  <ul><li><strong>No fake data.</strong> We never publish invented prices, performance, win rates or user numbers. When data is unavailable, we say so.</li><li><strong>Risk first.</strong> Every idea carries an invalidation level and a risk message.</li><li><strong>People review AI.</strong> AI helps our research and production workflow; a person reviews every piece before it is published.</li><li><strong>Education, not advice.</strong> Our content helps you think — it does not tell you what to do with your money.</li></ul>
+  <ul><li><strong>No fake data.</strong> We never publish invented prices, performance, win rates or user numbers. When data is unavailable, we say so.</li><li><strong>Risk first.</strong> Every idea carries an invalidation level and a risk message.</li><li><strong>Transparent AI assistance.</strong> Daily editions use an owner-authorized automated workflow with source and technical checks; Studio retains its manual approval process.</li><li><strong>Education, not advice.</strong> Our content helps you think — it does not tell you what to do with your money.</li></ul>
   <h2>Meet REX</h2>
   <p>REX is the FOXREX fox — our signature for educational content such as REX Explains, REX Note and Ask REX.</p>`}
 </div></section>` });
