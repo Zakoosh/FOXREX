@@ -9,6 +9,8 @@ class QuoteIntegrity(unittest.TestCase):
   for price in (float('inf'),float('nan'),0,-1,True):
    with self.assertRaises(AssertionError):refresh.checked(dict(base,price=price),self.now)
   with self.assertRaises(AssertionError):refresh.checked(dict(base,asOf='2026-10-27T00:00:00Z'),self.now)
+ def test_timezone_is_required(self):
+  with self.assertRaises(AssertionError):refresh.checked(dict(symbol='XAUUSD',price=4000,asOf='2026-10-25T23:00:00'),self.now)
  def test_gold_currency_and_symbol_must_match(self):
   with patch.object(refresh,'fetch',return_value=dict(symbol='XAG',currency='USD',price=50,updatedAt='2026-10-25T23:00:00Z')):
    with self.assertRaises(AssertionError):refresh.quote(('XAUUSD','XAU'),self.now)

@@ -1,0 +1,103 @@
+{
+  "checkedAt": "2026-10-25T22:58:54Z",
+  "quotes": [
+    {
+      "symbol": "XAUUSD",
+      "price": 4002.0,
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "asOf": "2026-10-25T22:57:42Z",
+      "fetchedAt": "2026-10-25T22:58:11Z",
+      "ageSeconds": 44,
+      "stale": false,
+      "independentConfirmation": "unavailable: no close-timestamp comparable independent spot/FX observation verified; no accuracy guarantee",
+      "previousAsOf": "2026-10-25T22:00:12Z",
+      "nonRegressionPassed": true
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 54.282001,
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "asOf": "2026-10-25T22:57:41Z",
+      "fetchedAt": "2026-10-25T22:58:11Z",
+      "ageSeconds": 45,
+      "stale": false,
+      "independentConfirmation": "unavailable: no close-timestamp comparable independent spot/FX observation verified; no accuracy guarantee",
+      "previousAsOf": "2026-10-25T22:00:11Z",
+      "nonRegressionPassed": true
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.1212,
+      "currency": "USD",
+      "unit": "USD per EUR",
+      "asOf": "2026-10-25T22:57:42Z",
+      "fetchedAt": "2026-10-25T22:58:12Z",
+      "ageSeconds": 44,
+      "stale": false,
+      "independentConfirmation": "unavailable: no close-timestamp comparable independent spot/FX observation verified; no accuracy guarantee",
+      "previousAsOf": "2026-10-25T21:59:46Z",
+      "nonRegressionPassed": true
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.3373,
+      "currency": "USD",
+      "unit": "USD per GBP",
+      "asOf": "2026-10-25T22:57:42Z",
+      "fetchedAt": "2026-10-25T22:58:12Z",
+      "ageSeconds": 44,
+      "stale": false,
+      "independentConfirmation": "unavailable: no close-timestamp comparable independent spot/FX observation verified; no accuracy guarantee",
+      "previousAsOf": "2026-10-25T21:59:46Z",
+      "nonRegressionPassed": true
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 156.909,
+      "currency": "JPY",
+      "unit": "JPY per USD",
+      "asOf": "2026-10-25T22:58:11Z",
+      "fetchedAt": "2026-10-25T22:58:12Z",
+      "ageSeconds": 15,
+      "stale": false,
+      "independentConfirmation": "unavailable: no close-timestamp comparable independent spot/FX observation verified; no accuracy guarantee",
+      "previousAsOf": "2026-10-25T22:00:24Z",
+      "nonRegressionPassed": true
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 80437.289062,
+      "currency": "USD",
+      "unit": "USD per BTC",
+      "asOf": "2026-10-25T22:57:43Z",
+      "fetchedAt": "2026-10-25T22:58:11Z",
+      "ageSeconds": 43,
+      "stale": false,
+      "independentConfirmation": "comparable USD spot observation; venue differences remain, not an executable-price guarantee",
+      "comparisonAttempt": {
+        "sourceUrl": "https://www.bitstamp.net/api/v2/ticker/btcusd/",
+        "price": 80391.55,
+        "asOf": "2026-10-25T22:58:28Z",
+        "marketType": "SPOT",
+        "timestampGapSeconds": 45.0,
+        "differencePercent": 0.0569
+      },
+      "previousAsOf": "2026-10-25T22:00:13Z",
+      "nonRegressionPassed": true
+    }
+  ],
+  "overdueUnverifiedEvents": [],
+  "breakingNews": {
+    "action": "none",
+    "reason": "No newly corroborated consequential development suitable for publication found in this check; upcoming-week previews and older reports are not breaking news.",
+    "sources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/2026-press.htm",
+      "https://www.ecb.europa.eu/press/pubbydate/html/index.en.html",
+      "https://www.boj.or.jp/en/",
+      "https://www.bankofengland.co.uk/"
+    ],
+    "independentMetalAttempt": "https://data-asg.goldprice.org/dbXRates/USD returned HTTP 403; no futures comparisons used"
+  }
+}

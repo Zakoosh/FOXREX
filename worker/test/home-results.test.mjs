@@ -43,3 +43,11 @@ test('home has photographic hero, real quote slots, a news strip and candle char
  const covers=new Map();for(const e of feed.items.filter(e=>e.language==='en')){assert.ok(!covers.has(e.image.src),`shared cover: ${e.image.src}`);covers.set(e.image.src,e.translationGroupId);}
  assert.ok(read('tools/charts/render.py').includes('Rectangle('));assert.ok(read('tools/charts/render.py').includes('ax.vlines('));
 });
+
+test('source observations age independently of fetch success',()=>{
+ const q={source:'Gold API',asOf:'2026-10-25T22:00:00Z'},t=Date.parse(q.asOf);
+ assert.equal(model.staleQuote(q,t+900000),false);
+ assert.equal(model.staleQuote(q,t+900001),true);
+ assert.equal(model.staleQuote({...q,source:'Yahoo Finance'},t+7200000),false);
+ assert.equal(model.staleQuote({...q,source:'Yahoo Finance'},t+7200001),true);
+});
