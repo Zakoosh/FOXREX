@@ -1,0 +1,87 @@
+{
+  "contentId": "fx-20261024-ig-car-weekahead",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "format": "carousel 1080x1350",
+  "status": "DRAFT",
+  "design": {
+    "background": "#0B1320",
+    "accent": "#00D4A7",
+    "bearish": "#FF5C7A",
+    "text": "#E5E7EB",
+    "fonts": {
+      "ar": "IBM Plex Sans Arabic 700/600/400 (assets/fonts)",
+      "en/data": "Inter 600-800"
+    },
+    "safeMargin": 96,
+    "rules": "Arabic never in image-model pixels; typography added in post. Symbols/times in Inter LTR. Logo from assets/brand only."
+  },
+  "slides": [
+    {
+      "slide": 1,
+      "role": "hook",
+      "en": "This week can move gold.\n5 dates. Istanbul time.",
+      "ar": "أسبوع قد يحرّك الذهب...\nخمسة مواعيد بتوقيت إسطنبول",
+      "visual": "Dark navy, teal calendar-grid motif, REX mascot (assets/rex/rex-arms.jpg) small bottom corner; clean space top two-thirds for text."
+    },
+    {
+      "slide": 2,
+      "role": "context",
+      "en": "Gold closed last week roughly 3–4% lower (aggregator data; closes differ by source).",
+      "ar": "أغلق الذهب الأسبوع الماضي منخفضاً بنحو 3–4% (بيانات مجمّعة وتختلف الإغلاقات).",
+      "visual": "Minimal descending line motif in #FF5C7A, no price axis, no invented numbers."
+    },
+    {
+      "slide": 3,
+      "role": "event",
+      "en": "Wed 28 Oct · 21:00\nFOMC decision",
+      "ar": "الأربعاء 28 أكتوبر · 21:00\nقرار FOMC",
+      "visual": "Large Inter time (up to 120px), teal underline, bank-building line icon."
+    },
+    {
+      "slide": 4,
+      "role": "event",
+      "en": "Thu 29 Oct · 15:30\nUS advance Q3 GDP + September PCE",
+      "ar": "الخميس 29 أكتوبر · 15:30\nGDP الأمريكي المبدئي + PCE لشهر سبتمبر",
+      "visual": "Same layout as slide 3 for rhythm, chart-bars icon."
+    },
+    {
+      "slide": 5,
+      "role": "event",
+      "en": "Thu 29 Oct: ECB decision\nFri 30 Oct: BoJ decision",
+      "ar": "الخميس 29 أكتوبر: قرار الأوروبي\nالجمعة 30 أكتوبر: قرار بنك اليابان",
+      "visual": "Two stacked date chips; no time shown (sources disagree)."
+    },
+    {
+      "slide": 6,
+      "role": "mechanism",
+      "en": "Rates and the dollar are two of gold's main drivers.\nWe mark the moments, not the direction.",
+      "ar": "الفائدة والدولار من أبرز محركات الذهب.\nنحدد اللحظات لا الاتجاه.",
+      "visual": "REX pointing at a simple three-node flow: rates → dollar → XAUUSD."
+    },
+    {
+      "slide": 7,
+      "role": "cta",
+      "en": "Save this. Which event do you watch first?",
+      "ar": "احفظ المنشور. أي حدث تتابعه أولاً؟",
+      "visual": "FOXREX lockup (assets/brand/foxrex-lockup.jpg), 'TRADE SMARTER. GO FURTHER.' signature; risk line in caption 24px."
+    }
+  ],
+  "imagePrompts": [
+    {
+      "id": "imgp-car-bg",
+      "use": "slides 1-7 background plate",
+      "prompt": "Abstract dark navy (#0B1320) background with a subtle teal (#00D4A7) calendar grid and soft glow, premium fintech editorial style, large empty space for text, no text, no numbers, no logos, no people, 4:5 vertical.",
+      "negative": "text, letters, digits, price charts with numbers, watermarks, logos, faces"
+    },
+    {
+      "id": "imgp-car-icons",
+      "use": "slides 3-6 icons",
+      "prompt": "Set of four minimal line icons in teal on transparent/dark background: bank building, bar chart, globe with currency symbols (no real currency glyph text), flow arrows. Consistent stroke, flat, no text.",
+      "negative": "text, digits, gradients, 3D"
+    }
+  ],
+  "productionNotes": "Generate backgrounds only; compose text/logo in an external editor. Each generated image needs separate cost preview/approval per GENERATION.md. Verify every claim in market-brief.md §1 before export."
+}

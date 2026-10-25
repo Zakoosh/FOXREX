@@ -1,0 +1,67 @@
+{
+  "contentId": "fx-20261024-ig-reel-rex-cb",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "format": "reel 1080x1920, ~30s",
+  "status": "DRAFT",
+  "angle": "REX Explains (educational, no advice)",
+  "hook": {
+    "en": "How does a central bank move gold?",
+    "ar": "كيف يحرّك البنك المركزي سعر الذهب؟"
+  },
+  "scenes": [
+    {
+      "t": "0-3s",
+      "visual": "REX mascot beside a large XAUUSD ticker-style title card (no price numbers)",
+      "voiceover_en": "Why does gold react to the Fed?",
+      "voiceover_ar": "لماذا يتحرك الذهب عند قرار الفيدرالي؟",
+      "onscreen_en": "Why does gold react to the Fed?",
+      "onscreen_ar": "لماذا يتحرك الذهب مع الفيدرالي؟"
+    },
+    {
+      "t": "3-10s",
+      "visual": "Simple diagram: Rates ↑ → Dollar ↑ → Gold under pressure (arrows LTR, labels Inter)",
+      "voiceover_en": "Gold pays no interest. When rates and the dollar rise, holding it costs more by comparison.",
+      "voiceover_ar": "الذهب لا يدرّ فائدة. وعندما ترتفع الفائدة والدولار تصبح كلفة الاحتفاظ به أعلى نسبياً.",
+      "onscreen_en": "Gold pays no interest",
+      "onscreen_ar": "الذهب لا يدرّ فائدة"
+    },
+    {
+      "t": "10-18s",
+      "visual": "Reverse diagram: Rates ↓ → Dollar ↓ → Gold supported",
+      "voiceover_en": "When rates and the dollar ease, the opposite pressure can appear.",
+      "voiceover_ar": "وعندما تتراجع الفائدة والدولار قد يظهر الضغط المعاكس.",
+      "onscreen_en": "The reverse can also happen",
+      "onscreen_ar": "وقد يحدث العكس"
+    },
+    {
+      "t": "18-25s",
+      "visual": "Calendar card: Wed 28 Oct 21:00 FOMC · Thu 29 Oct 15:30 GDP+PCE (Istanbul)",
+      "voiceover_en": "This week: the Fed on Wednesday, then US GDP and PCE on Thursday.",
+      "voiceover_ar": "هذا الأسبوع: الفيدرالي يوم الأربعاء ثم GDP وPCE الأمريكيان يوم الخميس.",
+      "onscreen_en": "Wed 21:00 · Thu 15:30 (Istanbul)",
+      "onscreen_ar": "الأربعاء 21:00 · الخميس 15:30 (إسطنبول)"
+    },
+    {
+      "t": "25-30s",
+      "visual": "FOXREX lockup + signature; REX waves",
+      "voiceover_en": "REX explains, he doesn't advise. Follow FOXREX.",
+      "voiceover_ar": "REX يشرح ولا ينصح. تابع FOXREX.",
+      "onscreen_en": "Educational only · not financial advice",
+      "onscreen_ar": "تعليمي فقط · ليس نصيحة مالية"
+    }
+  ],
+  "caption_en": "How rates and the dollar reach the gold price, in 30 seconds. Educational market commentary, not financial advice. Trading leveraged products carries a high risk of loss. #XAUUSD #Gold #FOXREX",
+  "caption_ar": "كيف تصل الفائدة والدولار إلى سعر الذهب في 30 ثانية. محتوى تعليمي وتحليلي وليس نصيحة مالية. التداول بالمنتجات ذات الرافعة المالية ينطوي على مخاطر عالية بالخسارة. #الذهب #XAUUSD #FOXREX",
+  "imagePrompts": [
+    {
+      "id": "imgp-reel-cover",
+      "use": "cover 1080x1920",
+      "prompt": "Vertical dark navy (#0B1320) scene with teal (#00D4A7) rim light, clean empty upper third for title, abstract gold-coloured sphere motif, premium editorial fintech look, no text, no digits, no logos.",
+      "negative": "text, digits, logos, faces, real brand marks"
+    }
+  ],
+  "productionNotes": "Reels are storyboards only (no rendering in this pipeline). Voiceover not synthesized. Arabic text added in post using IBM Plex Sans Arabic. Mascot from assets/rex only; do not redraw."
+}
