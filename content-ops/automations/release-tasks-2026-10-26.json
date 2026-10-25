@@ -26,7 +26,7 @@
   },
   {
     "id": "6ade7fbb91348191a6d24412afed48c0",
-    "title": "تحديث نبض FOXREX",
-    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261026T030000\nRRULE:FREQ=HOURLY\nEND:VEVENT"
+    "title": "تدقيق الأسعار والأخبار العاجلة",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261026T020000\nRRULE:FREQ=HOURLY\nEND:VEVENT"
   }
 ]
