@@ -16,6 +16,7 @@ import { HiggsfieldApiProvider, ClaudeApiProvider } from "./providers/paid-disab
 import { download, sniff, pickUrls } from "./providers/util.js";
 import { CreativeService, validateCreativeRequest, validateOutput, validateBrief } from './creative.js';
 import { chooseModel } from './models.js';
+import { createTelegram } from './telegram.js';
 import { createCms } from './cms-routes.js';
 
 export function buildRegistry(config = CONFIG) {
@@ -63,6 +64,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
   }
 
   const cms = createCms({ config, creative });
+  const telegram = createTelegram(config);
   const server = http.createServer(async (req, res) => {
     try {
       const url = new URL(req.url, "http://x"); const p = url.pathname; res.fxOrigin = req.headers.origin;
@@ -76,6 +78,7 @@ export function createServer({ config = CONFIG, registry = buildRegistry(config)
       if (p === '/' && req.method === 'GET') return send(res, 200, { service: 'foxrex-studio-generation-worker', message: 'This port is the worker API, not the Studio UI.', health: '/health', studio: 'https://foxrex.co/studio/' });
       if (p === "/health") return send(res, 200, { ok: true, service: "foxrex-studio-generation-worker", version: "0.1.0", allowedOrigin: config.allowedOrigin, authenticationRequired: !!config.token });
       if (!authed(req)) return send(res, 401, { error: "unauthorized" });
+      if (await telegram.handle(req, res, url, { send, body })) return;
       if (await cms.handle(req, res, url, { send, body })) return;
       if (p === '/creative/status' && req.method === 'GET') return send(res, 200, await creative.status());
       if (p === '/creative/revisions' && req.method === 'GET') return send(res, 200, creative.data.revisions.filter(r => r.contentId === url.searchParams.get('contentId')));

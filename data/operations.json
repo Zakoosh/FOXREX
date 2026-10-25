@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-25T23:03:09.429068+00:00",
+  "autochartist": {
+    "status": "waiting-current-mail",
+    "message": "آخر بحث لم يجد تقارير Autochartist حديثة في البريد المتصل. التقارير التاريخية مستثناة من النشر."
+  },
+  "telegram": {
+    "status": "pending-configuration"
+  },
+  "social": {
+    "instagram": "pending-link",
+    "facebook": "pending-link",
+    "lastReminderAt": "2026-10-25T23:03:09.429068+00:00"
+  },
+  "processedEvents": []
+}

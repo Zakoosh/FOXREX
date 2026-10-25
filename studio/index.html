@@ -231,6 +231,7 @@ table.t tr.click{cursor:pointer} table.t tr.click:hover td{background:rgba(229,2
 <script src="creative-studio.js"></script>
 <script src="cms-model.js"></script>
 <script src="cms-studio.js"></script>
+<script src="operations.js"></script>
 <script>
 /* =====================================================================
    FOXREX Studio — Content Operating System (v3)
@@ -1265,6 +1266,7 @@ function seed(){
 if(!load()) { seed(); DB.items=[]; save(); }
 installCreativeStudio();
 installCmsStudio();
+installOperations();
 DB.items.forEach(it=>{ it.jobs=it.jobs||[]; if(it.status==="GENERATING"&&!activeJob(it)) it.status="PROMPT_READY"; });
 refreshProviders().then(()=>{ if(["item","settings","home"].includes(S.view)) render(); }); resumePolling();
 render();
