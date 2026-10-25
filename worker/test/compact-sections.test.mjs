@@ -45,6 +45,7 @@ test('instrument filter updates selection and restores all cards',()=>{
 });
 test('article sources are compact disclosures and navigation arrows have intrinsic dimensions',()=>{
  const html=read('ar/analysis/xauusd-technical-2026-10-23/index.html');
+ assert.match(html,/styles\/editorial\.css\?v=[a-f0-9]{12}/);
  assert.match(html,/<details class="editorial-sources"><summary>/);
  assert.match(html,/<svg class="fx-flip" width="16" height="16"/);
  assert.match(html,/<figure class="editorial-cover" data-chart><a /);

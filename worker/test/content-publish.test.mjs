@@ -15,7 +15,7 @@ import { GOLD_FIELDS, GOLD_FIELDS_AR } from './fixtures/content-v3.mjs';
 process.env.FOXREX_ALLOW_TEST_CONTENT = '1'; // isolated temp repos only
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', env: { ...process.env, GIT_TERMINAL_PROMPT: '0' } }).trim();
-const SITE_FILES = ['tools/site/build.mjs', 'tools/site/content.mjs', 'tools/site/text.mjs', 'tools/site/content-pages.mjs', 'tools/site/check-feed.mjs', 'tools/site/jsonschema.mjs',
+const SITE_FILES = ['styles/editorial.css', 'tools/site/build.mjs', 'tools/site/content.mjs', 'tools/site/text.mjs', 'tools/site/content-pages.mjs', 'tools/site/check-feed.mjs', 'tools/site/jsonschema.mjs',
   'scripts/content/time.js', 'scripts/content/freshness.js', 'scripts/content/select.js', 'studio/cms-model.js', 'data/content.json', 'data/content.schema.json', 'tools/editorial/calendar.mjs', 'data/calendar.json', 'tools/site/tr.mjs', 'data/locales/tr.json'];
 
 function makeRepo() {

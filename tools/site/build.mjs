@@ -16,6 +16,7 @@
    No dependencies. Output uses relative URLs so it works on foxrex.co and a local server. */
 import fs from 'node:fs';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { SITE, MARKETS, SCHEDULE, SCHEDULE_EXTRA, ANALYSIS_CATEGORIES, NEWS_CATEGORIES, REX } from './content.mjs';
@@ -27,6 +28,7 @@ import { TR, tr, turkishHtml } from './tr.mjs';
 const require = createRequire(import.meta.url);
 const CMS = require('../../studio/cms-model.js');
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
+const EDITORIAL_VERSION = createHash('sha256').update(fs.readFileSync(path.join(ROOT,'styles/editorial.css'))).digest('hex').slice(0,12);
 const ARGS = process.argv.slice(2);
 const argVal = k => { const i = ARGS.indexOf(k); return i >= 0 ? ARGS[i + 1] : null; };
 const CHECK = ARGS.includes('--check');
@@ -118,7 +120,7 @@ ${preload}
 <link rel="stylesheet" href="${r}styles/base.css">
 <link rel="stylesheet" href="${r}styles/components.css">
 <link rel="stylesheet" href="${r}styles/public.css">
-<link rel="stylesheet" href="${r}styles/editorial.css">
+<link rel="stylesheet" href="${r}styles/editorial.css?v=${EDITORIAL_VERSION}">
 <link rel="stylesheet" href="${r}styles/themes.css">
 ${ar ? `<link rel="stylesheet" href="${r}styles/ar.css">\n` : ''}${p.jsonld && p.jsonld(ar) ? `<script type="application/ld+json">${JSON.stringify(p.jsonld(ar)).replace(/</g, '\\u003c')}</script>\n` : ''}</head>`;
 }
