@@ -86,3 +86,32 @@ svg.fx-flip,.editorial-related svg{width:16px;height:16px;min-width:16px;max-wid
 .editorial-cover[data-chart] img{aspect-ratio:auto;object-fit:contain;cursor:zoom-in}
 .editorial-cover figcaption{padding:9px 14px;font-size:12px;color:#b6c2d5;text-align:center}
 @media(max-width:980px){html[lang="ar"] .mobile-nav a{font:600 15px/1.5 var(--foxrex-font-ar)}}
+/* REX is an educational character. This notice accompanies all public content. */
+.education-notice{position:sticky;top:68px;z-index:35;background:var(--foxrex-surface);border-bottom:1px solid var(--foxrex-primary-line);color:var(--foxrex-text-muted);font-size:12px;line-height:1.65}
+.education-notice>.wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding-block:8px}
+.education-notice svg{width:16px;height:16px;flex:0 0 16px;color:var(--foxrex-primary)}
+.gateway-learn{display:flex;align-items:center;gap:12px;margin-block:16px 20px;padding:10px 14px;border:1px solid var(--foxrex-primary-line);border-radius:12px;font-size:14px;max-width:540px;background:var(--foxrex-primary-tint)}
+.gateway-learn img{width:44px;height:44px;object-fit:cover;border-radius:10px}.gateway-learn svg{margin-inline-start:auto}
+.rex-academy{padding-block:48px;background:radial-gradient(ellipse at 75% 50%,var(--foxrex-primary-tint),transparent 60%)}
+.rex-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center}
+.rex-hero h1{font-size:clamp(34px,4vw,54px);line-height:1.25;letter-spacing:-.03em;margin-block:14px 24px}
+.rex-hero h1>span{color:var(--foxrex-primary)}
+[lang="ar"] .rex-hero h1{line-height:1.55;letter-spacing:0}
+.rex-hero__copy>p:not(.fx-kicker){font-size:17px;color:var(--foxrex-text-muted);line-height:1.9;max-width:620px}
+.rex-hero blockquote{margin:24px 0;padding:16px 20px;border-inline-start:3px solid var(--foxrex-primary);background:var(--foxrex-primary-tint);font-size:20px;line-height:1.7;border-radius:0 12px 12px 0}
+.rex-hero cite{display:block;font-size:12px;color:var(--foxrex-primary);font-style:normal}
+.rex-hero__actions{display:flex;gap:12px;flex-wrap:wrap}.rex-hero__copy .rex-principle{font-size:12px!important;margin-top:18px;letter-spacing:.03em}
+.rex-hero__portrait{position:relative;margin:0;border:1px solid var(--foxrex-primary-line);border-radius:26px;overflow:hidden;box-shadow:var(--foxrex-shadow)}
+.rex-hero__portrait>img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover}
+.rex-hero figcaption{position:absolute;inset:auto 18px 18px;padding:10px 16px;border:1px solid #ffffff22;border-radius:12px;background:#071421e8;color:#cbd5e1;font-size:13px;display:flex;gap:14px;align-items:center}.rex-hero figcaption strong{color:#5bd1b0;font-size:20px}
+.rex-lessons,.rex-check{padding-block:44px}.rex-section-title{max-width:760px;margin-bottom:24px}.rex-section-title h2,.rex-check h2,.rex-ask h2{font-size:clamp(26px,3vw,36px);line-height:1.5;margin-block:10px}.rex-section-title>p,.rex-check>.wrap>p,.rex-ask p{color:var(--foxrex-text-muted);line-height:1.8}
+.rex-path{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:32px}
+.rex-path>a{display:flex;flex-direction:column;gap:12px;padding:18px;border:1px solid var(--foxrex-border);border-radius:12px;background:var(--foxrex-surface)}.rex-path>a:hover{border-color:var(--foxrex-primary)}.rex-path span{color:var(--foxrex-primary);font-size:12px}.rex-path strong{font-size:14px;line-height:1.7}.rex-path svg{margin-top:auto}
+.rex-lesson{border:1px solid var(--foxrex-border);border-radius:14px;background:var(--foxrex-surface);margin-bottom:14px;scroll-margin-top:135px;overflow:hidden}
+.rex-lesson summary{display:flex;align-items:center;gap:16px;cursor:pointer;padding:20px 24px;font-size:18px;font-weight:600;list-style:none}.rex-lesson summary::-webkit-details-marker{display:none}.rex-lesson__number{color:var(--foxrex-primary);font-size:12px}.rex-lesson__plus{margin-inline-start:auto;color:var(--foxrex-primary);font-size:22px}.rex-lesson[open] .rex-lesson__plus{transform:rotate(45deg)}
+.rex-lesson__body{padding:0 24px 24px;max-width:860px;margin-inline:auto;line-height:1.95}.rex-lesson__body>p{margin-block:16px;color:var(--foxrex-text-muted)}
+.rex-note{display:flex;align-items:start;gap:14px;padding:18px;border-radius:12px;background:var(--foxrex-primary-tint);border:1px solid var(--foxrex-primary-line);margin-top:24px}.rex-note img{width:48px;height:48px;border-radius:50%;object-fit:cover}.rex-note strong{color:var(--foxrex-primary);font-size:12px}.rex-note p{margin:4px 0 0;line-height:1.8;font-size:15px}
+.rex-published{margin-top:32px}.rex-published>h2{font-size:24px;margin-bottom:18px}.rex-check{background:var(--foxrex-bg-raised);border-block:1px solid var(--foxrex-border)}.rex-check>.wrap{max-width:850px}.rex-question{margin-top:14px;border-bottom:1px solid var(--foxrex-border);padding-block:14px}.rex-question summary{cursor:pointer;font-weight:600;font-size:16px;line-height:1.8}.rex-question p{color:var(--foxrex-primary);line-height:1.9;font-size:15px;padding-block:12px}
+.rex-ask{padding-block:44px}.rex-ask>.wrap{display:flex;align-items:center;justify-content:space-between;gap:30px}.rex-ask p{max-width:650px}
+@media(max-width:980px){.site-nav{gap:16px}.rex-hero{gap:28px}.rex-path{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.education-notice{font-size:11px;line-height:1.65}.education-notice>.wrap{padding-block:6px;align-items:flex-start}.education-notice svg{margin-top:2px}.gateway-learn{font-size:13px}.rex-academy{padding-block:26px}.rex-hero{grid-template-columns:1fr;gap:24px}.rex-hero__portrait{grid-row:1;width:200px;justify-self:center;border-radius:20px}.rex-hero figcaption{inset:auto 8px 8px;padding:5px 8px;font-size:9px;gap:6px}.rex-hero figcaption strong{font-size:14px}.rex-hero h1{font-size:32px;margin-block:10px 16px}.rex-hero__copy>p:not(.fx-kicker){font-size:15px}.rex-hero blockquote{font-size:17px}.rex-path{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.rex-path>a{padding:14px}.rex-path strong{font-size:13px}.rex-lessons,.rex-check{padding-block:28px}.rex-lesson summary{font-size:16px;gap:12px;padding:16px}.rex-lesson__body{padding:0 16px 18px;font-size:15px}.rex-note{padding:14px;gap:10px}.rex-note img{width:38px;height:38px}.rex-note p{font-size:14px}.rex-ask>.wrap{align-items:start;flex-direction:column;gap:18px}}

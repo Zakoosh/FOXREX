@@ -4,12 +4,12 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 const read=p=>fs.readFileSync(new URL('../../'+p,import.meta.url),'utf8');
 const feed=JSON.parse(read('data/content.json'));
-test('all editions expose four populated hubs and a compact social gateway',()=>{
+test('all editions expose four populated market hubs plus REX and a compact social gateway',()=>{
  for(const prefix of ['','ar/','tr/']){
   const lang=prefix.slice(0,-1)||'en',home=read(prefix+'index.html');
   const nav=home.match(/<nav class="site-nav"[^>]*>([\s\S]*?)<\/nav>/)[1];
-  assert.equal((nav.match(/<a /g)||[]).length,4);
-  for(const route of ['analysis','technical','calendar','news'])assert.ok(nav.includes(route+'/'));
+  assert.equal((nav.match(/<a /g)||[]).length,5);
+  for(const route of ['analysis','technical','calendar','news','learn'])assert.ok(nav.includes(route+'/'));
   assert.equal((home.match(/class="gateway-card"/g)||[]).length,4);
   assert.ok(home.includes('gateway-social')&&home.includes('https://t.me/fooxrex'));
   assert.ok(!home.includes('data-slot=')&&!home.includes('data-px'));
@@ -51,4 +51,20 @@ test('article sources are compact disclosures and navigation arrows have intrins
  assert.ok(!/<img[^>]*alt="[^"]*<bdi/.test(html), 'alt text must never contain bidi markup');
  assert.match(html,/<figure class="editorial-cover" data-chart><a /);
  assert.match(read('styles/editorial.css'),/\.editorial-sources a\{font-size:12px/);
+});
+test('REX has a character-led classroom and educational notice in all editions; root defaults to English',()=>{
+ const titles={en:'Hey, I’m REX.',ar:'أهلًا، أنا ريكس.',tr:'Merhaba, ben REX.'};
+ for(const lang of ['en','ar','tr']){
+  const prefix=lang==='en'?'':lang+'/',html=read(prefix+'learn/index.html');
+  assert.ok(html.includes(titles[lang]));
+  assert.equal((html.match(/class="rex-lesson"/g)||[]).length,5);
+  assert.equal((html.match(/class="rex-question"/g)||[]).length,3);
+  assert.ok(html.includes('assets/rex/rex-educator-v2.webp'));
+  assert.ok(!/<img[^>]*alt="[^"]*<bdi/.test(html));
+  for(const p of ['','analysis/','technical/','news/','calendar/','learn/'])assert.match(read(prefix+p+'index.html'),/class="education-notice"/);
+ }
+ assert.match(read('index.html'),/<html lang="en" dir="ltr">/);
+ assert.match(read('index.html'),/hreflang="x-default" href="https:\/\/foxrex.co\/"/);
+ assert.ok(!/location\.(assign|replace|href)/.test(read('scripts/public/site.js')),'no automatic language redirect');
+ assert.match(read('styles/editorial.css'),/\.education-notice\{position:sticky/);
 });
