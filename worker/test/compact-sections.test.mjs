@@ -48,6 +48,7 @@ test('article sources are compact disclosures and navigation arrows have intrins
  assert.match(html,/styles\/editorial\.css\?v=[a-f0-9]{12}/);
  assert.match(html,/<details class="editorial-sources"><summary>/);
  assert.match(html,/<svg class="fx-flip" width="16" height="16"/);
+ assert.ok(!/<img[^>]*alt="[^"]*<bdi/.test(html), 'alt text must never contain bidi markup');
  assert.match(html,/<figure class="editorial-cover" data-chart><a /);
  assert.match(read('styles/editorial.css'),/\.editorial-sources a\{font-size:12px/);
 });
