@@ -9,7 +9,7 @@ import { checkFeed } from '../../tools/site/check-feed.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const read = rel => fs.readFileSync(path.join(root, rel), 'utf8');
-const PAGES = ['', 'markets', 'gold', 'analysis', 'news', 'learn', 'signals', 'about', 'contact', 'privacy', 'terms', 'risk-disclosure'];
+const PAGES = ['', 'markets', 'gold', 'analysis', 'technical', 'calendar', 'news', 'learn', 'signals', 'about', 'contact', 'privacy', 'terms', 'risk-disclosure'];
 const pageFile = p => (p ? `${p}/` : '') + 'index.html';
 const arFile = p => 'ar/' + pageFile(p);
 const ALL = [...PAGES.map(pageFile), ...PAGES.map(arFile)];
@@ -51,9 +51,9 @@ test('relative links and assets on every page resolve to real files', () => {
 test('no fabricated market data ships with the site', async () => {
   const home = read('index.html');
   const pxs = [...home.matchAll(/data-px>([^<]*)</g)].map(m => m[1]);
-  assert.equal(pxs.length, 6);
+  assert.equal(pxs.length, 0, 'compact gateway has no ticker');
   assert.ok(pxs.every(v => v === '—'), 'ticker must start empty');
-  assert.match(home, /Market feed not connected/);
+  assert.match(home, /home-gateway/);
   // The publishing engine passes its candidate feed via FOXREX_FEED_PATH so what WOULD ship is what gets tested.
   const feedPath = process.env.FOXREX_FEED_PATH || path.join(root, 'data/content.json');
   const c = JSON.parse(fs.readFileSync(feedPath, 'utf8'));
@@ -133,10 +133,9 @@ test('Arabic typography path: IBM Plex Sans Arabic + Inter self-hosted, AR token
 
 test('Arabic copy and bidi: specified headlines present, Latin/number runs isolated in Inter LTR', async () => {
   const ar = read('ar/index.html');
-  for (const line of ['تداول أذكى...', 'فرص أكبر', 'ذكاء الأسواق', 'اليوم في', 'كل ما تحتاجه لمتابعة يوم التداول.', 'الذهب... كل يوم تداول.', 'تحليل يساعدك على التحرك...<br>أو الانتظار.', 'ما الذي تحرك...<br>ولماذا يهم؟', 'أفكار تداول منظمة...<br>بمخاطر واضحة.', 'تعلّم مع', 'منظومة ذكاء للأسواق...<br>مبنية على نظام واحد.', 'انضم إلى مجتمع'])
+  for (const line of ['نقطة انطلاقك للأسواق.', 'التحليل العام', 'التحليل التقني', 'التقويم', 'الأخبار', 'تابع'])
     assert.ok(ar.includes(line), `missing Arabic copy: ${line}`);
-  assert.match(ar, /قراءة الذهب والعملات قبل الجلسة الأمريكية/);
-  assert.ok(!ar.includes('قبل افتتاح وول ستريت عند'), 'preview is not mislabelled as the cash open');
+  assert.equal((ar.match(/class="gateway-card"/g)||[]).length,4);
   const { arText } = await import('../../tools/site/text.mjs');
   assert.equal(arText('صدر CPI أعلى من التوقعات'), 'صدر <bdi class="lt" dir="ltr">CPI</bdi> أعلى من التوقعات');
   assert.equal(arText('الذهب XAUUSD +0.42%'), 'الذهب <bdi class="lt" dir="ltr">XAUUSD +0.42%</bdi>');

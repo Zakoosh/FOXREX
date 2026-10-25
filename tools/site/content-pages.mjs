@@ -145,10 +145,10 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
     }).join('\n');
     return {html,headings};
   }
-  const sourcePanel = (lang,e) => (e.sources || []).length ? `<section class="editorial-sources"><h2>${X(lang,'Sources','المصادر')}</h2><ul>${e.sources.map(source=> {
-    const name=L(lang,source.name)+(source.publisher && source.publisher !== source.name ? ` (${L(lang,source.publisher)})` : '');
+  const sourcePanel = (lang,e) => (e.sources || []).length ? `<details class="editorial-sources"><summary>${X(lang,'Sources','المصادر')} (${e.sources.length})</summary><ul>${e.sources.map(source=> {
+    const name=(lang === 'ar' && /[A-Za-z]/.test(source.name) && !/[\u0600-\u06ff]/.test(source.name) ? `<bdi dir="ltr">${esc(source.name)}</bdi>` : L(lang,source.name))+(source.publisher && source.publisher !== source.name ? ` (${L(lang,source.publisher)})` : '');
     return `<li>${CMS.RE.https.test(source.url || '') ? `<a href="${esc(source.url)}" rel="noopener noreferrer nofollow" target="_blank">${name}</a>` : name}</li>`;
-  }).join('')}</ul></section>` : '';
+  }).join('')}</ul></details>` : '';
 
   const cta = (lang,b) => `<aside class="editorial-cta"><h2>${X(lang,'Follow the next market move','تابع الخطوة القادمة في السوق')}</h2><p>${X(lang,'Keep the calendar close and turn context into a clearer plan.','تابع المواعيد الاقتصادية وابنِ قراءتك للسوق على سياق أوضح.')}</p><div class="editorial-cta__actions"><a class="fx-btn fx-btn--primary" href="${b}calendar/">${X(lang,'Open the economic calendar','افتح التقويم الاقتصادي')} ${I.arrow}</a><a class="fx-btn fx-btn--ghost" href="${SITE.social.telegram.url}" target="_blank" rel="noopener">${X(lang,'Follow on Telegram','تابعنا على تيليجرام')}</a></div></aside>`;
 
@@ -164,9 +164,9 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
       canonical: abs(lang, e.urlPath), alternates, ogType: 'article', cover: e.image?.src,
       article: { published: e.publishedAt, modified: e.updatedAt, section: SECTION_LABEL[e.section][lang === 'ar' ? 1 : 0] },
       altHref: sib ? CMS.pathFor(sib.urlPath, other) : CMS.hubPath(e.section, other),
-      altHreflangExists: !!sib, active: e.section === 'desk' ? 'home' : e.section,
+      altHreflangExists: !!sib, active: e.category === 'technical' ? 'technical' : e.section === 'desk' ? 'home' : e.section,
       jsonld: () => jsonld(lang, e), scripts: e.freshness && e.freshness.validUntil ? ['scripts/public/item.js'] : [],
-      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang, e.summary)}</p><div class="editorial-meta"><span>${X(lang,'Published','نُشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${e.image ? `<figure class="editorial-cover"><img src="${r}${esc(e.image.src)}" alt="${L(lang,e.image.alt)}" width="1600" height="900" fetchpriority="high"></figure>` : ''}</div></section>
+      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang, e.summary)}</p><div class="editorial-meta"><span>${X(lang,'Published','نُشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${e.image ? `<figure class="editorial-cover"${e.category==='technical'?' data-chart':''}>${e.category==='technical'?`<a href="${r}${esc(e.image.src)}" target="_blank" rel="noopener" aria-label="${X(lang,'Open full chart','افتح الشارت بالحجم الكامل')}">`:''}<img src="${r}${esc(e.image.src)}" alt="${L(lang,e.image.alt)}" width="1600" height="900" fetchpriority="high">${e.category==='technical'?`</a><figcaption>${X(lang,'Tap the chart to view full size','اضغط على الشارت لعرضه بالحجم الكامل')}</figcaption>`:''}</figure>` : ''}</div></section>
 <div class="editorial-layout"><article class="editorial-body" data-item="${esc(e.id)}" data-layer="${esc(e.layer)}">
 ${badges(lang,e)}${freshnessBlock(lang,e)}${typeBlock(lang,e,sib).replace(/\{\{ROOT\}\}/g,r)}
 ${e.type === 'TRADING_IDEA' || e.type === 'SIGNAL' ? '' : rich.html}

@@ -1,0 +1,2 @@
+/* Only published instrument filters are generated. No empty tabs. */
+(function(){'use strict';var buttons=document.querySelectorAll('[data-catalog-filter]'),cards=document.querySelectorAll('[data-technical-card]');buttons.forEach(function(button){button.addEventListener('click',function(){var symbol=button.getAttribute('data-catalog-filter');buttons.forEach(function(b){b.setAttribute('aria-pressed',String(b===button));});cards.forEach(function(card){card.hidden=symbol!=='all'&&card.getAttribute('data-catalog-symbol')!==symbol;});});});})();

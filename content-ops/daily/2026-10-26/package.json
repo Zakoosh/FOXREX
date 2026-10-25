@@ -1,0 +1,1765 @@
+{
+  "authorization": "owner-authorized-2026-10-25",
+  "date": "2026-10-26",
+  "records": [
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "policy-week-map-2026-10-26",
+      "title": "أسبوع الفائدة: خريطة الأحداث للذهب والدولار",
+      "summary": "الفيدرالي أولًا، ثم النمو والتضخم والمركزي الأوروبي: كيف تقرأ تسلسل الأحداث؟",
+      "body": "خريطة الأسبوع\nقرار الفيدرالي مقرر الأربعاء 28 أكتوبر، وبيانات الناتج المحلي والدخل والإنفاق الخميس 29 أكتوبر، في يوم قرار المركزي الأوروبي نفسه. هذا تسلسل مواعيد معلنة، وليس توقعًا لنتائجها.\n\nقراءتنا للذهب\nنراقب تفسير السوق لرسالة الفائدة قبل الحكم على اتجاه الذهب. إذا تراجعت العوائد الحقيقية بالتزامن مع ضعف الدولار، تصبح البيئة أكثر دعمًا للمعدن؛ أما ارتفاعهما معًا فيدعو للحذر من ارتداد قصير. هذه علاقة مشروطة وليست قاعدة مضمونة.\n\nمن الخبر إلى الشارت\nافصل بين رد فعل البيان ورد فعل المؤتمر الصحفي. تثبيت الفائدة قد يحمل رسالة مختلفة بحسب التوجيه المستقبلي. لا تعامل أول شمعة كاتجاه نهائي، وقارن حركة الذهب بسلوك الدولار قبل إعادة تقييم السيناريو.\n\nخطة المتابعة\nافتح التقويم لتوقيت الأحداث، ثم راجع تحليل الذهب الفني للمستويات المؤرخة. تتغير الخطة عند تغير البيانات أو فشل السعر في الثبات خارج نطاقه.",
+      "category": "macro",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "أسبوع الفائدة: خريطة الأحداث للذهب والدولار"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "policy-week-map-2026-10-26",
+      "title": "Policy week: a map for gold and the dollar",
+      "summary": "Read the sequence of Fed policy, US data and the ECB before interpreting price moves.",
+      "body": "The verified sequence\nThe Fed decision is scheduled for 28 October. US GDP and Personal Income and Outlays follow on 29 October, the same day as the ECB decision. These are scheduled releases, not predictions of their outcomes.\n\nOur gold framework\nWe watch the market interpretation of policy. Falling real yields alongside a weaker dollar would create a more supportive backdrop; a joint rise would warrant caution about short rebounds. This is a conditional framework rather than a mechanical trading rule.\n\nFrom news to chart\nSeparate the statement reaction from the press conference. An unchanged rate can convey a different message through forward guidance. Compare gold with the dollar before treating the first candle as a lasting trend.\n\nWhat to do next\nCheck the calendar for release times, then open the dated gold chart for reference levels. Reassess when data change or price fails to hold a breakout.",
+      "category": "macro",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Policy week: a map for gold and the dollar"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "policy-week-map-2026-10-26",
+      "title": "Faiz haftası: altın ve dolar için olay haritası",
+      "summary": "Fed, ABD verileri ve ECB kararının sırasını fiyat hareketleriyle birlikte okuyun.",
+      "body": "Doğrulanmış takvim\nFed kararı 28 Ekim için planlanıyor. ABD büyüme ve kişisel gelir-harcama verileri 29 Ekim’de, ECB kararıyla aynı gün açıklanacak. Bunlar ilan edilmiş tarihlerdir; sonuç tahmini değildir.\n\nAltın için çerçevemiz\nPiyasanın politika mesajını nasıl yorumladığını izliyoruz. Reel getiriler ve dolar birlikte gerilerse altın için daha destekleyici bir ortam oluşabilir. İkisinin birlikte yükselmesi kısa tepkilere temkinli yaklaşmayı gerektirir. Bu, koşullu bir değerlendirmedir.\n\nHaberden grafiğe\nKarar metnine verilen tepkiyi basın toplantısından ayırın. Faiz sabit kalsa bile gelecek dönem mesajı değişebilir. İlk mumu kalıcı trend saymadan önce altını dolarla karşılaştırın.\n\nTakip planı\nSaatler için takvimi, seviyeler için tarihli altın analizini açın. Veri değiştiğinde veya kırılma korunamadığında senaryoyu yeniden değerlendirin.",
+      "category": "macro",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Faiz haftası: altın ve dolar için olay haritası"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "gold-real-yields-risk-2026-10-26",
+      "title": "الذهب بين العوائد الحقيقية والطلب على الأمان",
+      "summary": "ثلاث قنوات تساعد على تفسير اختلاف حركة الذهب عن حركة الفائدة الاسمية.",
+      "body": "ما الذي يحرك الذهب؟\nيبحث بنك شيكاغو الفيدرالي أثر العوائد الحقيقية وتوقعات التضخم والقلق الاقتصادي على الذهب. لذلك لا يكفي عنوان خبر الفائدة الاسمية لتفسير حركة المعدن.\n\nقراءتنا للسيناريوهات\nإذا هبطت العوائد الحقيقية مع ارتفاع الطلب على الأمان، فقد تتعزز دوافع الاحتفاظ بالذهب. وإذا ارتفعت تكلفة الفرصة البديلة وانخفض القلق، فقد تتراجع هذه الدوافع. يمكن أن تتعارض القنوات، وعندها تكون القراءة أقل وضوحًا.\n\nكيف نتحقق؟\nنقارن اتجاه الذهب بحركة الدولار والعوائد بعد الحدث، ونبحث عن استمرار الحركة بدل قفزة عابرة. ارتفاع الذهب رغم ضغط العوائد يستحق متابعة الطلب، لكنه لا يثبت وحده سبب الصعود.\n\nحدود الاستنتاج\nالعلاقة التاريخية لا تحدد سعرًا مستهدفًا. استخدم التحليل الفني المؤرخ لتحديد مناطق المراقبة، وأعد تقييم القراءة إذا انعكس السلوك بعد المؤتمر الصحفي.",
+      "category": "gold",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "الذهب بين العوائد الحقيقية والطلب على الأمان"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "gold-real-yields-risk-2026-10-26",
+      "title": "Gold between real yields and demand for safety",
+      "summary": "Three channels explain why nominal interest-rate headlines are not enough.",
+      "body": "The underlying drivers\nChicago Fed research examines real yields, inflation expectations and economic pessimism as gold-price drivers. A nominal-rate headline alone is therefore an incomplete explanation.\n\nOur conditional reading\nLower real yields combined with stronger demand for safety could support holding gold. Higher opportunity costs alongside easing uncertainty could weaken that support. When the channels conflict, conviction should fall.\n\nHow to check the story\nCompare gold with the dollar and yields after a release, looking for persistence rather than one spike. Gold rising despite yield pressure invites closer investigation of demand; it does not prove a single cause.\n\nLimits of the framework\nHistorical relationships do not produce a price target. Use the dated technical chart to locate reference areas and reassess if the reaction reverses during the press conference.",
+      "category": "gold",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Gold between real yields and demand for safety"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "gold-real-yields-risk-2026-10-26",
+      "title": "Altın: reel getiri ile güvenli liman talebi arasında",
+      "summary": "Nominal faiz başlığı tek başına fiyat hareketini açıklamaz.",
+      "body": "Temel etkenler\nChicago Fed araştırması reel getirileri, enflasyon beklentilerini ve ekonomik karamsarlığı altın fiyatının etkenleri olarak inceler. Nominal faiz haberi bu nedenle tek başına yeterli değildir.\n\nKoşullu değerlendirmemiz\nDüşen reel getiriler ve artan güvenli liman talebi altını destekleyebilir. Artan fırsat maliyeti ve azalan belirsizlik bu desteği zayıflatabilir. Kanallar çatıştığında değerlendirmeye duyulan güven de azalmalıdır.\n\nNasıl kontrol edilir?\nVeri sonrasında altını dolar ve getirilerle karşılaştırın. Tek sıçrama yerine hareketin sürmesini izleyin. Getiri baskısına rağmen yükselen altın, talebin incelenmesini gerektirir; tek bir nedeni kanıtlamaz.\n\nÇerçevenin sınırı\nTarihsel ilişkiler fiyat hedefi üretmez. Referans bölgeler için tarihli teknik grafiği kullanın; basın toplantısında tepki tersine dönerse değerlendirmeyi yenileyin.",
+      "category": "gold",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Altın: reel getiri ile güvenli liman talebi arasında"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "eurusd-relative-policy-2026-10-26",
+      "title": "اليورو والدولار: المقارنة أهم من القرار المنفرد",
+      "summary": "قراءة نسبية لزوج EUR/USD في أسبوع يجمع اجتماعين نقديين.",
+      "body": "قراران في أسبوع واحد\nالفيدرالي يعلن قراره في 28 أكتوبر، والمركزي الأوروبي في 29 أكتوبر. الفاصل القصير يسمح بتغير تفسير حركة اليورو بعد وصول الرسالة الثانية.\n\nمنهج المقارنة\nقراءتنا لزوج EUR/USD نسبية: نقارن تغير توقعات السياسة الأمريكية بتغير توقعات منطقة اليورو. رسالة أمريكية أقل تشددًا قد تدعم اليورو فقط إذا لم تقابلها رسالة أوروبية أكثر تيسيرًا أو عامل آخر أقوى.\n\nإشارة أوسع أم خبر محلي؟\nقارن الزوج بأزواج دولار أخرى. تحرك عدة أزواج في الاتجاه نفسه يساعد على اختبار فرضية عامل الدولار، بينما انفراد اليورو بالحركة يستدعي البحث عن خبر أوروبي. هذه مقارنة تفسيرية وليست دليلًا قاطعًا.\n\nشرط إعادة التقييم\nعودة السعر إلى نطاقه السابق بعد المؤتمر الصحفي تضعف تفسير الاختراق الأول. تابع تحليل EUR/USD الفني لتحديد المستويات المرجعية بدل بناء القرار على عنوان واحد.",
+      "category": "macro",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "اليورو والدولار: المقارنة أهم من القرار المنفرد"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "eurusd-relative-policy-2026-10-26",
+      "title": "EUR/USD: compare both policy paths",
+      "summary": "A relative framework for a week with two central-bank decisions.",
+      "body": "Two decisions in one week\nThe Fed decision is scheduled for 28 October and the ECB decision for 29 October. The second message can change the interpretation of the euro move after the first.\n\nA relative comparison\nOur EUR/USD framework compares changes in US policy expectations with changes in euro-area expectations. A softer US message could support the euro only if it is not offset by a more accommodative European message or a stronger competing driver.\n\nDollar move or local story?\nCompare other dollar pairs. A broad shared move helps test a dollar-driven explanation; a move isolated to the euro calls for closer examination of European news. Neither observation proves causality.\n\nWhen to reassess\nA return to the prior range after the press conference weakens the first breakout interpretation. Open the dated EUR/USD technical analysis for reference levels rather than relying on one headline.",
+      "category": "macro",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "EUR/USD: compare both policy paths"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "eurusd-relative-policy-2026-10-26",
+      "title": "EUR/USD: iki politika yolunu karşılaştırın",
+      "summary": "İki merkez bankası kararının olduğu hafta için göreli bir çerçeve.",
+      "body": "Aynı haftada iki karar\nFed kararı 28 Ekim, ECB kararı 29 Ekim için planlanıyor. İkinci mesaj, ilk karar sonrasındaki euro hareketinin yorumunu değiştirebilir.\n\nGöreli karşılaştırma\nEUR/USD değerlendirmemizde ABD politika beklentilerindeki değişimi euro bölgesindeki değişimle karşılaştırıyoruz. Daha yumuşak bir ABD mesajı, daha güçlü başka bir etkenle veya daha gevşek bir Avrupa mesajıyla dengelenmezse euroyu destekleyebilir.\n\nDolar hareketi mi, yerel haber mi?\nDiğer dolar paritelerini karşılaştırın. Ortak hareket, dolar kaynaklı açıklamayı sınamaya yardımcı olur. Yalnızca euro hareket ediyorsa Avrupa haberlerini inceleyin. Bu gözlemler nedenselliği tek başına kanıtlamaz.\n\nNe zaman yeniden değerlendirmeli?\nBasın toplantısı sonrasında eski banda dönüş, ilk kırılma yorumunu zayıflatır. Tek bir başlık yerine tarihli EUR/USD teknik analizindeki seviyeleri takip edin.",
+      "category": "macro",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "EUR/USD: iki politika yolunu karşılaştırın"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "growth-inflation-mixed-signals-2026-10-26",
+      "title": "النمو والتضخم: كيف تقرأ إشارتين متعارضتين؟",
+      "summary": "خطة لفهم بيانات الخميس عندما لا تسير الأرقام في الاتجاه نفسه.",
+      "body": "موعد مشترك\nجدول BEA يضع التقدير الأول لناتج الربع الثالث وبيانات الدخل والإنفاق الشخصي في 29 أكتوبر. يتضمن الإصدار الثاني مؤشر أسعار الاستهلاك الشخصي؛ وهو مقياس لتغير أسعار سلع وخدمات الاستهلاك.\n\nأربع حالات للمقارنة\nقراءتنا تفرّق بين نمو أقوى مع تضخم أعلى، ونمو أضعف مع تضخم أقل، والحالتين المختلطتين. لا نختزل كل حالة في اتجاه ثابت للذهب، لأن تفسير مسار الفائدة واستجابة العوائد قد يختلفان.\n\nعند تعارض الأرقام\nقد تصنع العناوين المتزامنة حركة سريعة ثم انعكاسًا. انتظر تفصيل الإصدار، وقارن النمو الحقيقي بمكونات الأسعار، وتابع إن كان الدولار والعوائد يؤكدان التفسير الأولي.\n\nما الذي ينقصنا؟\nلا ننشر توقع إجماع غير موثق ولا نتيجة قبل صدورها. افتح التقويم للمواعيد، وافصل في متابعتك بين الرقم المنشور وبين تفسير أثره المحتمل.",
+      "category": "macro",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — PCE price index",
+          "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "النمو والتضخم: كيف تقرأ إشارتين متعارضتين؟"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "growth-inflation-mixed-signals-2026-10-26",
+      "title": "Growth and inflation: reading conflicting signals",
+      "summary": "A framework for Thursday when the releases do not point in the same direction.",
+      "body": "A shared release slot\nThe BEA schedule lists the Q3 GDP advance estimate and Personal Income and Outlays on 29 October. The latter includes the PCE price index, a measure of prices for consumer goods and services.\n\nFour combinations\nOur framework distinguishes stronger growth with higher inflation, weaker growth with lower inflation, and the two mixed combinations. None maps automatically to a fixed gold direction because rate expectations and yield reactions can differ.\n\nWhen numbers conflict\nSimultaneous headlines may create a fast move followed by reversal. Read the release detail, distinguish real growth from price components and check whether the dollar and yields confirm the initial interpretation.\n\nWhat remains unknown\nWe do not supply unverified consensus or results before release. Use the calendar for timing and separate the published facts from your interpretation of their possible market impact.",
+      "category": "macro",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — PCE price index",
+          "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Growth and inflation: reading conflicting signals"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "growth-inflation-mixed-signals-2026-10-26",
+      "title": "Büyüme ve enflasyon: çelişen sinyaller nasıl okunur?",
+      "summary": "Perşembe verileri aynı yönü göstermediğinde kullanılabilecek bir çerçeve.",
+      "body": "Ortak açıklama zamanı\nBEA takviminde üçüncü çeyrek ilk GSYH tahmini ve kişisel gelir-harcama verileri 29 Ekim’de yer alıyor. İkinci yayındaki PCE fiyat endeksi tüketici mal ve hizmet fiyatlarını ölçer.\n\nDört farklı bileşim\nDaha güçlü büyüme ile daha yüksek enflasyonu, daha zayıf büyüme ile daha düşük enflasyonu ve iki karma durumu ayırıyoruz. Faiz beklentileri ve getiri tepkileri değişebileceği için bunların hiçbiri altın için otomatik yön anlamına gelmez.\n\nRakamlar çeliştiğinde\nEşzamanlı başlıklar hızlı hareket ve ardından dönüş yaratabilir. Ayrıntıları okuyun, reel büyümeyi fiyat bileşenlerinden ayırın; dolar ve getirilerin ilk yorumu doğrulayıp doğrulamadığını inceleyin.\n\nHenüz bilinmeyenler\nDoğrulanmamış piyasa beklentisi veya açıklama öncesi sonuç yayımlamıyoruz. Saatler için takvimi kullanın; açıklanan veriyi olası piyasa etkisine ilişkin yorumdan ayırın.",
+      "category": "macro",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — PCE price index",
+          "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Büyüme ve enflasyon: çelişen sinyaller nasıl okunur?"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "gold-event-risk-checklist-2026-10-26",
+      "title": "الذهب قبل الأخبار: خطة مراقبة من ثلاث مراحل",
+      "summary": "قبل الإصدار وأثناءه وبعده: خطوات تمنع الخلط بين المرجع السعري والتوقع.",
+      "body": "قبل الحدث\nابدأ بموعد موثق من التقويم، وحدد تاريخ الشارت الذي تستخدمه. مستويات تحليلنا الفني محسوبة من جلسة مكتملة، ولا تتحول تلقائيًا إلى أسعار مباشرة عند وصول خبر جديد.\n\nأثناء الإصدار\nفي إطارنا التحليلي، نراقب اتساع نطاق الحركة وعودة السعر إلى المستوى المكسور. لمس المقاومة وحده لا يعني اختراقًا ناجحًا، وكسر الدعم لحظيًا قد ينعكس. تختلف شروط التأكيد باختلاف الإطار الزمني.\n\nبعد الإصدار\nقارن السلوك برسالة الحدث، ثم قرر إن كان السيناريو يحتاج تحديثًا. تزامن قرار الفائدة مع مؤتمر صحفي يجعل مرحلة المتابعة مهمة، لأن التفسير قد يتغير بينهما.\n\nحدود الخطة\nهذه خطوات للمتابعة وليست أوامر شراء أو بيع. إذا غابت بيانات حديثة أو تعارضت المصادر، أجّل تحديث المستويات إلى حين التحقق. افتح تحليل الذهب لمراجعة بيانات المصدر وطريقة الحساب.",
+      "category": "gold",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "الذهب قبل الأخبار: خطة مراقبة من ثلاث مراحل"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "gold-event-risk-checklist-2026-10-26",
+      "title": "Gold before news: a three-stage observation plan",
+      "summary": "Before, during and after release: keep dated reference levels separate from forecasts.",
+      "body": "Before the event\nStart with a verified calendar time and identify the chart date. Our technical levels come from a completed session; they do not automatically become live prices when a new headline arrives.\n\nDuring the release\nOur framework watches range expansion and returns to a broken level. Touching resistance is not a confirmed breakout, and an intraday break of support may reverse. Confirmation depends on the chosen timeframe.\n\nAfter the release\nCompare price behaviour with the event message, then reassess the scenario. A decision followed by a press conference deserves continued observation because the interpretation can change between them.\n\nLimits of this plan\nThese are observation steps rather than buy or sell orders. If fresh observations are unavailable or sources conflict, defer level updates until verification. Open the gold analysis to inspect its source and calculation method.",
+      "category": "gold",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Gold before news: a three-stage observation plan"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "gold-event-risk-checklist-2026-10-26",
+      "title": "Haber öncesi altın: üç aşamalı takip planı",
+      "summary": "Açıklama öncesinde, sırasında ve sonrasında tarihli seviyeleri tahminlerden ayırın.",
+      "body": "Olaydan önce\nTakvimden doğrulanmış saati kontrol edin ve grafiğin tarihini belirleyin. Teknik seviyelerimiz tamamlanmış bir seansa dayanır; yeni haber geldiğinde otomatik olarak canlı fiyata dönüşmez.\n\nAçıklama sırasında\nÇerçevemizde hareket aralığının genişlemesini ve kırılan seviyeye dönüşleri izliyoruz. Dirence dokunmak onaylanmış kırılma değildir. Desteğin kısa süreli kırılması da tersine dönebilir. Onay koşulu zaman dilimine bağlıdır.\n\nAçıklamadan sonra\nFiyat davranışını olayın mesajıyla karşılaştırıp senaryoyu yeniden değerlendirin. Kararı izleyen basın toplantısı boyunca yorum değişebileceğinden takibi sürdürün.\n\nPlanın sınırları\nBunlar alış veya satış emri değil, gözlem adımlarıdır. Güncel veri yoksa veya kaynaklar çelişiyorsa seviyeleri doğrulama tamamlanana kadar güncellemeyin. Kaynak ve hesaplama için altın analizini açın.",
+      "category": "gold",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Haber öncesi altın: üç aşamalı takip planı"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "ar",
+      "slug": "fed-decision-october-28-2026",
+      "title": "الفيدرالي الأربعاء: القرار 21:00 والمؤتمر 21:30 بتوقيت إسطنبول",
+      "summary": "موعدان منفصلان في 28 أكتوبر يستحقان المتابعة.",
+      "body": "الموعد المؤكد\nيحدد تقويم الفيدرالي قرار 28 أكتوبر الساعة 14:00 بتوقيت نيويورك والمؤتمر الصحفي الساعة 14:30؛ أي 21:00 و21:30 بتوقيت إسطنبول في ذلك اليوم.\n\nما الذي نتابعه؟\nلم يصدر القرار بعد. عند نشره، افصل بين مستوى الفائدة المعلن وصياغة البيان، ثم راجع ما يضيفه المؤتمر بشأن النظرة المستقبلية.\n\nالقراءة المحتملة\nفي تحليلنا، قد يختلف أثر الرسالة على الذهب والدولار بحسب استجابة العوائد وتوقعات السياسة. لا يكفي عنوان تثبيت الفائدة أو تغييرها لتحديد اتجاه مستمر.\n\nالمتابعة\nأضف الحدث إلى خطة يومك عبر التقويم، وراجع تاريخ مستويات الذهب قبل استخدامها. سنميّز النتيجة المنشورة عن تفسيرها عند تحديث الخبر.",
+      "category": "economic",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "الفيدرالي الأربعاء: القرار 21:00 والمؤتمر 21:30 بتوقيت إسطنبول"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-28T18:00:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "en",
+      "slug": "fed-decision-october-28-2026",
+      "title": "Fed on Wednesday: 21:00 decision, 21:30 press conference in Istanbul",
+      "summary": "Two separate events to follow on 28 October.",
+      "body": "Confirmed timing\nThe Fed calendar places the 28 October decision at 14:00 New York time and the press conference at 14:30: 21:00 and 21:30 in Istanbul on that date.\n\nWhat to follow\nThe decision has not been released. Separate the announced rate from the statement wording, then examine the outlook discussed at the press conference.\n\nPossible interpretation\nIn our framework, the gold and dollar impact depends partly on yields and policy expectations. An unchanged or changed rate alone does not establish a lasting direction.\n\nNext step\nUse the calendar to plan the release window and check the date of gold reference levels. Published results and market interpretation must remain distinct.",
+      "category": "economic",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Fed on Wednesday: 21:00 decision, 21:30 press conference in Istanbul"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-28T18:00:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "tr",
+      "slug": "fed-decision-october-28-2026",
+      "title": "Çarşamba Fed: İstanbul saatiyle 21.00 karar, 21.30 basın toplantısı",
+      "summary": "28 Ekim’de ayrı ayrı izlenecek iki etkinlik.",
+      "body": "Doğrulanmış saat\nFed takvimine göre 28 Ekim kararı New York saatiyle 14.00’te, basın toplantısı 14.30’da. Aynı gün İstanbul’da saatler 21.00 ve 21.30 olacak.\n\nNeyi izleyeceğiz?\nKarar henüz açıklanmadı. Faiz seviyesini metnin dilinden ayırın; ardından basın toplantısındaki gelecek dönem değerlendirmesini inceleyin.\n\nOlası yorum\nÇerçevemizde altın ve dolar etkisi, getirilerin ve politika beklentilerinin tepkisine de bağlıdır. Faizin değişmesi veya sabit kalması tek başına kalıcı yön oluşturmaz.\n\nSonraki adım\nAçıklama aralığını takvimden takip edin ve altın seviyelerinin tarihini kontrol edin. Açıklanan sonuç ile piyasa yorumunu ayrı tutun.",
+      "category": "economic",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Çarşamba Fed: İstanbul saatiyle 21.00 karar, 21.30 basın toplantısı"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-28T18:00:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "ar",
+      "slug": "ecb-decision-october-29-2026",
+      "title": "المركزي الأوروبي: قرار 29 أكتوبر عند 16:15 بتوقيت إسطنبول",
+      "summary": "توقيت القرار الأوروبي يأتي بعد يوم من قرار الفيدرالي.",
+      "body": "الموعد المعلن\nتقويم المركزي الأوروبي يحدد اجتماع القرار في 29 أكتوبر، وتنشر قرارات السياسة الساعة 14:15 بتوقيت وسط أوروبا؛ أي 16:15 بتوقيت إسطنبول في ذلك التاريخ.\n\nقبل صدور القرار\nلا توجد نتيجة منشورة لهذا الاجتماع بعد. انتبه لتغير التوقيت الأوروبي الشتوي عند نقل الساعة إلى إسطنبول، بدل استخدام فرق الصيف.\n\nما يهم اليورو؟\nقراءتنا لزوج EUR/USD تقارن رسالة المركزي الأوروبي برسالة الفيدرالي في اليوم السابق. قد تكون لهجة التوجيه أهم من عنوان القرار عندما يتوافق العنوان مع ما كان متوقعًا.\n\nخطة المتابعة\nراجع التقويم ثم تحليل اليورو الفني. إذا انعكست الحركة بعد قراءة تفاصيل البيان، أعد تقييم تفسير الخبر بدل افتراض أن القفزة الأولى حسمت الاتجاه.",
+      "category": "economic",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — policy decision publication time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "المركزي الأوروبي: قرار 29 أكتوبر عند 16:15 بتوقيت إسطنبول"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T13:15:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "en",
+      "slug": "ecb-decision-october-29-2026",
+      "title": "ECB decision: 29 October at 16:15 Istanbul time",
+      "summary": "The European decision follows the Fed by one day.",
+      "body": "Published schedule\nThe ECB calendar lists the decision meeting on 29 October. Policy decisions are published at 14:15 CET, corresponding to 16:15 Istanbul time on that date.\n\nBefore the decision\nNo outcome has been published for this meeting yet. Account for the European winter-time change when converting the release time rather than using the summer offset.\n\nWhat matters for the euro\nOur EUR/USD interpretation compares the ECB message with the previous day’s Fed communication. Guidance can matter more than the headline when the headline matches expectations.\n\nFollow-up plan\nCheck the calendar and the dated euro technical chart. A reversal after the statement details warrants reassessment of the initial interpretation.",
+      "category": "economic",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — policy decision publication time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "ECB decision: 29 October at 16:15 Istanbul time"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T13:15:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "tr",
+      "slug": "ecb-decision-october-29-2026",
+      "title": "ECB kararı: 29 Ekim, İstanbul saatiyle 16.15",
+      "summary": "Avrupa kararı Fed’den bir gün sonra açıklanacak.",
+      "body": "İlan edilmiş program\nECB takvimi karar toplantısını 29 Ekim olarak gösteriyor. Politika kararları 14.15 CET’te yayımlanıyor; o tarihte İstanbul karşılığı 16.15.\n\nKarardan önce\nBu toplantının sonucu henüz yayımlanmadı. Saati çevirirken Avrupa’nın kış saatine geçişini dikkate alın; yaz saati farkını kullanmayın.\n\nEuro için ne önemli?\nEUR/USD yorumumuz ECB mesajını önceki günün Fed mesajıyla karşılaştırır. Karar başlığı beklentiye uyduğunda yönlendirme dili daha fazla önem taşıyabilir.\n\nTakip planı\nTakvimi ve tarihli euro grafiğini inceleyin. Metnin ayrıntıları sonrasında dönüş yaşanırsa ilk yorumu yeniden değerlendirin.",
+      "category": "economic",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — policy decision publication time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "ECB kararı: 29 Ekim, İstanbul saatiyle 16.15"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T13:15:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "ar",
+      "slug": "us-gdp-q3-october-29-2026",
+      "title": "الناتج الأمريكي: التقدير الأول للربع الثالث الخميس 15:30",
+      "summary": "إصدار 29 أكتوبر يعطي القراءة الأولية للنمو في الربع الثالث.",
+      "body": "موعد الإصدار\nيحدد جدول BEA يوم 29 أكتوبر الساعة 08:30 بتوقيت شرق الولايات المتحدة لنشر التقدير الأول للناتج المحلي للربع الثالث؛ الساعة 15:30 بتوقيت إسطنبول.\n\nماذا ننتظر؟\nالرقم لم يصدر بعد، ولا نضع قيمة فعلية أو إجماعًا غير موثق. التقدير الأول قراءة مبكرة قابلة للمراجعة في إصدارات لاحقة.\n\nقراءتنا للسوق\nنقارن مفاجأة النمو بمكونات الأسعار والإنفاق بدل اختزال الخبر في رقم واحد. يتزامن الموعد مع بيانات الدخل والإنفاق، ما قد يجعل تفسير حركة الدولار والذهب أكثر تعقيدًا.\n\nكيف تتابع؟\nابدأ بالبيان الرسمي، ثم راقب هل تؤكد العوائد والدولار القراءة الأولى. التقويم يوضح الموعد، والتحليلات تعرض السيناريوهات دون افتراض نتيجة مسبقة.",
+      "category": "economic",
+      "symbol": "USD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "الناتج الأمريكي: التقدير الأول للربع الثالث الخميس 15:30"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "en",
+      "slug": "us-gdp-q3-october-29-2026",
+      "title": "US GDP: Q3 advance estimate due Thursday at 15:30 Istanbul",
+      "summary": "The 29 October release provides the initial reading of third-quarter growth.",
+      "body": "Release time\nThe BEA schedule lists the Q3 GDP advance estimate for 29 October at 08:30 Eastern time, or 15:30 in Istanbul.\n\nWhat is still unknown\nThe figure has not been released. We provide no unverified actual or consensus. An advance estimate is an early reading subject to later revision.\n\nOur market framework\nRead growth alongside prices and spending rather than reducing the release to one headline. Personal Income and Outlays shares the release slot, potentially complicating the dollar and gold interpretation.\n\nHow to follow\nStart with the official release, then assess whether yields and the dollar support the initial reading. Use the calendar for timing and analysis for conditional scenarios.",
+      "category": "economic",
+      "symbol": "USD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "US GDP: Q3 advance estimate due Thursday at 15:30 Istanbul"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "tr",
+      "slug": "us-gdp-q3-october-29-2026",
+      "title": "ABD GSYH: üçüncü çeyrek ilk tahmini perşembe 15.30’da",
+      "summary": "29 Ekim yayını üçüncü çeyrek büyümesine ilişkin ilk okumayı sunacak.",
+      "body": "Açıklama saati\nBEA takvimine göre üçüncü çeyrek ilk GSYH tahmini 29 Ekim’de Doğu saatiyle 08.30’da, İstanbul saatiyle 15.30’da açıklanacak.\n\nHenüz bilinmeyenler\nRakam açıklanmadı. Doğrulanmamış sonuç veya piyasa beklentisi vermiyoruz. İlk tahmin erken bir okumadır ve sonraki yayınlarda revize edilebilir.\n\nPiyasa çerçevemiz\nBüyümeyi fiyatlar ve harcama kalemleriyle birlikte okuyun. Kişisel gelir-harcama verileri aynı saatte yayımlanacağı için dolar ve altın hareketinin yorumu karmaşıklaşabilir.\n\nNasıl takip edilir?\nÖnce resmî yayını okuyun, sonra getiriler ve doların ilk yorumu destekleyip desteklemediğini inceleyin. Saat için takvimi, koşullu senaryolar için analizleri kullanın.",
+      "category": "economic",
+      "symbol": "USD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "ABD GSYH: üçüncü çeyrek ilk tahmini perşembe 15.30’da"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "ar",
+      "slug": "pce-september-october-29-2026",
+      "title": "تضخم PCE لشهر سبتمبر: الموعد الخميس 29 أكتوبر",
+      "summary": "الدخل والإنفاق الشخصي عند 15:30 بتوقيت إسطنبول.",
+      "body": "ما الذي سيصدر؟\nيحدد BEA إصدار الدخل والإنفاق الشخصي لشهر سبتمبر في 29 أكتوبر الساعة 08:30 بتوقيت شرق الولايات المتحدة، الموافق 15:30 بتوقيت إسطنبول. يشمل الإصدار مؤشر أسعار الاستهلاك الشخصي.\n\nلماذا يهم التفصيل؟\nيقيس المؤشر تغير أسعار سلع وخدمات الاستهلاك. افصل بين القراءة الشهرية والسنوية، وبين المؤشر العام والمقياس الأساسي، قبل مقارنة عنوانين مختلفين.\n\nقراءتنا للذهب\nإذا غيّر الإصدار توقعات مسار الفائدة والعوائد، فقد تتغير بيئة الذهب والدولار. لا نفترض أن رقمًا أقل أو أعلى يحدد الاتجاه وحده، خصوصًا مع صدور بيانات النمو في الوقت نفسه.\n\nحالة الخبر\nالنتيجة لم تُعلن بعد، والتوقعات غير الموثقة تُترك فارغة. راجع التقويم والمصدر الرسمي وقت الإصدار.",
+      "category": "economic",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — PCE price index",
+          "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "تضخم PCE لشهر سبتمبر: الموعد الخميس 29 أكتوبر"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "en",
+      "slug": "pce-september-october-29-2026",
+      "title": "September PCE inflation: release scheduled for 29 October",
+      "summary": "Personal Income and Outlays is due at 15:30 Istanbul time.",
+      "body": "What will be released\nBEA lists September Personal Income and Outlays for 29 October at 08:30 Eastern time, corresponding to 15:30 in Istanbul. The release includes the PCE price index.\n\nWhy detail matters\nThe index measures prices for consumer goods and services. Distinguish monthly from annual readings and headline from core before comparing different headlines.\n\nOur gold interpretation\nA change in rate and yield expectations could alter the backdrop for gold and the dollar. A higher or lower reading alone does not fix the direction, especially with GDP arriving simultaneously.\n\nReport status\nNo result has been announced. Unverified consensus remains blank. Check the calendar and official release at publication time.",
+      "category": "economic",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — PCE price index",
+          "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "September PCE inflation: release scheduled for 29 October"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "tr",
+      "slug": "pce-september-october-29-2026",
+      "title": "Eylül PCE enflasyonu: açıklama 29 Ekim’de",
+      "summary": "Kişisel gelir-harcama verileri İstanbul saatiyle 15.30’da yayımlanacak.",
+      "body": "Ne açıklanacak?\nBEA, eylül kişisel gelir-harcama yayınını 29 Ekim Doğu saatiyle 08.30, İstanbul saatiyle 15.30 olarak listeliyor. Yayın PCE fiyat endeksini içeriyor.\n\nAyrıntı neden önemli?\nEndeks tüketici mal ve hizmet fiyatlarını ölçer. Farklı başlıkları karşılaştırmadan önce aylık ve yıllık değişimi, genel ve çekirdek endeksi ayırın.\n\nAltın yorumumuz\nFaiz ve getiri beklentilerindeki değişim altın ile doların koşullarını etkileyebilir. Özellikle GSYH aynı anda açıklanırken tek başına yüksek veya düşük rakam kesin yön göstermez.\n\nHaberin durumu\nSonuç henüz açıklanmadı. Doğrulanmamış beklentiler boş bırakılıyor. Yayın saatinde takvimi ve resmî kaynağı kontrol edin.",
+      "category": "economic",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — PCE price index",
+          "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "Eylül PCE enflasyonu: açıklama 29 Ekim’de"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-29T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "ar",
+      "slug": "employment-cost-q3-october-30-2026",
+      "title": "تكلفة التوظيف الأمريكية: بيانات الربع الثالث الجمعة",
+      "summary": "مؤشر ECI مقرر في 30 أكتوبر عند 15:30 بتوقيت إسطنبول.",
+      "body": "الموعد الموثق\nجدول مكتب إحصاءات العمل يحدد إصدار مؤشر تكلفة التوظيف للربع الثالث يوم الجمعة 30 أكتوبر الساعة 08:30 بتوقيت شرق الولايات المتحدة؛ أي 15:30 بتوقيت إسطنبول.\n\nموقعه في الأسبوع\nيأتي الإصدار بعد قرار الفيدرالي وبيانات الخميس. لهذا نقرأه ضمن صورة البيانات المتراكمة بدل فصله عن التغير الذي حصل في توقعات السوق خلال الأسبوع.\n\nقراءتنا المحتملة\nقد تؤثر مفاجأة تكاليف العمل في تفسير استمرارية ضغوط الأسعار، لكن أثرها على الذهب والدولار يمر عبر توقعات السياسة والعوائد. هذه قناة تحليلية مشروطة وليست نتيجة معلنة.\n\nقبل المتابعة\nلا توجد قراءة فعلية منشورة لهذا الموعد بعد. افتح التقويم لتأكيد الساعة، وراجع البيان الرسمي عند صدوره قبل مشاركة أي رقم.",
+      "category": "economic",
+      "symbol": "USD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BLS — October schedule",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "تكلفة التوظيف الأمريكية: بيانات الربع الثالث الجمعة"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-30T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "en",
+      "slug": "employment-cost-q3-october-30-2026",
+      "title": "US Employment Cost Index: Q3 release on Friday",
+      "summary": "ECI is scheduled for 30 October at 15:30 Istanbul time.",
+      "body": "Verified schedule\nThe BLS calendar places the Q3 Employment Cost Index release on Friday 30 October at 08:30 Eastern time, corresponding to 15:30 in Istanbul.\n\nIts place in the week\nThe release follows the Fed decision and Thursday’s data. Read it against the information accumulated during the week rather than isolating it from changes in market expectations.\n\nOur conditional interpretation\nA labour-cost surprise could affect views about persistent price pressure. Its gold and dollar impact would pass through policy expectations and yields; this is an analytical channel, not an announced outcome.\n\nBefore following the release\nNo actual reading for this release is available yet. Confirm the time in the calendar and read the official publication before sharing figures.",
+      "category": "economic",
+      "symbol": "USD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BLS — October schedule",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "US Employment Cost Index: Q3 release on Friday"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-30T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "tr",
+      "slug": "employment-cost-q3-october-30-2026",
+      "title": "ABD İstihdam Maliyeti Endeksi: üçüncü çeyrek verisi cuma",
+      "summary": "ECI, 30 Ekim’de İstanbul saatiyle 15.30’da açıklanacak.",
+      "body": "Doğrulanmış program\nBLS takvimi üçüncü çeyrek İstihdam Maliyeti Endeksi yayınını 30 Ekim Cuma Doğu saatiyle 08.30, İstanbul saatiyle 15.30 olarak gösteriyor.\n\nHaftadaki yeri\nVeri, Fed kararını ve perşembe açıklamalarını izliyor. Bu nedenle hafta boyunca biriken bilgileri ve değişen piyasa beklentilerini dikkate alarak okunmalı.\n\nKoşullu yorumumuz\nİşgücü maliyetindeki sürpriz fiyat baskılarının kalıcılığına ilişkin görüşü etkileyebilir. Altın ve dolara etkisi politika beklentileri ve getiriler üzerinden geçebilir. Bu bir analiz kanalıdır, açıklanmış sonuç değildir.\n\nTakipten önce\nBu yayının gerçekleşen değeri henüz yok. Saati takvimden doğrulayın ve rakam paylaşmadan önce resmî yayını okuyun.",
+      "category": "economic",
+      "symbol": "USD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "BLS — October schedule",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/macro-editorial-v1.webp",
+        "alt": "ABD İstihdam Maliyeti Endeksi: üçüncü çeyrek verisi cuma"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "HIGH",
+        "eventTime": "2026-10-30T12:30:00Z",
+        "affectedMarkets": [
+          "XAUUSD",
+          "EURUSD"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "xauusd-technical-2026-10-23",
+      "title": "الذهب: شارت يومي ودعوم ومقاومات — 23 أكتوبر",
+      "summary": "إغلاق 3995.80، محور 4001.87، ومناطق دعم ومقاومة محسوبة من آخر جلسة مكتملة.",
+      "body": "قراءة الشارت\nإغلاق الذهب أدنى المحور، وقريب من قاع 23 أكتوبر 3975.64. نراقب هذه المنطقة المرصودة قبل الدعم الحسابي S1؛ فالفشل في استعادة المحور يبقي قراءة الارتداد حذرة.\n\nالبيانات المستخدمة\nالشارت اليومي D1 يعرض 21 شمعة موثقة من Investing.com حتى 23 أكتوبر 2026. إغلاق آخر جلسة 3995.80؛ هذه لقطة تاريخية وليست سعرًا مباشرًا. التواريخ المستبعدة لعدم اتساق OHLC: —. لا نصحح الشموع أو نملأ الفراغات ببيانات مصطنعة.\n\nالدعم والمقاومة\nالمحور P = 4001.87. الدعم الحسابي الأول S1 = 3969.57 والثاني S2 = 3943.34. المقاومة الأولى R1 = 4028.10 والثانية R2 = 4060.40. هذه مستويات مرجعية محسوبة وليست مناطق مثبتة بتكرار اللمس.\n\nطريقة الحساب\nنستخدم أعلى وأدنى وإغلاق 23 أكتوبر: P=(H+L+C)/3، وS1=2P−H، وR1=2P−L، وS2=P−(H−L)، وR2=P+(H−L). لا ننشر متوسطات طويلة المدى من هذه العينة القصيرة.\n\nخطة المتابعة\nثبات يومي فوق R1 يفتح مراقبة R2، وكسر S1 مع استمرار الضغط يوجه الانتباه إلى S2. عودة السعر داخل المجال تلغي قراءة الاختراق. راجع التقويم وحدّث البيانات قبل تطبيق هذه المستويات على جلسة جديدة.",
+      "category": "technical",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAUUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xau-usd-historical-data",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xauusd-d1-2026-10-23.webp",
+        "alt": "الذهب: شارت يومي ودعوم ومقاومات — 23 أكتوبر"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 3943.34",
+          "S1 3969.57",
+          "P 4001.87",
+          "R1 4028.10",
+          "R2 4060.40"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "xauusd-technical-2026-10-23",
+      "title": "Gold: daily chart, support and resistance — 23 October",
+      "summary": "Close 3995.80, pivot 4001.87, and calculated reference levels from the last completed session.",
+      "body": "Chart reading\nGold closed below the pivot, near the observed 23 October low of 3975.64. Watch that traded low before calculated S1; failure to regain the pivot keeps a rebound interpretation cautious.\n\nData behind the chart\nThis D1 chart contains 21 checked candles from Investing.com through 23 October 2026. The last session close is 3995.80; this is a dated snapshot, not a live quote. Dates omitted for inconsistent OHLC: —. No candles are corrected or fabricated to fill gaps.\n\nSupport and resistance\nPivot P = 4001.87. Calculated support: S1 = 3969.57, S2 = 3943.34. Calculated resistance: R1 = 4028.10, R2 = 4060.40. These are mathematical reference levels, not zones confirmed by repeated touches.\n\nCalculation method\nUsing the 23 October high, low and close: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). We do not publish long-term moving averages from this short sample.\n\nFollow-up framework\nA daily hold above R1 brings R2 into focus; a sustained S1 break brings S2 into focus. Returning inside the range invalidates that breakout reading. Check the calendar and refresh observations before applying these references to a new session.",
+      "category": "technical",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAUUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xau-usd-historical-data",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xauusd-d1-2026-10-23.webp",
+        "alt": "Gold: daily chart, support and resistance — 23 October"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 3943.34",
+          "S1 3969.57",
+          "P 4001.87",
+          "R1 4028.10",
+          "R2 4060.40"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "xauusd-technical-2026-10-23",
+      "title": "Altın: günlük grafik, destek ve direnç — 23 Ekim",
+      "summary": "Kapanış 3995.80, pivot 4001.87; son tamamlanmış seanstan hesaplanan referans seviyeler.",
+      "body": "Grafik değerlendirmesi\nAltın pivotun altında, 23 Ekim’de görülen 3975.64 dibine yakın kapandı. Hesaplanan S1’den önce bu işlem görmüş dibi izliyoruz; pivot geri alınamazsa tepki yorumuna temkinli yaklaşırız.\n\nGrafiğin verileri\nD1 grafik, Investing.com kaynağından 23 Ekim 2026’ya kadar 21 kontrol edilmiş mum içeriyor. Son kapanış 3995.80; bu tarihli bir görüntüdür, canlı fiyat değildir. OHLC tutarsızlığı nedeniyle çıkarılan tarihler: —. Boşluklar yapay mumlarla doldurulmaz ve veriler düzeltilmez.\n\nDestek ve direnç\nPivot P = 4001.87. Hesaplanan destekler S1 = 3969.57, S2 = 3943.34; dirençler R1 = 4028.10, R2 = 4060.40. Bunlar matematiksel referanslardır; tekrarlanan temaslarla doğrulanmış bölgeler değildir.\n\nHesaplama yöntemi\n23 Ekim yüksek, düşük ve kapanışı kullanılır: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). Bu kısa örneklemden uzun vadeli hareketli ortalama yayımlamıyoruz.\n\nTakip çerçevesi\nR1 üstünde günlük kalıcılık R2’yi, S1 altında süren kırılma S2’yi gündeme getirir. Banda dönüş bu kırılma yorumunu geçersiz kılar. Yeni seansta kullanmadan önce takvimi kontrol edin ve verileri yenileyin.",
+      "category": "technical",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAUUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xau-usd-historical-data",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xauusd-d1-2026-10-23.webp",
+        "alt": "Altın: günlük grafik, destek ve direnç — 23 Ekim"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 3943.34",
+          "S1 3969.57",
+          "P 4001.87",
+          "R1 4028.10",
+          "R2 4060.40"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "xagusd-technical-2026-10-23",
+      "title": "الفضة: شارت يومي ودعوم ومقاومات — 23 أكتوبر",
+      "summary": "إغلاق 53.92، محور 53.90، ومناطق دعم ومقاومة محسوبة من آخر جلسة مكتملة.",
+      "body": "قراءة الشارت\nإغلاق الفضة قريب من المحور، لذلك لا نرجّح اتجاهًا من هذا التقارب وحده. قاع الجلسة 53.0273 منطقة مرصودة تختلف عن S1 المحسوب 53.0465.\n\nالبيانات المستخدمة\nالشارت اليومي D1 يعرض 21 شمعة موثقة من Investing.com حتى 23 أكتوبر 2026. إغلاق آخر جلسة 53.92؛ هذه لقطة تاريخية وليست سعرًا مباشرًا. التواريخ المستبعدة لعدم اتساق OHLC: —. لا نصحح الشموع أو نملأ الفراغات ببيانات مصطنعة.\n\nالدعم والمقاومة\nالمحور P = 53.90. الدعم الحسابي الأول S1 = 53.05 والثاني S2 = 52.17. المقاومة الأولى R1 = 54.77 والثانية R2 = 55.63. هذه مستويات مرجعية محسوبة وليست مناطق مثبتة بتكرار اللمس.\n\nطريقة الحساب\nنستخدم أعلى وأدنى وإغلاق 23 أكتوبر: P=(H+L+C)/3، وS1=2P−H، وR1=2P−L، وS2=P−(H−L)، وR2=P+(H−L). لا ننشر متوسطات طويلة المدى من هذه العينة القصيرة.\n\nخطة المتابعة\nثبات يومي فوق R1 يفتح مراقبة R2، وكسر S1 مع استمرار الضغط يوجه الانتباه إلى S2. عودة السعر داخل المجال تلغي قراءة الاختراق. راجع التقويم وحدّث البيانات قبل تطبيق هذه المستويات على جلسة جديدة.",
+      "category": "technical",
+      "symbol": "XAGUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAGUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xag-usd-historical-data",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xagusd-d1-2026-10-23.webp",
+        "alt": "الفضة: شارت يومي ودعوم ومقاومات — 23 أكتوبر"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 52.17",
+          "S1 53.05",
+          "P 53.90",
+          "R1 54.77",
+          "R2 55.63"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "xagusd-technical-2026-10-23",
+      "title": "Silver: daily chart, support and resistance — 23 October",
+      "summary": "Close 53.92, pivot 53.90, and calculated reference levels from the last completed session.",
+      "body": "Chart reading\nSilver closed near its pivot, offering no standalone directional conviction. The traded session low of 53.0273 is distinct from calculated S1 at 53.0465.\n\nData behind the chart\nThis D1 chart contains 21 checked candles from Investing.com through 23 October 2026. The last session close is 53.92; this is a dated snapshot, not a live quote. Dates omitted for inconsistent OHLC: —. No candles are corrected or fabricated to fill gaps.\n\nSupport and resistance\nPivot P = 53.90. Calculated support: S1 = 53.05, S2 = 52.17. Calculated resistance: R1 = 54.77, R2 = 55.63. These are mathematical reference levels, not zones confirmed by repeated touches.\n\nCalculation method\nUsing the 23 October high, low and close: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). We do not publish long-term moving averages from this short sample.\n\nFollow-up framework\nA daily hold above R1 brings R2 into focus; a sustained S1 break brings S2 into focus. Returning inside the range invalidates that breakout reading. Check the calendar and refresh observations before applying these references to a new session.",
+      "category": "technical",
+      "symbol": "XAGUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAGUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xag-usd-historical-data",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xagusd-d1-2026-10-23.webp",
+        "alt": "Silver: daily chart, support and resistance — 23 October"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 52.17",
+          "S1 53.05",
+          "P 53.90",
+          "R1 54.77",
+          "R2 55.63"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "xagusd-technical-2026-10-23",
+      "title": "Gümüş: günlük grafik, destek ve direnç — 23 Ekim",
+      "summary": "Kapanış 53.92, pivot 53.90; son tamamlanmış seanstan hesaplanan referans seviyeler.",
+      "body": "Grafik değerlendirmesi\nGümüş pivot yakınında kapandı; bu yakınlık tek başına yön sinyali vermiyor. Seansta görülen 53.0273 dip, hesaplanan 53.0465 S1 seviyesinden farklıdır.\n\nGrafiğin verileri\nD1 grafik, Investing.com kaynağından 23 Ekim 2026’ya kadar 21 kontrol edilmiş mum içeriyor. Son kapanış 53.92; bu tarihli bir görüntüdür, canlı fiyat değildir. OHLC tutarsızlığı nedeniyle çıkarılan tarihler: —. Boşluklar yapay mumlarla doldurulmaz ve veriler düzeltilmez.\n\nDestek ve direnç\nPivot P = 53.90. Hesaplanan destekler S1 = 53.05, S2 = 52.17; dirençler R1 = 54.77, R2 = 55.63. Bunlar matematiksel referanslardır; tekrarlanan temaslarla doğrulanmış bölgeler değildir.\n\nHesaplama yöntemi\n23 Ekim yüksek, düşük ve kapanışı kullanılır: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). Bu kısa örneklemden uzun vadeli hareketli ortalama yayımlamıyoruz.\n\nTakip çerçevesi\nR1 üstünde günlük kalıcılık R2’yi, S1 altında süren kırılma S2’yi gündeme getirir. Banda dönüş bu kırılma yorumunu geçersiz kılar. Yeni seansta kullanmadan önce takvimi kontrol edin ve verileri yenileyin.",
+      "category": "technical",
+      "symbol": "XAGUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAGUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xag-usd-historical-data",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xagusd-d1-2026-10-23.webp",
+        "alt": "Gümüş: günlük grafik, destek ve direnç — 23 Ekim"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 52.17",
+          "S1 53.05",
+          "P 53.90",
+          "R1 54.77",
+          "R2 55.63"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "eurusd-technical-2026-10-23",
+      "title": "اليورو/دولار: شارت يومي ودعوم ومقاومات — 23 أكتوبر",
+      "summary": "إغلاق 1.1221، محور 1.1212، ومناطق دعم ومقاومة محسوبة من آخر جلسة مكتملة.",
+      "body": "قراءة الشارت\nإغلاق الزوج أعلى المحور وأدنى R1. استمرار الثبات فوق المحور يدعم اختبار المقاومة، بينما العودة تحته تضعف هذه القراءة؛ راقب قراري الفيدرالي والمركزي الأوروبي.\n\nالبيانات المستخدمة\nالشارت اليومي D1 يعرض 20 شمعة موثقة من Yahoo Finance حتى 23 أكتوبر 2026. إغلاق آخر جلسة 1.1221؛ هذه لقطة تاريخية وليست سعرًا مباشرًا. التواريخ المستبعدة لعدم اتساق OHLC: —. لا نصحح الشموع أو نملأ الفراغات ببيانات مصطنعة.\n\nالدعم والمقاومة\nالمحور P = 1.1212. الدعم الحسابي الأول S1 = 1.1197 والثاني S2 = 1.1172. المقاومة الأولى R1 = 1.1236 والثانية R2 = 1.1251. هذه مستويات مرجعية محسوبة وليست مناطق مثبتة بتكرار اللمس.\n\nطريقة الحساب\nنستخدم أعلى وأدنى وإغلاق 23 أكتوبر: P=(H+L+C)/3، وS1=2P−H، وR1=2P−L، وS2=P−(H−L)، وR2=P+(H−L). لا ننشر متوسطات طويلة المدى من هذه العينة القصيرة.\n\nخطة المتابعة\nثبات يومي فوق R1 يفتح مراقبة R2، وكسر S1 مع استمرار الضغط يوجه الانتباه إلى S2. عودة السعر داخل المجال تلغي قراءة الاختراق. راجع التقويم وحدّث البيانات قبل تطبيق هذه المستويات على جلسة جديدة.",
+      "category": "technical",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — EURUSD historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/eurusd-d1-2026-10-23.webp",
+        "alt": "اليورو/دولار: شارت يومي ودعوم ومقاومات — 23 أكتوبر"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 1.1172",
+          "S1 1.1197",
+          "P 1.1212",
+          "R1 1.1236",
+          "R2 1.1251"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "eurusd-technical-2026-10-23",
+      "title": "EUR/USD: daily chart, support and resistance — 23 October",
+      "summary": "Close 1.1221, pivot 1.1212, and calculated reference levels from the last completed session.",
+      "body": "Chart reading\nThe pair closed above its pivot and below R1. Holding above the pivot supports a resistance test; slipping below weakens that reading. Watch both the Fed and ECB decisions.\n\nData behind the chart\nThis D1 chart contains 20 checked candles from Yahoo Finance through 23 October 2026. The last session close is 1.1221; this is a dated snapshot, not a live quote. Dates omitted for inconsistent OHLC: —. No candles are corrected or fabricated to fill gaps.\n\nSupport and resistance\nPivot P = 1.1212. Calculated support: S1 = 1.1197, S2 = 1.1172. Calculated resistance: R1 = 1.1236, R2 = 1.1251. These are mathematical reference levels, not zones confirmed by repeated touches.\n\nCalculation method\nUsing the 23 October high, low and close: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). We do not publish long-term moving averages from this short sample.\n\nFollow-up framework\nA daily hold above R1 brings R2 into focus; a sustained S1 break brings S2 into focus. Returning inside the range invalidates that breakout reading. Check the calendar and refresh observations before applying these references to a new session.",
+      "category": "technical",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — EURUSD historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/eurusd-d1-2026-10-23.webp",
+        "alt": "EUR/USD: daily chart, support and resistance — 23 October"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 1.1172",
+          "S1 1.1197",
+          "P 1.1212",
+          "R1 1.1236",
+          "R2 1.1251"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "eurusd-technical-2026-10-23",
+      "title": "EUR/USD: günlük grafik, destek ve direnç — 23 Ekim",
+      "summary": "Kapanış 1.1221, pivot 1.1212; son tamamlanmış seanstan hesaplanan referans seviyeler.",
+      "body": "Grafik değerlendirmesi\nParite pivot üstünde ve R1 altında kapandı. Pivot üstünde kalıcılık direnç testini destekler; altına dönüş bu yorumu zayıflatır. Fed ve ECB kararlarını izleyin.\n\nGrafiğin verileri\nD1 grafik, Yahoo Finance kaynağından 23 Ekim 2026’ya kadar 20 kontrol edilmiş mum içeriyor. Son kapanış 1.1221; bu tarihli bir görüntüdür, canlı fiyat değildir. OHLC tutarsızlığı nedeniyle çıkarılan tarihler: —. Boşluklar yapay mumlarla doldurulmaz ve veriler düzeltilmez.\n\nDestek ve direnç\nPivot P = 1.1212. Hesaplanan destekler S1 = 1.1197, S2 = 1.1172; dirençler R1 = 1.1236, R2 = 1.1251. Bunlar matematiksel referanslardır; tekrarlanan temaslarla doğrulanmış bölgeler değildir.\n\nHesaplama yöntemi\n23 Ekim yüksek, düşük ve kapanışı kullanılır: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). Bu kısa örneklemden uzun vadeli hareketli ortalama yayımlamıyoruz.\n\nTakip çerçevesi\nR1 üstünde günlük kalıcılık R2’yi, S1 altında süren kırılma S2’yi gündeme getirir. Banda dönüş bu kırılma yorumunu geçersiz kılar. Yeni seansta kullanmadan önce takvimi kontrol edin ve verileri yenileyin.",
+      "category": "technical",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — EURUSD historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/eurusd-d1-2026-10-23.webp",
+        "alt": "EUR/USD: günlük grafik, destek ve direnç — 23 Ekim"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 1.1172",
+          "S1 1.1197",
+          "P 1.1212",
+          "R1 1.1236",
+          "R2 1.1251"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "gbpusd-technical-2026-10-23",
+      "title": "الإسترليني/دولار: شارت يومي ودعوم ومقاومات — 23 أكتوبر",
+      "summary": "إغلاق 1.3404، محور 1.3393، ومناطق دعم ومقاومة محسوبة من آخر جلسة مكتملة.",
+      "body": "قراءة الشارت\nإغلاق الإسترليني أعلى المحور وقريب من قمة 23 أكتوبر. اختبار R1 يحتاج ثباتًا؛ استُبعدت شمعة 19 أكتوبر بسبب عدم اتساق الإغلاق مع نطاق بيانات المصدر.\n\nالبيانات المستخدمة\nالشارت اليومي D1 يعرض 19 شمعة موثقة من Yahoo Finance حتى 23 أكتوبر 2026. إغلاق آخر جلسة 1.3404؛ هذه لقطة تاريخية وليست سعرًا مباشرًا. التواريخ المستبعدة لعدم اتساق OHLC: 2026-10-19. لا نصحح الشموع أو نملأ الفراغات ببيانات مصطنعة.\n\nالدعم والمقاومة\nالمحور P = 1.3393. الدعم الحسابي الأول S1 = 1.3377 والثاني S2 = 1.3351. المقاومة الأولى R1 = 1.3419 والثانية R2 = 1.3435. هذه مستويات مرجعية محسوبة وليست مناطق مثبتة بتكرار اللمس.\n\nطريقة الحساب\nنستخدم أعلى وأدنى وإغلاق 23 أكتوبر: P=(H+L+C)/3، وS1=2P−H، وR1=2P−L، وS2=P−(H−L)، وR2=P+(H−L). لا ننشر متوسطات طويلة المدى من هذه العينة القصيرة.\n\nخطة المتابعة\nثبات يومي فوق R1 يفتح مراقبة R2، وكسر S1 مع استمرار الضغط يوجه الانتباه إلى S2. عودة السعر داخل المجال تلغي قراءة الاختراق. راجع التقويم وحدّث البيانات قبل تطبيق هذه المستويات على جلسة جديدة.",
+      "category": "technical",
+      "symbol": "GBPUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — GBPUSD historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gbpusd-d1-2026-10-23.webp",
+        "alt": "الإسترليني/دولار: شارت يومي ودعوم ومقاومات — 23 أكتوبر"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 1.3351",
+          "S1 1.3377",
+          "P 1.3393",
+          "R1 1.3419",
+          "R2 1.3435"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "gbpusd-technical-2026-10-23",
+      "title": "GBP/USD: daily chart, support and resistance — 23 October",
+      "summary": "Close 1.3404, pivot 1.3393, and calculated reference levels from the last completed session.",
+      "body": "Chart reading\nSterling closed above the pivot near the 23 October high. An R1 test needs follow-through. The 19 October candle was omitted because the provider close fell outside its reported range.\n\nData behind the chart\nThis D1 chart contains 19 checked candles from Yahoo Finance through 23 October 2026. The last session close is 1.3404; this is a dated snapshot, not a live quote. Dates omitted for inconsistent OHLC: 2026-10-19. No candles are corrected or fabricated to fill gaps.\n\nSupport and resistance\nPivot P = 1.3393. Calculated support: S1 = 1.3377, S2 = 1.3351. Calculated resistance: R1 = 1.3419, R2 = 1.3435. These are mathematical reference levels, not zones confirmed by repeated touches.\n\nCalculation method\nUsing the 23 October high, low and close: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). We do not publish long-term moving averages from this short sample.\n\nFollow-up framework\nA daily hold above R1 brings R2 into focus; a sustained S1 break brings S2 into focus. Returning inside the range invalidates that breakout reading. Check the calendar and refresh observations before applying these references to a new session.",
+      "category": "technical",
+      "symbol": "GBPUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — GBPUSD historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gbpusd-d1-2026-10-23.webp",
+        "alt": "GBP/USD: daily chart, support and resistance — 23 October"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 1.3351",
+          "S1 1.3377",
+          "P 1.3393",
+          "R1 1.3419",
+          "R2 1.3435"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "gbpusd-technical-2026-10-23",
+      "title": "GBP/USD: günlük grafik, destek ve direnç — 23 Ekim",
+      "summary": "Kapanış 1.3404, pivot 1.3393; son tamamlanmış seanstan hesaplanan referans seviyeler.",
+      "body": "Grafik değerlendirmesi\nSterlin pivot üstünde, 23 Ekim zirvesine yakın kapandı. R1 testi devamlılık gerektirir. Kaynak kapanışı bildirilen aralık dışında kaldığı için 19 Ekim mumu çıkarıldı.\n\nGrafiğin verileri\nD1 grafik, Yahoo Finance kaynağından 23 Ekim 2026’ya kadar 19 kontrol edilmiş mum içeriyor. Son kapanış 1.3404; bu tarihli bir görüntüdür, canlı fiyat değildir. OHLC tutarsızlığı nedeniyle çıkarılan tarihler: 2026-10-19. Boşluklar yapay mumlarla doldurulmaz ve veriler düzeltilmez.\n\nDestek ve direnç\nPivot P = 1.3393. Hesaplanan destekler S1 = 1.3377, S2 = 1.3351; dirençler R1 = 1.3419, R2 = 1.3435. Bunlar matematiksel referanslardır; tekrarlanan temaslarla doğrulanmış bölgeler değildir.\n\nHesaplama yöntemi\n23 Ekim yüksek, düşük ve kapanışı kullanılır: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). Bu kısa örneklemden uzun vadeli hareketli ortalama yayımlamıyoruz.\n\nTakip çerçevesi\nR1 üstünde günlük kalıcılık R2’yi, S1 altında süren kırılma S2’yi gündeme getirir. Banda dönüş bu kırılma yorumunu geçersiz kılar. Yeni seansta kullanmadan önce takvimi kontrol edin ve verileri yenileyin.",
+      "category": "technical",
+      "symbol": "GBPUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — GBPUSD historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/gbpusd-d1-2026-10-23.webp",
+        "alt": "GBP/USD: günlük grafik, destek ve direnç — 23 Ekim"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 1.3351",
+          "S1 1.3377",
+          "P 1.3393",
+          "R1 1.3419",
+          "R2 1.3435"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "usdjpy-technical-2026-10-23",
+      "title": "الدولار/ين: شارت يومي ودعوم ومقاومات — 23 أكتوبر",
+      "summary": "إغلاق 156.49، محور 156.58، ومناطق دعم ومقاومة محسوبة من آخر جلسة مكتملة.",
+      "body": "قراءة الشارت\nإغلاق الدولار/ين أسفل المحور. استعادته والثبات فوقه يخففان الضغط، بينما الاقتراب من S1 يعيد اختبار قدرة المشترين؛ المستويات مقومة بالين لكل دولار.\n\nالبيانات المستخدمة\nالشارت اليومي D1 يعرض 19 شمعة موثقة من Yahoo Finance حتى 23 أكتوبر 2026. إغلاق آخر جلسة 156.49؛ هذه لقطة تاريخية وليست سعرًا مباشرًا. التواريخ المستبعدة لعدم اتساق OHLC: 2026-10-12. لا نصحح الشموع أو نملأ الفراغات ببيانات مصطنعة.\n\nالدعم والمقاومة\nالمحور P = 156.58. الدعم الحسابي الأول S1 = 156.01 والثاني S2 = 155.53. المقاومة الأولى R1 = 157.06 والثانية R2 = 157.62. هذه مستويات مرجعية محسوبة وليست مناطق مثبتة بتكرار اللمس.\n\nطريقة الحساب\nنستخدم أعلى وأدنى وإغلاق 23 أكتوبر: P=(H+L+C)/3، وS1=2P−H، وR1=2P−L، وS2=P−(H−L)، وR2=P+(H−L). لا ننشر متوسطات طويلة المدى من هذه العينة القصيرة.\n\nخطة المتابعة\nثبات يومي فوق R1 يفتح مراقبة R2، وكسر S1 مع استمرار الضغط يوجه الانتباه إلى S2. عودة السعر داخل المجال تلغي قراءة الاختراق. راجع التقويم وحدّث البيانات قبل تطبيق هذه المستويات على جلسة جديدة.",
+      "category": "technical",
+      "symbol": "USDJPY",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — USDJPY historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/usdjpy-d1-2026-10-23.webp",
+        "alt": "الدولار/ين: شارت يومي ودعوم ومقاومات — 23 أكتوبر"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 155.53",
+          "S1 156.01",
+          "P 156.58",
+          "R1 157.06",
+          "R2 157.62"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "usdjpy-technical-2026-10-23",
+      "title": "USD/JPY: daily chart, support and resistance — 23 October",
+      "summary": "Close 156.49, pivot 156.58, and calculated reference levels from the last completed session.",
+      "body": "Chart reading\nUSD/JPY closed below the pivot. Regaining and holding it would ease pressure, while a move toward S1 tests buyers again. Levels are yen per US dollar.\n\nData behind the chart\nThis D1 chart contains 19 checked candles from Yahoo Finance through 23 October 2026. The last session close is 156.49; this is a dated snapshot, not a live quote. Dates omitted for inconsistent OHLC: 2026-10-12. No candles are corrected or fabricated to fill gaps.\n\nSupport and resistance\nPivot P = 156.58. Calculated support: S1 = 156.01, S2 = 155.53. Calculated resistance: R1 = 157.06, R2 = 157.62. These are mathematical reference levels, not zones confirmed by repeated touches.\n\nCalculation method\nUsing the 23 October high, low and close: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). We do not publish long-term moving averages from this short sample.\n\nFollow-up framework\nA daily hold above R1 brings R2 into focus; a sustained S1 break brings S2 into focus. Returning inside the range invalidates that breakout reading. Check the calendar and refresh observations before applying these references to a new session.",
+      "category": "technical",
+      "symbol": "USDJPY",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — USDJPY historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/usdjpy-d1-2026-10-23.webp",
+        "alt": "USD/JPY: daily chart, support and resistance — 23 October"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 155.53",
+          "S1 156.01",
+          "P 156.58",
+          "R1 157.06",
+          "R2 157.62"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "usdjpy-technical-2026-10-23",
+      "title": "USD/JPY: günlük grafik, destek ve direnç — 23 Ekim",
+      "summary": "Kapanış 156.49, pivot 156.58; son tamamlanmış seanstan hesaplanan referans seviyeler.",
+      "body": "Grafik değerlendirmesi\nUSD/JPY pivot altında kapandı. Pivotun geri alınması baskıyı hafifletebilir; S1’e yaklaşım alıcıları yeniden sınar. Seviyeler dolar başına yen cinsindendir.\n\nGrafiğin verileri\nD1 grafik, Yahoo Finance kaynağından 23 Ekim 2026’ya kadar 19 kontrol edilmiş mum içeriyor. Son kapanış 156.49; bu tarihli bir görüntüdür, canlı fiyat değildir. OHLC tutarsızlığı nedeniyle çıkarılan tarihler: 2026-10-12. Boşluklar yapay mumlarla doldurulmaz ve veriler düzeltilmez.\n\nDestek ve direnç\nPivot P = 156.58. Hesaplanan destekler S1 = 156.01, S2 = 155.53; dirençler R1 = 157.06, R2 = 157.62. Bunlar matematiksel referanslardır; tekrarlanan temaslarla doğrulanmış bölgeler değildir.\n\nHesaplama yöntemi\n23 Ekim yüksek, düşük ve kapanışı kullanılır: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). Bu kısa örneklemden uzun vadeli hareketli ortalama yayımlamıyoruz.\n\nTakip çerçevesi\nR1 üstünde günlük kalıcılık R2’yi, S1 altında süren kırılma S2’yi gündeme getirir. Banda dönüş bu kırılma yorumunu geçersiz kılar. Yeni seansta kullanmadan önce takvimi kontrol edin ve verileri yenileyin.",
+      "category": "technical",
+      "symbol": "USDJPY",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Yahoo Finance — USDJPY historical OHLC",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=1y",
+          "retrievedAt": "2026-10-25T21:39:24Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/usdjpy-d1-2026-10-23.webp",
+        "alt": "USD/JPY: günlük grafik, destek ve direnç — 23 Ekim"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-25T21:39:24Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 155.53",
+          "S1 156.01",
+          "P 156.58",
+          "R1 157.06",
+          "R2 157.62"
+        ]
+      }
+    }
+  ],
+  "calendar": {
+    "schemaVersion": 1,
+    "updatedAt": "2026-10-25T21:39:24Z",
+    "timezone": "Europe/Istanbul",
+    "coverage": {
+      "en": "Selected verified US and euro-area high-impact events. Coverage is selective, not a complete global calendar. Missing consensus and actual figures are left blank.",
+      "ar": "أحداث مختارة موثقة وعالية التأثير من الولايات المتحدة ومنطقة اليورو. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. تُترك التوقعات والنتائج غير الموثقة فارغة.",
+      "tr": "ABD ve euro bölgesinden seçilmiş, doğrulanmış önemli olaylar. Liste tüm dünyayı kapsamaz. Doğrulanmamış beklenti ve gerçekleşen değerler boş bırakılır."
+    },
+    "events": [
+      {
+        "id": "fomc-2026-10-28",
+        "at": "2026-10-28T18:00:00Z",
+        "title": {
+          "en": "FOMC policy decision",
+          "ar": "قرار السياسة النقدية للفيدرالي",
+          "tr": "Fed faiz kararı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-25T21:39:24Z"
+        }
+      },
+      {
+        "id": "fomc-press-2026-10-28",
+        "at": "2026-10-28T18:30:00Z",
+        "title": {
+          "en": "FOMC press conference",
+          "ar": "المؤتمر الصحفي للفيدرالي",
+          "tr": "Fed basın toplantısı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-25T21:39:24Z"
+        }
+      },
+      {
+        "id": "gdp-q3-advance-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "US GDP — Q3 advance estimate",
+          "ar": "الناتج المحلي الأمريكي — التقدير الأول للربع الثالث",
+          "tr": "ABD GSYH — 3. çeyrek ilk tahmin"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-25T21:39:24Z"
+        }
+      },
+      {
+        "id": "pce-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "Personal Income and Outlays — September (PCE)",
+          "ar": "الدخل والإنفاق الشخصي — سبتمبر (PCE)",
+          "tr": "Kişisel gelir ve harcamalar — Eylül (PCE)"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-25T21:39:24Z"
+        }
+      },
+      {
+        "id": "ecb-2026-10-29",
+        "at": "2026-10-29T13:15:00Z",
+        "title": {
+          "en": "ECB monetary policy decision",
+          "ar": "قرار السياسة النقدية للبنك المركزي الأوروبي",
+          "tr": "ECB para politikası kararı"
+        },
+        "currency": "EUR",
+        "country": {
+          "en": "Euro area",
+          "ar": "منطقة اليورو",
+          "tr": "Euro bölgesi"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "checkedAt": "2026-10-25T21:39:24Z",
+          "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
+        }
+      },
+      {
+        "id": "eci-2026-10-30",
+        "at": "2026-10-30T12:30:00Z",
+        "title": {
+          "en": "Employment Cost Index — Q3",
+          "ar": "مؤشر تكلفة التوظيف — الربع الثالث",
+          "tr": "İstihdam Maliyeti Endeksi — 3. çeyrek"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BLS — October releases",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "checkedAt": "2026-10-25T21:39:24Z"
+        }
+      }
+    ]
+  }
+}
