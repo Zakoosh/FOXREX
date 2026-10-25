@@ -1,0 +1,32 @@
+[
+  {
+    "id": "6ade7da8efa481919b53858a60ae3e2a",
+    "title": "نتيجة قرار الفيدرالي",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261028T210200\nEND:VEVENT"
+  },
+  {
+    "id": "6ade7faedaac81919d27dc88c0de818f",
+    "title": "متابعة مؤتمر الفيدرالي",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261028T213200\nEND:VEVENT"
+  },
+  {
+    "id": "6ade7fb27b1c8191a8b654f009c93d5c",
+    "title": "نتائج النمو والتضخم",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261029T153200\nEND:VEVENT"
+  },
+  {
+    "id": "6ade7fb5ee5881918496c532326fa178",
+    "title": "نتيجة المركزي الأوروبي",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261029T161700\nEND:VEVENT"
+  },
+  {
+    "id": "6ade7fb8e1c481919e213464413035ac",
+    "title": "نتيجة تكلفة التوظيف",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261030T153200\nEND:VEVENT"
+  },
+  {
+    "id": "6ade7fbb91348191a6d24412afed48c0",
+    "title": "تحديث نبض FOXREX",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Istanbul:20261026T030000\nRRULE:FREQ=HOURLY\nEND:VEVENT"
+  }
+]

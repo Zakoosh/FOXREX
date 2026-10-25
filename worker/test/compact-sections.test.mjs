@@ -13,6 +13,7 @@ test('all editions expose four populated market hubs plus REX and a compact soci
   assert.equal((home.match(/class="gateway-card"/g)||[]).length,4);
   assert.ok(home.includes('gateway-social')&&home.includes('https://t.me/fooxrex'));
   assert.ok(!home.includes('data-slot=')&&!home.includes('data-px'));
+  assert.ok(home.includes('data-home-quotes'));
   for(const route of ['analysis','technical','news']){
    const html=read(prefix+route+'/index.html');
    assert.ok((html.match(/class="catalog-card"/g)||[]).length>=5,lang+' '+route);

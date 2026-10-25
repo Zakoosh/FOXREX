@@ -37,7 +37,7 @@ test('theme toggle changes appearance, persists the preference, and labels the n
  }
 });
 test('presentation migration preserves original URLs, source timestamps, and existing article count on retry',()=>{
- const patch=JSON.parse(read('content-ops/updates/2026-10-26-tr-presentation.json'));
+ const patch=JSON.parse(read('content-ops/updates/2026-10-26-distinct-covers.json'));
  const again=enrich(feed,patch);
  assert.deepEqual(again,feed);
  for(const source of feed.items.filter(x=>x.language==='en')){

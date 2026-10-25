@@ -1,13 +1,12 @@
 {
   "$schema": "./content.schema.json",
   "schemaVersion": 3,
-  "updated": "2026-10-25T21:39:24.635Z",
+  "updated": "2026-10-25T22:05:06.636Z",
   "publication": {
-    "id": "pub_65ef57d384b63a33f593d633",
-    "at": "2026-10-25T21:39:24.635Z",
-    "contentId": "daily-2026-10-26-usdjpy-technical-2026-10-23-tr",
-    "action": "publish",
-    "version": 1
+    "id": "pub_73d7bb9c29d384539304a7b8",
+    "at": "2026-10-25T22:05:06.636Z",
+    "contentId": "presentation-and-tr",
+    "action": "publish"
   },
   "items": [
     {
@@ -22,8 +21,8 @@
       "title": "المركزي الأوروبي: قرار 29 أكتوبر عند 16:15 بتوقيت إسطنبول",
       "summary": "توقيت القرار الأوروبي يأتي بعد يوم من قرار الفيدرالي.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -39,7 +38,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/ecb-policy-news.webp",
         "alt": "المركزي الأوروبي: قرار 29 أكتوبر عند 16:15 بتوقيت إسطنبول"
       },
       "sources": [
@@ -86,8 +85,8 @@
       "title": "ECB decision: 29 October at 16:15 Istanbul time",
       "summary": "The European decision follows the Fed by one day.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -103,7 +102,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/ecb-policy-news.webp",
         "alt": "ECB decision: 29 October at 16:15 Istanbul time"
       },
       "sources": [
@@ -150,8 +149,8 @@
       "title": "ECB kararı: 29 Ekim, İstanbul saatiyle 16.15",
       "summary": "Avrupa kararı Fed’den bir gün sonra açıklanacak.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -167,7 +166,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/ecb-policy-news.webp",
         "alt": "ECB kararı: 29 Ekim, İstanbul saatiyle 16.15"
       },
       "sources": [
@@ -214,8 +213,8 @@
       "title": "تكلفة التوظيف الأمريكية: بيانات الربع الثالث الجمعة",
       "summary": "مؤشر ECI مقرر في 30 أكتوبر عند 15:30 بتوقيت إسطنبول.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -231,7 +230,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/employment-cost-news.webp",
         "alt": "تكلفة التوظيف الأمريكية: بيانات الربع الثالث الجمعة"
       },
       "sources": [
@@ -273,8 +272,8 @@
       "title": "US Employment Cost Index: Q3 release on Friday",
       "summary": "ECI is scheduled for 30 October at 15:30 Istanbul time.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -290,7 +289,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/employment-cost-news.webp",
         "alt": "US Employment Cost Index: Q3 release on Friday"
       },
       "sources": [
@@ -332,8 +331,8 @@
       "title": "ABD İstihdam Maliyeti Endeksi: üçüncü çeyrek verisi cuma",
       "summary": "ECI, 30 Ekim’de İstanbul saatiyle 15.30’da açıklanacak.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -349,7 +348,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/employment-cost-news.webp",
         "alt": "ABD İstihdam Maliyeti Endeksi: üçüncü çeyrek verisi cuma"
       },
       "sources": [
@@ -391,8 +390,8 @@
       "title": "اليورو والدولار: المقارنة أهم من القرار المنفرد",
       "summary": "قراءة نسبية لزوج EUR/USD في أسبوع يجمع اجتماعين نقديين.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -408,7 +407,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/eurusd-relative-policy.webp",
         "alt": "اليورو والدولار: المقارنة أهم من القرار المنفرد"
       },
       "sources": [
@@ -448,8 +447,8 @@
       "title": "EUR/USD: compare both policy paths",
       "summary": "A relative framework for a week with two central-bank decisions.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -465,7 +464,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/eurusd-relative-policy.webp",
         "alt": "EUR/USD: compare both policy paths"
       },
       "sources": [
@@ -505,8 +504,8 @@
       "title": "EUR/USD: iki politika yolunu karşılaştırın",
       "summary": "İki merkez bankası kararının olduğu hafta için göreli bir çerçeve.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -522,7 +521,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/eurusd-relative-policy.webp",
         "alt": "EUR/USD: iki politika yolunu karşılaştırın"
       },
       "sources": [
@@ -748,8 +747,8 @@
       "title": "الفيدرالي الأربعاء: القرار 21:00 والمؤتمر 21:30 بتوقيت إسطنبول",
       "summary": "موعدان منفصلان في 28 أكتوبر يستحقان المتابعة.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -765,7 +764,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/fed-policy-news.webp",
         "alt": "الفيدرالي الأربعاء: القرار 21:00 والمؤتمر 21:30 بتوقيت إسطنبول"
       },
       "sources": [
@@ -806,8 +805,8 @@
       "title": "Fed on Wednesday: 21:00 decision, 21:30 press conference in Istanbul",
       "summary": "Two separate events to follow on 28 October.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -823,7 +822,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/fed-policy-news.webp",
         "alt": "Fed on Wednesday: 21:00 decision, 21:30 press conference in Istanbul"
       },
       "sources": [
@@ -864,8 +863,8 @@
       "title": "Çarşamba Fed: İstanbul saatiyle 21.00 karar, 21.30 basın toplantısı",
       "summary": "28 Ekim’de ayrı ayrı izlenecek iki etkinlik.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -881,7 +880,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/fed-policy-news.webp",
         "alt": "Çarşamba Fed: İstanbul saatiyle 21.00 karar, 21.30 basın toplantısı"
       },
       "sources": [
@@ -1108,8 +1107,8 @@
       "title": "الذهب قبل الأخبار: خطة مراقبة من ثلاث مراحل",
       "summary": "قبل الإصدار وأثناءه وبعده: خطوات تمنع الخلط بين المرجع السعري والتوقع.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1125,7 +1124,7 @@
       "category": "gold",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
+        "src": "assets/media/gold-event-risk.webp",
         "alt": "الذهب قبل الأخبار: خطة مراقبة من ثلاث مراحل"
       },
       "sources": [
@@ -1159,8 +1158,8 @@
       "title": "Gold before news: a three-stage observation plan",
       "summary": "Before, during and after release: keep dated reference levels separate from forecasts.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1176,7 +1175,7 @@
       "category": "gold",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
+        "src": "assets/media/gold-event-risk.webp",
         "alt": "Gold before news: a three-stage observation plan"
       },
       "sources": [
@@ -1210,8 +1209,8 @@
       "title": "Haber öncesi altın: üç aşamalı takip planı",
       "summary": "Açıklama öncesinde, sırasında ve sonrasında tarihli seviyeleri tahminlerden ayırın.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1227,7 +1226,7 @@
       "category": "gold",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
+        "src": "assets/media/gold-event-risk.webp",
         "alt": "Haber öncesi altın: üç aşamalı takip planı"
       },
       "sources": [
@@ -1261,8 +1260,8 @@
       "title": "الذهب بين العوائد الحقيقية والطلب على الأمان",
       "summary": "ثلاث قنوات تساعد على تفسير اختلاف حركة الذهب عن حركة الفائدة الاسمية.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1278,7 +1277,7 @@
       "category": "gold",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
+        "src": "assets/media/gold-real-yields.webp",
         "alt": "الذهب بين العوائد الحقيقية والطلب على الأمان"
       },
       "sources": [
@@ -1312,8 +1311,8 @@
       "title": "Gold between real yields and demand for safety",
       "summary": "Three channels explain why nominal interest-rate headlines are not enough.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1329,7 +1328,7 @@
       "category": "gold",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
+        "src": "assets/media/gold-real-yields.webp",
         "alt": "Gold between real yields and demand for safety"
       },
       "sources": [
@@ -1363,8 +1362,8 @@
       "title": "Altın: reel getiri ile güvenli liman talebi arasında",
       "summary": "Nominal faiz başlığı tek başına fiyat hareketini açıklamaz.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1380,7 +1379,7 @@
       "category": "gold",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
+        "src": "assets/media/gold-real-yields.webp",
         "alt": "Altın: reel getiri ile güvenli liman talebi arasında"
       },
       "sources": [
@@ -1414,8 +1413,8 @@
       "title": "النمو والتضخم: كيف تقرأ إشارتين متعارضتين؟",
       "summary": "خطة لفهم بيانات الخميس عندما لا تسير الأرقام في الاتجاه نفسه.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1431,7 +1430,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/growth-inflation.webp",
         "alt": "النمو والتضخم: كيف تقرأ إشارتين متعارضتين؟"
       },
       "sources": [
@@ -1471,8 +1470,8 @@
       "title": "Growth and inflation: reading conflicting signals",
       "summary": "A framework for Thursday when the releases do not point in the same direction.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1488,7 +1487,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/growth-inflation.webp",
         "alt": "Growth and inflation: reading conflicting signals"
       },
       "sources": [
@@ -1528,8 +1527,8 @@
       "title": "Büyüme ve enflasyon: çelişen sinyaller nasıl okunur?",
       "summary": "Perşembe verileri aynı yönü göstermediğinde kullanılabilecek bir çerçeve.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1545,7 +1544,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/growth-inflation.webp",
         "alt": "Büyüme ve enflasyon: çelişen sinyaller nasıl okunur?"
       },
       "sources": [
@@ -1585,8 +1584,8 @@
       "title": "تضخم PCE لشهر سبتمبر: الموعد الخميس 29 أكتوبر",
       "summary": "الدخل والإنفاق الشخصي عند 15:30 بتوقيت إسطنبول.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1602,7 +1601,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/pce-consumption-news.webp",
         "alt": "تضخم PCE لشهر سبتمبر: الموعد الخميس 29 أكتوبر"
       },
       "sources": [
@@ -1649,8 +1648,8 @@
       "title": "September PCE inflation: release scheduled for 29 October",
       "summary": "Personal Income and Outlays is due at 15:30 Istanbul time.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1666,7 +1665,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/pce-consumption-news.webp",
         "alt": "September PCE inflation: release scheduled for 29 October"
       },
       "sources": [
@@ -1713,8 +1712,8 @@
       "title": "Eylül PCE enflasyonu: açıklama 29 Ekim’de",
       "summary": "Kişisel gelir-harcama verileri İstanbul saatiyle 15.30’da yayımlanacak.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1730,7 +1729,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/pce-consumption-news.webp",
         "alt": "Eylül PCE enflasyonu: açıklama 29 Ekim’de"
       },
       "sources": [
@@ -1777,8 +1776,8 @@
       "title": "أسبوع الفائدة: خريطة الأحداث للذهب والدولار",
       "summary": "الفيدرالي أولًا، ثم النمو والتضخم والمركزي الأوروبي: كيف تقرأ تسلسل الأحداث؟",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1794,7 +1793,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/policy-week-map.webp",
         "alt": "أسبوع الفائدة: خريطة الأحداث للذهب والدولار"
       },
       "sources": [
@@ -1846,8 +1845,8 @@
       "title": "Policy week: a map for gold and the dollar",
       "summary": "Read the sequence of Fed policy, US data and the ECB before interpreting price moves.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1863,7 +1862,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/policy-week-map.webp",
         "alt": "Policy week: a map for gold and the dollar"
       },
       "sources": [
@@ -1915,8 +1914,8 @@
       "title": "Faiz haftası: altın ve dolar için olay haritası",
       "summary": "Fed, ABD verileri ve ECB kararının sırasını fiyat hareketleriyle birlikte okuyun.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -1932,7 +1931,7 @@
       "category": "macro",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/policy-week-map.webp",
         "alt": "Faiz haftası: altın ve dolar için olay haritası"
       },
       "sources": [
@@ -1984,8 +1983,8 @@
       "title": "الناتج الأمريكي: التقدير الأول للربع الثالث الخميس 15:30",
       "summary": "إصدار 29 أكتوبر يعطي القراءة الأولية للنمو في الربع الثالث.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -2001,7 +2000,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/gdp-growth-news.webp",
         "alt": "الناتج الأمريكي: التقدير الأول للربع الثالث الخميس 15:30"
       },
       "sources": [
@@ -2043,8 +2042,8 @@
       "title": "US GDP: Q3 advance estimate due Thursday at 15:30 Istanbul",
       "summary": "The 29 October release provides the initial reading of third-quarter growth.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -2060,7 +2059,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/gdp-growth-news.webp",
         "alt": "US GDP: Q3 advance estimate due Thursday at 15:30 Istanbul"
       },
       "sources": [
@@ -2102,8 +2101,8 @@
       "title": "ABD GSYH: üçüncü çeyrek ilk tahmini perşembe 15.30’da",
       "summary": "29 Ekim yayını üçüncü çeyrek büyümesine ilişkin ilk okumayı sunacak.",
       "publishedAt": "2026-10-25T21:39:24.635Z",
-      "updatedAt": "2026-10-25T21:39:24.635Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -2119,7 +2118,7 @@
       "category": "economic",
       "bias": "neutral",
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
+        "src": "assets/media/gdp-growth-news.webp",
         "alt": "ABD GSYH: üçüncü çeyrek ilk tahmini perşembe 15.30’da"
       },
       "sources": [
@@ -2719,8 +2718,8 @@
       "title": "Altın ve döviz: yön seçmeden önce faiz mesajını okuyun",
       "summary": "Yaklaşan para politikası kararları ve ekonomik veriler için pratik bir değerlendirme çerçevesi.",
       "publishedAt": "2026-10-25T21:06:46.741Z",
-      "updatedAt": "2026-10-25T21:06:46.741Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -2777,8 +2776,8 @@
         "stalePolicy": "hide"
       },
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
-        "alt": "Zümrüt ve altın ışıkla aydınlatılmış finans mimarisi"
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Altın ve döviz: yön seçmeden önce faiz mesajını okuyun"
       }
     },
     {
@@ -2793,8 +2792,8 @@
       "title": "Reel getiriler altın için neden önemlidir, ilişki ne zaman zayıflar?",
       "summary": "Fırsat maliyeti ve altını tek bir etkene göre yorumlamanın sınırları üzerine kısa bir ders.",
       "publishedAt": "2026-10-25T21:06:46.741Z",
-      "updatedAt": "2026-10-25T21:06:46.741Z",
-      "publishVersion": 1,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 2,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -2827,8 +2826,8 @@
       ],
       "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
-        "alt": "Zümrüt ışık altında altın külçeleri"
+        "src": "assets/media/rex-learning-cover.webp",
+        "alt": "Reel getiriler altın için neden önemlidir, ilişki ne zaman zayıflar?"
       }
     },
     {
@@ -2913,8 +2912,8 @@
       "title": "الذهب والفوركس: اقرأ رسالة الفائدة قبل اختيار الاتجاه",
       "summary": "إطار عملي لفهم قرارات السياسة النقدية والبيانات القادمة، بدون أهداف سعرية أو مستويات مختلقة.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T21:06:46.741Z",
-      "publishVersion": 2,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 3,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -2971,8 +2970,8 @@
         "stalePolicy": "hide"
       },
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
-        "alt": "عمارة مالية بإضاءة زمردية وذهبية"
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "الذهب والفوركس: اقرأ رسالة الفائدة قبل اختيار الاتجاه"
       }
     },
     {
@@ -2987,8 +2986,8 @@
       "title": "Gold and FX: read the policy message before choosing a direction",
       "summary": "A practical framework for interpreting the coming policy and data releases, without invented price targets.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T21:06:46.741Z",
-      "publishVersion": 2,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 3,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -3045,8 +3044,8 @@
         "stalePolicy": "hide"
       },
       "image": {
-        "src": "assets/media/macro-editorial-v1.webp",
-        "alt": "Financial architecture illuminated in emerald and gold"
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Gold and FX: read the policy message before choosing a direction"
       }
     },
     {
@@ -3061,8 +3060,8 @@
       "title": "لماذا تؤثر العوائد الحقيقية على الذهب؟ ومتى تضعف العلاقة؟",
       "summary": "درس مختصر عن تكلفة الفرصة وحدود تفسير الذهب بعامل واحد.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T21:06:46.741Z",
-      "publishVersion": 2,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 3,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -3095,8 +3094,8 @@
       ],
       "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
-        "alt": "سبائك ذهب بإضاءة زمردية"
+        "src": "assets/media/rex-learning-cover.webp",
+        "alt": "لماذا تؤثر العوائد الحقيقية على الذهب؟ ومتى تضعف العلاقة؟"
       }
     },
     {
@@ -3111,8 +3110,8 @@
       "title": "Why real yields matter for gold — and why the link can break",
       "summary": "A short lesson on opportunity cost and the limits of a single-factor explanation.",
       "publishedAt": "2026-10-25T20:41:57.984Z",
-      "updatedAt": "2026-10-25T21:06:46.741Z",
-      "publishVersion": 2,
+      "updatedAt": "2026-10-25T22:05:06.636Z",
+      "publishVersion": 3,
       "editorialDate": "2026-10-25",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
@@ -3145,8 +3144,8 @@
       ],
       "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
       "image": {
-        "src": "assets/media/gold-editorial-v1.webp",
-        "alt": "Gold bullion in emerald light"
+        "src": "assets/media/rex-learning-cover.webp",
+        "alt": "Why real yields matter for gold — and why the link can break"
       }
     },
     {

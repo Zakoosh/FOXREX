@@ -54,6 +54,7 @@ test('no fabricated market data ships with the site', async () => {
   assert.equal(pxs.length, 0, 'compact gateway has no ticker');
   assert.ok(pxs.every(v => v === '—'), 'ticker must start empty');
   assert.match(home, /home-gateway/);
+  assert.match(home, /data-home-quotes/);
   // The publishing engine passes its candidate feed via FOXREX_FEED_PATH so what WOULD ship is what gets tested.
   const feedPath = process.env.FOXREX_FEED_PATH || path.join(root, 'data/content.json');
   const c = JSON.parse(fs.readFileSync(feedPath, 'utf8'));
@@ -133,7 +134,7 @@ test('Arabic typography path: IBM Plex Sans Arabic + Inter self-hosted, AR token
 
 test('Arabic copy and bidi: specified headlines present, Latin/number runs isolated in Inter LTR', async () => {
   const ar = read('ar/index.html');
-  for (const line of ['نقطة انطلاقك للأسواق.', 'التحليل العام', 'التحليل التقني', 'التقويم', 'الأخبار', 'تابع'])
+  for (const line of ['اقرأ السوق.', 'التحليل العام', 'التحليل التقني', 'التقويم', 'الأخبار', 'تابع'])
     assert.ok(ar.includes(line), `missing Arabic copy: ${line}`);
   assert.equal((ar.match(/class="gateway-card"/g)||[]).length,4);
   const { arText } = await import('../../tools/site/text.mjs');

@@ -1,0 +1,257 @@
+{
+  "authorization": "owner-requested-presentation-2026-10-26",
+  "updates": [
+    {
+      "id": "daily-2026-10-26-ecb-decision-october-29-2026-ar",
+      "image": {
+        "src": "assets/media/ecb-policy-news.webp",
+        "alt": "المركزي الأوروبي: قرار 29 أكتوبر عند 16:15 بتوقيت إسطنبول"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ecb-decision-october-29-2026-en",
+      "image": {
+        "src": "assets/media/ecb-policy-news.webp",
+        "alt": "ECB decision: 29 October at 16:15 Istanbul time"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ecb-decision-october-29-2026-tr",
+      "image": {
+        "src": "assets/media/ecb-policy-news.webp",
+        "alt": "ECB kararı: 29 Ekim, İstanbul saatiyle 16.15"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-employment-cost-q3-october-30-2026-ar",
+      "image": {
+        "src": "assets/media/employment-cost-news.webp",
+        "alt": "تكلفة التوظيف الأمريكية: بيانات الربع الثالث الجمعة"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-employment-cost-q3-october-30-2026-en",
+      "image": {
+        "src": "assets/media/employment-cost-news.webp",
+        "alt": "US Employment Cost Index: Q3 release on Friday"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-employment-cost-q3-october-30-2026-tr",
+      "image": {
+        "src": "assets/media/employment-cost-news.webp",
+        "alt": "ABD İstihdam Maliyeti Endeksi: üçüncü çeyrek verisi cuma"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-relative-policy-2026-10-26-ar",
+      "image": {
+        "src": "assets/media/eurusd-relative-policy.webp",
+        "alt": "اليورو والدولار: المقارنة أهم من القرار المنفرد"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-relative-policy-2026-10-26-en",
+      "image": {
+        "src": "assets/media/eurusd-relative-policy.webp",
+        "alt": "EUR/USD: compare both policy paths"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-relative-policy-2026-10-26-tr",
+      "image": {
+        "src": "assets/media/eurusd-relative-policy.webp",
+        "alt": "EUR/USD: iki politika yolunu karşılaştırın"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-fed-decision-october-28-2026-ar",
+      "image": {
+        "src": "assets/media/fed-policy-news.webp",
+        "alt": "الفيدرالي الأربعاء: القرار 21:00 والمؤتمر 21:30 بتوقيت إسطنبول"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-fed-decision-october-28-2026-en",
+      "image": {
+        "src": "assets/media/fed-policy-news.webp",
+        "alt": "Fed on Wednesday: 21:00 decision, 21:30 press conference in Istanbul"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-fed-decision-october-28-2026-tr",
+      "image": {
+        "src": "assets/media/fed-policy-news.webp",
+        "alt": "Çarşamba Fed: İstanbul saatiyle 21.00 karar, 21.30 basın toplantısı"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-gold-event-risk-checklist-2026-10-26-ar",
+      "image": {
+        "src": "assets/media/gold-event-risk.webp",
+        "alt": "الذهب قبل الأخبار: خطة مراقبة من ثلاث مراحل"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-gold-event-risk-checklist-2026-10-26-en",
+      "image": {
+        "src": "assets/media/gold-event-risk.webp",
+        "alt": "Gold before news: a three-stage observation plan"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-gold-event-risk-checklist-2026-10-26-tr",
+      "image": {
+        "src": "assets/media/gold-event-risk.webp",
+        "alt": "Haber öncesi altın: üç aşamalı takip planı"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-gold-real-yields-risk-2026-10-26-ar",
+      "image": {
+        "src": "assets/media/gold-real-yields.webp",
+        "alt": "الذهب بين العوائد الحقيقية والطلب على الأمان"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-gold-real-yields-risk-2026-10-26-en",
+      "image": {
+        "src": "assets/media/gold-real-yields.webp",
+        "alt": "Gold between real yields and demand for safety"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-gold-real-yields-risk-2026-10-26-tr",
+      "image": {
+        "src": "assets/media/gold-real-yields.webp",
+        "alt": "Altın: reel getiri ile güvenli liman talebi arasında"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-growth-inflation-mixed-signals-2026-10-26-ar",
+      "image": {
+        "src": "assets/media/growth-inflation.webp",
+        "alt": "النمو والتضخم: كيف تقرأ إشارتين متعارضتين؟"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-growth-inflation-mixed-signals-2026-10-26-en",
+      "image": {
+        "src": "assets/media/growth-inflation.webp",
+        "alt": "Growth and inflation: reading conflicting signals"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-growth-inflation-mixed-signals-2026-10-26-tr",
+      "image": {
+        "src": "assets/media/growth-inflation.webp",
+        "alt": "Büyüme ve enflasyon: çelişen sinyaller nasıl okunur?"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-pce-september-october-29-2026-ar",
+      "image": {
+        "src": "assets/media/pce-consumption-news.webp",
+        "alt": "تضخم PCE لشهر سبتمبر: الموعد الخميس 29 أكتوبر"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-pce-september-october-29-2026-en",
+      "image": {
+        "src": "assets/media/pce-consumption-news.webp",
+        "alt": "September PCE inflation: release scheduled for 29 October"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-pce-september-october-29-2026-tr",
+      "image": {
+        "src": "assets/media/pce-consumption-news.webp",
+        "alt": "Eylül PCE enflasyonu: açıklama 29 Ekim’de"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-policy-week-map-2026-10-26-ar",
+      "image": {
+        "src": "assets/media/policy-week-map.webp",
+        "alt": "أسبوع الفائدة: خريطة الأحداث للذهب والدولار"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-policy-week-map-2026-10-26-en",
+      "image": {
+        "src": "assets/media/policy-week-map.webp",
+        "alt": "Policy week: a map for gold and the dollar"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-policy-week-map-2026-10-26-tr",
+      "image": {
+        "src": "assets/media/policy-week-map.webp",
+        "alt": "Faiz haftası: altın ve dolar için olay haritası"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-us-gdp-q3-october-29-2026-ar",
+      "image": {
+        "src": "assets/media/gdp-growth-news.webp",
+        "alt": "الناتج الأمريكي: التقدير الأول للربع الثالث الخميس 15:30"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-us-gdp-q3-october-29-2026-en",
+      "image": {
+        "src": "assets/media/gdp-growth-news.webp",
+        "alt": "US GDP: Q3 advance estimate due Thursday at 15:30 Istanbul"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-us-gdp-q3-october-29-2026-tr",
+      "image": {
+        "src": "assets/media/gdp-growth-news.webp",
+        "alt": "ABD GSYH: üçüncü çeyrek ilk tahmini perşembe 15.30’da"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-tr",
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Altın ve döviz: yön seçmeden önce faiz mesajını okuyun"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-tr",
+      "image": {
+        "src": "assets/media/rex-learning-cover.webp",
+        "alt": "Reel getiriler altın için neden önemlidir, ilişki ne zaman zayıflar?"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-ar",
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "الذهب والفوركس: اقرأ رسالة الفائدة قبل اختيار الاتجاه"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-en",
+      "image": {
+        "src": "assets/media/gold-editorial-v1.webp",
+        "alt": "Gold and FX: read the policy message before choosing a direction"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-ar",
+      "image": {
+        "src": "assets/media/rex-learning-cover.webp",
+        "alt": "لماذا تؤثر العوائد الحقيقية على الذهب؟ ومتى تضعف العلاقة؟"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-en",
+      "image": {
+        "src": "assets/media/rex-learning-cover.webp",
+        "alt": "Why real yields matter for gold — and why the link can break"
+      }
+    }
+  ]
+}

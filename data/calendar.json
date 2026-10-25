@@ -31,7 +31,8 @@
         "name": "Federal Reserve — October calendar",
         "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
         "checkedAt": "2026-10-25T21:39:24Z"
-      }
+      },
+      "analysisPath": "news/fed-decision-october-28-2026/"
     },
     {
       "id": "fomc-press-2026-10-28",
@@ -56,7 +57,8 @@
         "name": "Federal Reserve — October calendar",
         "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
         "checkedAt": "2026-10-25T21:39:24Z"
-      }
+      },
+      "analysisPath": "news/fed-decision-october-28-2026/"
     },
     {
       "id": "gdp-q3-advance-2026-10-29",
@@ -81,7 +83,8 @@
         "name": "BEA — release schedule",
         "url": "https://www.bea.gov/news/schedule",
         "checkedAt": "2026-10-25T21:39:24Z"
-      }
+      },
+      "analysisPath": "news/us-gdp-q3-october-29-2026/"
     },
     {
       "id": "pce-2026-10-29",
@@ -106,7 +109,8 @@
         "name": "BEA — release schedule",
         "url": "https://www.bea.gov/news/schedule",
         "checkedAt": "2026-10-25T21:39:24Z"
-      }
+      },
+      "analysisPath": "news/pce-september-october-29-2026/"
     },
     {
       "id": "ecb-2026-10-29",
@@ -132,7 +136,8 @@
         "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
         "checkedAt": "2026-10-25T21:39:24Z",
         "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
-      }
+      },
+      "analysisPath": "news/ecb-decision-october-29-2026/"
     },
     {
       "id": "eci-2026-10-30",
@@ -157,7 +162,8 @@
         "name": "BLS — October releases",
         "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
         "checkedAt": "2026-10-25T21:39:24Z"
-      }
+      },
+      "analysisPath": "news/employment-cost-q3-october-30-2026/"
     }
   ]
 }
