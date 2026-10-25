@@ -1,15 +1,1167 @@
 {
   "$schema": "./content.schema.json",
   "schemaVersion": 3,
-  "updated": "2026-10-25T23:03:50.594Z",
+  "updated": "2026-10-25T23:21:56.169Z",
   "publication": {
-    "id": "pub_3902a2710d74fee82b87591c",
-    "at": "2026-10-25T23:03:50.594Z",
-    "contentId": "daily-2026-10-26-ethusd-d1-outlook-2026-10-26-tr",
+    "id": "pub_6d0dea358ca74fccca2f54e3",
+    "at": "2026-10-25T23:21:56.169Z",
+    "contentId": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3-tr",
     "action": "publish",
-    "version": 2
+    "version": 1
   },
   "items": [
+    {
+      "id": "daily-2026-10-26-ac-1d3d0ba652f80706f994cb35-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-1d3d0ba652f80706f994cb35",
+      "section": "analysis",
+      "slug": "ac-1d3d0ba652f80706f994cb35",
+      "urlPath": "analysis/ac-1d3d0ba652f80706f994cb35/",
+      "title": "USD/CHF: قراءة نطاق Autochartist نحو 0.8254",
+      "summary": "تحليل مستقل للتنبيه الوارد: نطاق تقلب بين 0.8222 و0.8254 على إطار ساعة، بنافذة مصدر مدتها أربع ساعات؛ لا دخول أو وقف خسارة محددين.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما ورد في التقرير\nأشار تقرير Autochartist للجلسة الآسيوية إلى احتمال حركة صاعدة نحو 0.8254، بدعم من متوسط متحرك يتجه للأعلى. وصف المصدر 0.8222 بأنه الحد المنخفض لنطاق تقلب أربع ساعات و0.8254 بأنه الحد المرتفع. هذه تقديرات المصدر، وليست حركة تحققنا من حدوثها بعد التنبيه.\n\nالتوقيت والصلاحية\nالاكتشاف 26 أكتوبر 2026 الساعة 10:00 بتوقيت سيدني AEDT، الموافق 25 أكتوبر 23:00 UTC و26 أكتوبر 02:00 بإسطنبول. نافذة الأربع ساعات تنتهي 26 أكتوبر 03:00 UTC، أي 06:00 بإسطنبول. وصل التقرير بالبريد 25 أكتوبر 22:36 UTC، قبل وقت الاكتشاف المطبوع؛ نحافظ على هذا الاختلاف ولا ندّعي التحقق من توقيت التوليد.\n\nكيف نقرأ المستويات؟\nالحد الأعلى 0.8254 هدف احتمالي ونقطة مراقبة؛ لا يكفي وجوده لاستنتاج اختراق أو أمر شراء. إذا أظهرت بيانات سعرية لاحقة ثباتًا واتجاهًا متوافقًا، يمكن إعادة تقييم السيناريو. أما الرجوع باتجاه 0.8222 فيضعف القراءة الصاعدة، لكنه لا يحوّل هذا المستوى تلقائيًا إلى وقف خسارة. لم نتحقق من وصول السعر لأي مستوى.\n\nحدود الإشارة\nالتقرير لا يحدد دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. لا نستنتج هذه القيم من الحدين. الغلاف تصميم تعريفي وليس شارت شموع؛ لم يُنشأ شارت H1 دون بيانات OHLC موثقة. بعد انتهاء النافذة يُعامل التحليل كسجل مؤرخ.\n\nالمتابعة\nراجع التقويم الاقتصادي وتحليل الأداة المؤرخ قبل تقييم المخاطر. هذه قراءة تعليمية مشروطة وليست توصية تداول.",
+      "symbol": "USDCHF",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-usdchf-20261026.webp",
+        "alt": "USD/CHF: قراءة نطاق Autochartist نحو 0.8254"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.8222",
+        "Upper volatility boundary / source objective: 0.8254"
+      ],
+      "instruments": [
+        "USDCHF"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1d3d0ba652f80706f994cb35-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-1d3d0ba652f80706f994cb35",
+      "section": "analysis",
+      "slug": "ac-1d3d0ba652f80706f994cb35",
+      "urlPath": "analysis/ac-1d3d0ba652f80706f994cb35/",
+      "title": "USD/CHF: Autochartist range review toward 0.8254",
+      "summary": "A source-based review of the H1 volatility range from 0.8222 to 0.8254, within the report’s four-hour window. No entry or stop-loss was supplied.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the report contains\nThe Asian-session Autochartist report describes a possible upward move toward 0.8254, supported by an upward-sloping moving average. It identifies 0.8222 as the low and 0.8254 as the high of a four-hour volatility range. These are attributed source estimates, not a verified subsequent price reaction.\n\nTiming and validity\nThe printed detection time is 26 October 2026 at 10:00 Sydney AEDT: 25 October 23:00 UTC, or 26 October 02:00 Istanbul. Its four-hour window ends at 03:00 UTC / 06:00 Istanbul on 26 October. The email arrived at 22:36 UTC on 25 October, before the printed detection time. We retain that discrepancy and do not claim independent verification of the generation timestamp.\n\nReading the range\nThe upper boundary 0.8254 is a conditional objective to monitor, not proof of a breakout or a buy order. Later independently verified prices would be needed to assess continuation. Movement back toward 0.8222 would weaken the bullish reading without automatically making that boundary a stop-loss. No target achievement or live price reaction is asserted.\n\nWhat is missing\nThe report supplies no entry, stop-loss, position size or success probability. None is inferred from the range. The cover is an editorial title design, not an H1 chart; no chart was fabricated without verified OHLC. After expiry this remains a dated source review.\n\nNext step\nCheck the economic calendar and dated instrument analysis before assessing risk. Educational conditional analysis, not a trading recommendation.",
+      "symbol": "USDCHF",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-usdchf-20261026.webp",
+        "alt": "USD/CHF: Autochartist range review toward 0.8254"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.8222",
+        "Upper volatility boundary / source objective: 0.8254"
+      ],
+      "instruments": [
+        "USDCHF"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1d3d0ba652f80706f994cb35-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-1d3d0ba652f80706f994cb35",
+      "section": "analysis",
+      "slug": "ac-1d3d0ba652f80706f994cb35",
+      "urlPath": "analysis/ac-1d3d0ba652f80706f994cb35/",
+      "title": "USD/CHF: 0.8254 seviyesine yönelik Autochartist bant incelemesi",
+      "summary": "H1 oynaklık bandı 0.8222–0.8254; kaynağın dört saatlik penceresinin değerlendirmesi. Giriş ve zarar durdurma seviyesi belirtilmemiştir.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Rapordaki bilgi\nAutochartist Asya seansı raporu, yukarı eğimli hareketli ortalama desteğiyle 0.8254 yönünde olası yükseliş tanımlar. Dört saatlik oynaklık bandının alt sınırı 0.8222, üst sınırı 0.8254 olarak belirtilir. Bunlar kaynağa atfedilen tahminlerdir; gerçekleşmiş fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nBasılı tespit zamanı 26 Ekim 2026 10:00 Sydney AEDT; UTC karşılığı 25 Ekim 23:00, İstanbul karşılığı 26 Ekim 02:00’dir. Dört saatlik pencere 26 Ekim 03:00 UTC / 06:00 İstanbul’da biter. E-posta 25 Ekim 22:36 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu fark korunur; üretim zamanı bağımsız olarak doğrulanmış sayılmaz.\n\nBandın yorumu\nÜst sınır 0.8254 koşullu bir izleme hedefidir; kırılmanın veya alım emrinin kanıtı değildir. Devamlılığı değerlendirmek için sonraki doğrulanmış fiyatlar gerekir. 0.8222 yönüne dönüş yükseliş okumasını zayıflatabilir; bu sınır kendiliğinden zarar durdurma seviyesi olmaz. Hedefe ulaşıldığı iddia edilmez.\n\nEksik bilgiler\nGiriş, zarar durdurma, pozisyon büyüklüğü ve başarı olasılığı verilmemiştir. Bu değerler banttan türetilmez. Kapak tanıtım tasarımıdır; doğrulanmış OHLC olmadan H1 grafik üretilmemiştir. Süre dolduktan sonra içerik tarihli incelemedir.\n\nTakip\nRisk değerlendirmesi öncesinde ekonomik takvimi ve tarihli enstrüman analizini inceleyin. Eğitim amaçlı koşullu analizdir; yatırım tavsiyesi değildir.",
+      "symbol": "USDCHF",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-usdchf-20261026.webp",
+        "alt": "USD/CHF: 0.8254 seviyesine yönelik Autochartist bant incelemesi"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.8222",
+        "Upper volatility boundary / source objective: 0.8254"
+      ],
+      "instruments": [
+        "USDCHF"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3",
+      "section": "analysis",
+      "slug": "ac-1fc40d5e04cef95d1bd464f3",
+      "urlPath": "analysis/ac-1fc40d5e04cef95d1bd464f3/",
+      "title": "NZD/JPY: قراءة نطاق Autochartist نحو 89.7342",
+      "summary": "تحليل مستقل للتنبيه الوارد: نطاق تقلب بين 89.0578 و89.7342 على إطار ساعة، بنافذة مصدر مدتها أربع ساعات؛ لا دخول أو وقف خسارة محددين.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما ورد في التقرير\nأشار تقرير Autochartist للجلسة الآسيوية إلى احتمال حركة صاعدة نحو 89.7342، بدعم من متوسط متحرك يتجه للأعلى. وصف المصدر 89.0578 بأنه الحد المنخفض لنطاق تقلب أربع ساعات و89.7342 بأنه الحد المرتفع. هذه تقديرات المصدر، وليست حركة تحققنا من حدوثها بعد التنبيه.\n\nالتوقيت والصلاحية\nالاكتشاف 26 أكتوبر 2026 الساعة 10:00 بتوقيت سيدني AEDT، الموافق 25 أكتوبر 23:00 UTC و26 أكتوبر 02:00 بإسطنبول. نافذة الأربع ساعات تنتهي 26 أكتوبر 03:00 UTC، أي 06:00 بإسطنبول. وصل التقرير بالبريد 25 أكتوبر 22:36 UTC، قبل وقت الاكتشاف المطبوع؛ نحافظ على هذا الاختلاف ولا ندّعي التحقق من توقيت التوليد.\n\nكيف نقرأ المستويات؟\nالحد الأعلى 89.7342 هدف احتمالي ونقطة مراقبة؛ لا يكفي وجوده لاستنتاج اختراق أو أمر شراء. إذا أظهرت بيانات سعرية لاحقة ثباتًا واتجاهًا متوافقًا، يمكن إعادة تقييم السيناريو. أما الرجوع باتجاه 89.0578 فيضعف القراءة الصاعدة، لكنه لا يحوّل هذا المستوى تلقائيًا إلى وقف خسارة. لم نتحقق من وصول السعر لأي مستوى.\n\nحدود الإشارة\nالتقرير لا يحدد دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. لا نستنتج هذه القيم من الحدين. الغلاف تصميم تعريفي وليس شارت شموع؛ لم يُنشأ شارت H1 دون بيانات OHLC موثقة. بعد انتهاء النافذة يُعامل التحليل كسجل مؤرخ.\n\nالمتابعة\nراجع التقويم الاقتصادي وتحليل الأداة المؤرخ قبل تقييم المخاطر. هذه قراءة تعليمية مشروطة وليست توصية تداول.",
+      "symbol": "NZDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-nzdjpy-20261026.webp",
+        "alt": "NZD/JPY: قراءة نطاق Autochartist نحو 89.7342"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 89.0578",
+        "Upper volatility boundary / source objective: 89.7342"
+      ],
+      "instruments": [
+        "NZDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3",
+      "section": "analysis",
+      "slug": "ac-1fc40d5e04cef95d1bd464f3",
+      "urlPath": "analysis/ac-1fc40d5e04cef95d1bd464f3/",
+      "title": "NZD/JPY: Autochartist range review toward 89.7342",
+      "summary": "A source-based review of the H1 volatility range from 89.0578 to 89.7342, within the report’s four-hour window. No entry or stop-loss was supplied.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the report contains\nThe Asian-session Autochartist report describes a possible upward move toward 89.7342, supported by an upward-sloping moving average. It identifies 89.0578 as the low and 89.7342 as the high of a four-hour volatility range. These are attributed source estimates, not a verified subsequent price reaction.\n\nTiming and validity\nThe printed detection time is 26 October 2026 at 10:00 Sydney AEDT: 25 October 23:00 UTC, or 26 October 02:00 Istanbul. Its four-hour window ends at 03:00 UTC / 06:00 Istanbul on 26 October. The email arrived at 22:36 UTC on 25 October, before the printed detection time. We retain that discrepancy and do not claim independent verification of the generation timestamp.\n\nReading the range\nThe upper boundary 89.7342 is a conditional objective to monitor, not proof of a breakout or a buy order. Later independently verified prices would be needed to assess continuation. Movement back toward 89.0578 would weaken the bullish reading without automatically making that boundary a stop-loss. No target achievement or live price reaction is asserted.\n\nWhat is missing\nThe report supplies no entry, stop-loss, position size or success probability. None is inferred from the range. The cover is an editorial title design, not an H1 chart; no chart was fabricated without verified OHLC. After expiry this remains a dated source review.\n\nNext step\nCheck the economic calendar and dated instrument analysis before assessing risk. Educational conditional analysis, not a trading recommendation.",
+      "symbol": "NZDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-nzdjpy-20261026.webp",
+        "alt": "NZD/JPY: Autochartist range review toward 89.7342"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 89.0578",
+        "Upper volatility boundary / source objective: 89.7342"
+      ],
+      "instruments": [
+        "NZDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-1fc40d5e04cef95d1bd464f3",
+      "section": "analysis",
+      "slug": "ac-1fc40d5e04cef95d1bd464f3",
+      "urlPath": "analysis/ac-1fc40d5e04cef95d1bd464f3/",
+      "title": "NZD/JPY: 89.7342 seviyesine yönelik Autochartist bant incelemesi",
+      "summary": "H1 oynaklık bandı 89.0578–89.7342; kaynağın dört saatlik penceresinin değerlendirmesi. Giriş ve zarar durdurma seviyesi belirtilmemiştir.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Rapordaki bilgi\nAutochartist Asya seansı raporu, yukarı eğimli hareketli ortalama desteğiyle 89.7342 yönünde olası yükseliş tanımlar. Dört saatlik oynaklık bandının alt sınırı 89.0578, üst sınırı 89.7342 olarak belirtilir. Bunlar kaynağa atfedilen tahminlerdir; gerçekleşmiş fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nBasılı tespit zamanı 26 Ekim 2026 10:00 Sydney AEDT; UTC karşılığı 25 Ekim 23:00, İstanbul karşılığı 26 Ekim 02:00’dir. Dört saatlik pencere 26 Ekim 03:00 UTC / 06:00 İstanbul’da biter. E-posta 25 Ekim 22:36 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu fark korunur; üretim zamanı bağımsız olarak doğrulanmış sayılmaz.\n\nBandın yorumu\nÜst sınır 89.7342 koşullu bir izleme hedefidir; kırılmanın veya alım emrinin kanıtı değildir. Devamlılığı değerlendirmek için sonraki doğrulanmış fiyatlar gerekir. 89.0578 yönüne dönüş yükseliş okumasını zayıflatabilir; bu sınır kendiliğinden zarar durdurma seviyesi olmaz. Hedefe ulaşıldığı iddia edilmez.\n\nEksik bilgiler\nGiriş, zarar durdurma, pozisyon büyüklüğü ve başarı olasılığı verilmemiştir. Bu değerler banttan türetilmez. Kapak tanıtım tasarımıdır; doğrulanmış OHLC olmadan H1 grafik üretilmemiştir. Süre dolduktan sonra içerik tarihli incelemedir.\n\nTakip\nRisk değerlendirmesi öncesinde ekonomik takvimi ve tarihli enstrüman analizini inceleyin. Eğitim amaçlı koşullu analizdir; yatırım tavsiyesi değildir.",
+      "symbol": "NZDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-nzdjpy-20261026.webp",
+        "alt": "NZD/JPY: 89.7342 seviyesine yönelik Autochartist bant incelemesi"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 89.0578",
+        "Upper volatility boundary / source objective: 89.7342"
+      ],
+      "instruments": [
+        "NZDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-22b0ed55eb7c1e4453c293a4-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-22b0ed55eb7c1e4453c293a4",
+      "section": "analysis",
+      "slug": "ac-22b0ed55eb7c1e4453c293a4",
+      "urlPath": "analysis/ac-22b0ed55eb7c1e4453c293a4/",
+      "title": "EUR/USD: قراءة نطاق Autochartist نحو 1.1230",
+      "summary": "تحليل مستقل للتنبيه الوارد: نطاق تقلب بين 1.1198 و1.1230 على إطار ساعة، بنافذة مصدر مدتها أربع ساعات؛ لا دخول أو وقف خسارة محددين.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما ورد في التقرير\nأشار تقرير Autochartist للجلسة الآسيوية إلى احتمال حركة صاعدة نحو 1.1230، بدعم من متوسط متحرك يتجه للأعلى. وصف المصدر 1.1198 بأنه الحد المنخفض لنطاق تقلب أربع ساعات و1.1230 بأنه الحد المرتفع. هذه تقديرات المصدر، وليست حركة تحققنا من حدوثها بعد التنبيه.\n\nالتوقيت والصلاحية\nالاكتشاف 26 أكتوبر 2026 الساعة 10:00 بتوقيت سيدني AEDT، الموافق 25 أكتوبر 23:00 UTC و26 أكتوبر 02:00 بإسطنبول. نافذة الأربع ساعات تنتهي 26 أكتوبر 03:00 UTC، أي 06:00 بإسطنبول. وصل التقرير بالبريد 25 أكتوبر 22:36 UTC، قبل وقت الاكتشاف المطبوع؛ نحافظ على هذا الاختلاف ولا ندّعي التحقق من توقيت التوليد.\n\nكيف نقرأ المستويات؟\nالحد الأعلى 1.1230 هدف احتمالي ونقطة مراقبة؛ لا يكفي وجوده لاستنتاج اختراق أو أمر شراء. إذا أظهرت بيانات سعرية لاحقة ثباتًا واتجاهًا متوافقًا، يمكن إعادة تقييم السيناريو. أما الرجوع باتجاه 1.1198 فيضعف القراءة الصاعدة، لكنه لا يحوّل هذا المستوى تلقائيًا إلى وقف خسارة. لم نتحقق من وصول السعر لأي مستوى.\n\nحدود الإشارة\nالتقرير لا يحدد دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. لا نستنتج هذه القيم من الحدين. الغلاف تصميم تعريفي وليس شارت شموع؛ لم يُنشأ شارت H1 دون بيانات OHLC موثقة. بعد انتهاء النافذة يُعامل التحليل كسجل مؤرخ.\n\nالمتابعة\nراجع التقويم الاقتصادي وتحليل الأداة المؤرخ قبل تقييم المخاطر. هذه قراءة تعليمية مشروطة وليست توصية تداول.",
+      "symbol": "EURUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-eurusd-20261026.webp",
+        "alt": "EUR/USD: قراءة نطاق Autochartist نحو 1.1230"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 1.1198",
+        "Upper volatility boundary / source objective: 1.1230"
+      ],
+      "instruments": [
+        "EURUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-22b0ed55eb7c1e4453c293a4-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-22b0ed55eb7c1e4453c293a4",
+      "section": "analysis",
+      "slug": "ac-22b0ed55eb7c1e4453c293a4",
+      "urlPath": "analysis/ac-22b0ed55eb7c1e4453c293a4/",
+      "title": "EUR/USD: Autochartist range review toward 1.1230",
+      "summary": "A source-based review of the H1 volatility range from 1.1198 to 1.1230, within the report’s four-hour window. No entry or stop-loss was supplied.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the report contains\nThe Asian-session Autochartist report describes a possible upward move toward 1.1230, supported by an upward-sloping moving average. It identifies 1.1198 as the low and 1.1230 as the high of a four-hour volatility range. These are attributed source estimates, not a verified subsequent price reaction.\n\nTiming and validity\nThe printed detection time is 26 October 2026 at 10:00 Sydney AEDT: 25 October 23:00 UTC, or 26 October 02:00 Istanbul. Its four-hour window ends at 03:00 UTC / 06:00 Istanbul on 26 October. The email arrived at 22:36 UTC on 25 October, before the printed detection time. We retain that discrepancy and do not claim independent verification of the generation timestamp.\n\nReading the range\nThe upper boundary 1.1230 is a conditional objective to monitor, not proof of a breakout or a buy order. Later independently verified prices would be needed to assess continuation. Movement back toward 1.1198 would weaken the bullish reading without automatically making that boundary a stop-loss. No target achievement or live price reaction is asserted.\n\nWhat is missing\nThe report supplies no entry, stop-loss, position size or success probability. None is inferred from the range. The cover is an editorial title design, not an H1 chart; no chart was fabricated without verified OHLC. After expiry this remains a dated source review.\n\nNext step\nCheck the economic calendar and dated instrument analysis before assessing risk. Educational conditional analysis, not a trading recommendation.",
+      "symbol": "EURUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-eurusd-20261026.webp",
+        "alt": "EUR/USD: Autochartist range review toward 1.1230"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 1.1198",
+        "Upper volatility boundary / source objective: 1.1230"
+      ],
+      "instruments": [
+        "EURUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-22b0ed55eb7c1e4453c293a4-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-22b0ed55eb7c1e4453c293a4",
+      "section": "analysis",
+      "slug": "ac-22b0ed55eb7c1e4453c293a4",
+      "urlPath": "analysis/ac-22b0ed55eb7c1e4453c293a4/",
+      "title": "EUR/USD: 1.1230 seviyesine yönelik Autochartist bant incelemesi",
+      "summary": "H1 oynaklık bandı 1.1198–1.1230; kaynağın dört saatlik penceresinin değerlendirmesi. Giriş ve zarar durdurma seviyesi belirtilmemiştir.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Rapordaki bilgi\nAutochartist Asya seansı raporu, yukarı eğimli hareketli ortalama desteğiyle 1.1230 yönünde olası yükseliş tanımlar. Dört saatlik oynaklık bandının alt sınırı 1.1198, üst sınırı 1.1230 olarak belirtilir. Bunlar kaynağa atfedilen tahminlerdir; gerçekleşmiş fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nBasılı tespit zamanı 26 Ekim 2026 10:00 Sydney AEDT; UTC karşılığı 25 Ekim 23:00, İstanbul karşılığı 26 Ekim 02:00’dir. Dört saatlik pencere 26 Ekim 03:00 UTC / 06:00 İstanbul’da biter. E-posta 25 Ekim 22:36 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu fark korunur; üretim zamanı bağımsız olarak doğrulanmış sayılmaz.\n\nBandın yorumu\nÜst sınır 1.1230 koşullu bir izleme hedefidir; kırılmanın veya alım emrinin kanıtı değildir. Devamlılığı değerlendirmek için sonraki doğrulanmış fiyatlar gerekir. 1.1198 yönüne dönüş yükseliş okumasını zayıflatabilir; bu sınır kendiliğinden zarar durdurma seviyesi olmaz. Hedefe ulaşıldığı iddia edilmez.\n\nEksik bilgiler\nGiriş, zarar durdurma, pozisyon büyüklüğü ve başarı olasılığı verilmemiştir. Bu değerler banttan türetilmez. Kapak tanıtım tasarımıdır; doğrulanmış OHLC olmadan H1 grafik üretilmemiştir. Süre dolduktan sonra içerik tarihli incelemedir.\n\nTakip\nRisk değerlendirmesi öncesinde ekonomik takvimi ve tarihli enstrüman analizini inceleyin. Eğitim amaçlı koşullu analizdir; yatırım tavsiyesi değildir.",
+      "symbol": "EURUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-eurusd-20261026.webp",
+        "alt": "EUR/USD: 1.1230 seviyesine yönelik Autochartist bant incelemesi"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 1.1198",
+        "Upper volatility boundary / source objective: 1.1230"
+      ],
+      "instruments": [
+        "EURUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-2df40f6823840f502222be7d-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-2df40f6823840f502222be7d",
+      "section": "analysis",
+      "slug": "ac-2df40f6823840f502222be7d",
+      "urlPath": "analysis/ac-2df40f6823840f502222be7d/",
+      "title": "USD/JPY: قراءة نطاق Autochartist نحو 157.4545",
+      "summary": "تحليل مستقل للتنبيه الوارد: نطاق تقلب بين 156.5135 و157.4545 على إطار ساعة، بنافذة مصدر مدتها أربع ساعات؛ لا دخول أو وقف خسارة محددين.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما ورد في التقرير\nأشار تقرير Autochartist للجلسة الآسيوية إلى احتمال حركة صاعدة نحو 157.4545، بدعم من متوسط متحرك يتجه للأعلى. وصف المصدر 156.5135 بأنه الحد المنخفض لنطاق تقلب أربع ساعات و157.4545 بأنه الحد المرتفع. هذه تقديرات المصدر، وليست حركة تحققنا من حدوثها بعد التنبيه.\n\nالتوقيت والصلاحية\nالاكتشاف 26 أكتوبر 2026 الساعة 10:00 بتوقيت سيدني AEDT، الموافق 25 أكتوبر 23:00 UTC و26 أكتوبر 02:00 بإسطنبول. نافذة الأربع ساعات تنتهي 26 أكتوبر 03:00 UTC، أي 06:00 بإسطنبول. وصل التقرير بالبريد 25 أكتوبر 22:36 UTC، قبل وقت الاكتشاف المطبوع؛ نحافظ على هذا الاختلاف ولا ندّعي التحقق من توقيت التوليد.\n\nكيف نقرأ المستويات؟\nالحد الأعلى 157.4545 هدف احتمالي ونقطة مراقبة؛ لا يكفي وجوده لاستنتاج اختراق أو أمر شراء. إذا أظهرت بيانات سعرية لاحقة ثباتًا واتجاهًا متوافقًا، يمكن إعادة تقييم السيناريو. أما الرجوع باتجاه 156.5135 فيضعف القراءة الصاعدة، لكنه لا يحوّل هذا المستوى تلقائيًا إلى وقف خسارة. لم نتحقق من وصول السعر لأي مستوى.\n\nحدود الإشارة\nالتقرير لا يحدد دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. لا نستنتج هذه القيم من الحدين. الغلاف تصميم تعريفي وليس شارت شموع؛ لم يُنشأ شارت H1 دون بيانات OHLC موثقة. بعد انتهاء النافذة يُعامل التحليل كسجل مؤرخ.\n\nالمتابعة\nراجع التقويم الاقتصادي وتحليل الأداة المؤرخ قبل تقييم المخاطر. هذه قراءة تعليمية مشروطة وليست توصية تداول.",
+      "symbol": "USDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-usdjpy-20261026.webp",
+        "alt": "USD/JPY: قراءة نطاق Autochartist نحو 157.4545"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 156.5135",
+        "Upper volatility boundary / source objective: 157.4545"
+      ],
+      "instruments": [
+        "USDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-2df40f6823840f502222be7d-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-2df40f6823840f502222be7d",
+      "section": "analysis",
+      "slug": "ac-2df40f6823840f502222be7d",
+      "urlPath": "analysis/ac-2df40f6823840f502222be7d/",
+      "title": "USD/JPY: Autochartist range review toward 157.4545",
+      "summary": "A source-based review of the H1 volatility range from 156.5135 to 157.4545, within the report’s four-hour window. No entry or stop-loss was supplied.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the report contains\nThe Asian-session Autochartist report describes a possible upward move toward 157.4545, supported by an upward-sloping moving average. It identifies 156.5135 as the low and 157.4545 as the high of a four-hour volatility range. These are attributed source estimates, not a verified subsequent price reaction.\n\nTiming and validity\nThe printed detection time is 26 October 2026 at 10:00 Sydney AEDT: 25 October 23:00 UTC, or 26 October 02:00 Istanbul. Its four-hour window ends at 03:00 UTC / 06:00 Istanbul on 26 October. The email arrived at 22:36 UTC on 25 October, before the printed detection time. We retain that discrepancy and do not claim independent verification of the generation timestamp.\n\nReading the range\nThe upper boundary 157.4545 is a conditional objective to monitor, not proof of a breakout or a buy order. Later independently verified prices would be needed to assess continuation. Movement back toward 156.5135 would weaken the bullish reading without automatically making that boundary a stop-loss. No target achievement or live price reaction is asserted.\n\nWhat is missing\nThe report supplies no entry, stop-loss, position size or success probability. None is inferred from the range. The cover is an editorial title design, not an H1 chart; no chart was fabricated without verified OHLC. After expiry this remains a dated source review.\n\nNext step\nCheck the economic calendar and dated instrument analysis before assessing risk. Educational conditional analysis, not a trading recommendation.",
+      "symbol": "USDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-usdjpy-20261026.webp",
+        "alt": "USD/JPY: Autochartist range review toward 157.4545"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 156.5135",
+        "Upper volatility boundary / source objective: 157.4545"
+      ],
+      "instruments": [
+        "USDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-2df40f6823840f502222be7d-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-2df40f6823840f502222be7d",
+      "section": "analysis",
+      "slug": "ac-2df40f6823840f502222be7d",
+      "urlPath": "analysis/ac-2df40f6823840f502222be7d/",
+      "title": "USD/JPY: 157.4545 seviyesine yönelik Autochartist bant incelemesi",
+      "summary": "H1 oynaklık bandı 156.5135–157.4545; kaynağın dört saatlik penceresinin değerlendirmesi. Giriş ve zarar durdurma seviyesi belirtilmemiştir.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Rapordaki bilgi\nAutochartist Asya seansı raporu, yukarı eğimli hareketli ortalama desteğiyle 157.4545 yönünde olası yükseliş tanımlar. Dört saatlik oynaklık bandının alt sınırı 156.5135, üst sınırı 157.4545 olarak belirtilir. Bunlar kaynağa atfedilen tahminlerdir; gerçekleşmiş fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nBasılı tespit zamanı 26 Ekim 2026 10:00 Sydney AEDT; UTC karşılığı 25 Ekim 23:00, İstanbul karşılığı 26 Ekim 02:00’dir. Dört saatlik pencere 26 Ekim 03:00 UTC / 06:00 İstanbul’da biter. E-posta 25 Ekim 22:36 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu fark korunur; üretim zamanı bağımsız olarak doğrulanmış sayılmaz.\n\nBandın yorumu\nÜst sınır 157.4545 koşullu bir izleme hedefidir; kırılmanın veya alım emrinin kanıtı değildir. Devamlılığı değerlendirmek için sonraki doğrulanmış fiyatlar gerekir. 156.5135 yönüne dönüş yükseliş okumasını zayıflatabilir; bu sınır kendiliğinden zarar durdurma seviyesi olmaz. Hedefe ulaşıldığı iddia edilmez.\n\nEksik bilgiler\nGiriş, zarar durdurma, pozisyon büyüklüğü ve başarı olasılığı verilmemiştir. Bu değerler banttan türetilmez. Kapak tanıtım tasarımıdır; doğrulanmış OHLC olmadan H1 grafik üretilmemiştir. Süre dolduktan sonra içerik tarihli incelemedir.\n\nTakip\nRisk değerlendirmesi öncesinde ekonomik takvimi ve tarihli enstrüman analizini inceleyin. Eğitim amaçlı koşullu analizdir; yatırım tavsiyesi değildir.",
+      "symbol": "USDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-usdjpy-20261026.webp",
+        "alt": "USD/JPY: 157.4545 seviyesine yönelik Autochartist bant incelemesi"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 156.5135",
+        "Upper volatility boundary / source objective: 157.4545"
+      ],
+      "instruments": [
+        "USDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-984f99f5f3586ec7d8a597d0-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-984f99f5f3586ec7d8a597d0",
+      "section": "analysis",
+      "slug": "ac-984f99f5f3586ec7d8a597d0",
+      "urlPath": "analysis/ac-984f99f5f3586ec7d8a597d0/",
+      "title": "NZD/USD: قراءة نطاق Autochartist نحو 0.5711",
+      "summary": "تحليل مستقل للتنبيه الوارد: نطاق تقلب بين 0.5682 و0.5711 على إطار ساعة، بنافذة مصدر مدتها أربع ساعات؛ لا دخول أو وقف خسارة محددين.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما ورد في التقرير\nأشار تقرير Autochartist للجلسة الآسيوية إلى احتمال حركة صاعدة نحو 0.5711، بدعم من متوسط متحرك يتجه للأعلى. وصف المصدر 0.5682 بأنه الحد المنخفض لنطاق تقلب أربع ساعات و0.5711 بأنه الحد المرتفع. هذه تقديرات المصدر، وليست حركة تحققنا من حدوثها بعد التنبيه.\n\nالتوقيت والصلاحية\nالاكتشاف 26 أكتوبر 2026 الساعة 10:00 بتوقيت سيدني AEDT، الموافق 25 أكتوبر 23:00 UTC و26 أكتوبر 02:00 بإسطنبول. نافذة الأربع ساعات تنتهي 26 أكتوبر 03:00 UTC، أي 06:00 بإسطنبول. وصل التقرير بالبريد 25 أكتوبر 22:36 UTC، قبل وقت الاكتشاف المطبوع؛ نحافظ على هذا الاختلاف ولا ندّعي التحقق من توقيت التوليد.\n\nكيف نقرأ المستويات؟\nالحد الأعلى 0.5711 هدف احتمالي ونقطة مراقبة؛ لا يكفي وجوده لاستنتاج اختراق أو أمر شراء. إذا أظهرت بيانات سعرية لاحقة ثباتًا واتجاهًا متوافقًا، يمكن إعادة تقييم السيناريو. أما الرجوع باتجاه 0.5682 فيضعف القراءة الصاعدة، لكنه لا يحوّل هذا المستوى تلقائيًا إلى وقف خسارة. لم نتحقق من وصول السعر لأي مستوى.\n\nحدود الإشارة\nالتقرير لا يحدد دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. لا نستنتج هذه القيم من الحدين. الغلاف تصميم تعريفي وليس شارت شموع؛ لم يُنشأ شارت H1 دون بيانات OHLC موثقة. بعد انتهاء النافذة يُعامل التحليل كسجل مؤرخ.\n\nالمتابعة\nراجع التقويم الاقتصادي وتحليل الأداة المؤرخ قبل تقييم المخاطر. هذه قراءة تعليمية مشروطة وليست توصية تداول.",
+      "symbol": "NZDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-nzdusd-20261026.webp",
+        "alt": "NZD/USD: قراءة نطاق Autochartist نحو 0.5711"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.5682",
+        "Upper volatility boundary / source objective: 0.5711"
+      ],
+      "instruments": [
+        "NZDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-984f99f5f3586ec7d8a597d0-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-984f99f5f3586ec7d8a597d0",
+      "section": "analysis",
+      "slug": "ac-984f99f5f3586ec7d8a597d0",
+      "urlPath": "analysis/ac-984f99f5f3586ec7d8a597d0/",
+      "title": "NZD/USD: Autochartist range review toward 0.5711",
+      "summary": "A source-based review of the H1 volatility range from 0.5682 to 0.5711, within the report’s four-hour window. No entry or stop-loss was supplied.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the report contains\nThe Asian-session Autochartist report describes a possible upward move toward 0.5711, supported by an upward-sloping moving average. It identifies 0.5682 as the low and 0.5711 as the high of a four-hour volatility range. These are attributed source estimates, not a verified subsequent price reaction.\n\nTiming and validity\nThe printed detection time is 26 October 2026 at 10:00 Sydney AEDT: 25 October 23:00 UTC, or 26 October 02:00 Istanbul. Its four-hour window ends at 03:00 UTC / 06:00 Istanbul on 26 October. The email arrived at 22:36 UTC on 25 October, before the printed detection time. We retain that discrepancy and do not claim independent verification of the generation timestamp.\n\nReading the range\nThe upper boundary 0.5711 is a conditional objective to monitor, not proof of a breakout or a buy order. Later independently verified prices would be needed to assess continuation. Movement back toward 0.5682 would weaken the bullish reading without automatically making that boundary a stop-loss. No target achievement or live price reaction is asserted.\n\nWhat is missing\nThe report supplies no entry, stop-loss, position size or success probability. None is inferred from the range. The cover is an editorial title design, not an H1 chart; no chart was fabricated without verified OHLC. After expiry this remains a dated source review.\n\nNext step\nCheck the economic calendar and dated instrument analysis before assessing risk. Educational conditional analysis, not a trading recommendation.",
+      "symbol": "NZDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-nzdusd-20261026.webp",
+        "alt": "NZD/USD: Autochartist range review toward 0.5711"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.5682",
+        "Upper volatility boundary / source objective: 0.5711"
+      ],
+      "instruments": [
+        "NZDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-984f99f5f3586ec7d8a597d0-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-984f99f5f3586ec7d8a597d0",
+      "section": "analysis",
+      "slug": "ac-984f99f5f3586ec7d8a597d0",
+      "urlPath": "analysis/ac-984f99f5f3586ec7d8a597d0/",
+      "title": "NZD/USD: 0.5711 seviyesine yönelik Autochartist bant incelemesi",
+      "summary": "H1 oynaklık bandı 0.5682–0.5711; kaynağın dört saatlik penceresinin değerlendirmesi. Giriş ve zarar durdurma seviyesi belirtilmemiştir.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Rapordaki bilgi\nAutochartist Asya seansı raporu, yukarı eğimli hareketli ortalama desteğiyle 0.5711 yönünde olası yükseliş tanımlar. Dört saatlik oynaklık bandının alt sınırı 0.5682, üst sınırı 0.5711 olarak belirtilir. Bunlar kaynağa atfedilen tahminlerdir; gerçekleşmiş fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nBasılı tespit zamanı 26 Ekim 2026 10:00 Sydney AEDT; UTC karşılığı 25 Ekim 23:00, İstanbul karşılığı 26 Ekim 02:00’dir. Dört saatlik pencere 26 Ekim 03:00 UTC / 06:00 İstanbul’da biter. E-posta 25 Ekim 22:36 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu fark korunur; üretim zamanı bağımsız olarak doğrulanmış sayılmaz.\n\nBandın yorumu\nÜst sınır 0.5711 koşullu bir izleme hedefidir; kırılmanın veya alım emrinin kanıtı değildir. Devamlılığı değerlendirmek için sonraki doğrulanmış fiyatlar gerekir. 0.5682 yönüne dönüş yükseliş okumasını zayıflatabilir; bu sınır kendiliğinden zarar durdurma seviyesi olmaz. Hedefe ulaşıldığı iddia edilmez.\n\nEksik bilgiler\nGiriş, zarar durdurma, pozisyon büyüklüğü ve başarı olasılığı verilmemiştir. Bu değerler banttan türetilmez. Kapak tanıtım tasarımıdır; doğrulanmış OHLC olmadan H1 grafik üretilmemiştir. Süre dolduktan sonra içerik tarihli incelemedir.\n\nTakip\nRisk değerlendirmesi öncesinde ekonomik takvimi ve tarihli enstrüman analizini inceleyin. Eğitim amaçlı koşullu analizdir; yatırım tavsiyesi değildir.",
+      "symbol": "NZDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-nzdusd-20261026.webp",
+        "alt": "NZD/USD: 0.5711 seviyesine yönelik Autochartist bant incelemesi"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.5682",
+        "Upper volatility boundary / source objective: 0.5711"
+      ],
+      "instruments": [
+        "NZDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-abf503ae793c82485dd5e9a7-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-abf503ae793c82485dd5e9a7",
+      "section": "analysis",
+      "slug": "ac-abf503ae793c82485dd5e9a7",
+      "urlPath": "analysis/ac-abf503ae793c82485dd5e9a7/",
+      "title": "AUD/USD: قراءة نطاق Autochartist نحو 0.7049",
+      "summary": "تحليل مستقل للتنبيه الوارد: نطاق تقلب بين 0.7018 و0.7049 على إطار ساعة، بنافذة مصدر مدتها أربع ساعات؛ لا دخول أو وقف خسارة محددين.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما ورد في التقرير\nأشار تقرير Autochartist للجلسة الآسيوية إلى احتمال حركة صاعدة نحو 0.7049، بدعم من متوسط متحرك يتجه للأعلى. وصف المصدر 0.7018 بأنه الحد المنخفض لنطاق تقلب أربع ساعات و0.7049 بأنه الحد المرتفع. هذه تقديرات المصدر، وليست حركة تحققنا من حدوثها بعد التنبيه.\n\nالتوقيت والصلاحية\nالاكتشاف 26 أكتوبر 2026 الساعة 10:00 بتوقيت سيدني AEDT، الموافق 25 أكتوبر 23:00 UTC و26 أكتوبر 02:00 بإسطنبول. نافذة الأربع ساعات تنتهي 26 أكتوبر 03:00 UTC، أي 06:00 بإسطنبول. وصل التقرير بالبريد 25 أكتوبر 22:36 UTC، قبل وقت الاكتشاف المطبوع؛ نحافظ على هذا الاختلاف ولا ندّعي التحقق من توقيت التوليد.\n\nكيف نقرأ المستويات؟\nالحد الأعلى 0.7049 هدف احتمالي ونقطة مراقبة؛ لا يكفي وجوده لاستنتاج اختراق أو أمر شراء. إذا أظهرت بيانات سعرية لاحقة ثباتًا واتجاهًا متوافقًا، يمكن إعادة تقييم السيناريو. أما الرجوع باتجاه 0.7018 فيضعف القراءة الصاعدة، لكنه لا يحوّل هذا المستوى تلقائيًا إلى وقف خسارة. لم نتحقق من وصول السعر لأي مستوى.\n\nحدود الإشارة\nالتقرير لا يحدد دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. لا نستنتج هذه القيم من الحدين. الغلاف تصميم تعريفي وليس شارت شموع؛ لم يُنشأ شارت H1 دون بيانات OHLC موثقة. بعد انتهاء النافذة يُعامل التحليل كسجل مؤرخ.\n\nالمتابعة\nراجع التقويم الاقتصادي وتحليل الأداة المؤرخ قبل تقييم المخاطر. هذه قراءة تعليمية مشروطة وليست توصية تداول.",
+      "symbol": "AUDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-audusd-20261026.webp",
+        "alt": "AUD/USD: قراءة نطاق Autochartist نحو 0.7049"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.7018",
+        "Upper volatility boundary / source objective: 0.7049"
+      ],
+      "instruments": [
+        "AUDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-abf503ae793c82485dd5e9a7-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-abf503ae793c82485dd5e9a7",
+      "section": "analysis",
+      "slug": "ac-abf503ae793c82485dd5e9a7",
+      "urlPath": "analysis/ac-abf503ae793c82485dd5e9a7/",
+      "title": "AUD/USD: Autochartist range review toward 0.7049",
+      "summary": "A source-based review of the H1 volatility range from 0.7018 to 0.7049, within the report’s four-hour window. No entry or stop-loss was supplied.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the report contains\nThe Asian-session Autochartist report describes a possible upward move toward 0.7049, supported by an upward-sloping moving average. It identifies 0.7018 as the low and 0.7049 as the high of a four-hour volatility range. These are attributed source estimates, not a verified subsequent price reaction.\n\nTiming and validity\nThe printed detection time is 26 October 2026 at 10:00 Sydney AEDT: 25 October 23:00 UTC, or 26 October 02:00 Istanbul. Its four-hour window ends at 03:00 UTC / 06:00 Istanbul on 26 October. The email arrived at 22:36 UTC on 25 October, before the printed detection time. We retain that discrepancy and do not claim independent verification of the generation timestamp.\n\nReading the range\nThe upper boundary 0.7049 is a conditional objective to monitor, not proof of a breakout or a buy order. Later independently verified prices would be needed to assess continuation. Movement back toward 0.7018 would weaken the bullish reading without automatically making that boundary a stop-loss. No target achievement or live price reaction is asserted.\n\nWhat is missing\nThe report supplies no entry, stop-loss, position size or success probability. None is inferred from the range. The cover is an editorial title design, not an H1 chart; no chart was fabricated without verified OHLC. After expiry this remains a dated source review.\n\nNext step\nCheck the economic calendar and dated instrument analysis before assessing risk. Educational conditional analysis, not a trading recommendation.",
+      "symbol": "AUDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-audusd-20261026.webp",
+        "alt": "AUD/USD: Autochartist range review toward 0.7049"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.7018",
+        "Upper volatility boundary / source objective: 0.7049"
+      ],
+      "instruments": [
+        "AUDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-abf503ae793c82485dd5e9a7-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-abf503ae793c82485dd5e9a7",
+      "section": "analysis",
+      "slug": "ac-abf503ae793c82485dd5e9a7",
+      "urlPath": "analysis/ac-abf503ae793c82485dd5e9a7/",
+      "title": "AUD/USD: 0.7049 seviyesine yönelik Autochartist bant incelemesi",
+      "summary": "H1 oynaklık bandı 0.7018–0.7049; kaynağın dört saatlik penceresinin değerlendirmesi. Giriş ve zarar durdurma seviyesi belirtilmemiştir.",
+      "publishedAt": "2026-10-25T23:21:56.169Z",
+      "updatedAt": "2026-10-25T23:21:56.169Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Rapordaki bilgi\nAutochartist Asya seansı raporu, yukarı eğimli hareketli ortalama desteğiyle 0.7049 yönünde olası yükseliş tanımlar. Dört saatlik oynaklık bandının alt sınırı 0.7018, üst sınırı 0.7049 olarak belirtilir. Bunlar kaynağa atfedilen tahminlerdir; gerçekleşmiş fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nBasılı tespit zamanı 26 Ekim 2026 10:00 Sydney AEDT; UTC karşılığı 25 Ekim 23:00, İstanbul karşılığı 26 Ekim 02:00’dir. Dört saatlik pencere 26 Ekim 03:00 UTC / 06:00 İstanbul’da biter. E-posta 25 Ekim 22:36 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu fark korunur; üretim zamanı bağımsız olarak doğrulanmış sayılmaz.\n\nBandın yorumu\nÜst sınır 0.7049 koşullu bir izleme hedefidir; kırılmanın veya alım emrinin kanıtı değildir. Devamlılığı değerlendirmek için sonraki doğrulanmış fiyatlar gerekir. 0.7018 yönüne dönüş yükseliş okumasını zayıflatabilir; bu sınır kendiliğinden zarar durdurma seviyesi olmaz. Hedefe ulaşıldığı iddia edilmez.\n\nEksik bilgiler\nGiriş, zarar durdurma, pozisyon büyüklüğü ve başarı olasılığı verilmemiştir. Bu değerler banttan türetilmez. Kapak tanıtım tasarımıdır; doğrulanmış OHLC olmadan H1 grafik üretilmemiştir. Süre dolduktan sonra içerik tarihli incelemedir.\n\nTakip\nRisk değerlendirmesi öncesinde ekonomik takvimi ve tarihli enstrüman analizini inceleyin. Eğitim amaçlı koşullu analizdir; yatırım tavsiyesi değildir.",
+      "symbol": "AUDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/ac-audusd-20261026.webp",
+        "alt": "AUD/USD: 0.7049 seviyesine yönelik Autochartist bant incelemesi"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-25T23:00:00Z",
+          "retrievedAt": "2026-10-25T23:21:56.169Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Lower volatility boundary: 0.7018",
+        "Upper volatility boundary / source objective: 0.7049"
+      ],
+      "instruments": [
+        "AUDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T23:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T03:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
     {
       "id": "daily-2026-10-26-audjpy-d1-outlook-2026-10-26-ar",
       "type": "ANALYSIS",

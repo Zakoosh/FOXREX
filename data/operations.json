@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-25T23:03:09.429068+00:00",
+  "checkedAt": "2026-10-25T23:21:56.169Z",
   "autochartist": {
-    "status": "waiting-current-mail",
-    "message": "آخر بحث لم يجد تقارير Autochartist حديثة في البريد المتصل. التقارير التاريخية مستثناة من النشر."
+    "status": "published",
+    "message": "نُشرت أحدث التحليلات الموثقة من Autochartist."
   },
   "telegram": {
     "status": "pending-configuration"
@@ -13,5 +13,12 @@
     "facebook": "pending-link",
     "lastReminderAt": "2026-10-25T23:03:09.429068+00:00"
   },
-  "processedEvents": []
+  "processedEvents": [
+    "ac-22b0ed55eb7c1e4453c293a4",
+    "ac-2df40f6823840f502222be7d",
+    "ac-abf503ae793c82485dd5e9a7",
+    "ac-1d3d0ba652f80706f994cb35",
+    "ac-984f99f5f3586ec7d8a597d0",
+    "ac-1fc40d5e04cef95d1bd464f3"
+  ]
 }
