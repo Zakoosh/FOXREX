@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-25T20:41:49Z",
+  "timezone": "Europe/Istanbul",
+  "coverage": {
+    "en": "Selected verified US and euro-area high-impact events. Coverage is selective, not a complete global calendar. Missing consensus and actual figures are left blank.",
+    "ar": "أحداث مختارة موثقة وعالية التأثير من الولايات المتحدة ومنطقة اليورو. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. تُترك التوقعات والنتائج غير الموثقة فارغة."
+  },
+  "events": [
+    {
+      "id": "fomc-2026-10-28",
+      "at": "2026-10-28T18:00:00Z",
+      "title": {
+        "en": "FOMC policy decision",
+        "ar": "قرار السياسة النقدية للفيدرالي"
+      },
+      "currency": "USD",
+      "country": {
+        "en": "United States",
+        "ar": "الولايات المتحدة"
+      },
+      "impact": "HIGH",
+      "status": "scheduled",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "source": {
+        "name": "Federal Reserve — October calendar",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "checkedAt": "2026-10-25T20:41:49Z"
+      }
+    },
+    {
+      "id": "fomc-press-2026-10-28",
+      "at": "2026-10-28T18:30:00Z",
+      "title": {
+        "en": "FOMC press conference",
+        "ar": "المؤتمر الصحفي للفيدرالي"
+      },
+      "currency": "USD",
+      "country": {
+        "en": "United States",
+        "ar": "الولايات المتحدة"
+      },
+      "impact": "HIGH",
+      "status": "scheduled",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "source": {
+        "name": "Federal Reserve — October calendar",
+        "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+        "checkedAt": "2026-10-25T20:41:49Z"
+      }
+    },
+    {
+      "id": "gdp-q3-advance-2026-10-29",
+      "at": "2026-10-29T12:30:00Z",
+      "title": {
+        "en": "US GDP — Q3 advance estimate",
+        "ar": "الناتج المحلي الأمريكي — التقدير الأول للربع الثالث"
+      },
+      "currency": "USD",
+      "country": {
+        "en": "United States",
+        "ar": "الولايات المتحدة"
+      },
+      "impact": "HIGH",
+      "status": "scheduled",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "source": {
+        "name": "BEA — release schedule",
+        "url": "https://www.bea.gov/news/schedule",
+        "checkedAt": "2026-10-25T20:41:49Z"
+      }
+    },
+    {
+      "id": "pce-2026-10-29",
+      "at": "2026-10-29T12:30:00Z",
+      "title": {
+        "en": "Personal Income and Outlays — September (PCE)",
+        "ar": "الدخل والإنفاق الشخصي — سبتمبر (PCE)"
+      },
+      "currency": "USD",
+      "country": {
+        "en": "United States",
+        "ar": "الولايات المتحدة"
+      },
+      "impact": "HIGH",
+      "status": "scheduled",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "source": {
+        "name": "BEA — release schedule",
+        "url": "https://www.bea.gov/news/schedule",
+        "checkedAt": "2026-10-25T20:41:49Z"
+      }
+    },
+    {
+      "id": "ecb-2026-10-29",
+      "at": "2026-10-29T13:15:00Z",
+      "title": {
+        "en": "ECB monetary policy decision",
+        "ar": "قرار السياسة النقدية للبنك المركزي الأوروبي"
+      },
+      "currency": "EUR",
+      "country": {
+        "en": "Euro area",
+        "ar": "منطقة اليورو"
+      },
+      "impact": "HIGH",
+      "status": "scheduled",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "source": {
+        "name": "ECB — meeting calendar",
+        "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+        "checkedAt": "2026-10-25T20:41:49Z",
+        "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
+      }
+    },
+    {
+      "id": "eci-2026-10-30",
+      "at": "2026-10-30T12:30:00Z",
+      "title": {
+        "en": "Employment Cost Index — Q3",
+        "ar": "مؤشر تكلفة التوظيف — الربع الثالث"
+      },
+      "currency": "USD",
+      "country": {
+        "en": "United States",
+        "ar": "الولايات المتحدة"
+      },
+      "impact": "HIGH",
+      "status": "scheduled",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "source": {
+        "name": "BLS — October releases",
+        "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+        "checkedAt": "2026-10-25T20:41:49Z"
+      }
+    }
+  ]
+}

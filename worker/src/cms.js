@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 export const CMS = require('../../studio/cms-model.js');
 
 const EDITABLE = ['title', 'slug', 'summary', 'body', 'symbol', 'market', 'bias', 'category', 'tags', 'image', 'visualPrompt',
-  'sourceReferences', 'riskDisclosure', 'seo', 'social', 'fields', 'translationGroupId'];
+  'sourceReferences', 'riskDisclosure', 'seo', 'social', 'fields', 'translationGroupId', 'byline', 'lead', 'access'];
 const httpError = (status, message, extra) => Object.assign(new Error(message), { status, ...extra });
 
 export function cleanActor(v) {
@@ -70,6 +70,9 @@ export class CmsStore {
   update(id, patch, expectedRevision, actor) {
     const r = this.get(id); this.#checkRevision(r, expectedRevision);
     if (r.status === 'ARCHIVED') throw httpError(409, 'Restore archived content before editing');
+    // Identity is permanent: the id never changes, and once published the slug (and so the URL) is fixed. Titles may change freely.
+    if ((r.live || (r.publishing && r.publishing.publishVersion > 0)) && patch.slug !== undefined && patch.slug !== r.slug)
+      throw httpError(409, `The slug is fixed after first publication (its permanent URL depends on it). Keep "${r.slug}".`, { code: 'SLUG_LOCKED' });
     const next = JSON.parse(JSON.stringify(r));
     for (const k of EDITABLE) if (patch[k] !== undefined && k !== 'translationGroupId') next[k] = patch[k];
     const errs = CMS.validateRecord(next, 'draft');

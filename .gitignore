@@ -17,3 +17,4 @@ worker/data/
 .DS_Store
 Thumbs.db
 .vscode/
+data/*.v2-backup.json

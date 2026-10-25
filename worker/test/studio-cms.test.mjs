@@ -31,5 +31,8 @@ test('public renderer escapes all text and isolates Latin runs exactly like the 
   const evil = '<script>alert(1)</script><img src=x onerror=alert(2)> "quote" \'x\'';
   for (const out of [ctx.esc(evil), ctx.arText(evil)]) assert.ok(!/[<>"']/.test(out.replace(/<bdi class="lt" dir="ltr">|<\/bdi>/g, '')), `raw markup survived: ${out}`);
   for (const [, rhs] of src.matchAll(/\.innerHTML\s*=\s*([^;]+)/g))
-    assert.match(rhs.trim(), /^(L\(|T\(|html\b|'<|list\.length \? wrap\()/, `innerHTML must only receive escaped/templated strings: ${rhs}`);
+    assert.match(rhs.trim(), /^(L\(|T\(|title\(|html\b|'<|list\.length \? wrap\()/, `innerHTML must only receive escaped/templated strings: ${rhs}`);
+  // title() is the permalink helper: it must escape the title (L) and only link a validated relative urlPath.
+  assert.match(src, /function href\(e\) \{ return e && typeof e\.urlPath === 'string' && \/\^\[a-z0-9\]\[a-z0-9\\\/-\]\*\\\/\$\/\.test\(e\.urlPath\)/);
+  assert.match(src, /function title\(e\) \{ var u = href\(e\); return u \? '<a href="' \+ esc\(u\) \+ '">' \+ L\(e\.title\) \+ '<\/a>' : L\(e\.title\); \}/);
 });

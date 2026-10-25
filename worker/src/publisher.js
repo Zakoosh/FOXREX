@@ -2,18 +2,22 @@
    Runs only inside the operator's worker. Browser code never sees Git credentials: pushes use the
    operator machine's own git authentication (SSH key or credential helper) for PUBLISH_REPO_DIR.
 
-   publish = approval gate → validation → repo state check → optimistic concurrency (feed version)
-             → idempotency → write data/content.json → schema/integrity/site checks → commit → push.
+   publish = approval gate → validation → permanent URL (v3) → repo state check → optimistic concurrency
+             (feed version) → idempotency → schema/integrity/site checks on the candidate feed
+             → write data/content.json → generate permanent pages (tools/site/build.mjs) → commit → push.
    Any failure leaves the repository as it was and the CMS record APPROVED (retryable).
-   PUBLISH_MODE=dry-run (default) performs every step except writing, committing and pushing. */
+   PUBLISH_MODE=dry-run (default) performs every step except writing, committing and pushing; it
+   reports the pages that WOULD be generated. */
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { CMS } from './cms.js';
+import { buildEntry } from './content-v3.js';
 
 const FEED = 'data/content.json';
+const GENERATOR = 'tools/site/build.mjs';
 const httpError = (status, message, extra) => Object.assign(new Error(message), { status, ...extra });
 export const feedVersion = raw => crypto.createHash('sha256').update(raw).digest('hex').slice(0, 16);
 
@@ -58,9 +62,13 @@ export class Publisher {
     return { mode: this.mode, version, items: feed.items.length, head, branch, clean, expectedBranch: this.cfg.branch, publicFeedUrl: this.cfg.publicFeedUrl };
   }
 
-  /** Server-side gate: approval + validation + references. Returns error list. */
-  gate(r, now = Date.now()) {
+  /** Server-side gate: approval + validation + references + permanent URL. Returns error list. */
+  gate(r, now = Date.now(), feed) {
     const errors = CMS.publishGate(r, now);
+    if (!errors.length) {
+      const at = new Date(now).toISOString().replace(/\.\d{3}Z$/, 'Z');
+      errors.push(...buildEntry(r, { at, feed: feed || this.readFeed().feed, version: (r.publishing.publishVersion || 0) + 1, origin: this.cfg.publicOrigin }).errors);
+    }
     if (r.type === 'SIGNAL_RESULT') {
       const sig = this.store.data.records[r.fields && r.fields.signalId];
       if (!sig || sig.type !== 'SIGNAL') errors.push({ field: 'fields.signalId', message: 'Referenced signal does not exist in FOXREX Studio' });
@@ -68,7 +76,18 @@ export class Publisher {
     }
     return errors;
   }
-  entryFor(r, at) { return CMS.toFeedEntry(r, at, (r.publishing.publishVersion || 0) + 1); }
+  entryFor(r, at, feed) {
+    const out = buildEntry(r, { at, feed: feed || this.readFeed().feed, version: (r.publishing.publishVersion || 0) + 1, origin: this.cfg.publicOrigin });
+    if (out.errors.length) throw httpError(422, out.errors.map(e => e.message).join(' '), { errors: out.errors, code: out.errors.some(e => e.code === 'ROUTE_COLLISION') ? 'ROUTE_COLLISION' : 'INVALID' });
+    return out.entry;
+  }
+  hasGenerator() { return fs.existsSync(path.join(this.cfg.repoDir, GENERATOR)); }
+  /** Pages the generator would write/remove for a candidate feed (never writes). */
+  async pagePlan(feedFile) {
+    if (!this.hasGenerator()) return null;
+    const out = await run(process.execPath, [GENERATOR, '--feed', feedFile, '--plan'], this.cfg.repoDir, 180000);
+    return JSON.parse(out.slice(out.indexOf('{')));
+  }
 
   async checks(feedFile, dryRun) {
     const cmds = this.cfg.checks.filter(Boolean);
@@ -84,11 +103,12 @@ export class Publisher {
   }
 
   async preview(r) {
-    const errors = this.gate(r);
     const { version, feed } = this.readFeed();
+    const errors = this.gate(r, Date.now(), feed);
     const at = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
-    const entry = errors.length ? null : this.entryFor(r, at);
+    const entry = errors.length ? null : this.entryFor(r, at, feed);
     return { errors, entry, feedVersion: version, mode: this.mode, destinations: CMS.destinations(r.type).map(p => ({ page: p, url: CMS.pageUrl(p, r.language, this.cfg.publicOrigin) })),
+      urlPath: entry ? entry.urlPath : null, canonicalUrl: entry ? CMS.canonicalUrl(entry.urlPath, r.language, this.cfg.publicOrigin) : null,
       alreadyLive: !!r.live, currentItems: feed.items.length };
   }
 
@@ -120,7 +140,7 @@ export class Publisher {
 
     if (action === 'publish') {
       const errs = this.gate(r, Date.parse(now));
-      if (errs.length) { pub.errors = errs; return fail('FAILED', 422, 'Content is not publishable', {}); }
+      if (errs.length) { pub.errors = errs; return fail(errs.some(e => e.code === 'ROUTE_COLLISION') ? 'CONFLICT' : 'FAILED', errs.some(e => e.code === 'ROUTE_COLLISION') ? 409 : 422, 'Content is not publishable', {}); }
     } else if (!r.live) return fail('FAILED', 409, 'This item is not live on the website');
 
     const repo = this.cfg.repoDir;
@@ -143,7 +163,9 @@ export class Publisher {
       const publication = { id: pub.publicationId, at: now, contentId, action, version: pub.version };
       let next;
       if (action === 'publish') {
-        const entry = this.entryFor(r, now);
+        const entry = this.entryFor(r, now, feed);
+        pub.urlPath = entry.urlPath; pub.canonicalUrl = CMS.canonicalUrl(entry.urlPath, r.language, this.cfg.publicOrigin);
+        pub.liveUrls = [pub.canonicalUrl, ...pub.liveUrls];
         // Content already live at this exact revision → nothing to change (deterministic no-op).
         const live = feed.items.find(i => i.id === r.id);
         if (live && r.live && r.live.revision === r.revision) return fail('FAILED', 409, 'This exact version is already live');
@@ -155,8 +177,11 @@ export class Publisher {
       // Validate the candidate feed (schema + integrity + site tests) before anything is written to the repo.
       const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'foxrex-feed-')); const candidate = path.join(tmp, 'content.json');
       fs.writeFileSync(candidate, json);
-      try { pub.checks = await this.checks(candidate); }
-      catch (e) { pub.checks = e.checks || []; return fail('FAILED', 422, e.message); }
+      try {
+        pub.checks = await this.checks(candidate);
+        if (mode === 'dry-run') pub.pages = await this.pagePlan(candidate);
+      }
+      catch (e) { pub.checks = e.checks || pub.checks || []; return fail('FAILED', 422, e.message); }
       finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 
       if (mode === 'dry-run') {
@@ -167,11 +192,18 @@ export class Publisher {
       }
 
       fs.writeFileSync(path.join(repo, FEED), json);
+      // Permanent pages, withdrawn notices, archives and sitemap are generated from the feed just written.
+      if (this.hasGenerator()) {
+        try { await run(process.execPath, [GENERATOR], repo, 180000); }
+        catch (e) { await this.#restore(prevHead); return fail('FAILED', 500, `Page generation failed: ${(e.stderr || e.message).trim().slice(-2000)}`); }
+        pub.pages = { files: (await this.g('status', '--porcelain')).split('\n').filter(Boolean).map(l => l.slice(3)) };
+      }
       const title = `${r.language === 'ar' ? 'Arabic' : 'English'} ${CMS.TYPES[r.type].label[0]}`;
-      const msg = `content: ${action} ${title} ${CMS.editorialDate(now)} — ${r.slug}\n\nContent-Id: ${r.id}\nPublish-Version: ${pub.version}\nPublication-Id: ${pub.publicationId}\nApproved-By: ${r.audit.approvedBy || '-'}\nPublished-By: ${actor}\n`;
+      const msg = `content: ${action} ${title} ${CMS.editorialDate(now)} — ${r.slug}\n\nContent-Id: ${r.id}\nPublish-Version: ${pub.version}\nPublication-Id: ${pub.publicationId}\n${pub.urlPath ? `Permanent-Url: ${pub.canonicalUrl}\n` : ''}Approved-By: ${r.audit.approvedBy || '-'}\nPublished-By: ${actor}\n`;
       try {
-        await this.g('add', '--', FEED);
-        await this.g('commit', '--quiet', '-m', msg, '--', FEED);
+        // The repository was verified clean before this publication: everything staged here is the feed and its generated pages.
+        await this.g('add', '-A', '--', '.');
+        await this.g('commit', '--quiet', '-m', msg);
         pub.commitSha = await this.g('rev-parse', 'HEAD'); pub.deployment = 'COMMITTED';
       } catch (e) { await this.#restore(prevHead); return fail('FAILED', 500, `git commit failed: ${(e.stderr || e.message).trim()}`); }
       try { await this.g('push', '--quiet', this.cfg.remote, `HEAD:refs/heads/${this.cfg.branch}`); pub.deployment = 'PUSHED'; }
@@ -190,6 +222,8 @@ export class Publisher {
   async #restore(prevHead) {
     if (!prevHead) return;
     try { await this.g('reset', '--quiet', '--hard', prevHead); } catch { /* reported by caller */ }
+    // Newly generated (untracked) pages are removed too; the repo was clean before, so nothing else is untracked.
+    try { await this.g('clean', '-fdq'); } catch { /* reported by caller */ }
   }
 
   /** PUSHED → DEPLOYING → LIVE, confirmed only by reading the public feed from the website. */

@@ -1,7 +1,379 @@
 {
   "$schema": "./content.schema.json",
-  "schemaVersion": 2,
-  "updated": null,
-  "publication": null,
-  "items": []
+  "schemaVersion": 3,
+  "updated": "2026-10-25T20:41:57.984Z",
+  "publication": {
+    "id": "pub_a1442226c3351808a35555d2",
+    "at": "2026-10-25T20:41:57.984Z",
+    "contentId": "daily-2026-10-25-real-yields-and-gold-ar",
+    "action": "publish",
+    "version": 1
+  },
+  "items": [
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-25-gold-fx-policy-week-2026-10-25",
+      "section": "analysis",
+      "slug": "gold-fx-policy-week-2026-10-25",
+      "urlPath": "analysis/gold-fx-policy-week-2026-10-25/",
+      "title": "الذهب والفوركس: اقرأ رسالة الفائدة قبل اختيار الاتجاه",
+      "summary": "إطار عملي لفهم قرارات السياسة النقدية والبيانات القادمة، بدون أهداف سعرية أو مستويات مختلقة.",
+      "publishedAt": "2026-10-25T20:41:57.984Z",
+      "updatedAt": "2026-10-25T20:41:57.984Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ابدأ بما هو موثّق\nيجمع الأسبوع قرار الفيدرالي وقرار المركزي الأوروبي وبيانات النمو والإنفاق وتكلفة التوظيف الأمريكية. ترتيب الأحداث مهم: بيانات الخميس تأتي بعد قرار الأربعاء، وقد تغيّر تفسير رسالته.\n\nالذهب: راقب آلية التأثير\nيحدد بحث بنك الاحتياطي الفيدرالي في شيكاغو العوائد الحقيقية وتوقعات التضخم والقلق بشأن المستقبل الاقتصادي كمحركات مهمة للذهب. تمر مفاجأة السياسة النقدية عبر هذه القنوات؛ فلا تكفي معرفة إن كانت الفائدة ارتفعت أو بقيت ثابتة.\n\nالفوركس: قارن مسارين للسياسة\nإطارنا التحليلي لزوج EUR/USD نسبي: تغير النظرة الأمريكية يُقرأ بجانب النظرة لمنطقة اليورو. وفي بقية أزواج الدولار الرئيسية، فرّق بين حركة عامة للدولار وخبر يخص العملة المقابلة. القفزة الأولى لا تثبت وجود اتجاه مستدام.\n\nمتى تتغير القراءة؟\nإذا انعكس رد الفعل الأول أثناء المؤتمر الصحفي، أعد تقييم التفسير الأولي. لا ننشر مستويات دعم أو مقاومة أو دخول هنا لعدم التحقق من سلسلة أسعار حديثة.",
+      "symbol": "XAUUSD",
+      "category": "gold",
+      "bias": "neutral",
+      "tags": [
+        "gold",
+        "fx",
+        "macro"
+      ],
+      "sources": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "instruments": [
+        "XAUUSD"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T20:41:49Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-25-gold-fx-policy-week-2026-10-25",
+      "section": "analysis",
+      "slug": "gold-fx-policy-week-2026-10-25",
+      "urlPath": "analysis/gold-fx-policy-week-2026-10-25/",
+      "title": "Gold and FX: read the policy message before choosing a direction",
+      "summary": "A practical framework for interpreting the coming policy and data releases, without invented price targets.",
+      "publishedAt": "2026-10-25T20:41:57.984Z",
+      "updatedAt": "2026-10-25T20:41:57.984Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Start with what is verified\nThis week combines a Fed decision, an ECB decision, and US growth, spending and employment-cost releases. The order matters: Thursday’s data arrives after Wednesday’s Fed decision and can change how that message is interpreted.\n\nGold: follow the transmission channel\nThe Chicago Fed identifies real interest rates, inflation expectations and concern about future economic conditions as important gold-price drivers. A policy surprise matters through these channels, not just through whether the announced rate rises or stays unchanged.\n\nFX: compare two policy paths\nOur analytical framework for EUR/USD is relative: a change in the US outlook matters alongside the euro-area outlook. For the other major dollar pairs, distinguish a broad dollar reaction from news specific to the other currency. Do not turn an initial spike into proof of a lasting trend.\n\nWhat would change the reading?\nIf the first market reaction reverses as the press conference continues, reassess the initial interpretation. No technical support, resistance or entry levels are published here because a current price series has not been verified.",
+      "symbol": "XAUUSD",
+      "category": "gold",
+      "bias": "neutral",
+      "tags": [
+        "gold",
+        "fx",
+        "macro"
+      ],
+      "sources": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "instruments": [
+        "XAUUSD"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-25T20:41:49Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-ar",
+      "type": "REX_EXPLAINS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-25-real-yields-and-gold",
+      "section": "learn",
+      "slug": "real-yields-and-gold",
+      "urlPath": "learn/real-yields-and-gold/",
+      "title": "ليش العوائد الحقيقية مهمة للذهب؟ ومتى بتضعف العلاقة؟",
+      "summary": "درس مختصر عن تكلفة الفرصة وحدود تفسير الذهب بعامل واحد.",
+      "publishedAt": "2026-10-25T20:41:57.984Z",
+      "updatedAt": "2026-10-25T20:41:57.984Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "format": "lesson",
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "العائد الحقيقي هو عائد السند بعد أخذ التضخم بالاعتبار. الذهب لا يدفع فائدة دورية، ولذلك قد يرفع تحسّن العائد المعدّل بالتضخم على الأصول المنافسة تكلفة الاحتفاظ به.\n\nهذا إطار للفهم، وليس قاعدة تداول آلية. يدرس بحث فيدرالي شيكاغو العوائد الحقيقية مع توقعات التضخم والتشاؤم بشأن الظروف الاقتصادية المقبلة. وينبّه مجلس الذهب العالمي إلى أن ارتفاع العوائد الحقيقية لا يضر الذهب بالضرورة عندما تؤثر عوامل طلب أخرى.\n\nطريقة قراءة عملية\nافحص أولًا إن كانت العوائد الاسمية وتوقعات التضخم تحركت معًا. ثم اسأل إن كانت معنويات المخاطرة أو طلب الذهب قد تغيرت. وأخيرًا قارن التفسير بحركة السعر الفعلية بدل افتراض أن العلاقة يجب أن تتحقق.\n\nمثال تعليمي\nإذا ارتفع العائد الاسمي، لكن توقعات التضخم ارتفعت أكثر، فقد ينخفض العائد الحقيقي الضمني. وصف الأمر فقط بأنه «ارتفاع العوائد» يُضيّع هذا الفرق. المثال لا يستخدم أرقام سوق حالية ولا يقدم توقعًا سعريًا.",
+      "tags": [
+        "gold",
+        "education"
+      ],
+      "sources": [
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "World Gold Council — gold and real rates",
+          "url": "https://www.gold.org/goldhub/research/gold-and-us-interest-rates-reality-check",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية."
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-en",
+      "type": "REX_EXPLAINS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-25-real-yields-and-gold",
+      "section": "learn",
+      "slug": "real-yields-and-gold",
+      "urlPath": "learn/real-yields-and-gold/",
+      "title": "Why real yields matter for gold — and why the link can break",
+      "summary": "A short lesson on opportunity cost and the limits of a single-factor explanation.",
+      "publishedAt": "2026-10-25T20:41:57.984Z",
+      "updatedAt": "2026-10-25T20:41:57.984Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "format": "lesson",
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "A real yield measures a bond’s return after allowing for inflation. Gold does not pay a coupon, so a higher inflation-adjusted return on competing assets can raise the opportunity cost of holding it.\n\nThat is a useful framework, not a mechanical trading rule. Research by the Chicago Fed examines real rates alongside inflation expectations and pessimism about future economic conditions. The World Gold Council also cautions that higher real rates are not automatically negative for gold when other demand forces are active.\n\nA practical reading sequence\nCheck whether nominal yields and inflation expectations moved together. Then ask whether risk sentiment or demand for gold has changed. Finally, compare that explanation with observed prices rather than assuming the relationship must hold.\n\nEducational example\nIf a nominal yield rises while expected inflation rises by more, the implied real yield can fall. Calling that simply “higher yields” misses the distinction. This example uses no current market figures and makes no prediction.",
+      "tags": [
+        "gold",
+        "education"
+      ],
+      "sources": [
+        {
+          "name": "Chicago Fed — What Drives Gold Prices?",
+          "url": "https://www.chicagofed.org/publications/chicago-fed-letter/2021/464",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "World Gold Council — gold and real rates",
+          "url": "https://www.gold.org/goldhub/research/gold-and-us-interest-rates-reality-check",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice."
+    },
+    {
+      "id": "daily-2026-10-25-weekend-brief-2026-10-25-ar",
+      "type": "MORNING_BRIEF",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-25-weekend-brief-2026-10-25",
+      "section": "desk",
+      "slug": "weekend-brief-2026-10-25",
+      "urlPath": "desk/2026-10-25/morning-brief/",
+      "title": "موجز الأحد: أجندة الأسبوع للذهب والفوركس",
+      "summary": "الأحد 25 أكتوبر: الاستعداد لقرارات البنوك المركزية وبيانات التضخم والنمو الأمريكية، بدون أسعار لحظية غير موثقة.",
+      "publishedAt": "2026-10-25T20:41:57.984Z",
+      "updatedAt": "2026-10-25T20:41:57.984Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "slot": "brief",
+      "body": "المواعيد المؤكدة — بتوقيت إسطنبول\nقرار الفيدرالي يوم الأربعاء 28 أكتوبر الساعة 21:00، ويليه المؤتمر الصحفي الساعة 21:30. يوم الخميس 29 أكتوبر يصدر التقدير الأول للناتج المحلي الأمريكي وتقرير الدخل والإنفاق الشخصي لشهر سبتمبر الساعة 15:30. قرار المركزي الأوروبي الساعة 16:15. مؤشر تكلفة التوظيف الأمريكي يوم الجمعة الساعة 15:30.\n\nقراءة المكتب\nفي الذهب، افصل بين قرار الفائدة والرسالة التي تليه. وفي EUR/USD قارن توجيهات الفيدرالي والمركزي الأوروبي بدل قراءة كل قرار بمعزل عن الآخر. قد يتأثر GBP/USD وUSD/JPY أيضًا بتغير الدولار والعوائد الأمريكية؛ البيانات المحلية الأخرى خارج نطاق هذا الجدول المختار.\n\nسيناريوهات مشروطة\nرسالة تخفّض توقعات التشدد قد تدعم الذهب إذا انخفضت العوائد الحقيقية. الرسالة الأكثر تشددًا قد تعمل بالاتجاه المعاكس. هذه احتمالات تحليلية وليست وصفًا لتسعير السوق الحالي.\n\nملاحظة البيانات\nهذا موجز تحضيري لعطلة نهاية الأسبوع. لم نتحقق من أسعار الذهب والعملات اللحظية أو توقعات الإجماع، لذلك لم ندرجها. راجع التقويم والمصادر الرسمية لأي تعديل.",
+      "sources": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BLS — October releases",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — decision release time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "freshness": {
+        "dataAsOf": "2026-10-25T20:41:49Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T08:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-25-weekend-brief-2026-10-25-en",
+      "type": "MORNING_BRIEF",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-25-weekend-brief-2026-10-25",
+      "section": "desk",
+      "slug": "weekend-brief-2026-10-25",
+      "urlPath": "desk/2026-10-25/morning-brief/",
+      "title": "Weekend brief: the verified week-ahead agenda for gold and FX",
+      "summary": "Sunday 25 October: prepare for central-bank decisions and US inflation and growth data. No live quotes are used.",
+      "publishedAt": "2026-10-25T20:41:57.984Z",
+      "updatedAt": "2026-10-25T20:41:57.984Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-25",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "slot": "brief",
+      "body": "Confirmed schedule — Istanbul time\nThe Federal Reserve decision is scheduled for Wednesday 28 October at 21:00, followed by its press conference at 21:30. Thursday 29 October brings the US advance GDP estimate and September Personal Income and Outlays at 15:30. The ECB decision follows at 16:15. US employment costs are scheduled for Friday at 15:30.\n\nDesk interpretation\nFor gold, distinguish the policy decision from the subsequent message. For EUR/USD, compare Fed and ECB guidance rather than treating either announcement in isolation. GBP/USD and USD/JPY can also react to changes in the dollar and US yields; other domestic releases are outside this selected calendar.\n\nConditional scenarios\nA message that reduces expected policy restraint could help gold if real yields ease. A more restrictive message could work in the opposite direction. These are analytical scenarios, not a statement of current market pricing.\n\nData note\nThis is a weekend planning brief. Live gold and FX prices and consensus estimates have not been verified and are omitted. Consult the calendar and official sources for changes.",
+      "sources": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BLS — October releases",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — decision release time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-25T20:41:49Z",
+          "sourceType": "official"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "freshness": {
+        "dataAsOf": "2026-10-25T20:41:49Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T08:00:00Z",
+        "stalePolicy": "hide"
+      }
+    }
+  ],
+  "withdrawn": []
 }

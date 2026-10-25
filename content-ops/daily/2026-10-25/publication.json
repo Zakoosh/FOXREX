@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-25",
+  "at": "2026-10-25T20:41:57.984Z",
+  "authorization": "owner-authorized-2026-10-25",
+  "actor": "FOXREX Editorial Automation",
+  "records": [
+    {
+      "id": "daily-2026-10-25-weekend-brief-2026-10-25-en",
+      "urlPath": "desk/2026-10-25/morning-brief/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-25-weekend-brief-2026-10-25-ar",
+      "urlPath": "desk/2026-10-25/morning-brief/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-en",
+      "urlPath": "analysis/gold-fx-policy-week-2026-10-25/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-25-gold-fx-policy-week-2026-10-25-ar",
+      "urlPath": "analysis/gold-fx-policy-week-2026-10-25/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-en",
+      "urlPath": "learn/real-yields-and-gold/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-25-real-yields-and-gold-ar",
+      "urlPath": "learn/real-yields-and-gold/",
+      "language": "ar",
+      "publishVersion": 1
+    }
+  ]
+}
