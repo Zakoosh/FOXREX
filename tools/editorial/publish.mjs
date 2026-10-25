@@ -44,7 +44,7 @@ export function preparePackage(input, previous, { now = new Date().toISOString()
   }
   const groups = new Map();
   for (const e of input.records) { const k = `${e.type}:${e.slug}`; groups.set(k, [...(groups.get(k) || []), e.language]); }
-  for (const langs of groups.values()) if (!['en','ar'].every(l => langs.includes(l))) throw new Error('Each item needs both EN and AR');
+  for (const langs of groups.values()) if (!['en','ar','tr'].every(l => langs.includes(l))) throw new Error('Each item needs EN, AR and TR');
   const errors = checkFeed(feed, { root, now: Date.parse(now) }); if (errors.length) throw new Error(errors.join('\n'));
   return { feed, calendar: input.calendar, receipt: { date: input.date, at: now, authorization: input.authorization, actor: 'FOXREX Editorial Automation', records } };
 }

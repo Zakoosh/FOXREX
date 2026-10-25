@@ -4,7 +4,8 @@
   "timezone": "Europe/Istanbul",
   "coverage": {
     "en": "Selected verified US and euro-area high-impact events. Coverage is selective, not a complete global calendar. Missing consensus and actual figures are left blank.",
-    "ar": "أحداث مختارة موثقة وعالية التأثير من الولايات المتحدة ومنطقة اليورو. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. تُترك التوقعات والنتائج غير الموثقة فارغة."
+    "ar": "أحداث مختارة موثقة وعالية التأثير من الولايات المتحدة ومنطقة اليورو. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. تُترك التوقعات والنتائج غير الموثقة فارغة.",
+    "tr": "ABD ve euro bölgesinden seçilmiş, doğrulanmış önemli olaylar. Liste tüm dünyayı kapsamaz. Doğrulanmamış beklenti ve gerçekleşen değerler boş bırakılır."
   },
   "events": [
     {
@@ -12,12 +13,14 @@
       "at": "2026-10-28T18:00:00Z",
       "title": {
         "en": "FOMC policy decision",
-        "ar": "قرار السياسة النقدية للفيدرالي"
+        "ar": "قرار السياسة النقدية للفيدرالي",
+        "tr": "Fed faiz kararı"
       },
       "currency": "USD",
       "country": {
         "en": "United States",
-        "ar": "الولايات المتحدة"
+        "ar": "الولايات المتحدة",
+        "tr": "Amerika Birleşik Devletleri"
       },
       "impact": "HIGH",
       "status": "scheduled",
@@ -35,12 +38,14 @@
       "at": "2026-10-28T18:30:00Z",
       "title": {
         "en": "FOMC press conference",
-        "ar": "المؤتمر الصحفي للفيدرالي"
+        "ar": "المؤتمر الصحفي للفيدرالي",
+        "tr": "Fed basın toplantısı"
       },
       "currency": "USD",
       "country": {
         "en": "United States",
-        "ar": "الولايات المتحدة"
+        "ar": "الولايات المتحدة",
+        "tr": "Amerika Birleşik Devletleri"
       },
       "impact": "HIGH",
       "status": "scheduled",
@@ -58,12 +63,14 @@
       "at": "2026-10-29T12:30:00Z",
       "title": {
         "en": "US GDP — Q3 advance estimate",
-        "ar": "الناتج المحلي الأمريكي — التقدير الأول للربع الثالث"
+        "ar": "الناتج المحلي الأمريكي — التقدير الأول للربع الثالث",
+        "tr": "ABD GSYH — 3. çeyrek ilk tahmin"
       },
       "currency": "USD",
       "country": {
         "en": "United States",
-        "ar": "الولايات المتحدة"
+        "ar": "الولايات المتحدة",
+        "tr": "Amerika Birleşik Devletleri"
       },
       "impact": "HIGH",
       "status": "scheduled",
@@ -81,12 +88,14 @@
       "at": "2026-10-29T12:30:00Z",
       "title": {
         "en": "Personal Income and Outlays — September (PCE)",
-        "ar": "الدخل والإنفاق الشخصي — سبتمبر (PCE)"
+        "ar": "الدخل والإنفاق الشخصي — سبتمبر (PCE)",
+        "tr": "Kişisel gelir ve harcamalar — Eylül (PCE)"
       },
       "currency": "USD",
       "country": {
         "en": "United States",
-        "ar": "الولايات المتحدة"
+        "ar": "الولايات المتحدة",
+        "tr": "Amerika Birleşik Devletleri"
       },
       "impact": "HIGH",
       "status": "scheduled",
@@ -104,12 +113,14 @@
       "at": "2026-10-29T13:15:00Z",
       "title": {
         "en": "ECB monetary policy decision",
-        "ar": "قرار السياسة النقدية للبنك المركزي الأوروبي"
+        "ar": "قرار السياسة النقدية للبنك المركزي الأوروبي",
+        "tr": "ECB para politikası kararı"
       },
       "currency": "EUR",
       "country": {
         "en": "Euro area",
-        "ar": "منطقة اليورو"
+        "ar": "منطقة اليورو",
+        "tr": "Euro bölgesi"
       },
       "impact": "HIGH",
       "status": "scheduled",
@@ -128,12 +139,14 @@
       "at": "2026-10-30T12:30:00Z",
       "title": {
         "en": "Employment Cost Index — Q3",
-        "ar": "مؤشر تكلفة التوظيف — الربع الثالث"
+        "ar": "مؤشر تكلفة التوظيف — الربع الثالث",
+        "tr": "İstihdam Maliyeti Endeksi — 3. çeyrek"
       },
       "currency": "USD",
       "country": {
         "en": "United States",
-        "ar": "الولايات المتحدة"
+        "ar": "الولايات المتحدة",
+        "tr": "Amerika Birleşik Devletleri"
       },
       "impact": "HIGH",
       "status": "scheduled",

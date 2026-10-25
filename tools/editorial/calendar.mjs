@@ -1,5 +1,6 @@
 import { createRequire } from 'node:module';
 import { esc, enText, arText } from '../site/text.mjs';
+import { tr } from '../site/tr.mjs';
 const require = createRequire(import.meta.url);
 const TIME = require('../../scripts/content/time.js');
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/;
@@ -32,14 +33,14 @@ export function validateCalendar(c, now = Date.now()) {
 }
 
 export function calendarBody(c, lang) {
-  const ar = lang === 'ar', L = s => ar ? arText(s) : enText(s), T = (en, arabic) => L(ar ? arabic : en);
+  const ar = lang === 'ar', L = s => ar ? arText(s) : enText(s), T = (en, arabic) => L(ar ? arabic : lang === 'tr' ? tr(en) : en);
   const val = x => x == null ? '—' : `<a href="${esc(x.sourceUrl)}" target="_blank" rel="noopener noreferrer">${L(x.value)}</a>`;
   const impact = { HIGH: ['High', 'مرتفع'], MEDIUM: ['Medium', 'متوسط'], LOW: ['Low', 'منخفض'] };
   const status = { scheduled: ['Scheduled', 'مجدول'], released: ['Released', 'صدر'], postponed: ['Postponed', 'مؤجل'], cancelled: ['Cancelled', 'ملغى'] };
-  const rows = [...c.events].sort((a,b) => a.at.localeCompare(b.at)).map(e => `<tr data-event-date="${TIME.editorialDate(e.at)}" data-event-currency="${esc(e.currency)}"><td><time datetime="${e.at}">${esc(TIME.editorialDate(e.at))}<br>${TIME.istTime(e.at)}</time></td><td>${L(e.country[lang])}<br><bdi dir="ltr">${e.currency}</bdi></td><td>${L(e.title[lang])}<br><small>${T(...status[e.status])}</small></td><td>${T(...impact[e.impact])}</td><td>${val(e.previous)}</td><td>${val(e.forecast)}</td><td>${val(e.actual)}</td><td><a href="${esc(e.source.url)}" target="_blank" rel="noopener noreferrer">${L(e.source.name)}</a>${e.source.timeUrl ? ` · <a href="${esc(e.source.timeUrl)}" target="_blank" rel="noopener noreferrer">${T('Release time', 'موعد الإصدار')}</a>` : ''}<br><small>${T('Verified', 'تم التحقق')} ${esc(TIME.formatIst(e.source.checkedAt))}</small></td></tr>`).join('\n');
+  const rows = [...c.events].sort((a,b) => a.at.localeCompare(b.at)).map(e => `<tr data-event-date="${TIME.editorialDate(e.at)}" data-event-currency="${esc(e.currency)}"><td><time datetime="${e.at}">${esc(TIME.editorialDate(e.at))}<br>${TIME.istTime(e.at)}</time></td><td>${L(e.country[lang])}<br><bdi dir="ltr">${e.currency}</bdi></td><td>${L(e.title[lang])}<br><small>${T(...status[e.status])}</small></td><td>${T(...impact[e.impact])}</td><td>${val(e.previous)}</td><td>${val(e.forecast)}</td><td>${val(e.actual)}</td><td><a href="${esc(e.source.url)}" target="_blank" rel="noopener noreferrer">${L(e.source.name)}</a>${e.source.timeUrl ? ` · <a href="${esc(e.source.timeUrl)}" target="_blank" rel="noopener noreferrer">${T('Release time', 'موعد الإصدار')}</a>` : ''}<br><small>${T('Verified', 'تم التحقق')} ${esc(TIME.formatLocalized(e.source.checkedAt,lang))}</small></td></tr>`).join('\n');
   return `<section class="page-hero"><div class="wrap"><p class="eyebrow">${T('Economic calendar', 'التقويم الاقتصادي')}</p><h1>${T('The events that matter', 'الأحداث التي تحرّك السوق')}</h1><p>${T('All times are Europe/Istanbul. Dates are verified against official sources; impact ratings are FOXREX editorial judgments.', 'كل المواعيد بتوقيت إسطنبول. التواريخ موثقة من المصادر الرسمية؛ تصنيف التأثير تقدير تحريري من FOXREX.')}</p></div></section>
 <section class="section section--tight"><div class="wrap">
-<p>${L(c.coverage[lang])}</p><p class="fx-card__meta">${T('Last verified', 'آخر تحقق')}: <time datetime="${c.updatedAt}">${esc(TIME.formatIst(c.updatedAt))}</time> · Europe/Istanbul</p>
+<p>${L(c.coverage[lang])}</p><p class="fx-card__meta">${T('Last verified', 'آخر تحقق')}: <time datetime="${c.updatedAt}">${esc(TIME.formatLocalized(c.updatedAt,lang))}</time> · Europe/Istanbul</p>
 <p class="fx-notice" data-calendar-stale hidden>${T('This calendar has not been refreshed for over 36 hours. Recheck the official source before relying on a release time.', 'لم يتم تحديث التقويم منذ أكثر من 36 ساعة. راجع المصدر الرسمي قبل الاعتماد على موعد الخبر.')}</p>
 <div class="calendar-filters"><label>${T('Period', 'الفترة')} <select data-calendar-period><option value="week">${T('Next 7 days', 'الأيام السبعة القادمة')}</option><option value="today">${T('Today', 'اليوم')}</option><option value="all">${T('All listed events', 'كل الأحداث المسجلة')}</option></select></label><label>${T('Currency', 'العملة')} <select data-calendar-currency><option value="all">${T('All', 'الكل')}</option>${[...new Set(c.events.map(e => e.currency))].sort().map(x => `<option>${x}</option>`).join('')}</select></label></div>
 <p data-calendar-empty hidden>${T('No verified events are listed for this filter. This does not mean no events are scheduled globally.', 'لا توجد أحداث موثقة ضمن الفلتر الحالي. هذا لا يعني عدم وجود أخبار أخرى عالميًا.')}</p>

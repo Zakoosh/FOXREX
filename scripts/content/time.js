@@ -105,5 +105,9 @@
     return new Intl.DateTimeFormat('en-GB', { timeZone: IST, ...(withDate === false ? {} : { day: '2-digit', month: 'short', year: 'numeric' }), hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(d);
   }
 
-  return { IST, NY, DAY, SLOTS, SESSIONS, partsIn, offsetMinutes, zonedToUtc, editorialDate, istTime, nyDate, addDays, weekdayOf, isWeekday, nextWeekday, slotAt, usSession, marketState, formatIst, iso };
+  function formatLocalized(when, lang, withDate = true) {
+    return new Intl.DateTimeFormat(lang === 'ar' ? 'ar-u-nu-latn' : lang === 'tr' ? 'tr-TR' : 'en-GB', { timeZone: IST, ...(withDate ? {day:'numeric',month:'long',year:'numeric'} : {}),hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(toDate(when));
+  }
+
+  return { formatLocalized, IST, NY, DAY, SLOTS, SESSIONS, partsIn, offsetMinutes, zonedToUtc, editorialDate, istTime, nyDate, addDays, weekdayOf, isWeekday, nextWeekday, slotAt, usSession, marketState, formatIst, iso };
 });

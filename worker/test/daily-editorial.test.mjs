@@ -6,10 +6,11 @@ import { preparePackage } from '../../tools/editorial/publish.mjs';
 import { validateCalendar, calendarBody } from '../../tools/editorial/calendar.mjs';
 const require = createRequire(import.meta.url), CMS = require('../../studio/cms-model.js');
 const sourcePackage = JSON.parse(fs.readFileSync(new URL('../../content-ops/daily/2026-10-25/package.json',import.meta.url)));
+for (const record of sourcePackage.records.filter(r=>r.language==='en')) sourcePackage.records.push({...structuredClone(record),language:'tr'});
 const NOW = '2026-10-25T20:50:00Z', clone = () => structuredClone(sourcePackage);
 test('editorial import is bilingual, versioned, idempotent and does not masquerade as Studio approval', () => {
   const first = preparePackage(clone(), CMS.EMPTY_FEED(), { now: NOW });
-  assert.equal(first.feed.items.length, 6);
+  assert.equal(first.feed.items.length, 9);
   assert.ok(first.feed.items.every(e => e.origin === 'scheduled-editorial' && e.attribution.assistance === 'ai-assisted'));
   const repeat = preparePackage(clone(),first.feed,{now:'2026-10-25T20:51:00Z'});
   assert.deepEqual(repeat.feed, first.feed);

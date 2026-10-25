@@ -8,9 +8,10 @@
 <link rel="canonical" href="https://foxrex.co/">
 <link rel="alternate" hreflang="en" href="https://foxrex.co/">
 <link rel="alternate" hreflang="ar" href="https://foxrex.co/ar/">
+<link rel="alternate" hreflang="tr" href="https://foxrex.co/tr/">
 <link rel="alternate" hreflang="x-default" href="https://foxrex.co/">
 <meta name="theme-color" content="#0B1320">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
@@ -29,7 +30,7 @@
 <meta name="twitter:title" content="FOXREX — Trade Smarter. Go Further.">
 <meta name="twitter:description" content="FOXREX is a market-intelligence and trading-education brand: technical analysis, gold coverage, economic news and FOXREX Signals, with clear risk awareness.">
 <meta name="twitter:image" content="https://foxrex.co/assets/brand/og-image.png">
-<script>document.documentElement.className+=" js";</script>
+<script>document.documentElement.className+=" js";try{var theme=localStorage.getItem("foxrex-theme");document.documentElement.dataset.theme=theme==="light"||theme==="dark"?theme:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="dark";}</script>
 <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/inter-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles/fonts.css">
@@ -37,6 +38,8 @@
 <link rel="stylesheet" href="styles/base.css">
 <link rel="stylesheet" href="styles/components.css">
 <link rel="stylesheet" href="styles/public.css">
+<link rel="stylesheet" href="styles/editorial.css">
+<link rel="stylesheet" href="styles/themes.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"FOXREX","url":"https://foxrex.co/","inLanguage":"en","logo":"https://foxrex.co/assets/brand/icon-512.png","slogan":"Trade smarter. Go further.","sameAs":["https://t.me/fooxrex","https://www.instagram.com/foxrextrade","https://www.facebook.com/foxrextrade"]}</script>
 </head>
 <body data-root="" data-page="home" data-lang="en">
@@ -46,7 +49,8 @@
     <a class="fx-logo" href="./" aria-label="FOXREX home"><img src="assets/brand/foxrex-mark.png" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>
     <nav class="site-nav" aria-label="Primary"><a href="markets/">Markets</a><a href="analysis/">Analysis</a><a href="news/">News</a><a href="calendar/">Calendar</a><a href="learn/">Learn</a><a href="signals/">Signals</a></nav>
     <div class="site-head__end">
-      <a class="lang-toggle" href="ar/" hreflang="ar" lang="ar" data-lang-switch="ar">العربية</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Theme"><span aria-hidden="true">◐</span></button>
+      <nav class="language-picker" aria-label="Language"><a class="lang-toggle" href="./" hreflang="en" lang="en" data-lang-switch="en" aria-current="true" aria-label="English">EN</a><a class="lang-toggle" href="ar/" hreflang="ar" lang="ar" data-lang-switch="ar" aria-label="العربية">ع</a><a class="lang-toggle" href="tr/" hreflang="tr" lang="tr" data-lang-switch="tr" aria-label="Türkçe">TR</a></nav>
       <a class="fx-btn fx-btn--primary fx-btn--sm" href="https://t.me/fooxrex" target="_blank" rel="noopener">Join FOXREX</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Menu" data-menu-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -100,7 +104,7 @@
     <li class="fx-ticker__item" data-symbol="DXY"><span class="fx-sym">DXY</span><span><span class="fx-ticker__px" data-px>—</span> <span class="fx-ticker__chg" data-chg></span></span></li>
   </ul>
 </section>
-<section class="section section--tight"><div class="wrap"><div class="section-head reveal"><div><span class="fx-kicker">From the desk</span><h2>Latest brief &amp; articles</h2></div><a class="fx-link" href="calendar/">Economic calendar <svg class="fx-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="grid grid--3"><article class="fx-card"><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time> · FOXREX Desk</p><h3><a href="analysis/gold-fx-policy-week-2026-10-25/">Gold and FX: read the policy message before choosing a direction</a></h3><p>A practical framework for interpreting the coming policy and data releases, without invented price targets.</p></article><article class="fx-card"><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time> · FOXREX Desk</p><h3><a href="learn/real-yields-and-gold/">Why real yields matter for gold — and why the link can break</a></h3><p>A short lesson on opportunity cost and the limits of a single-factor explanation.</p></article><article class="fx-card"><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time> · FOXREX Desk</p><h3><a href="desk/2026-10-25/morning-brief/">Weekend brief: the verified week-ahead agenda for gold and FX</a></h3><p>Sunday 25 October: prepare for central-bank decisions and US inflation and growth data. No live quotes are used.</p></article></div></div></section>
+<section class="section section--tight"><div class="wrap"><div class="section-head reveal"><div><span class="fx-kicker">Latest editions</span><h2>Latest brief &amp; articles</h2></div><a class="fx-link" href="calendar/">Economic calendar <svg class="fx-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div><div class="grid grid--3"><article class="fx-card editorial-card"><a href="analysis/gold-fx-policy-week-2026-10-25/" tabindex="-1" aria-hidden="true"><img class="editorial-card__image" src="/assets/media/macro-editorial-v1.webp" alt="" width="1600" height="900" loading="lazy"></a><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time></p><h3><a href="analysis/gold-fx-policy-week-2026-10-25/">Gold and FX: read the policy message before choosing a direction</a></h3><p>A practical framework for interpreting the coming policy and data releases, without invented price targets.</p></article><article class="fx-card editorial-card"><a href="learn/real-yields-and-gold/" tabindex="-1" aria-hidden="true"><img class="editorial-card__image" src="/assets/media/gold-editorial-v1.webp" alt="" width="1600" height="900" loading="lazy"></a><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time></p><h3><a href="learn/real-yields-and-gold/">Why real yields matter for gold — and why the link can break</a></h3><p>A short lesson on opportunity cost and the limits of a single-factor explanation.</p></article><article class="fx-card editorial-card"><a href="desk/2026-10-25/morning-brief/" tabindex="-1" aria-hidden="true"><img class="editorial-card__image" src="/assets/media/macro-editorial-v1.webp" alt="" width="1600" height="900" loading="lazy"></a><p class="fx-card__meta"><time datetime="2026-10-25T20:41:57.984Z">2026-10-25</time></p><h3><a href="desk/2026-10-25/morning-brief/">Weekend brief: the verified week-ahead agenda for gold and FX</a></h3><p>Sunday 25 October: prepare for central-bank decisions and US inflation and growth data. No live quotes are used.</p></article></div></div></section>
 
 <section class="section">
   <div class="wrap">
@@ -122,8 +126,8 @@
     <div class="fx-card__foot"><span class="fx-status" data-state="off" data-slot-status>Not yet published today</span></div>
   </article>
   <article class="fx-card slot reveal" data-kind="open" data-slot="open">
-    <div class="slot__time"><span class="fx-kicker">US Open</span><b class="ltr num" data-slot-time="15:30">15:30 <abbr title="Istanbul time (UTC+3)">IST</abbr></b></div>
-    <h3 data-slot-title>XAUUSD and the majors into the Wall Street open at 15:30.</h3>
+    <div class="slot__time"><span class="fx-kicker">US Session Preview</span><b class="ltr num" data-slot-time="15:30">15:30 <abbr title="Istanbul time (UTC+3)">IST</abbr></b></div>
+    <h3 data-slot-title>Gold and major FX before the US session; market opening times vary with daylight saving.</h3>
     <div class="fx-card__foot"><span class="fx-status" data-state="off" data-slot-status>Not yet published today</span></div>
   </article>
   <article class="fx-card slot reveal" data-kind="recap" data-slot="recap">
@@ -224,7 +228,7 @@
     <div class="why reveal">
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.8"/><path d="M4.5 5.5v6.5c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V5.5M4.5 12v6.5c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V12"/></svg><h3>Data</h3><p>Verified market data only. When a feed is not connected, we say so instead of showing estimates.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><h3>Market Analysis</h3><p>Structure, levels and scenarios across gold, FX, indices and crypto.</p></div>
-      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><h3>AI Intelligence <span class="fx-badge fx-badge--ai" style="margin-inline-start:6px">In development</span></h3><p>AI assists research and writing. Owner-authorized daily editions are published automatically after source and technical checks.</p></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><h3>Research workflow</h3><p>Source-based research, clear dates and consistent publication checks.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg><h3>Risk Awareness</h3><p>Every idea ships with an invalidation level and a clear risk message.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><h3>Speed</h3><p>A daily edition and a sourced calendar of selected high-impact releases.</p></div>
       <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><h3>Research</h3><p>Macro drivers explained, so you understand the move — not just the level.</p></div>
@@ -263,6 +267,7 @@
     </div>
   </div>
 </footer>
+<script src="scripts/public/tr.js" defer></script>
 <script src="scripts/public/site.js" defer></script>
 <script src="scripts/public/market.js" defer></script>
 <script src="scripts/public/content.js" defer></script>

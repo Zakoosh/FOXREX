@@ -5,6 +5,7 @@
    nothing depends on the build clock; "is this stale?" is decided in the browser (scripts/public/item.js). */
 import { createRequire } from 'node:module';
 import { esc, enText, arText } from './text.mjs';
+import { tr } from './tr.mjs';
 
 const require = createRequire(import.meta.url);
 const CMS = require('../../studio/cms-model.js');
@@ -32,10 +33,10 @@ export function contentPages(feed, h) {
   const items = CMS.normalizeFeed(feed).items.filter(e => e.access === 'PUBLIC');
   const withdrawn = CMS.normalizeFeed(feed).withdrawn;
   const pages = [], sitemap = [];
-  const X = (lang, en, ar) => (lang === 'ar' ? arText(ar ?? en) : enText(en)); // localised UI label, escaped
+  const X = (lang, en, ar) => (lang === 'ar' ? arText(ar ?? en) : enText(lang === 'tr' ? tr(en) : en)); // localised UI label, escaped
   const L = (lang, s) => (lang === 'ar' ? arText(s) : enText(s)); // content text, escaped
   const paras = (lang, s) => String(s || '').split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => `<p>${L(lang, p)}</p>`).join('\n');
-  const time = (lang, iso, withDate = true) => iso ? `<time datetime="${esc(iso)}" class="ltr num">${esc(TIME.formatIst(iso, withDate))} IST</time>` : '';
+  const time = (lang, iso, withDate = true) => iso ? `<time datetime="${esc(iso)}" class="ltr num">${esc(TIME.formatLocalized(iso, lang, withDate))} ${X(lang, 'Istanbul', 'بتوقيت إسطنبول')}</time>` : '';
   const abs = (lang, urlPath) => SITE.origin + '/' + CMS.pathFor(urlPath, lang);
   const sym = s => `<span class="fx-sym">${esc(s)}</span>`;
   const ltr = s => `<span class="ltr num">${esc(s)}</span>`;
@@ -51,17 +52,11 @@ export function contentPages(feed, h) {
       return (u ? `<a href="${esc(u)}" rel="noopener nofollow" target="_blank">${label}</a>` : label) + (x.publishedAt ? ` · ${time(lang, x.publishedAt)}` : '');
     }).join(' · ')}</p>`;
   };
-  const attribution = (lang, e) => {
-    const a = e.attribution || {};
-    const by = has(a.byline) && a.byline !== 'FOXREX Desk' ? L(lang, a.byline) : X(lang, 'FOXREX Desk', 'مكتب FOXREX');
-    const assist = a.assistance === 'ai-assisted' ? ` · ${X(lang, 'AI-assisted editorial', 'تحرير بمساعدة الذكاء الاصطناعي')}` : '';
-    return `${X(lang, 'By', 'بقلم')} ${by}${assist}`;
-  };
   const freshnessBlock = (lang, e) => {
     const f = e.freshness; if (!f) return '';
-    const what = CMS.TYPES[e.type].layer === 'TRADING_INTELLIGENCE' || ['ANALYSIS', 'WEEKLY_OUTLOOK'].includes(e.type) ? X(lang, 'Levels as of', 'المستويات حتى') : X(lang, 'Information as of', 'المعلومات حتى');
+    const what = X(lang, 'Information as of', 'المعلومات حتى');
     const px = e.priceRef ? ` · ${X(lang, 'Price at time of writing', 'السعر وقت الكتابة')}: ${e.priceRef.symbol ? sym(e.priceRef.symbol) + ' ' : ''}${ltr(Number(e.priceRef.price).toLocaleString('en-US', { maximumFractionDigits: 6 }))} · ${L(lang, e.priceRef.source)} · ${time(lang, e.priceRef.sourceTimestamp)}` : '';
-    const notice = f.validUntil ? `\n<div class="fx-notice fx-notice--info" data-stale-notice hidden>${I.info}<span>${X(lang, `This ${typeLabel(e)[0]} is from ${TIME.formatIst(e.publishedAt)} IST. Its levels and conditions may no longer apply.`, `هذا المحتوى (${typeLabel(e)[1]}) منشور في ${TIME.formatIst(e.publishedAt)} بتوقيت إسطنبول، وقد لا تكون مستوياته وظروفه صالحة الآن.`)}</span></div>` : '';
+    const notice = f.validUntil ? `\n<div class="fx-notice fx-notice--info" data-stale-notice hidden>${I.info}<span>${X(lang, 'This analysis may no longer reflect current conditions. Check the publication date.', 'قد لا يعكس هذا التحليل الظروف الحالية. راجع تاريخ النشر.')}</span></div>` : '';
     return `<p class="fx-card__meta" data-freshness${f.validUntil ? ` data-valid-until="${esc(f.validUntil)}"` : ''} data-data-as-of="${esc(f.dataAsOf)}">${what} ${time(lang, f.dataAsOf)}${px}</p>${notice}`;
   };
   const levels = (lang, rows) => `<dl class="gold__levels" style="margin:24px 0">${rows.filter(r => has(r[2])).map(([en, ar, v]) => `<div><dt>${X(lang, en, ar)}</dt><dd class="has">${ltr(v)}</dd></div>`).join('')}</dl>`;
@@ -127,39 +122,59 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
   function jsonld(lang, e) {
     if (!ARTICLE_TYPES.includes(e.type)) return null;
     const url = abs(lang, e.urlPath);
-    const author = e.author && has(e.author.name) ? { '@type': 'Person', name: e.author.name } : { '@type': 'Organization', name: 'FOXREX', url: SITE.origin + '/' };
+    const author = { '@type': 'Organization', name: 'FOXREX', url: SITE.origin + '/' };
     return { '@context': 'https://schema.org', '@type': e.type === 'NEWS' ? 'NewsArticle' : 'Article', headline: e.title.slice(0, 110), description: (e.seo && e.seo.description) || e.summary,
       datePublished: e.publishedAt, dateModified: e.updatedAt, inLanguage: lang, url, mainEntityOfPage: url, isAccessibleForFree: true, author,
-      publisher: { '@type': 'Organization', name: 'FOXREX', url: SITE.origin + '/', logo: { '@type': 'ImageObject', url: `${SITE.origin}/assets/brand/icon-512.png` } } };
+      ...(e.image ? { image: SITE.origin + '/' + e.image.src } : {}), publisher: { '@type': 'Organization', name: 'FOXREX', url: SITE.origin + '/', logo: { '@type': 'ImageObject', url: `${SITE.origin}/assets/brand/icon-512.png` } } };
   }
+
+  // Plain-text sections: first line is a heading when followed by a paragraph.
+  // No raw HTML or arbitrary embed reaches the renderer.
+  function articleBody(lang, body) {
+    const headings = [];
+    const html = String(body || '').split(/\n\s*\n/).filter(Boolean).map(block => {
+      const lines = block.trim().split('\n');
+      let heading = '';
+      if (lines.length > 1 && lines[0].length < 130 && !/^[-*]/.test(lines[0])) {
+        const text = lines.shift().replace(/^#{1,3}\s*/, ''); const id = `section-${headings.length + 1}`;
+        headings.push({text,id}); heading = `<h2 id="${id}">${L(lang,text)}</h2>`;
+      }
+      const text = lines.join('\n');
+      if (lines.length && lines.every(x => /^[-*]\s+/.test(x))) return heading + `<ul>${lines.map(x=>`<li>${L(lang,x.replace(/^[-*]\s+/,''))}</li>`).join('')}</ul>`;
+      return heading + `<p>${L(lang,text)}</p>`;
+    }).join('\n');
+    return {html,headings};
+  }
+  const sourcePanel = (lang,e) => (e.sources || []).length ? `<section class="editorial-sources"><h2>${X(lang,'Sources','المصادر')}</h2><ul>${e.sources.map(source=> {
+    const name=L(lang,source.name)+(source.publisher && source.publisher !== source.name ? ` (${L(lang,source.publisher)})` : '');
+    return `<li>${CMS.RE.https.test(source.url || '') ? `<a href="${esc(source.url)}" rel="noopener noreferrer nofollow" target="_blank">${name}</a>` : name}</li>`;
+  }).join('')}</ul></section>` : '';
+
+  const cta = (lang,b) => `<aside class="editorial-cta"><h2>${X(lang,'Follow the next market move','تابع الخطوة القادمة في السوق')}</h2><p>${X(lang,'Keep the calendar close and turn context into a clearer plan.','تابع المواعيد الاقتصادية وابنِ قراءتك للسوق على سياق أوضح.')}</p><div class="editorial-cta__actions"><a class="fx-btn fx-btn--primary" href="${b}calendar/">${X(lang,'Open the economic calendar','افتح التقويم الاقتصادي')} ${I.arrow}</a><a class="fx-btn fx-btn--ghost" href="${SITE.social.telegram.url}" target="_blank" rel="noopener">${X(lang,'Follow on Telegram','تابعنا على تيليجرام')}</a></div></aside>`;
 
   /* ---------- item pages ---------- */
   for (const e of items) {
     const lang = e.language, other = lang === 'en' ? 'ar' : 'en';
+    const rich = articleBody(lang,e.body), minutes = Math.max(1,Math.ceil(String(e.body || '').split(/\s+/).length / (lang === 'ar' ? 160 : 210)));
     const sib = SELECT.translationOf({ items }, e);
     const alternates = SELECT.alternatesFor({ items }, e, SITE.origin);
     const label = typeLabel(e);
     pages.push({
       kind: 'item', lang, id: `item:${e.id}`, path: e.urlPath.replace(/\/$/, ''), title: (e.seo && e.seo.title) || e.title, description: ((e.seo && e.seo.description) || e.summary).slice(0, 200),
-      canonical: abs(lang, e.urlPath), alternates, ogType: 'article',
+      canonical: abs(lang, e.urlPath), alternates, ogType: 'article', cover: e.image?.src,
       article: { published: e.publishedAt, modified: e.updatedAt, section: SECTION_LABEL[e.section][lang === 'ar' ? 1 : 0] },
       altHref: sib ? CMS.pathFor(sib.urlPath, other) : CMS.hubPath(e.section, other),
       altHreflangExists: !!sib, active: e.section === 'desk' ? 'home' : e.section,
       jsonld: () => jsonld(lang, e), scripts: e.freshness && e.freshness.validUntil ? ['scripts/public/item.js'] : [],
-      body: (r, b) => `<section class="page-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p>${L(lang, e.summary)}</p></div></section>
-<section class="section section--tight"><div class="wrap prose">
-<article class="article" data-item="${esc(e.id)}" data-layer="${esc(e.layer)}">
-<p class="fx-card__meta">${X(lang, 'Published', 'نُشر')} ${time(lang, e.publishedAt)}${e.updatedAt !== e.publishedAt ? ` · ${X(lang, 'Updated', 'حُدّث')} ${time(lang, e.updatedAt)}` : ''} · ${attribution(lang, e)}</p>
-${badges(lang, e)}
-${freshnessBlock(lang, e)}
-${typeBlock(lang, e, sib).replace(/\{\{ROOT\}\}/g, r)}
-${e.type === 'TRADING_IDEA' || e.type === 'SIGNAL' ? '' : paras(lang, e.body)}
-${has(e.takeaway) ? `<p class="takeaway"><strong>REX:</strong> ${L(lang, e.takeaway)}</p>` : ''}
-${sourcesBlock(lang, e)}
-${has(e.riskDisclosure) ? `<p class="fx-risk">${L(lang, e.riskDisclosure)}</p>` : ''}
-</article>
-<p class="fx-card__meta"><a class="fx-link" href="${b}${CMS.SECTION_HUB[e.section]}">${X(lang, ...SECTION_LABEL[e.section])} ${I.arrow}</a> · <a class="fx-link" href="${b}archive/${monthOf(e)}/">${X(lang, 'Archive', 'الأرشيف')} ${esc(monthOf(e))}</a></p>
-</div></section>`
+      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang, e.summary)}</p><div class="editorial-meta"><span>${X(lang,'Published','نُشر')} ${time(lang,e.publishedAt)}</span><span>${minutes} ${X(lang,'min read','دقائق قراءة')}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${e.image ? `<figure class="editorial-cover"><img src="${r}${esc(e.image.src)}" alt="${L(lang,e.image.alt)}" width="1600" height="900" fetchpriority="high"></figure>` : ''}</div></section>
+<div class="editorial-layout"><article class="editorial-body" data-item="${esc(e.id)}" data-layer="${esc(e.layer)}">
+${badges(lang,e)}${freshnessBlock(lang,e)}${typeBlock(lang,e,sib).replace(/\{\{ROOT\}\}/g,r)}
+${e.type === 'TRADING_IDEA' || e.type === 'SIGNAL' ? '' : rich.html}
+${has(e.takeaway) ? `<aside class="editorial-cta"><strong>${X(lang,'Key takeaway','الفكرة الأساسية')}</strong><p>${L(lang,e.takeaway)}</p></aside>` : ''}
+${cta(lang,b)}${sourcePanel(lang,e)}
+${has(e.riskDisclosure) ? `<p class="fx-risk">${L(lang,e.riskDisclosure)}</p>` : ''}
+<div class="editorial-related"><a href="${b}${CMS.SECTION_HUB[e.section]}">${X(lang,...SECTION_LABEL[e.section])} ${I.arrow}</a> · <a href="${b}archive/${monthOf(e)}/">${X(lang,'Archive','الأرشيف')}</a></div></article>
+${rich.headings.length ? `<aside class="editorial-toc"><h2>${X(lang,'On this page','في هذا المقال')}</h2><ol>${rich.headings.map(h=>`<li><a href="#${h.id}">${L(lang,h.text)}</a></li>`).join('')}</ol></aside>` : ''}</div>`
     });
     sitemap.push({ loc: abs(lang, e.urlPath), lastmod: e.updatedAt, alternates, priority: '0.6', freq: 'weekly' });
   }
@@ -179,13 +194,14 @@ ${has(e.riskDisclosure) ? `<p class="fx-risk">${L(lang, e.riskDisclosure)}</p>` 
 
   /* ---------- archives & listings: only when they contain items ---------- */
   const listing = (lang, list) => `<ul class="news-list">${list.map(e => `<li class="news-item">${time(lang, e.publishedAt)}<div><h3><a href="{{ROOT}}${CMS.pathFor(e.urlPath, lang)}">${L(lang, e.title)}</a></h3><p>${L(lang, e.summary)}</p></div><div class="news-item__mk"><span class="fx-badge">${X(lang, ...typeLabel(e))}</span></div></li>`).join('\n')}</ul>`;
-  const archiveSets = { en: SELECT.archives(byLang('en')), ar: SELECT.archives(byLang('ar')) };
+  const archiveSets = Object.fromEntries(CMS.LANGS.map(lang => [lang, SELECT.archives(byLang(lang))]));
   const addArchive = (key, path, titles, descs, pick, active) => {
-    for (const lang of ['en', 'ar']) {
+    for (const lang of CMS.LANGS) {
       const list = pick(archiveSets[lang]); if (!list || !list.length) continue;
       const other = lang === 'en' ? 'ar' : 'en', otherList = pick(archiveSets[other]);
       const alternates = [{ hreflang: lang, href: abs(lang, path + '/') }];
       if (otherList && otherList.length) { alternates.push({ hreflang: other, href: abs(other, path + '/') }); alternates.push({ hreflang: 'x-default', href: abs('en', path + '/') }); alternates.sort((a, b2) => (a.hreflang === 'en' ? 0 : a.hreflang === 'ar' ? 1 : 2) - (b2.hreflang === 'en' ? 0 : b2.hreflang === 'ar' ? 1 : 2)); }
+      for (const l of CMS.LANGS) if (!alternates.some(a=>a.hreflang===l) && pick(archiveSets[l])?.length) alternates.push({hreflang:l,href:abs(l,path+'/')});
       pages.push({ kind: 'archive', lang, id: `archive:${key}`, path, title: titles[lang === 'ar' ? 1 : 0], description: descs[lang === 'ar' ? 1 : 0], canonical: abs(lang, path + '/'), alternates, ogType: 'website',
         altHref: otherList && otherList.length ? CMS.pathFor(path + '/', other) : CMS.pathFor('', other), active, scripts: [],
         body: (r) => `<section class="page-hero"><div class="wrap"><span class="fx-kicker">${X(lang, 'Archive', 'الأرشيف')}</span><h1>${L(lang, titles[lang === 'ar' ? 1 : 0])}</h1></div></section>
@@ -196,12 +212,13 @@ ${has(e.riskDisclosure) ? `<p class="fx-risk">${L(lang, e.riskDisclosure)}</p>` 
   addArchive('desk', 'desk', ['The FOXREX desk — every edition', 'مكتب FOXREX — كل الإصدارات'], ['Every FOXREX desk piece by date.', 'كل منشورات مكتب FOXREX حسب التاريخ.'], a => a.desk, 'home');
   addArchive('weekly-outlook', 'analysis/weekly-outlook', ['Weekly Outlook', 'النظرة الأسبوعية'], ['Every FOXREX Weekly Outlook.', 'كل إصدارات النظرة الأسبوعية من FOXREX.'], a => a.weeklyOutlook, 'analysis');
   addArchive('signal-results', 'signals/results', ['Signal results', 'نتائج الإشارات'], ['Every closed FOXREX signal, losses included.', 'كل إشارات FOXREX المغلقة، بما فيها الخاسرة.'], a => a.signalResults, 'signals');
-  const months = [...new Set([...Object.keys(archiveSets.en.months || {}), ...Object.keys(archiveSets.ar.months || {})])].sort().reverse();
+  const months = [...new Set([...Object.values(archiveSets).flatMap(a => Object.keys(a.months || {}))])].sort().reverse();
   for (const m of months) addArchive(`month:${m}`, `archive/${m}`, [`Archive · ${m}`, `الأرشيف · ${m}`], [`Everything FOXREX published in ${m}.`, `كل ما نشرته FOXREX في ${m}.`], a => a.months && a.months[m], 'home');
-  for (const lang of ['en', 'ar']) {
+  for (const lang of CMS.LANGS) {
     const mine = archiveSets[lang].months || {}, keys = Object.keys(mine); if (!keys.length) continue;
     const other = lang === 'en' ? 'ar' : 'en', both = Object.keys(archiveSets[other].months || {}).length > 0;
     const alternates = both ? [{ hreflang: 'en', href: abs('en', 'archive/') }, { hreflang: 'ar', href: abs('ar', 'archive/') }, { hreflang: 'x-default', href: abs('en', 'archive/') }] : [{ hreflang: lang, href: abs(lang, 'archive/') }];
+    for (const l of CMS.LANGS) if (!alternates.some(a=>a.hreflang===l) && Object.keys(archiveSets[l].months || {}).length) alternates.push({hreflang:l,href:abs(l,'archive/')});
     pages.push({ kind: 'archive', lang, id: 'archive:index', path: 'archive', title: lang === 'ar' ? 'الأرشيف' : 'Archive', description: lang === 'ar' ? 'أرشيف FOXREX حسب الشهر.' : 'The FOXREX archive by month.',
       canonical: abs(lang, 'archive/'), alternates, ogType: 'website', altHref: both ? CMS.pathFor('archive/', other) : CMS.pathFor('', other), active: 'home', scripts: [],
       body: (r) => `<section class="page-hero"><div class="wrap"><span class="fx-kicker">FOXREX</span><h1>${X(lang, 'Archive', 'الأرشيف')}</h1></div></section>

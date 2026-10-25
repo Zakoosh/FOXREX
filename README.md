@@ -2,7 +2,7 @@
 
 FOXREX has two surfaces served from this repository by GitHub Pages (`main` / root, custom domain `foxrex.co`):
 
-- **Public website** — English at `https://foxrex.co/`, Arabic edition at `https://foxrex.co/ar/` (every page has an Arabic equivalent: `/ar/markets/`, `/ar/gold/`, …). Each edition is real HTML with its own `lang`/`dir`, canonical, `hreflang`, titles and Open Graph; the Arabic edition is composed for Arabic (`styles/ar.css`), not toggled.
+- **Public website** — English at `https://foxrex.co/`, Arabic edition at `https://foxrex.co/ar/` and Turkish at `https://foxrex.co/tr/` (every page has an Arabic equivalent: `/ar/markets/`, `/ar/gold/`, …). Each edition is real HTML with its own `lang`/`dir`, canonical, `hreflang`, titles and Open Graph; the Arabic edition is composed for Arabic (`styles/ar.css`), not toggled.
 - **FOXREX Studio** — `https://foxrex.co/studio/`: the admin content operating system (editable AI-directed planning, manual prompts/import and reviewed image generation). Paid APIs remain disabled. Owner-authorized daily website publishing is documented in [docs/DAILY-EDITORIAL.md](docs/DAILY-EDITORIAL.md). The old `/foxrex-studio.html` URL redirects here; browser data is kept because the origin is unchanged.
 
 **Publishing:** Studio → Content → Editorial is the CMS. Content moves IDEA → DRAFT → REVIEW → APPROVED → PUBLISHED through the local worker's publishing engine, which validates, commits `data/content.json` and pushes (dry-run by default). See [docs/PUBLISHING.md](docs/PUBLISHING.md).
@@ -11,7 +11,7 @@ Read [SECURITY.md](SECURITY.md) for the admin boundary: the Studio is static and
 
 ## Daily editorial publication
 
-Gold/FX articles, a brief, and the selected official-source economic calendar are published in EN/AR by the scheduled ChatGPT task. The owner authorized this on 25 October 2026. See [the operating procedure](docs/DAILY-EDITORIAL.md). Calendar: `/calendar/` and `/ar/calendar/`. The feed remains the single canonical article store; articles have permanent URLs and archives. Studio approval gates remain intact.
+Gold/FX articles, a brief, and the selected official-source economic calendar are published in EN/AR/TR by the scheduled ChatGPT task. The owner authorized this on 25 October 2026. See [the operating procedure](docs/DAILY-EDITORIAL.md). Calendar: `/calendar/` and `/ar/calendar/`. The feed remains the single canonical article store; articles have permanent URLs and archives. Studio approval gates remain intact.
 
 ## Project layout
 
@@ -57,3 +57,5 @@ HTTP 401 means a missing/mismatched bearer token. A fetch rejection can be CORS,
 `.env` and relative `DATA_DIR` are resolved against `worker/` even when Node starts elsewhere. Preserve `worker/data/` and existing records. If an example overwrote the token, restore a private backup or rotate it and update Settings; never reset jobs. Browser data belongs to its origin; export/import when moving between Pages and a local preview.
 
 This repository has no bundler or custom deployment workflow: GitHub Pages publishes `main` / root as-is. The public site is pre-generated with `node tools/site/build.mjs` and committed; a review branch or PR does not deploy anything until it is merged to `main`.
+
+The public site supports a persistent light/dark theme and illustrated article pages with headings, a table of contents, source links and calendar/Telegram CTAs. See [editorial presentation](docs/EDITORIAL-EXPERIENCE.md).

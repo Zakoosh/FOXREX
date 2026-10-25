@@ -65,7 +65,7 @@ test('structured data only where accurate: Article/NewsArticle, organisation aut
 test('item pages show freshness honestly: "as of" time, snapshot price with source, stale notice decided in the browser', () => {
   const { read } = once();
   const g = read('gold/2026-09-28/index.html');
-  assert.match(g, /data-valid-until="2026-09-29T08:00:00Z" data-data-as-of="2026-09-28T07:58:00Z">Levels as of/);
+  assert.match(g, /data-valid-until="2026-09-29T08:00:00Z" data-data-as-of="2026-09-28T07:58:00Z">Information as of/);
   assert.match(g, /Price at time of writing: <span class="fx-sym">XAUUSD<\/span> <span class="ltr num">2,361\.4<\/span> · TEST fixture provider · <time/);
   assert.match(g, /<div class="fx-notice fx-notice--info" data-stale-notice hidden>/);
   assert.match(g, /scripts\/public\/item\.js/);
@@ -77,10 +77,10 @@ test('item pages show freshness honestly: "as of" time, snapshot price with sour
   assert.match(read('signals/test-xau-wait/index.html'), /not an order or an instruction/);
 });
 
-test('attribution and sources on every item; result links to its signal', () => {
+test('publication metadata and sources without a public byline; result links to its signal', () => {
   const { read } = once();
-  assert.match(read('news/test-cpi-release/index.html'), /By FOXREX Desk/);
-  assert.match(read('news/test-cpi-release/index.html'), /<a href="https:\/\/example\.org\/foxrex-test-source" rel="noopener nofollow" target="_blank">TEST fixture source \(Example\)<\/a>/);
+  assert.match(read('news/test-cpi-release/index.html'), /class="editorial-meta"/);
+  assert.match(read('news/test-cpi-release/index.html'), /<a href="https:\/\/example\.org\/foxrex-test-source" rel="noopener noreferrer nofollow" target="_blank">TEST fixture source \(Example\)<\/a>/);
   assert.match(read('signals/results/test-xau-long-result/index.html'), /href="\.\.\/\.\.\/\.\.\/signals\/test-xau-long\/">The original signal/);
 });
 

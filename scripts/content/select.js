@@ -61,18 +61,19 @@
   /** hreflang alternates for an item page: only languages that are actually published. x-default only when both exist (→ English). */
   function alternatesFor(feed, item, origin) {
     const o = origin || '';
-    const sib = translationOf(feed, item);
-    const pages = [item, sib].filter(Boolean).sort((a, b) => (a.language === 'en' ? 0 : 1) - (b.language === 'en' ? 0 : 1));
-    const href = e => `${o}/${e.language === 'ar' ? 'ar/' : ''}${e.urlPath}`;
-    const alts = pages.map(e => ({ hreflang: e.language, href: href(e) }));
-    if (sib) alts.push({ hreflang: 'x-default', href: href(item.language === 'en' ? item : sib) });
+    const pages = arr(feed && feed.items).filter(e => e.translationGroupId === item.translationGroupId && e.urlPath === item.urlPath && e.access === 'PUBLIC').sort((a,b) => ['en','ar','tr'].indexOf(a.language)-['en','ar','tr'].indexOf(b.language));
+    if (!pages.some(e => e.language === item.language)) pages.push(item);
+    const href = e => `${o}/${e.language === 'ar' ? 'ar/' : e.language === 'tr' ? 'tr/' : ''}${e.urlPath}`;
+    const alts = pages.map(e => ({hreflang:e.language,href:href(e)}));
+    const english = pages.find(e => e.language === 'en');
+    if (pages.length > 1 && english) alts.push({hreflang:'x-default',href:href(english)});
     return alts;
   }
 
   /* ---------- homepage selection contract (foxrex.homepage.v1) ---------- */
   /** opts: { lang, now, quotes?: Market API quotes (PR #6 shape), limits? }. Optional keys are OMITTED when empty. */
   function homepage(feed, opts = {}) {
-    const lang = opts.lang === 'ar' ? 'ar' : 'en';
+    const lang = ['en','ar','tr'].includes(opts.lang) ? opts.lang : 'en';
     const now = opts.now == null ? Date.now() : typeof opts.now === 'number' ? opts.now : ms(opts.now);
     const lim = { analysis: 4, news: 5, trading: 3, ...(opts.limits || {}) };
     const items = publishedForLanguage(feed, lang, now);

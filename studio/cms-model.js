@@ -11,7 +11,7 @@
   'use strict';
 
   const EDITORIAL_TZ = 'Europe/Istanbul';
-  const LANGS = ['en', 'ar'];
+  const LANGS = ['en', 'ar', 'tr'];
 
   /* ---------- lifecycle ---------- */
   const STATES = ['IDEA', 'DRAFT', 'REVIEW', 'APPROVED', 'SCHEDULED', 'PUBLISHED', 'ARCHIVED'];
@@ -103,12 +103,12 @@
     }
   }
   const ROUTE_RE = /^(desk\/\d{4}-\d{2}-\d{2}\/(morning-brief|event|us-session-preview|market-recap|rex-note)|gold\/\d{4}-\d{2}-\d{2}|(analysis|news|signals|learn)\/[a-z0-9]+(?:-[a-z0-9]+)*|signals\/results\/[a-z0-9]+(?:-[a-z0-9]+)*)\/$/;
-  const pathFor = (urlPath, lang) => (lang === 'ar' ? 'ar/' : '') + (urlPath || '');
+  const pathFor = (urlPath, lang) => (lang === 'ar' ? 'ar/' : lang === 'tr' ? 'tr/' : '') + (urlPath || '');
   const canonicalUrl = (urlPath, lang, origin) => (origin || '') + '/' + pathFor(urlPath, lang);
   const hubPath = (section, lang) => pathFor(SECTION_HUB[section] != null ? SECTION_HUB[section] : '', lang);
   const PAGE_PATH = { home: '', gold: 'gold/', analysis: 'analysis/', news: 'news/', learn: 'learn/', signals: 'signals/' };
   const destinations = type => (TYPES[type] && TYPES[type].pages) || [];
-  const pageUrl = (page, lang, origin) => (origin || '') + '/' + (lang === 'ar' ? 'ar/' : '') + (PAGE_PATH[page] || '');
+  const pageUrl = (page, lang, origin) => (origin || '') + '/' + (lang === 'ar' ? 'ar/' : lang === 'tr' ? 'tr/' : '') + (PAGE_PATH[page] || '');
 
   const ANALYSIS_CATEGORIES = ['technical', 'macro', 'gold', 'fx', 'indices', 'crypto'];
   const NEWS_CATEGORIES = ['economic', 'central-banks', 'commodities', 'fx', 'indices', 'crypto'];
@@ -118,6 +118,7 @@
   const OUTCOME = ['TARGET_HIT', 'STOPPED_OUT', 'BREAKEVEN', 'CLOSED_MANUALLY', 'EXPIRED'];
 
   const DEFAULT_RISK = {
+    tr: 'İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.',
     en: 'Trading carries a high risk of loss. This content is for information and education only and is not investment advice.',
     ar: 'التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.'
   };
@@ -219,7 +220,7 @@
     const t = TYPES[r && r.type];
     if (!r || typeof r !== 'object') return [{ field: '', message: 'Record is not an object' }];
     if (!t) err('type', 'Unknown content type');
-    if (!LANGS.includes(r.language)) err('language', 'Language must be en or ar');
+    if (!LANGS.includes(r.language)) err('language', 'Language must be en, ar or tr');
     if (!STATES.includes(r.status)) err('status', 'Unknown status');
     if (has(r.id) && !RE.id.test(r.id)) err('id', 'ID must be lowercase letters, digits and hyphens');
     if (has(r.slug) && !RE.slug.test(r.slug)) err('slug', 'Slug must be lowercase Latin letters, digits and single hyphens');

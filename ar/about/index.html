@@ -8,9 +8,10 @@
 <link rel="canonical" href="https://foxrex.co/ar/about/">
 <link rel="alternate" hreflang="en" href="https://foxrex.co/about/">
 <link rel="alternate" hreflang="ar" href="https://foxrex.co/ar/about/">
+<link rel="alternate" hreflang="tr" href="https://foxrex.co/tr/about/">
 <link rel="alternate" hreflang="x-default" href="https://foxrex.co/about/">
 <meta name="theme-color" content="#0B1320">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
 <link rel="icon" type="image/png" sizes="32x32" href="../../assets/brand/favicon-32.png">
 <link rel="apple-touch-icon" href="../../assets/brand/apple-touch-icon.png">
 <link rel="manifest" href="../../site.webmanifest">
@@ -29,7 +30,7 @@
 <meta name="twitter:title" content="من نحن — FOXREX">
 <meta name="twitter:description" content="عن FOXREX: علامة عربية لذكاء الأسواق وتعليم التداول.">
 <meta name="twitter:image" content="https://foxrex.co/assets/brand/og-image-ar.png">
-<script>document.documentElement.className+=" js";</script>
+<script>document.documentElement.className+=" js";try{var theme=localStorage.getItem("foxrex-theme");document.documentElement.dataset.theme=theme==="light"||theme==="dark"?theme:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="dark";}</script>
 <link rel="preload" href="../../assets/fonts/ibm-plex-sans-arabic-arabic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../assets/fonts/ibm-plex-sans-arabic-arabic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../styles/fonts.css">
@@ -37,6 +38,8 @@
 <link rel="stylesheet" href="../../styles/base.css">
 <link rel="stylesheet" href="../../styles/components.css">
 <link rel="stylesheet" href="../../styles/public.css">
+<link rel="stylesheet" href="../../styles/editorial.css">
+<link rel="stylesheet" href="../../styles/themes.css">
 <link rel="stylesheet" href="../../styles/ar.css">
 </head>
 <body data-root="../../" data-page="about" data-lang="ar">
@@ -46,7 +49,8 @@
     <a class="fx-logo" href="../../ar/" aria-label="FOXREX — الرئيسية"><img src="../../assets/brand/foxrex-mark.png" width="175" height="146" alt=""><b>FOX<span>REX</span></b></a>
     <nav class="site-nav" aria-label="التنقل الرئيسي"><a href="../../ar/markets/">الأسواق</a><a href="../../ar/analysis/">التحليلات</a><a href="../../ar/news/">الأخبار</a><a href="../../ar/calendar/">التقويم</a><a href="../../ar/learn/">تعلّم</a><a href="../../ar/signals/">الإشارات</a></nav>
     <div class="site-head__end">
-      <a class="lang-toggle" href="../../about/" hreflang="en" lang="en" data-lang-switch="en">English</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="تفعيل الوضع الفاتح" title="المظهر"><span aria-hidden="true">◐</span></button>
+      <nav class="language-picker" aria-label="اللغة"><a class="lang-toggle" href="../../about/" hreflang="en" lang="en" data-lang-switch="en" aria-label="English">EN</a><a class="lang-toggle" href="../../ar/about/" hreflang="ar" lang="ar" data-lang-switch="ar" aria-current="true" aria-label="العربية">ع</a><a class="lang-toggle" href="../../tr/about/" hreflang="tr" lang="tr" data-lang-switch="tr" aria-label="Türkçe">TR</a></nav>
       <a class="fx-btn fx-btn--primary fx-btn--sm" href="https://t.me/fooxrex" target="_blank" rel="noopener">انضم إلى <bdi class="lt" dir="ltr">FOXREX</bdi></a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="القائمة" data-menu-btn><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
@@ -73,7 +77,7 @@
   <h2>ماذا نقدم</h2>
   <p>ننشر تحليلات يومية للأسواق مع تركيز خاص على الذهب وأزواج العملات الرئيسية والمؤشرات والعملات الرقمية، ونشرح الأخبار الاقتصادية وقرارات البنوك المركزية، ونشارك إشارات <bdi class="lt" dir="ltr">FOXREX</bdi> على <bdi class="lt" dir="ltr">Telegram</bdi>، ونعلّم المفاهيم التي تقف خلفها عبر <bdi class="lt" dir="ltr">REX</bdi>، هويتنا التعليمية.</p>
   <h2>كيف نعمل</h2>
-  <ul><li><strong>لا بيانات وهمية.</strong> لا ننشر أسعارًا أو أداءً أو نسب نجاح أو أعداد مستخدمين مختلقة، وعندما لا تتوفر البيانات نقول ذلك.</li><li><strong>المخاطرة أولًا.</strong> كل فكرة تأتي مع مستوى إلغاء ورسالة مخاطر واضحة.</li><li><strong>وضوح استخدام الذكاء الاصطناعي.</strong> تُنشر الإصدارات اليومية تلقائيًا بتفويض المالك وبعد فحص المصادر والمتطلبات التقنية؛ ويحتفظ الاستوديو بمسار اعتماده اليدوي.</li><li><strong>تعليم، لا نصيحة.</strong> محتوانا يساعدك على التفكير، ولا يخبرك بما تفعله بأموالك.</li></ul>
+  <ul><li><strong>لا بيانات وهمية.</strong> لا ننشر أسعارًا أو أداءً أو نسب نجاح أو أعداد مستخدمين مختلقة، وعندما لا تتوفر البيانات نقول ذلك.</li><li><strong>المخاطرة أولًا.</strong> كل فكرة تأتي مع مستوى إلغاء ورسالة مخاطر واضحة.</li><li><strong>المصادر أولًا.</strong> تربط مقالاتنا المعلومات بمصادرها، وتفصل بين الوقائع المؤكدة والتحليل المشروط.</li><li><strong>تعليم، لا نصيحة.</strong> محتوانا يساعدك على التفكير، ولا يخبرك بما تفعله بأموالك.</li></ul>
   <h2>تعرّف على REX</h2>
   <p><bdi class="lt" dir="ltr">REX</bdi> هو ثعلب <bdi class="lt" dir="ltr">FOXREX</bdi>، وتوقيعنا على المحتوى التعليمي: <bdi class="lt" dir="ltr">REX</bdi> يشرح، وملاحظة <bdi class="lt" dir="ltr">REX</bdi>، واسأل <bdi class="lt" dir="ltr">REX</bdi>.</p>
 </div></section>
@@ -96,6 +100,7 @@
     </div>
   </div>
 </footer>
+<script src="../../scripts/public/tr.js" defer></script>
 <script src="../../scripts/public/site.js" defer></script>
 </body>
 </html>
