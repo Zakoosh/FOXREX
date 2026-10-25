@@ -512,5 +512,16 @@
   "Show more articles": "Daha fazla yazı göster",
   "No matching articles. Try another search.": "Eşleşen yazı yok. Başka bir arama deneyin.",
   "REX lesson progress and quiz answers are saved on this device only. Use Reset progress in the classroom to clear them.": "REX ders ilerlemesi ve test yanıtları yalnızca bu cihazda saklanır. Silmek için sınıftaki İlerlemeyi sıfırla düğmesini kullanın.",
-  "Scheduled release": "Planlanan yayın"
+  "Scheduled release": "Planlanan yayın",
+  "Market signals, clearly charted.": "Piyasa sinyalleri, gerçek mum grafiklerle.",
+  "Real candles, source levels and a clear time window for every scenario.": "Her senaryo için gerçek mumlar, kaynak seviyeleri ve açık geçerlilik süresi.",
+  "Market scenarios with real candlestick charts, source levels and validity windows.": "Gerçek mum grafikleri, kaynak seviyeleri ve geçerlilik süreleriyle piyasa senaryoları.",
+  "Educational scenarios. Missing entry or stop-loss levels are left unspecified. Chart observations can precede the source alert; each page states both times.": "Eğitim amaçlı senaryolar. Kaynakta bulunmayan giriş ve zarar durdurma seviyeleri belirtilmez. Grafik verileri sinyalden önceye ait olabilir; iki zaman da her sayfada açıklanır.",
+  "Neutral scenario": "Nötr senaryo",
+  "Within source window": "Kaynak süresi içinde",
+  "Expired — historical": "Süresi doldu — arşiv",
+  "Valid until": "Geçerlilik sonu",
+  "View signal": "Sinyali görüntüle",
+  "Candles through": "Son mum zamanı",
+  "Dashed lines are source scenario levels, not executed trades.": "Kesikli çizgiler kaynak senaryo seviyeleridir; gerçekleşen işlemler değildir."
 }

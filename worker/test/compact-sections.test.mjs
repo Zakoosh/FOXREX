@@ -8,8 +8,8 @@ test('all editions expose four populated market hubs plus REX and a compact soci
  for(const prefix of ['','ar/','tr/']){
   const lang=prefix.slice(0,-1)||'en',home=read(prefix+'index.html');
   const nav=home.match(/<nav class="site-nav"[^>]*>([\s\S]*?)<\/nav>/)[1];
-  assert.equal((nav.match(/<a /g)||[]).length,5);
-  for(const route of ['analysis','technical','calendar','news','learn'])assert.ok(nav.includes(route+'/'));
+  assert.equal((nav.match(/<a /g)||[]).length,6);
+  for(const route of ['analysis','technical','signals','calendar','news','learn'])assert.ok(nav.includes(route+'/'));
   assert.equal((home.match(/class="gateway-card"/g)||[]).length,4);
   assert.ok(home.includes('gateway-social')&&home.includes('https://t.me/fooxrex'));
   assert.ok(!home.includes('data-slot=')&&!home.includes('data-px'));

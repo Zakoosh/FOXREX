@@ -156,6 +156,14 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
 
   const cta = (lang,b) => `<aside class="editorial-cta"><h2>${X(lang,'Follow the next market move','تابع الخطوة القادمة في السوق')}</h2><p>${X(lang,'Keep the calendar close and turn context into a clearer plan.','تابع المواعيد الاقتصادية وابنِ قراءتك للسوق على سياق أوضح.')}</p><div class="editorial-cta__actions"><a class="fx-btn fx-btn--primary" href="${b}calendar/">${X(lang,'Open the economic calendar','افتح التقويم الاقتصادي')} ${I.arrow}</a><a class="fx-btn fx-btn--ghost" href="${SITE.social.telegram.url}" target="_blank" rel="noopener">${X(lang,'Follow on Telegram','تابعنا على تيليجرام')}</a></div></aside>`;
 
+  function renderCover(lang,e,r,chart) {
+    if (!e.image) return '';
+    const isChart=e.category==='technical'&&(!e.tags?.includes('autochartist')||!!chart);
+    const img=(src)=>`<img src="${r}${esc(src)}" alt="${esc(e.image.alt)}" width="1960" height="1120" fetchpriority="high">`;
+    const link=(src,cls='')=>`<a${cls?` class="${cls}"`:''} href="${r}${esc(src)}" target="_blank" rel="noopener" aria-label="${X(lang,'Open full chart','افتح الشارت بالحجم الكامل')}">${img(src)}</a>`;
+    return `<figure class="editorial-cover"${isChart?' data-chart':''}>${chart?link(e.image.src,'theme-image--dark')+link(e.image.src.replace(/\.webp$/,'-light.webp'),'theme-image--light'):isChart?link(e.image.src):img(e.image.src)}${isChart?`<figcaption>${X(lang,'Tap the chart to view full size','اضغط على الشارت لعرضه بالحجم الكامل')}</figcaption>`:''}</figure>`;
+  }
+
   /* ---------- item pages ---------- */
   for (const e of items) {
     const lang = e.language, other = lang === 'en' ? 'ar' : 'en';
@@ -163,15 +171,15 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
     const sib = SELECT.translationOf({ items }, e);
     const alternates = SELECT.alternatesFor({ items }, e, SITE.origin);
     const label = typeLabel(e);
-    const isChart = e.category === 'technical' && !e.tags?.includes('autochartist');
+    const chart=(h.signalCharts||[]).find(c=>c.event===e.slug);
     pages.push({
       kind: 'item', lang, id: `item:${e.id}`, path: e.urlPath.replace(/\/$/, ''), title: (e.seo && e.seo.title) || e.title, description: ((e.seo && e.seo.description) || e.summary).slice(0, 200),
       canonical: abs(lang, e.urlPath), alternates, ogType: 'article', cover: e.image?.src,
       article: { published: e.publishedAt, modified: e.updatedAt, section: SECTION_LABEL[e.section][lang === 'ar' ? 1 : 0] },
       altHref: sib ? CMS.pathFor(sib.urlPath, other) : CMS.hubPath(e.section, other),
-      altHreflangExists: !!sib, active: e.category === 'technical' ? 'technical' : e.section === 'desk' ? 'home' : e.section,
+      altHreflangExists: !!sib, active: e.tags?.includes('autochartist') ? 'signals' : e.category === 'technical' ? 'technical' : e.section === 'desk' ? 'home' : e.section,
       jsonld: () => jsonld(lang, e), scripts: e.freshness && e.freshness.validUntil ? ['scripts/public/item.js'] : [],
-      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang, e.summary)}</p><div class="editorial-meta"><span>${X(lang,'Published','نُشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${e.image ? `<figure class="editorial-cover"${isChart?' data-chart':''}>${isChart?`<a href="${r}${esc(e.image.src)}" target="_blank" rel="noopener" aria-label="${X(lang,'Open full chart','افتح الشارت بالحجم الكامل')}">`:''}<img src="${r}${esc(e.image.src)}" alt="${esc(e.image.alt)}" width="1600" height="900" fetchpriority="high">${isChart?`</a><figcaption>${X(lang,'Tap the chart to view full size','اضغط على الشارت لعرضه بالحجم الكامل')}</figcaption>`:''}</figure>` : ''}</div></section>
+      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang, e.summary)}</p><div class="editorial-meta"><span>${X(lang,'Published','نُشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${renderCover(lang,e,r,chart)}${chart?`<p class="signal-chart-source">${X(lang,'Candles through','الشموع حتى')} <bdi dir="ltr">${esc(chart.bars.at(-1).at)} UTC</bdi> · <a href="${esc(chart.sourceUrl)}" target="_blank" rel="noopener noreferrer">Yahoo Finance</a>. ${X(lang,'Dashed lines are source scenario levels, not executed trades.','الخطوط المتقطعة مستويات سيناريو المصدر، وليست صفقات منفذة.')}</p>`:''}</div></section>
 <div class="editorial-layout"><article class="editorial-body" data-item="${esc(e.id)}" data-layer="${esc(e.layer)}">
 ${badges(lang,e)}${freshnessBlock(lang,e)}${typeBlock(lang,e,sib).replace(/\{\{ROOT\}\}/g,r)}
 ${e.type === 'TRADING_IDEA' || e.type === 'SIGNAL' ? '' : rich.html}
