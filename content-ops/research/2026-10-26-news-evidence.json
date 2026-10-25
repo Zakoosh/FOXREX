@@ -1,0 +1,442 @@
+[
+  {
+    "key": "cpi-september",
+    "topic": "inflation",
+    "symbol": "XAUUSD",
+    "releaseDate": "2026-10-14",
+    "sourceUrl": "https://www.bls.gov/news.release/cpi.nr0.htm",
+    "titles": [
+      "تضخم سبتمبر الأمريكي: ارتفاع شهري 0.6% وسنوي 3.7%",
+      "US September CPI: 0.6% monthly, 3.7% annual inflation",
+      "ABD eylül TÜFE: aylık %0,6, yıllık %3,7"
+    ],
+    "facts": [
+      "ارتفع CPI العام في سبتمبر 0.6% شهريًا بعد التعديل الموسمي و3.7% سنويًا قبل التعديل؛ وارتفع الأساسي 0.3% شهريًا.",
+      "September headline CPI rose 0.6% month on month, seasonally adjusted, and 3.7% annually, unadjusted. Core prices rose 0.3% monthly.",
+      "Eylülde genel TÜFE mevsimsellikten arındırılmış aylık %0,6, arındırılmamış yıllık %3,7 arttı. Çekirdek aylık artış %0,3 oldu."
+    ],
+    "angles": [
+      "قراءتنا للذهب تبدأ بالفارق بين التضخم العام والأساسي. إذا دفعت هذه الصورة السوق إلى توقع فائدة أعلى لفترة أطول، فقد تضغط العوائد على المعدن؛ أما ضعف النمو فقد يعقّد هذا المسار. لا نفترض أن ارتفاع التضخم يرفع الذهب تلقائيًا.",
+      "Our gold framework separates headline from core pressure. If the mix sustains higher-for-longer rate expectations, yields could weigh on gold; weaker growth could complicate that channel. Higher inflation does not mechanically imply higher gold.",
+      "Altın çerçevemiz genel ve çekirdek baskıları ayırır. Bu bileşim faizlerin uzun süre yüksek kalacağı beklentisini güçlendirirse getiriler altını baskılayabilir. Zayıf büyüme bu kanalı karmaşıklaştırabilir; yüksek enflasyon otomatik altın yükselişi değildir."
+    ]
+  },
+  {
+    "key": "ppi-september",
+    "topic": "inflation",
+    "symbol": "USD",
+    "releaseDate": "2026-10-15",
+    "sourceUrl": "https://www.bls.gov/news.release/ppi.nr0.htm",
+    "titles": [
+      "أسعار المنتجين في سبتمبر ترتفع 1.3% شهريًا",
+      "September US producer prices rise 1.3% monthly",
+      "ABD eylül üretici fiyatları aylık %1,3 arttı"
+    ],
+    "facts": [
+      "ارتفع مؤشر أسعار المنتجين للطلب النهائي 1.3% شهريًا بعد التعديل الموسمي، وبلغ ارتفاعه السنوي غير المعدل 6.3%.",
+      "The final-demand PPI rose a seasonally adjusted 1.3% monthly; its unadjusted annual increase was 6.3%.",
+      "Nihai talep ÜFE mevsimsellikten arındırılmış aylık %1,3 arttı; arındırılmamış yıllık artış %6,3 oldu."
+    ],
+    "angles": [
+      "نراقب ما إذا كانت ضغوط الإنتاج ستنتقل إلى أسعار المستهلك أو تمتصها هوامش الشركات. اختلاف تركيب المؤشرين يمنع معاملتهما كنسختين متطابقتين. قراءة الدولار تتوقف على أثر الخبر في توقعات السياسة، وليس على قوة الرقم وحدها.",
+      "Watch whether producer pressure passes into consumer prices or is absorbed in margins. The indices have different coverage, so they are not interchangeable. The dollar interpretation depends on the policy-expectations channel rather than the size of one print.",
+      "Üretici baskısının tüketici fiyatlarına mı geçeceğini, yoksa marjlarda mı karşılanacağını izliyoruz. Kapsamları farklı endeksler birbirinin yerine kullanılamaz. Dolar yorumu tek rakamın büyüklüğünden çok politika beklentilerine bağlıdır."
+    ]
+  },
+  {
+    "key": "jobs-september",
+    "topic": "labor",
+    "symbol": "USD",
+    "releaseDate": "2026-10-02",
+    "sourceUrl": "https://www.bls.gov/news.release/empsit.nr0.htm",
+    "titles": [
+      "وظائف سبتمبر: زيادة 29 ألفًا وبطالة عند 4.2%",
+      "September payrolls add 29,000; unemployment at 4.2%",
+      "Eylül tarım dışı istihdamı 29 bin arttı; işsizlik %4,2"
+    ],
+    "facts": [
+      "أظهر تقرير سبتمبر زيادة الوظائف غير الزراعية 29 ألفًا واستقرار البطالة تقريبًا عند 4.2%.",
+      "September nonfarm payrolls increased by 29,000, with unemployment little changed at 4.2%.",
+      "Eylülde tarım dışı istihdam 29 bin arttı; işsizlik oranı %4,2 ile büyük ölçüde değişmedi."
+    ],
+    "angles": [
+      "نفصل بين مسح المنشآت الذي يقيس الوظائف ومسح الأسر الذي يقيس البطالة. قد يختلف مسارهما دون أن يكون أحدهما خطأ. للذهب والدولار، نراقب إن كانت صورة التوظيف تغيّر توقعات الفائدة بجانب ضغوط الأسعار.",
+      "Separate the establishment jobs survey from the household unemployment survey. They can diverge without either being erroneous. For gold and the dollar, ask whether the employment picture changes rate expectations alongside the inflation evidence.",
+      "İşletme istihdam anketi ile hanehalkı işsizlik anketini ayırıyoruz. Farklı hareket etmeleri tek başına hata değildir. Altın ve dolar açısından, istihdam görünümünün enflasyon verileriyle birlikte faiz beklentisini değiştirip değiştirmediğini izleyin."
+    ]
+  },
+  {
+    "key": "real-earnings-september",
+    "topic": "labor",
+    "symbol": "USD",
+    "releaseDate": "2026-10-14",
+    "sourceUrl": "https://www.bls.gov/news.release/realer.nr0.htm",
+    "titles": [
+      "الأجر الحقيقي بالساعة يتراجع 0.5% في سبتمبر",
+      "Real hourly earnings fall 0.5% in September",
+      "Reel saatlik kazanç eylülde %0,5 geriledi"
+    ],
+    "facts": [
+      "انخفض متوسط الأجر الحقيقي بالساعة لجميع العاملين 0.5% من أغسطس إلى سبتمبر، بعد التعديل الموسمي.",
+      "Real average hourly earnings for all employees fell a seasonally adjusted 0.5% from August to September.",
+      "Tüm çalışanların reel ortalama saatlik kazancı, mevsimsellikten arındırılmış olarak ağustostan eylüle %0,5 düştü."
+    ],
+    "angles": [
+      "هذه القراءة تضع القوة الشرائية بجانب نمو الأجر الاسمي. إذا استمر الضغط الحقيقي، فقد تصبح متابعة الاستهلاك أكثر أهمية من عنوان الأجور وحده. لا نساوي تراجع الأجر الحقيقي بانخفاض فوري في الإنفاق أو بحركة مؤكدة للعملة.",
+      "This places purchasing power beside nominal wage growth. Persistent real pressure would make consumption worth closer attention. A fall in real earnings is not proof of an immediate spending decline or a predetermined currency response.",
+      "Bu veri nominal ücret artışını satın alma gücüyle birlikte okumayı sağlar. Reel baskı sürerse tüketim daha yakından izlenmelidir. Reel kazanç düşüşü, harcamanın hemen azalacağını veya kurun belirli yönde hareket edeceğini kanıtlamaz."
+    ]
+  },
+  {
+    "key": "import-prices-september",
+    "topic": "inflation",
+    "symbol": "USD",
+    "releaseDate": "2026-10-16",
+    "sourceUrl": "https://www.bls.gov/news.release/ximpim.nr0.htm",
+    "titles": [
+      "أسعار الواردات الأمريكية ترتفع 1.1% في سبتمبر",
+      "US import prices increase 1.1% in September",
+      "ABD ithalat fiyatları eylülde %1,1 arttı"
+    ],
+    "facts": [
+      "ارتفعت أسعار الواردات 1.1% في سبتمبر، فيما زادت أسعار الصادرات 2.2% خلال الشهر نفسه.",
+      "US import prices rose 1.1% in September, while export prices increased 2.2% over the same month.",
+      "ABD ithalat fiyatları eylülde %1,1, ihracat fiyatları aynı ay %2,2 arttı."
+    ],
+    "angles": [
+      "نقرأ ضغوط الأسعار الخارجية مع حركة العملة وتكلفة الطاقة. ارتفاع الواردات قد يضيف ضغطًا على التكاليف، لكن أثره في التضخم المحلي يتوقف على التركيب والتمرير. راقب السلع غير الوقودية أيضًا قبل تعميم قصة الطاقة على التقرير كله.",
+      "Read external price pressure alongside currency moves and energy costs. Import inflation could add cost pressure, but domestic transmission depends on composition and pass-through. Check nonfuel goods before reducing the entire release to an energy story.",
+      "Dış fiyat baskısını kur ve enerji maliyetleriyle birlikte okuyoruz. İthalat enflasyonu maliyetleri artırabilir; iç fiyatlara geçiş kapsam ve fiyatlama davranışına bağlıdır. Raporun tamamını enerjiye bağlamadan önce yakıt dışı malları da inceleyin."
+    ]
+  },
+  {
+    "key": "jolts-august",
+    "topic": "labor",
+    "symbol": "USD",
+    "releaseDate": "2026-09-29",
+    "sourceUrl": "https://www.bls.gov/news.release/jolts.nr0.htm",
+    "titles": [
+      "فرص العمل الأمريكية عند 7.1 مليون في أغسطس",
+      "US job openings at 7.1 million in August",
+      "ABD açık iş sayısı ağustosta 7,1 milyon"
+    ],
+    "facts": [
+      "بلغت فرص العمل 7.1 مليون في أغسطس، بينما بلغت التعيينات 5.2 مليون، مع تغير محدود في القراءتين.",
+      "August job openings stood at 7.1 million and hires at 5.2 million, with little change in either measure.",
+      "Ağustosta açık iş sayısı 7,1 milyon, işe alımlar 5,2 milyon oldu; iki göstergede de değişim sınırlı kaldı."
+    ],
+    "angles": [
+      "الفرص المعلنة والتعيين الفعلي يقيسان جانبين مختلفين من الطلب على العمل. نراقب اتساقهما مع الاستقالات والتسريح بدل استخدام الشواغر وحدها. التفسير النقدي يحتاج دمج هذه القراءة مع الأجور والتضخم، دون خلط فترة أغسطس مع بيانات سبتمبر.",
+      "Vacancies and completed hiring capture different parts of labour demand. Compare them with quits and layoffs rather than relying on openings alone. A policy interpretation also needs wages and inflation, keeping this August observation separate from September reports.",
+      "Açık pozisyonlar ile gerçekleşen işe alımlar emek talebinin farklı yönlerini gösterir. Yalnızca açık iş sayısına değil, istifa ve işten çıkarmalara da bakın. Politika yorumu ücret ve enflasyon verilerini gerektirir; ağustos dönemi eylül verileriyle karıştırılmamalıdır."
+    ]
+  },
+  {
+    "key": "weekly-earnings-q3",
+    "topic": "labor",
+    "symbol": "USD",
+    "releaseDate": "2026-10-21",
+    "sourceUrl": "https://www.bls.gov/news.release/wkyeng.nr0.htm",
+    "titles": [
+      "وسيط الأجر الأسبوعي الأمريكي يبلغ 1232 دولارًا في الربع الثالث",
+      "US median weekly earnings reach $1,232 in Q3",
+      "ABD üçüncü çeyrek medyan haftalık kazancı 1.232 dolar"
+    ],
+    "facts": [
+      "بلغ وسيط الأجر الأسبوعي للعاملين بدوام كامل بأجر وراتب 1232 دولارًا في الربع الثالث، قبل التعديل الموسمي.",
+      "Median weekly earnings of full-time wage and salary workers were $1,232 in Q3, not seasonally adjusted.",
+      "Tam zamanlı ücretli ve maaşlı çalışanların üçüncü çeyrek medyan haftalık kazancı, mevsimsellikten arındırılmamış olarak 1.232 dolar oldu."
+    ],
+    "angles": [
+      "الوسيط يختلف عن المتوسط، والقراءة الاسمية لا تقيس القوة الشرائية وحدها. نستخدم التقرير لمتابعة توزيع الأجور مع التضخم. مقارنة ربع بآخر تستدعي الانتباه للتعديل الموسمي، ولا تنتج وحدها استنتاجًا يوميًا عن الدولار.",
+      "The median is not the mean, and a nominal figure is not purchasing power by itself. Use the release to study earnings distribution alongside inflation. Quarter-to-quarter comparisons need seasonal context and do not independently produce a daily dollar call.",
+      "Medyan ortalamadan farklıdır; nominal değer tek başına satın alma gücünü göstermez. Ücret dağılımını enflasyonla birlikte izleyin. Çeyrekler arası kıyaslama mevsimsellik bağlamı gerektirir ve tek başına günlük dolar yönü üretmez."
+    ]
+  },
+  {
+    "key": "state-jobs-september",
+    "topic": "labor",
+    "symbol": "USD",
+    "releaseDate": "2026-10-20",
+    "sourceUrl": "https://www.bls.gov/news.release/laus.nr0.htm",
+    "titles": [
+      "بطالة سبتمبر تنخفض في خمس ولايات وتستقر في 45 ولاية",
+      "September unemployment falls in five US states",
+      "Eylülde ABD’de beş eyaletin işsizlik oranı düştü"
+    ],
+    "facts": [
+      "انخفضت معدلات البطالة في خمس ولايات خلال سبتمبر واستقرت في 45 ولاية ومقاطعة كولومبيا.",
+      "September unemployment rates fell in five states and were stable in 45 states and the District of Columbia.",
+      "Eylülde işsizlik oranı beş eyalette düştü; 45 eyalet ve Columbia Bölgesi’nde istikrarlı kaldı."
+    ],
+    "angles": [
+      "التفصيل الجغرافي يختبر مدى اتساع التحسن، ولا يُستبدل به المعدل الوطني. نبحث عن انتشار التغير بين الولايات والقطاعات قبل وصف سوق العمل بأنه قوي أو ضعيف بصورة موحدة. تبقى قراءة العملة مرتبطة بالصورة الكلية للطلب والأسعار.",
+      "Regional detail tests the breadth of improvement and does not replace the national rate. Look for changes across states and industries before describing the labour market as uniformly strong or weak. The currency framework still depends on aggregate demand and prices.",
+      "Bölgesel ayrıntı iyileşmenin yaygınlığını sınar; ulusal oranın yerine geçmez. İşgücü piyasasını her yerde güçlü veya zayıf ilan etmeden önce eyalet ve sektör dağılımını inceleyin. Kur yorumu toplam talep ve fiyat görünümüne bağlı kalır."
+    ]
+  },
+  {
+    "key": "productivity-q2",
+    "topic": "labor",
+    "symbol": "USD",
+    "releaseDate": "2026-09-03",
+    "sourceUrl": "https://www.bls.gov/news.release/prod2.nr0.htm",
+    "titles": [
+      "إنتاجية الربع الثاني المعدّلة ترتفع 1.4% بمعدل سنوي",
+      "Revised Q2 US productivity rises at a 1.4% annualized rate",
+      "Revize ABD ikinci çeyrek verimliliği yıllıklandırılmış %1,4 arttı"
+    ],
+    "facts": [
+      "زادت إنتاجية قطاع الأعمال غير الزراعية 1.4% وتكلفة العمل للوحدة 1.2% في الربع الثاني، بمعدلين سنويين معدّلين موسميًا.",
+      "Q2 nonfarm business productivity rose 1.4% and unit labour costs 1.2%, both seasonally adjusted annualized rates.",
+      "Tarım dışı işletme verimliliği ikinci çeyrekte %1,4, birim işgücü maliyeti %1,2 arttı; oranlar mevsimsellikten arındırılmış ve yıllıklandırılmıştır."
+    ],
+    "angles": [
+      "ارتفاع الإنتاجية قد يساعد الشركات على تحمل زيادة التعويضات، لكن المهم هو العلاقة بين الإنتاج لكل ساعة والتكلفة لكل وحدة. نقرأ ذلك كخلفية لضغوط الأسعار وهوامش الشركات. هذه مراجعة لربع سابق وليست قياسًا لحركة السوق الحالية.",
+      "Productivity can help firms absorb compensation increases; the useful comparison is output per hour against cost per unit. This is background for price pressure and margins, not a measure of the current market session.",
+      "Verimlilik artışı ücret artışlarının karşılanmasına yardımcı olabilir. Anlamlı kıyas, saat başına üretim ile birim maliyet arasındadır. Bu veri fiyat baskısı ve marjlar için arka plandır; güncel piyasa seansının ölçümü değildir."
+    ]
+  },
+  {
+    "key": "gdp-q2-final",
+    "topic": "growth",
+    "symbol": "USD",
+    "releaseDate": "2026-09-30",
+    "sourceUrl": "https://www.bea.gov/news/2026/gdp-third-estimate-industries-corporate-profits-state-gdp-and-state-personal-income-2nd",
+    "titles": [
+      "التقدير الثالث يرفع نمو أمريكا في الربع الثاني إلى 2.2% سنويًا",
+      "Third estimate puts US Q2 growth at 2.2% annualized",
+      "Üçüncü tahmin ABD ikinci çeyrek büyümesini yıllıklandırılmış %2,2 gösterdi"
+    ],
+    "facts": [
+      "قدّر BEA نمو الناتج الحقيقي للربع الثاني بمعدل سنوي 2.2%، بزيادة 0.7 نقطة مئوية عن التقدير الثاني.",
+      "BEA estimated Q2 real GDP growth at a 2.2% annualized rate, 0.7 percentage point above the second estimate.",
+      "BEA ikinci çeyrek reel GSYH büyümesini, ikinci tahminden 0,7 yüzde puan yüksek, yıllıklandırılmış %2,2 olarak açıkladı."
+    ],
+    "angles": [
+      "المراجعة تذكّرنا بأن التقدير الأول ليس نهائيًا. نراقب اتساق إنفاق القطاع الخاص والاستثمار مع التضخم قبل تفسير أثر النمو على الفائدة. لا نقارن المعدل السنوي الأمريكي مباشرة بمعدل نمو فصلي غير مسنّن لدولة أخرى.",
+      "Revisions show why an advance estimate is not final. Compare private spending and investment with inflation before inferring a rate-policy implication. Do not directly compare the US annualized rate with another country’s unannualized quarterly growth.",
+      "Revizyonlar ilk tahminin nihai olmadığını hatırlatır. Faiz yorumu yapmadan önce özel harcama ve yatırımı enflasyonla birlikte değerlendirin. ABD’nin yıllıklandırılmış oranını başka ülkenin yıllıklandırılmamış çeyreklik büyümesiyle doğrudan kıyaslamayın."
+    ]
+  },
+  {
+    "key": "pce-august",
+    "topic": "growth",
+    "symbol": "XAUUSD",
+    "releaseDate": "2026-09-30",
+    "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
+    "titles": [
+      "إنفاق أغسطس الحقيقي يرتفع 0.6% وتضخم PCE الشهري 0.3%",
+      "August real spending rises 0.6%; monthly PCE prices up 0.3%",
+      "Ağustosta reel harcama %0,6, aylık PCE fiyatları %0,3 arttı"
+    ],
+    "facts": [
+      "ارتفع الإنفاق الاستهلاكي الحقيقي 0.6% شهريًا في أغسطس، ومؤشر أسعار PCE العام 0.3%، والأساسي 0.2%.",
+      "August real PCE increased 0.6% monthly; headline PCE prices rose 0.3% and core prices 0.2%.",
+      "Ağustosta reel PCE aylık %0,6 arttı; genel PCE fiyatları %0,3, çekirdek fiyatlar %0,2 yükseldi."
+    ],
+    "angles": [
+      "نفصل نمو حجم الاستهلاك عن ارتفاع أسعاره. اجتماع الطلب الحقيقي مع ضغط الأسعار قد يجعل قراءة السياسة أصعب من عنوان التضخم وحده. للذهب نتابع انتقال التفسير إلى العوائد، مع انتظار إصدار سبتمبر دون استباق أرقامه.",
+      "Separate the volume of consumption from its price. Real demand alongside price pressure can complicate policy interpretation beyond the inflation headline. For gold, monitor the yield channel while awaiting September data without pre-empting its figures.",
+      "Tüketimin hacmini fiyatından ayırın. Reel talep ile fiyat baskısının birlikte görülmesi politika yorumunu zorlaştırabilir. Altın açısından getiri kanalını izliyoruz; eylül verisini açıklanmadan varsaymıyoruz."
+    ]
+  },
+  {
+    "key": "trade-august",
+    "topic": "trade",
+    "symbol": "USD",
+    "releaseDate": "2026-10-06",
+    "sourceUrl": "https://www.bea.gov/news/2026/us-international-trade-goods-and-services-august-2026",
+    "titles": [
+      "العجز التجاري الأمريكي في أغسطس يصل إلى 105.6 مليار دولار",
+      "US August trade deficit reaches $105.6 billion",
+      "ABD ağustos dış ticaret açığı 105,6 milyar dolar"
+    ],
+    "facts": [
+      "بلغ عجز تجارة السلع والخدمات 105.6 مليار دولار في أغسطس، مقارنة مع 92.8 مليارًا في يوليو بعد المراجعة.",
+      "The August goods-and-services trade deficit was $105.6 billion, versus a revised $92.8 billion in July.",
+      "Ağustos mal ve hizmet dış ticaret açığı 105,6 milyar dolar oldu; revize temmuz açığı 92,8 milyar dolardı."
+    ],
+    "angles": [
+      "اتساع العجز قد يأتي من قوة الواردات أو ضعف الصادرات، ولذلك نفحص الجانبين. لا نعطي الدولار اتجاهًا ثابتًا من الميزان التجاري وحده؛ توقيت تدفقات التمويل وتوقعات النمو قد يكونان أكثر تأثيرًا في الجلسة.",
+      "A wider deficit can reflect stronger imports or weaker exports, so inspect both sides. The trade balance alone does not fix the dollar’s direction; financing flows and growth expectations may matter more for a given session.",
+      "Açığın genişlemesi güçlü ithalattan veya zayıf ihracattan kaynaklanabilir; iki tarafı da inceleyin. Ticaret dengesi tek başına doların yönünü belirlemez. Finansman akımları ve büyüme beklentileri seans için daha etkili olabilir."
+    ]
+  },
+  {
+    "key": "current-account-q2",
+    "topic": "trade",
+    "symbol": "USD",
+    "releaseDate": "2026-09-24",
+    "sourceUrl": "https://www.bea.gov/news/2026/us-international-transactions-and-investment-position-2nd-quarter-2026",
+    "titles": [
+      "عجز الحساب الجاري الأمريكي يتسع إلى 246 مليار دولار في الربع الثاني",
+      "US current-account deficit widens to $246 billion in Q2",
+      "ABD ikinci çeyrek cari açığı 246 milyar dolara genişledi"
+    ],
+    "facts": [
+      "بلغ عجز الحساب الجاري للربع الثاني 246.0 مليار دولار، مقارنة مع 212.6 مليارًا في الربع الأول بعد المراجعة.",
+      "The Q2 current-account deficit reached $246.0 billion, against a revised $212.6 billion in Q1.",
+      "İkinci çeyrek cari açık 246,0 milyar dolar oldu; revize ilk çeyrek açığı 212,6 milyar dolardı."
+    ],
+    "angles": [
+      "الحساب الجاري أوسع من تجارة السلع وحدها. نقرأه مع الدخل والتحويلات والتمويل الخارجي، وعلى الفترة نفسها عند المقارنة بين الدول. تغير العجز ربع السنوي لا يثبت وحده وجود طلب أو عرض فوري على الدولار.",
+      "The current account is broader than goods trade. Read income, transfers and external financing together, aligning periods when comparing countries. A quarterly deficit change does not itself prove immediate dollar buying or selling pressure.",
+      "Cari hesap yalnızca mal ticaretinden geniştir. Gelir, transfer ve dış finansmanı birlikte okuyun; ülkeleri karşılaştırırken dönemleri eşitleyin. Çeyreklik açık değişimi anlık dolar alım veya satış baskısını tek başına kanıtlamaz."
+    ]
+  },
+  {
+    "key": "fed-september-decision",
+    "topic": "central-banks",
+    "symbol": "XAUUSD",
+    "releaseDate": "2026-09-16",
+    "sourceUrl": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm",
+    "titles": [
+      "قرار سبتمبر: الفيدرالي يرفع النطاق إلى 3.75–4.00%",
+      "September Fed decision: target range raised to 3.75–4.00%",
+      "Fed’in eylül kararı: hedef aralık %3,75–4,00’a yükseltildi"
+    ],
+    "facts": [
+      "رفع الفيدرالي في قرار 16 سبتمبر نطاق الفائدة 25 نقطة أساس إلى 3.75–4.00% بتصويت 12–0.",
+      "On 16 September the Fed raised its target range by 25 basis points to 3.75–4.00%, on a 12–0 vote.",
+      "Fed 16 Eylül’de hedef aralığı 25 baz puan artırarak %3,75–4,00’a çıkardı; karar 12–0 oyla alındı."
+    ],
+    "angles": [
+      "هذه نقطة انطلاق تاريخية لقراءة اجتماع أكتوبر، وليست نتيجة الاجتماع القادم. في تحليل الذهب نميّز بين القرار الذي صدر بالفعل وبين المسار الذي يتوقعه السوق لاحقًا. تغير التوقعات والعوائد قد يهم أكثر من إعادة قراءة قرار معلوم.",
+      "This is a dated baseline for the October meeting, not its future outcome. For gold, distinguish the decision already taken from the path markets subsequently expect. Changes in expectations and yields may matter more than repeating a known decision.",
+      "Bu, ekim toplantısı için tarihli bir başlangıç noktasıdır; gelecek kararın sonucu değildir. Altında gerçekleşmiş kararı, piyasanın sonraki faiz patikasından ayırın. Beklenti ve getiri değişimleri bilinen kararı tekrarlamaktan daha anlamlı olabilir."
+    ]
+  },
+  {
+    "key": "fed-minutes-october",
+    "topic": "central-banks",
+    "symbol": "USD",
+    "releaseDate": "2026-10-07",
+    "sourceUrl": "https://www.federalreserve.gov/newsevents/pressreleases/monetary20261007a.htm",
+    "titles": [
+      "الفيدرالي ينشر محضر اجتماع 15–16 سبتمبر في 7 أكتوبر",
+      "Fed publishes September meeting minutes on 7 October",
+      "Fed eylül toplantı tutanaklarını 7 Ekim’de yayımladı"
+    ],
+    "facts": [
+      "نُشر في 7 أكتوبر محضر اجتماع اللجنة المنعقد في 15–16 سبتمبر، وفق إعلان الفيدرالي.",
+      "The Fed released the minutes of its 15–16 September meeting on 7 October.",
+      "Fed, 15–16 Eylül toplantısının tutanaklarını 7 Ekim’de yayımladı."
+    ],
+    "angles": [
+      "المحضر يصف نقاش اجتماع سابق اعتمادًا على المعلومات التي كانت متاحة وقتها. لا نعامله كقرار فائدة جديد. نبحث عن اختلاف تقييم المخاطر بين النقاش السابق والبيانات اللاحقة قبل ربطه باتجاه الدولار أو الذهب.",
+      "Minutes describe a past meeting using information available then; they are not a new rate decision. Compare that earlier risk assessment with subsequent data before linking the document to a dollar or gold direction.",
+      "Tutanaklar geçmiş toplantıyı o sırada mevcut bilgilerle anlatır; yeni faiz kararı değildir. Belgeyi dolar veya altın yönüne bağlamadan önce eski risk değerlendirmesini sonraki verilerle karşılaştırın."
+    ]
+  },
+  {
+    "key": "family-finances-survey",
+    "topic": "households",
+    "symbol": "USD",
+    "releaseDate": "2026-10-09",
+    "sourceUrl": "https://www.federalreserve.gov/newsevents/pressreleases/other20261009a.htm",
+    "titles": [
+      "الفيدرالي يصدر نتائج مسح مالية الأسر لعام 2025",
+      "Fed releases the 2025 Survey of Consumer Finances",
+      "Fed 2025 Tüketici Finansmanı Anketi sonuçlarını yayımladı"
+    ],
+    "facts": [
+      "أعلن الفيدرالي في 9 أكتوبر إصدار نتائج مسح مالية الأسر لعام 2025، المتعلق بالأوضاع المالية للأسر الأمريكية.",
+      "On 9 October the Fed released its 2025 Survey of Consumer Finances on US household financial conditions.",
+      "Fed 9 Ekim’de ABD hanehalkı mali koşullarına ilişkin 2025 Tüketici Finansmanı Anketi sonuçlarını yayımladı."
+    ],
+    "angles": [
+      "نستخدم المسح لفهم خلفية الميزانيات الأسرية، لا كبديل لبيانات الاستهلاك الشهرية. توزيع الثروة والديون قد يساعد في تفسير اختلاف استجابة الأسر للفائدة. هذه خلفية هيكلية ولا تتضمن توقعًا لحركة سعر يومية.",
+      "Use the survey for household balance-sheet context rather than as a substitute for monthly spending data. Wealth and debt distribution can help frame differences in sensitivity to interest rates. This is structural context, not a daily price forecast.",
+      "Anketi aylık harcama verisinin yerine değil, hanehalkı bilançosunun arka planı olarak kullanın. Servet ve borç dağılımı faiz hassasiyetindeki farklılıkları anlamaya yardımcı olabilir. Bu yapısal bağlamdır; günlük fiyat tahmini değildir."
+    ]
+  },
+  {
+    "key": "ecb-september-decision",
+    "topic": "central-banks",
+    "symbol": "EURUSD",
+    "releaseDate": "2026-09-10",
+    "sourceUrl": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.mp260910~314e508016.en.html",
+    "titles": [
+      "قرار سبتمبر الأوروبي: رفع 25 نقطة أساس وفائدة الإيداع 2.50%",
+      "September ECB decision: 25-basis-point rise, deposit rate 2.50%",
+      "ECB eylül kararı: 25 baz puan artış, mevduat faizi %2,50"
+    ],
+    "facts": [
+      "قرر المركزي الأوروبي في 10 سبتمبر رفع الفوائد الثلاث 25 نقطة أساس، لتصبح فائدة الإيداع 2.50% اعتبارًا من 16 سبتمبر.",
+      "On 10 September the ECB raised its three policy rates by 25 basis points; the deposit rate became 2.50% from 16 September.",
+      "ECB 10 Eylül’de üç politika faizini 25 baz puan artırdı; mevduat faizi 16 Eylül’den itibaren %2,50 oldu."
+    ],
+    "angles": [
+      "فائدة الإيداع ليست الفائدة الرئيسية لإعادة التمويل، لذلك نحدد المؤشر المقصود عند المقارنة. لليورو نراقب الفرق بين مساري السياسة الأوروبية والأمريكية. القرار التاريخي لا يحسم ما سيصدر في اجتماع أكتوبر القادم.",
+      "The deposit rate is not the main refinancing rate, so specify the measure before making comparisons. For the euro, compare European and US policy paths. This historical decision does not determine the coming October outcome.",
+      "Mevduat faizi ana refinansman faizi değildir; kıyas yaparken göstergeyi belirtin. Euro açısından Avrupa ve ABD politika yollarını karşılaştırın. Bu tarihsel karar yaklaşan ekim sonucunu belirlemez."
+    ]
+  },
+  {
+    "key": "euro-current-account",
+    "topic": "fx",
+    "symbol": "EURUSD",
+    "releaseDate": "2026-10-02",
+    "sourceUrl": "https://www.ecb.europa.eu/press/stats/bop/2026/html/ecb.bq261002~5e0dd6a1f4.en.html",
+    "titles": [
+      "فائض الحساب الجاري الأوروبي يبلغ 265 مليار يورو لأربعة أرباع",
+      "Euro-area current-account surplus at €265 billion over four quarters",
+      "Euro bölgesinin dört çeyreklik cari fazlası 265 milyar euro"
+    ],
+    "facts": [
+      "سجل الحساب الجاري فائضًا 265 مليار يورو في الأرباع الأربعة حتى الربع الثاني 2026، مقابل 304 مليارات قبل عام.",
+      "The current-account surplus was €265 billion in the four quarters through Q2 2026, versus €304 billion a year earlier.",
+      "2026 ikinci çeyreğine kadar dört çeyreklik cari fazla 265 milyar euro oldu; bir yıl önce 304 milyar euroydu."
+    ],
+    "angles": [
+      "الفترة هنا أربعة أرباع، وليست شهرًا أو ربعًا واحدًا. نقرأ تدفقات التجارة والدخل مع الحساب المالي عند تفسير اليورو. الفائض لا يعني تلقائيًا ارتفاع العملة؛ فقد تتزامن معه تدفقات استثمارية في الاتجاه المقابل.",
+      "This covers four quarters, not one month or quarter. Read trade and income flows alongside the financial account when framing the euro. A surplus does not automatically imply appreciation; offsetting investment flows may coexist.",
+      "Dönem bir ay veya tek çeyrek değil, dört çeyrektir. Euroyu yorumlarken ticaret ve gelir akımlarını finans hesabıyla birlikte okuyun. Fazla otomatik değerlenme anlamına gelmez; ters yönde yatırım akımları bulunabilir."
+    ]
+  },
+  {
+    "key": "boe-september-decision",
+    "topic": "central-banks",
+    "symbol": "GBPUSD",
+    "releaseDate": "2026-09-17",
+    "sourceUrl": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/september-2026",
+    "titles": [
+      "بنك إنجلترا يثبت فائدة سبتمبر عند 3.75% بتصويت 6–3",
+      "Bank of England holds September rate at 3.75%, voting 6–3",
+      "İngiltere Merkez Bankası eylülde faizi 6–3 oyla %3,75’te tuttu"
+    ],
+    "facts": [
+      "أبقى بنك إنجلترا الفائدة عند 3.75% بأغلبية 6–3؛ وفضّل ثلاثة أعضاء رفعها إلى 4.00%.",
+      "The Bank of England held Bank Rate at 3.75% on a 6–3 vote; three members preferred 4.00%.",
+      "İngiltere Merkez Bankası faizi 6–3 oyla %3,75’te tuttu; üç üye %4,00’ı tercih etti."
+    ],
+    "angles": [
+      "التثبيت لا يعني إجماعًا على الاتجاه التالي. نراقب أسباب اختلاف الأصوات مع بيانات الأسعار والأجور المقبلة. قراءة الإسترليني نسبية أيضًا: يجب مقارنتها برسالة البنك المقابل، لا استنتاج اتجاه دائم من التصويت وحده.",
+      "A hold does not imply agreement on the next move. Examine voting differences alongside forthcoming prices and wages. Sterling is a relative-policy market too; compare the other currency’s central bank rather than inferring a durable direction from the vote alone.",
+      "Faizin sabit tutulması sonraki adımda görüş birliği olduğunu göstermez. Oy farklılıklarını gelecek fiyat ve ücret verileriyle birlikte inceleyin. Sterlin için karşı para biriminin merkez bankasını da değerlendirin; oylama tek başına kalıcı yön vermez."
+    ]
+  },
+  {
+    "key": "rba-september-decision",
+    "topic": "central-banks",
+    "symbol": "AUDUSD",
+    "releaseDate": "2026-09-29",
+    "sourceUrl": "https://www.rba.gov.au/media-releases/2026/mr-26-27.html",
+    "titles": [
+      "المركزي الأسترالي يرفع الفائدة إلى 4.60% في قرار سبتمبر",
+      "RBA raises September cash-rate target to 4.60%",
+      "RBA eylül nakit faiz hedefini %4,60’a yükseltti"
+    ],
+    "facts": [
+      "رفع بنك الاحتياطي الأسترالي هدف الفائدة 25 نقطة أساس إلى 4.60% في قرار 29 سبتمبر.",
+      "The RBA raised the cash-rate target by 25 basis points to 4.60% on 29 September.",
+      "RBA 29 Eylül’de nakit faiz hedefini 25 baz puan artırarak %4,60’a çıkardı."
+    ],
+    "angles": [
+      "نقرأ رسالة الفائدة بجانب الطلب المحلي ومخاطر الأسعار، ثم نقارنها بالمسار الأمريكي لزوج AUD/USD. ارتفاع الفائدة لا يضمن مكسبًا للعملة إذا كان معروفًا أو عوّضته عوامل أخرى. تابع البيانات التالية بدل تمديد أثر القرار بلا حدود.",
+      "Read the rate message alongside domestic demand and price risk, then compare the US path for AUD/USD. A hike does not guarantee currency gains if anticipated or offset by other drivers. Follow subsequent data rather than extrapolating the decision indefinitely.",
+      "Faiz mesajını iç talep ve fiyat riskiyle birlikte okuyup AUD/USD için ABD patikasıyla karşılaştırın. Beklenen veya başka etkenlerle dengelenen artış kur kazancını garanti etmez. Kararın etkisini süresiz uzatmak yerine sonraki verileri izleyin."
+    ]
+  }
+]

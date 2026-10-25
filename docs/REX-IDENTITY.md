@@ -13,3 +13,7 @@ Prompt: Preserve the existing REX fox identity: friendly anthropomorphic red fox
 ## Social publishing status
 
 No Telegram, Instagram or Facebook posting connection is configured or authorized by the current request. The owner asked about feasibility. Website publication authorization is not social publication authorization. A future implementation needs named destinations, explicit publishing scope and secure provider authorization; never place access tokens in the repository or ask for secrets in chat. Platform-specific summaries must retain the educational notice and original article link. Record each platform post identifier separately so retries do not duplicate successful posts.
+
+## Interactive classroom · October 2026
+
+REX is present as teacher (`rex-teaching-v3.webp`), thoughtful guide (existing educator portrait) and encouraging coach (`rex-celebrating-v3.webp`). These are illustrative character modes, not distinct advisors. The classroom offers five explained questions, explicit lesson progress saved locally and a hypothetical risk calculator. Encouragement rewards understanding, never profitability or taking a trade. Keep native AR/EN/TR copy, educational notices and accessible controls in both themes.

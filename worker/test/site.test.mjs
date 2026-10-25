@@ -65,7 +65,8 @@ test('no fabricated market data ships with the site', async () => {
   assert.ok(!c.items.some(CMS.isFixture), 'test fixtures must never reach the public feed');
   for (const f of ['index.html', 'ar/index.html']) assert.ok([...read(f).matchAll(/data-px>([^<]*)</g)].every(m => m[1] === '—'), `${f} ticker must start empty`);
   const text = ALL.map(f => read(f).replace(/<(script|style)[\s\S]*?<\/\1>/g, '').replace(/<[^>]+>/g, ' ')).join(' ');
-  assert.ok(!/\d+(\.\d+)?\s*%/.test(text), 'no percentage figures (performance, accuracy, returns) in public copy');
+  assert.ok(!/(?:win rate|guaranteed return|signal accuracy)\s*[:=]?\s*\d+(?:\.\d+)?\s*%/i.test(text), 'no invented performance or accuracy claims in public copy');
+  for (const e of c.items.filter(e=>e.type==='NEWS' && /\d+(?:\.\d+)?\s*%/.test(e.summary))) assert.ok(e.sources?.some(s=>s.url && s.retrievedAt), 'economic percentage figures require checked provenance');
 });
 
 test('Studio is served from /studio/, legacy URL redirects, and no credentials or fake auth ship in static files', () => {

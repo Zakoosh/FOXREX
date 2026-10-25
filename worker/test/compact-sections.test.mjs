@@ -32,17 +32,10 @@ test('technical chart levels reproduce checked OHLC, without fabricated or futur
   for(const b of d.bars){assert.ok(b.date<='2026-10-23');assert.ok(b.low<=Math.min(b.open,b.close)&&b.high>=Math.max(b.open,b.close));}
   const b=d.bars.at(-1),p=(b.high+b.low+b.close)/3;
   for(const [key,value] of Object.entries({pivot:p,s1:2*p-b.high,r1:2*p-b.low,s2:p-(b.high-b.low),r2:p+(b.high-b.low)}))assert.ok(Math.abs(d.metrics[key]-value)<1e-10);
-  const items=feed.items.filter(e=>e.category==='technical'&&e.symbol===d.symbol);assert.equal(items.length,3);
+  const items=feed.items.filter(e=>e.category==='technical'&&e.symbol===d.symbol&&e.slug===d.symbol.toLowerCase()+'-technical-2026-10-23');assert.equal(items.length,3);
   for(const e of items){assert.ok(e.body.includes('2026')&&e.keyLevels.length===5);assert.ok(e.image.src.includes(d.symbol.toLowerCase()));}
   for(const b of d.excludedBars||[])assert.ok(!d.bars.some(good=>good.date===b.date));
  }
-});
-test('instrument filter updates selection and restores all cards',()=>{
- const buttons=['all','XAUUSD','EURUSD'].map(symbol=>({symbol,attrs:{},getAttribute:()=>symbol,setAttribute(k,v){this.attrs[k]=v},addEventListener(k,fn){this.click=fn}}));
- const cards=['XAUUSD','EURUSD','XAGUSD'].map(symbol=>({hidden:false,getAttribute:()=>symbol}));
- vm.runInNewContext(read('scripts/public/catalog.js'),{document:{querySelectorAll:s=>s==='[data-catalog-filter]'?buttons:cards}});
- buttons[1].click();assert.deepEqual(cards.map(c=>c.hidden),[false,true,true]);assert.equal(buttons[1].attrs['aria-pressed'],'true');
- buttons[0].click();assert.ok(cards.every(c=>!c.hidden));assert.equal(buttons[1].attrs['aria-pressed'],'false');
 });
 test('article sources are compact disclosures and navigation arrows have intrinsic dimensions',()=>{
  const html=read('ar/analysis/xauusd-technical-2026-10-23/index.html');

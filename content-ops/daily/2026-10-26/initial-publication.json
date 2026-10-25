@@ -1,0 +1,278 @@
+{
+  "date": "2026-10-26",
+  "at": "2026-10-25T21:39:24.635Z",
+  "authorization": "owner-authorized-2026-10-25",
+  "actor": "FOXREX Editorial Automation",
+  "records": [
+    {
+      "id": "daily-2026-10-26-policy-week-map-2026-10-26-ar",
+      "urlPath": "analysis/policy-week-map-2026-10-26/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-policy-week-map-2026-10-26-en",
+      "urlPath": "analysis/policy-week-map-2026-10-26/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-policy-week-map-2026-10-26-tr",
+      "urlPath": "analysis/policy-week-map-2026-10-26/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gold-real-yields-risk-2026-10-26-ar",
+      "urlPath": "analysis/gold-real-yields-risk-2026-10-26/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gold-real-yields-risk-2026-10-26-en",
+      "urlPath": "analysis/gold-real-yields-risk-2026-10-26/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gold-real-yields-risk-2026-10-26-tr",
+      "urlPath": "analysis/gold-real-yields-risk-2026-10-26/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-relative-policy-2026-10-26-ar",
+      "urlPath": "analysis/eurusd-relative-policy-2026-10-26/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-relative-policy-2026-10-26-en",
+      "urlPath": "analysis/eurusd-relative-policy-2026-10-26/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-relative-policy-2026-10-26-tr",
+      "urlPath": "analysis/eurusd-relative-policy-2026-10-26/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-growth-inflation-mixed-signals-2026-10-26-ar",
+      "urlPath": "analysis/growth-inflation-mixed-signals-2026-10-26/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-growth-inflation-mixed-signals-2026-10-26-en",
+      "urlPath": "analysis/growth-inflation-mixed-signals-2026-10-26/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-growth-inflation-mixed-signals-2026-10-26-tr",
+      "urlPath": "analysis/growth-inflation-mixed-signals-2026-10-26/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gold-event-risk-checklist-2026-10-26-ar",
+      "urlPath": "analysis/gold-event-risk-checklist-2026-10-26/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gold-event-risk-checklist-2026-10-26-en",
+      "urlPath": "analysis/gold-event-risk-checklist-2026-10-26/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gold-event-risk-checklist-2026-10-26-tr",
+      "urlPath": "analysis/gold-event-risk-checklist-2026-10-26/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-fed-decision-october-28-2026-ar",
+      "urlPath": "news/fed-decision-october-28-2026/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-fed-decision-october-28-2026-en",
+      "urlPath": "news/fed-decision-october-28-2026/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-fed-decision-october-28-2026-tr",
+      "urlPath": "news/fed-decision-october-28-2026/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ecb-decision-october-29-2026-ar",
+      "urlPath": "news/ecb-decision-october-29-2026/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ecb-decision-october-29-2026-en",
+      "urlPath": "news/ecb-decision-october-29-2026/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ecb-decision-october-29-2026-tr",
+      "urlPath": "news/ecb-decision-october-29-2026/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-us-gdp-q3-october-29-2026-ar",
+      "urlPath": "news/us-gdp-q3-october-29-2026/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-us-gdp-q3-october-29-2026-en",
+      "urlPath": "news/us-gdp-q3-october-29-2026/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-us-gdp-q3-october-29-2026-tr",
+      "urlPath": "news/us-gdp-q3-october-29-2026/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-pce-september-october-29-2026-ar",
+      "urlPath": "news/pce-september-october-29-2026/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-pce-september-october-29-2026-en",
+      "urlPath": "news/pce-september-october-29-2026/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-pce-september-october-29-2026-tr",
+      "urlPath": "news/pce-september-october-29-2026/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-employment-cost-q3-october-30-2026-ar",
+      "urlPath": "news/employment-cost-q3-october-30-2026/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-employment-cost-q3-october-30-2026-en",
+      "urlPath": "news/employment-cost-q3-october-30-2026/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-employment-cost-q3-october-30-2026-tr",
+      "urlPath": "news/employment-cost-q3-october-30-2026/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-xauusd-technical-2026-10-23-ar",
+      "urlPath": "analysis/xauusd-technical-2026-10-23/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-xauusd-technical-2026-10-23-en",
+      "urlPath": "analysis/xauusd-technical-2026-10-23/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-xauusd-technical-2026-10-23-tr",
+      "urlPath": "analysis/xauusd-technical-2026-10-23/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-xagusd-technical-2026-10-23-ar",
+      "urlPath": "analysis/xagusd-technical-2026-10-23/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-xagusd-technical-2026-10-23-en",
+      "urlPath": "analysis/xagusd-technical-2026-10-23/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-xagusd-technical-2026-10-23-tr",
+      "urlPath": "analysis/xagusd-technical-2026-10-23/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-technical-2026-10-23-ar",
+      "urlPath": "analysis/eurusd-technical-2026-10-23/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-technical-2026-10-23-en",
+      "urlPath": "analysis/eurusd-technical-2026-10-23/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-eurusd-technical-2026-10-23-tr",
+      "urlPath": "analysis/eurusd-technical-2026-10-23/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gbpusd-technical-2026-10-23-ar",
+      "urlPath": "analysis/gbpusd-technical-2026-10-23/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gbpusd-technical-2026-10-23-en",
+      "urlPath": "analysis/gbpusd-technical-2026-10-23/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-gbpusd-technical-2026-10-23-tr",
+      "urlPath": "analysis/gbpusd-technical-2026-10-23/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-usdjpy-technical-2026-10-23-ar",
+      "urlPath": "analysis/usdjpy-technical-2026-10-23/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-usdjpy-technical-2026-10-23-en",
+      "urlPath": "analysis/usdjpy-technical-2026-10-23/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-usdjpy-technical-2026-10-23-tr",
+      "urlPath": "analysis/usdjpy-technical-2026-10-23/",
+      "language": "tr",
+      "publishVersion": 1
+    }
+  ]
+}
