@@ -44,7 +44,7 @@ const t = (en, ar) => AR() ? arText(ar ?? en) : enText(LANG === 'tr' ? tr(en) : 
 const tp = pair => t(pair[0], pair[1]);
 
 const I = {
-  arrow: '<svg class="fx-flip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  arrow: '<svg class="fx-flip" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
   menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
   telegram: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 2.8c.9-.3 1.7.2 1.4 1.5z"/></svg>',
   instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
@@ -60,8 +60,8 @@ const I = {
 };
 
 const NAV = [
-  ['markets', 'Markets', 'الأسواق'], ['analysis', 'Analysis', 'التحليلات'], ['news', 'News', 'الأخبار'],
-  ['calendar', 'Calendar', 'التقويم'], ['learn', 'Learn', 'تعلّم'], ['signals', 'Signals', 'الإشارات']
+  ['analysis', 'General analysis', 'التحليل العام'], ['technical', 'Technical analysis', 'التحليل التقني'],
+  ['calendar', 'Calendar', 'التقويم'], ['news', 'News', 'الأخبار']
 ];
 
 /* ---------- URL helpers ---------- */
@@ -147,9 +147,9 @@ function header(active, r, b, alt, p) {
   </div>
 </header>
 <nav class="mobile-nav" id="mobile-nav" aria-label="${AR() ? 'قائمة الجوال' : 'Mobile'}" data-open="false">
-  ${[['', 'Home', 'الرئيسية'], ...NAV, ['gold', 'Gold', 'الذهب'], ['about', 'About', 'من نحن'], ['contact', 'Contact', 'تواصل معنا']].map(([k, en, ar]) => `<a href="${b}${k ? k + '/' : ''}"${active === (k || 'home') ? ' aria-current="page"' : ''}>${t(en, ar)}</a>`).join('\n  ')}
-  <a href="${alt}" hreflang="${AR() ? 'en' : 'ar'}" lang="${AR() ? 'en' : 'ar'}" data-lang-switch="${AR() ? 'en' : 'ar'}">${AR() ? 'English' : 'العربية'}</a>
-  <a class="fx-btn fx-btn--primary" href="${SITE.social.telegram.url}" target="_blank" rel="noopener">${t('Join FOXREX on Telegram', 'انضم إلى FOXREX على Telegram')}</a>
+  ${[['', 'Home', 'الرئيسية'], ...NAV].map(([k, en, ar]) => `<a href="${b}${k ? k + '/' : ''}"${active === (k || 'home') ? ' aria-current="page"' : ''}>${t(en, ar)}</a>`).join('\n  ')}
+
+  <div class="mobile-social">${socialLinks()}</div>
 </nav>`;
 }
 
@@ -158,27 +158,7 @@ function socialLinks() {
 }
 
 function footer(r, b) {
-  const col = (h, items) => `<div><h2>${h}</h2><ul>${items.map(([href, label]) => `<li>${href ? `<a href="${href}">${label}</a>` : `<span class="muted">${label}</span>`}</li>`).join('')}</ul></div>`;
-  const s = SITE.social;
-  return `<footer class="site-foot">
-  <div class="wrap">
-    <div class="site-foot__grid">
-      <div>
-        ${logo(b)}
-        ${AR() ? `<p class="site-foot__ar">${esc(SITE.taglineAr)}</p><p class="site-foot__tag">${SITE.tagline}</p>`
-               : `<p class="site-foot__tag">${SITE.tagline}</p>${LANG === 'tr' ? '' : `<p style="margin-top:10px" lang="ar" dir="rtl">${esc(SITE.taglineAr)}</p>`}`}
-        <div class="social" aria-label="${AR() ? 'حسابات FOXREX' : 'FOXREX social'}">${socialLinks()}</div>
-      </div>
-      ${col(t('Explore', 'استكشف'), [[`${b}markets/`, t('Markets', 'الأسواق')], [`${b}gold/`, t('Gold', 'الذهب')], [`${b}analysis/`, t('Analysis', 'التحليلات')], [`${b}news/`, t('News', 'الأخبار')], [`${b}learn/`, t('Learn', 'تعلّم')], [`${b}signals/`, t('Signals', 'الإشارات')]])}
-      ${col(t('Company', 'FOXREX'), [[`${b}about/`, t('About', 'من نحن')], [`${b}contact/`, t('Contact', 'تواصل معنا')], [`${b}privacy/`, t('Privacy', 'الخصوصية')], [`${b}terms/`, t('Terms', 'شروط الاستخدام')], [`${b}risk-disclosure/`, t('Risk Disclosure', 'إفصاح المخاطر')]])}
-      ${col(t('Follow', 'تابعنا'), [[s.telegram.url, 'Telegram'], [s.instagram.url, 'Instagram'], [s.facebook.url, 'Facebook'], [null, AR() ? `${arText('WhatsApp')} · قريبًا` : 'WhatsApp · coming soon']])}
-    </div>
-    <div class="site-foot__legal">
-      <p>${t('Risk warning: trading financial instruments carries a high level of risk and may not be suitable for all investors. You can lose some or all of your capital. FOXREX content is for information and education only and is not investment advice.', 'تحذير المخاطر: تداول الأدوات المالية ينطوي على مخاطر عالية وقد لا يناسب جميع المستثمرين، وقد تخسر جزءًا من رأس مالك أو كله. محتوى FOXREX للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.')} <a href="${b}risk-disclosure/" style="text-decoration:underline">${t('Read the full risk disclosure', 'اقرأ إفصاح المخاطر كاملًا')}</a>.</p>
-      <p class="en" dir="ltr">© <span data-year>2026</span> FOXREX. All rights reserved.</p>
-    </div>
-  </div>
-</footer>`;
+  return `<footer class="compact-footer"><div class="wrap"><div class="compact-footer__row">${logo(b)}<div class="social">${socialLinks()}</div><nav aria-label="${t('Legal','روابط الموقع')}">${[['about','About','من نحن'],['contact','Contact','تواصل معنا'],['privacy','Privacy','الخصوصية'],['terms','Terms','شروط الاستخدام'],['risk-disclosure','Risk Disclosure','إفصاح المخاطر']].map(([route,en,ar])=>`<a href="${b}${route}/">${t(en,ar)}</a>`).join('')}</nav></div><p>${t('Information and education only. Trading involves risk.', 'للمعلومات والتعليم فقط. التداول ينطوي على مخاطر.')} © <span data-year>2026</span> FOXREX</p></div></footer>`;
 }
 
 function page(p) {
@@ -337,86 +317,10 @@ function heroAr(b) {
 </section>`;
 }
 
-PAGES.push({ id: 'home', path: '', scripts: ['scripts/public/market.js', 'scripts/public/content.js'],
-  jsonld: ar => ({ '@context': 'https://schema.org', '@type': 'Organization', name: 'FOXREX', url: SITE.origin + (ar ? '/ar/' : LANG === 'tr' ? '/tr/' : '/'), inLanguage: ar ? 'ar' : LANG, logo: `${SITE.origin}/assets/brand/icon-512.png`, slogan: ar ? SITE.taglineAr : 'Trade smarter. Go further.', sameAs: Object.values(SITE.social).map(s => s.url).filter(Boolean) }),
-  body: (r, b) => `
-${AR() ? heroAr(b) : heroEn(b)}
-${ticker()}
-${editorialShelf(b)}
-
-<section class="section">
-  <div class="wrap">
-    ${sectionHead(t('Today at FOXREX', 'اليوم في FOXREX'), t('The daily FOXREX desk', 'كل ما تحتاجه لمتابعة يوم التداول.'), t('A fixed editorial rhythm, in Istanbul time, so you always know when the next update lands.', 'إيقاع تحريري ثابت بتوقيت إسطنبول، لتعرف دائمًا متى يصلك التحديث التالي.'), more(`${b}analysis/`, 'All analysis', 'كل التحليلات'))}
-    ${todaySlots()}
-  </div>
-</section>
-
-<section class="section section--raised">
-  <div class="wrap">
-    ${sectionHead(t('Gold', 'تركيز الذهب'), t('Gold, every trading day.', 'الذهب... كل يوم تداول.'), t('XAUUSD is a core FOXREX pillar: bias, key levels and both scenarios in one view.', 'الذهب XAUUSD محور أساسي في FOXREX: الاتجاه، والمستويات الرئيسية، والسيناريوهان في قراءة واحدة.'))}
-    ${goldFocus(b)}
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    ${sectionHead(t('Latest analysis', 'أحدث التحليلات'), t('Analysis you can act on — or decide to skip.', 'تحليل يساعدك على التحرك...\nأو الانتظار.'), null, more(`${b}analysis/`, 'View all', 'عرض الكل'))}
-    ${analysisGrid(3)}
-  </div>
-</section>
-
-<section class="section section--raised">
-  <div class="wrap">
-    ${sectionHead(t('Market news', 'أخبار السوق'), t('What moved, and why it matters.', 'ما الذي تحرك...\nولماذا يهم؟'), null, more(`${b}news/`, 'All news', 'كل الأخبار'))}
-    ${tabs(NEWS_CATEGORIES, 'data-news-tabs')}
-    ${newsList(6)}
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">${signalsBlock(b, false)}</div>
-</section>
-
-<section class="section section--raised">
-  <div class="wrap rex">
-    <div class="rex__id reveal">
-      <div class="rex__av"><img src="${r}assets/rex/rex-arms.jpg" width="116" height="106" alt="${AR() ? 'REX، ثعلب FOXREX' : 'REX, the FOXREX fox'}" loading="lazy"></div>
-      <div><span class="fx-kicker">REX</span><h2 style="font-size:24px;margin-top:6px">${t('Learn with REX', 'تعلّم مع REX')}</h2><p class="muted" style="margin-top:8px;font-size:15px">${t('Short, clear lessons on the ideas behind every market move.', 'دروس قصيرة وواضحة عن الأفكار التي تقف خلف كل حركة في السوق.')}</p></div>
-      <div class="rex__types"><span class="fx-badge fx-badge--primary">REX EXPLAINS</span><span class="fx-badge">REX NOTE</span><span class="fx-badge fx-badge--ai">ASK REX</span></div>
-    </div>
-    <div>
-      <div class="grid grid--2">${rexCards(b, 4)}</div>
-      <p style="margin-top:22px" class="reveal">${more(`${b}learn/`, 'All REX lessons', 'كل دروس REX')} <span class="muted" style="margin-inline-start:14px;font-size:14px">${t('Have a question? Ask REX on Telegram.', 'لديك سؤال؟ اسأل REX على Telegram.')}</span></p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="wrap">
-    ${sectionHead(t('Why FOXREX', 'لماذا FOXREX'), t('An intelligence ecosystem, built in the open.', 'منظومة ذكاء للأسواق...\nمبنية على نظام واحد.'), t('Some capabilities are live today and others are being built. We label the difference.', 'بعض القدرات متاحة اليوم، وبعضها قيد البناء، ونوضّح الفرق دائمًا.'))}
-    <div class="why reveal">
-      <div>${I.data}<h3>${t('Data', 'البيانات')}</h3><p>${t('Verified market data only. When a feed is not connected, we say so instead of showing estimates.', 'بيانات سوق موثقة فقط. وعندما لا يكون المصدر متصلًا نقول ذلك بوضوح بدل عرض تقديرات.')}</p></div>
-      <div>${I.chart}<h3>${t('Market Analysis', 'تحليل الأسواق')}</h3><p>${t('Structure, levels and scenarios across gold, FX, indices and crypto.', 'البنية والمستويات والسيناريوهات للذهب والعملات والمؤشرات والعملات الرقمية.')}</p></div>
-      <div>${I.ai}<h3>${t('Research workflow', 'منهج البحث')}</h3><p>${t('Source-based research, clear dates and consistent publication checks.', 'بحث يستند إلى المصادر، وتواريخ واضحة، وفحوص منتظمة قبل النشر.')}</p></div>
-      <div>${I.shield}<h3>${t('Risk Awareness', 'الوعي بالمخاطر')}</h3><p>${t('Every idea ships with an invalidation level and a clear risk message.', 'كل فكرة تُنشر مع مستوى إلغاء ورسالة مخاطر واضحة.')}</p></div>
-      <div>${I.bolt}<h3>${t('Speed', 'السرعة')}</h3><p>${t('A daily edition and a sourced calendar of selected high-impact releases.', 'إصدار يومي وتقويم موثّق لأحداث اقتصادية مختارة وعالية التأثير.')}</p></div>
-      <div>${I.research}<h3>${t('Research', 'البحث')}</h3><p>${t('Macro drivers explained, so you understand the move — not just the level.', 'نشرح المحركات الاقتصادية لتفهم الحركة نفسها، لا المستوى فقط.')}</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="section section--tight">
-  <div class="wrap">
-    <div class="join reveal">
-      <div><h2>${t('Join the FOXREX community', 'انضم إلى مجتمع FOXREX')}</h2><p>${t('Daily briefs, gold focus, signals and REX lessons — first on Telegram.', 'الموجز اليومي، وتركيز الذهب، والإشارات، ودروس REX... أولًا على Telegram.')}</p></div>
-      <div class="join__ctas">
-        <a class="fx-btn fx-btn--primary" href="${SITE.social.telegram.url}" target="_blank" rel="noopener">${I.telegram} Telegram</a>
-        <a class="fx-btn fx-btn--ghost" href="${SITE.social.instagram.url}" target="_blank" rel="noopener">${I.instagram} Instagram</a>
-        <a class="fx-btn fx-btn--ghost" href="${SITE.social.facebook.url}" target="_blank" rel="noopener">${I.facebook} Facebook</a>
-      </div>
-    </div>
-  </div>
-</section>` });
+PAGES.push({ id: 'home', path: '', scripts: [],
+  jsonld: ar => ({ '@context':'https://schema.org', '@type':'Organization',name:'FOXREX',url:SITE.origin+(LANG==='en'?'/':`/${LANG}/`),inLanguage:LANG,logo:`${SITE.origin}/assets/brand/icon-512.png`,sameAs:Object.values(SITE.social).map(x=>x.url).filter(Boolean) }),
+  body:(r,b)=>`<section class="home-gateway"><div class="wrap"><p class="fx-kicker">${t('Gold & forex, in focus','الذهب والفوركس، بوضوح')}</p><h1>${t('Your market starting point.','نقطة انطلاقك للأسواق.')}</h1><p class="home-gateway__lead">${t('Choose your next read, check the calendar, or follow FOXREX.','اختر قراءتك القادمة، راجع التقويم، وتابع FOXREX على منصات التواصل.')}</p><div class="gateway-grid">${NAV.map(([route,en,ar],i)=>`<a class="gateway-card" href="${b}${route}/"><span class="gateway-card__number">0${i+1}</span><h2>${t(en,ar)}</h2><span>${tp([['Macro context and the bigger picture','المحركات الاقتصادية والصورة الأشمل'],['Charts, instruments and key levels','الشارتات والأدوات والمستويات المهمة'],['Verified events in Istanbul time','مواعيد موثقة بتوقيت إسطنبول'],['The developments that matter','المستجدات التي تؤثر في السوق']][i])}</span>${I.arrow}</a>`).join('')}</div><div class="gateway-social"><span>${t('Follow FOXREX','تابع FOXREX')}</span>${Object.entries(SITE.social).filter(([,x])=>x.url).map(([key,x])=>`<a href="${x.url}" target="_blank" rel="noopener">${I[key]} ${x.label}</a>`).join('')}</div></div></section>`
+});
 
 PAGES.push({ id: 'markets', path: 'markets', title: 'Markets', titleAr: 'الأسواق', description: 'Markets covered by FOXREX: gold (XAUUSD), EURUSD, GBPUSD, USDJPY, Bitcoin and the US Dollar Index.', descriptionAr: 'الأسواق التي تغطيها FOXREX: الذهب XAUUSD وEURUSD وGBPUSD وUSDJPY والبيتكوين BTCUSD ومؤشر الدولار DXY.', scripts: ['scripts/public/market.js'],
   body: (r, b) => `${pageHero(t('Markets', 'الأسواق'), t('The markets we cover', 'الأسواق التي نغطيها'), t('What each instrument is and what moves it. Live quotes appear only from a connected, verified data feed.', 'ما هي كل أداة، وما الذي يحركها. الأسعار الحية تظهر فقط من مصدر بيانات متصل وموثق.'))}
@@ -445,19 +349,17 @@ PAGES.push({ id: 'gold', path: 'gold', title: 'Gold Focus — XAUUSD', titleAr: 
   <div data-analysis-list data-category="gold">${empty(t('No gold analysis published yet', 'لا توجد تحليلات للذهب منشورة بعد'), t('Published gold analysis will appear here.', 'تظهر هنا تحليلات الذهب فور نشرها.'))}</div>
 </div></section>` });
 
-PAGES.push({ id: 'analysis', path: 'analysis', title: 'Analysis', titleAr: 'التحليلات', description: 'FOXREX market analysis: technical analysis, macro, gold, FX, indices and crypto.', descriptionAr: 'تحليلات FOXREX للأسواق: تحليل فني، واقتصاد كلي، والذهب، والعملات، والمؤشرات، والعملات الرقمية.', scripts: ['scripts/public/content.js'],
-  body: () => `${pageHero(t('Analysis', 'التحليلات'), t('Market analysis', 'تحليل يساعدك على التحرك...\nأو الانتظار.'), t('Technical structure and macro context, with a bias, levels and a clear invalidation for every idea.', 'بنية فنية وسياق اقتصادي، مع اتجاه ومستويات ومستوى إلغاء واضح لكل فكرة.'))}
-<section class="section section--tight"><div class="wrap">
-  ${tabs(ANALYSIS_CATEGORIES, 'data-analysis-tabs')}
-  ${analysisGrid()}
-</div></section>` });
-
-PAGES.push({ id: 'news', path: 'news', title: 'Market News', titleAr: 'أخبار السوق', description: 'FOXREX market news: high-impact releases, economic data, central banks, commodities and FX.', descriptionAr: 'أخبار السوق من FOXREX: البيانات عالية التأثير، والاقتصاد، والبنوك المركزية، والسلع، والعملات.', scripts: ['scripts/public/content.js'],
-  body: () => `${pageHero(t('News', 'الأخبار'), t('Market news', 'ما الذي تحرك...\nولماذا يهم؟'), t('Economic releases and market-moving headlines with their importance and the markets they affect.', 'البيانات الاقتصادية والعناوين المؤثرة، مع أهميتها والأسواق التي تتأثر بها.'))}
-<section class="section section--tight"><div class="wrap">
-  ${tabs(NEWS_CATEGORIES, 'data-news-tabs')}
-  ${newsList()}
-</div></section>` });
+function marketCatalog(kind,r,b) {
+  const list=FEED.items.filter(e=>e.language===LANG && e.access==='PUBLIC' && (kind==='news' ? e.type==='NEWS' || e.type==='EVENT' : ['ANALYSIS','WEEKLY_OUTLOOK'].includes(e.type) && (kind==='technical' ? e.category==='technical' : e.category!=='technical'))).sort((a,b)=>(kind==='technical' ? (a.symbol==='XAUUSD'? -1:b.symbol==='XAUUSD'?1:0) : 0) || b.publishedAt.localeCompare(a.publishedAt));
+  const symbols=[...new Set(list.map(e=>e.symbol).filter(Boolean))].sort((a,b)=>a==='XAUUSD'?-1:b==='XAUUSD'?1:a.localeCompare(b));
+  const filters=kind==='technical' && symbols.length>1 ? `<div class="catalog-filters" aria-label="${t('Instrument','الأداة')}"><button type="button" data-catalog-filter="all" aria-pressed="true">${t('All','الكل')} (${list.length})</button>${symbols.map(x=>`<button type="button" data-catalog-filter="${x}" aria-pressed="false">${x} (${list.filter(e=>e.symbol===x).length})</button>`).join('')}</div>` : '';
+  return `<section class="catalog-section"><div class="wrap">${filters}<div class="catalog-grid">${list.map(e=>`<article class="catalog-card" data-catalog-symbol="${esc(e.symbol||'')}" ${kind==='technical'?'data-technical-card':''}><a href="${b}${esc(e.urlPath)}">${e.image?`<img src="${r}${esc(e.image.src)}" alt="${AR()?arText(e.image.alt):enText(e.image.alt)}" loading="lazy" width="1600" height="900">`:''}<div class="catalog-card__body"><p class="catalog-card__meta">${e.symbol?`<bdi dir="ltr">${esc(e.symbol)}</bdi> · `:''}<time datetime="${esc(e.publishedAt)}">${esc(e.editorialDate)}</time></p><h2>${AR()?arText(e.title):enText(e.title)}</h2><p>${AR()?arText(e.summary):enText(e.summary)}</p><span class="fx-link">${kind==='news'?t('Read article','اقرأ الخبر'):t('Read analysis','اقرأ التحليل')} ${I.arrow}</span></div></a></article>`).join('')}</div></div></section>`;
+}
+for(const [id,en,ar,desc,descAr] of [
+ ['analysis','General analysis','التحليل العام','Macro context for gold and major currencies.','قراءة اقتصادية للذهب والعملات الرئيسية.'],
+ ['technical','Technical analysis','التحليل التقني','Instrument-based analysis with verified charts and price levels.','تحليل حسب الأداة، مع شارتات موثقة ومستويات سعرية واضحة.'],
+ ['news','Market news','الأخبار','Verified economic and central-bank developments.','تطورات اقتصادية وقرارات بنوك مركزية بمصادر موثقة.']
+]) PAGES.push({id,path:id,title:en,titleAr:ar,description:desc,descriptionAr:descAr,scripts:['scripts/public/catalog.js'],body:(r,b)=>`${pageHero(t(en,ar),t(en,ar),t(desc,descAr))}${marketCatalog(id,r,b)}`});
 
 PAGES.push({ id: 'learn', path: 'learn', title: 'Learn with REX', titleAr: 'تعلّم مع REX', description: 'REX Explains: short trading lessons on CPI, gold and yields, breakouts, market structure and risk/reward.', descriptionAr: 'REX يشرح: دروس تداول قصيرة عن CPI، والذهب والعوائد، والاختراق، وبنية السوق، ونسبة المخاطرة إلى العائد.', scripts: ['scripts/public/content.js'],
   body: (r) => `${pageHero('REX', t('Learn with REX', 'تعلّم مع REX'), t('Clear explanations of the ideas behind market moves. Educational content only — not investment advice.', 'شرح واضح للأفكار التي تقف خلف حركة الأسواق. محتوى تعليمي فقط، وليس نصيحة استثمارية.'))}

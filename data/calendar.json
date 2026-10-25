@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-25T20:41:49Z",
+  "updatedAt": "2026-10-25T21:39:24Z",
   "timezone": "Europe/Istanbul",
   "coverage": {
     "en": "Selected verified US and euro-area high-impact events. Coverage is selective, not a complete global calendar. Missing consensus and actual figures are left blank.",
@@ -30,7 +30,7 @@
       "source": {
         "name": "Federal Reserve — October calendar",
         "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
-        "checkedAt": "2026-10-25T20:41:49Z"
+        "checkedAt": "2026-10-25T21:39:24Z"
       }
     },
     {
@@ -55,7 +55,7 @@
       "source": {
         "name": "Federal Reserve — October calendar",
         "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
-        "checkedAt": "2026-10-25T20:41:49Z"
+        "checkedAt": "2026-10-25T21:39:24Z"
       }
     },
     {
@@ -80,7 +80,7 @@
       "source": {
         "name": "BEA — release schedule",
         "url": "https://www.bea.gov/news/schedule",
-        "checkedAt": "2026-10-25T20:41:49Z"
+        "checkedAt": "2026-10-25T21:39:24Z"
       }
     },
     {
@@ -105,7 +105,7 @@
       "source": {
         "name": "BEA — release schedule",
         "url": "https://www.bea.gov/news/schedule",
-        "checkedAt": "2026-10-25T20:41:49Z"
+        "checkedAt": "2026-10-25T21:39:24Z"
       }
     },
     {
@@ -130,7 +130,7 @@
       "source": {
         "name": "ECB — meeting calendar",
         "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
-        "checkedAt": "2026-10-25T20:41:49Z",
+        "checkedAt": "2026-10-25T21:39:24Z",
         "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
       }
     },
@@ -156,7 +156,7 @@
       "source": {
         "name": "BLS — October releases",
         "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
-        "checkedAt": "2026-10-25T20:41:49Z"
+        "checkedAt": "2026-10-25T21:39:24Z"
       }
     }
   ]

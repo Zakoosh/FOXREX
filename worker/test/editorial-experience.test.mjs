@@ -12,7 +12,7 @@ test('each live article has three paired routes, native metadata, a cover, secti
  for(const e of feed.items){groups.set(e.translationGroupId,[...(groups.get(e.translationGroupId)||[]),e.language]);const route=CMS.pathFor(e.urlPath,e.language);const html=read(route+'index.html');
   assert.match(html,new RegExp(`<html lang="${e.language}" dir="${e.language==='ar'?'rtl':'ltr'}"`));
   for(const lang of CMS.LANGS)assert.ok(html.includes(`hreflang="${lang}" href="https://foxrex.co/${CMS.pathFor(e.urlPath,lang)}"`));
-  assert.match(html,/<figure class="editorial-cover">/);assert.match(html,/<h2 id="section-1">/);assert.match(html,/class="editorial-toc"/);assert.ok(!html.includes('1 دقائق قراءة')); assert.match(html,/class="editorial-cta"/);
+  assert.match(html,/<figure class="editorial-cover"(?: data-chart)?>/);assert.match(html,/<h2 id="section-1">/);assert.match(html,/class="editorial-toc"/);assert.ok(!html.includes('1 دقائق قراءة')); assert.match(html,/class="editorial-cta"/);
   assert.ok(fs.existsSync(new URL('../../'+e.image.src,import.meta.url)));
   assert.ok(html.includes('calendar/'));assert.ok(html.includes('https://t.me/fooxrex'));
   assert.ok(!html.includes('By FOXREX Desk')&&!html.includes('AI-assisted editorial')&&!html.includes('تحرير بمساعدة الذكاء الاصطناعي'));
