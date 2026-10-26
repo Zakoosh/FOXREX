@@ -59,9 +59,10 @@ Daily-close snapshots may arrive after newer browser price observations. Keep th
 ## Owner correction: Arabic ticker, AI series and search quality (26 October)
 
 Keep ticker geometry LTR for a seamless physical loop, but isolate each Arabic anchor
-and headline with RTL direction; isolate numeric times LTR. News order is exact first
-publication descending, after separating unreleased previews. Keep native source-release
-dates as evidence, not as a substitute for publication-order sorting.
+and headline with RTL direction; isolate numeric times LTR. News order follows verified source-release chronology descending, with exact article
+publication time as the tie-breaker for the same release date. Never make an old
+September release appear newer because its article was backfilled today. Unreleased
+previews remain separately labelled; writing times remain explicitly labelled Published.
 
 Preserve the prominent nine-instrument AI-assisted series in Technical, its real source
 and chart-age limits, paired palettes and stable URLs. Read docs/AI-TECHNICAL.md. Every
