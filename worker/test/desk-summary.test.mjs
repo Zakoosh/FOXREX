@@ -9,3 +9,4 @@ test('a bar entirely beyond the objective does not prove an observed touch',()=>
  const e={slug:'x',keyLevels:['low: 1','high: 2'],bias:'bullish',timeframe:'H1',freshness:{dataAsOf:'2026-10-26T00:00:00Z',validUntil:'2026-10-26T02:00:00Z'}};
  assert.equal(signalSummary(e,[{event:'x',bars:[{at:'2026-10-26T00:00:00Z',high:4,low:3}]}]).result,'unverifiable');
 });
+test('news order follows exact publication time, independent of source-date tags',()=>{const old={publishedAt:'2026-10-26T07:00:00Z',tags:['source-date-2026-10-26']},recent={publishedAt:'2026-10-26T14:00:00Z',tags:['source-date-2026-10-23']};assert.equal(orderedNews([old,recent])[0],recent);});

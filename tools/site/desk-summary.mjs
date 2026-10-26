@@ -1,7 +1,7 @@
 export function isCompleteSignal(e){return ['SIGNAL','TRADING_IDEA'].includes(e.type)&&typeof e.entry==='string'&&e.entry.trim()!==''&&typeof e.stopLoss==='string'&&e.stopLoss.trim()!==''&&Array.isArray(e.targets)&&e.targets.some(v=>String(v).trim()!=='');}
 export function newsTime(e){return (e.tags||[]).find(t=>t.startsWith('source-date-'))?.slice(12)||e.sources?.find(s=>s.publishedAt)?.publishedAt||e.publishedAt;}
 export function newsPhase(e,now=Date.now()){return e.eventTime&&Date.parse(e.eventTime)>now?'upcoming':'published';}
-export function orderedNews(items,now=Date.now()){return [...items].sort((a,b)=>(newsPhase(a,now)==='upcoming')-(newsPhase(b,now)==='upcoming')||newsTime(b).localeCompare(newsTime(a)));}
+export function orderedNews(items,now=Date.now()){return [...items].sort((a,b)=>(newsPhase(a,now)==='upcoming')-(newsPhase(b,now)==='upcoming')||b.publishedAt.localeCompare(a.publishedAt)||b.updatedAt.localeCompare(a.updatedAt));}
 export function signalSummary(e,charts=[]){
  const c=charts.find(c=>c.event===e.slug),levels=e.keyLevels||[];
  const values=levels.map(s=>Number(s.split(':').at(-1))).filter(Number.isFinite);

@@ -55,3 +55,15 @@ The homepage news ribbon now scrolls continuously without manual dragging, with 
 Show indicative daily percentage change with an explicit sign and green/red/neutral color. SPX (^GSPC), NAS100 (^NDX) and US30 (^DJI) are cash index observations in points, not broker CFDs. Use Yahoo's verified regular-session percentage or a true preceding-session daily close, never chartPreviousClose from the beginning of a multi-day range. Spot metals compare the current spot observation against the preceding verified spot daily close, retaining its date and independent source URL. If that prior close is unavailable or too old, show an unavailable change; do not compare against futures or fabricate zero. Never carry a stale reference over to a later session. Keep source timestamps and delayed/stale status.
 
 Daily-close snapshots may arrive after newer browser price observations. Keep the close reference separately, recompute the daily percentage against the newest price, and never let an older snapshot regress the displayed quote. The browser helper mergeQuote covers this arrival-order regression; homepage JavaScript has a content-version query so deployment refreshes the client implementation.
+
+## Owner correction: Arabic ticker, AI series and search quality (26 October)
+
+Keep ticker geometry LTR for a seamless physical loop, but isolate each Arabic anchor
+and headline with RTL direction; isolate numeric times LTR. News order is exact first
+publication descending, after separating unreleased previews. Keep native source-release
+dates as evidence, not as a substitute for publication-order sorting.
+
+Preserve the prominent nine-instrument AI-assisted series in Technical, its real source
+and chart-age limits, paired palettes and stable URLs. Read docs/AI-TECHNICAL.md. Every
+article has a useful navigation sidebar, related articles, visible authorship, breadcrumbs
+and honest publication/update times. Read docs/SEO.md and run the built-page SEO audit.

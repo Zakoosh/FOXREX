@@ -23,7 +23,7 @@ const BIAS = { bullish: ['Bullish', 'صاعد'], bearish: ['Bearish', 'هابط'
 const OUTCOME = { TARGET_HIT: ['Target hit', 'تحقق الهدف'], STOPPED_OUT: ['Stopped out', 'ضُرب الوقف'], BREAKEVEN: ['Break-even', 'تعادل'], CLOSED_MANUALLY: ['Closed manually', 'أُغلقت يدويًا'], EXPIRED: ['Expired', 'انتهت الصلاحية'] };
 const STANCE = { BUY: ['BUY', 'شراء'], SELL: ['SELL', 'بيع'], WAIT: ['WAIT', 'انتظار'] };
 const IMPORTANCE = { HIGH: ['High impact', 'تأثير مرتفع'], MEDIUM: ['Medium impact', 'تأثير متوسط'], LOW: ['Low impact', 'تأثير منخفض'] };
-const ARTICLE_TYPES = ['MORNING_BRIEF', 'GOLD_FOCUS', 'EVENT', 'US_SESSION_PREVIEW', 'MARKET_RECAP', 'ANALYSIS', 'WEEKLY_OUTLOOK', 'NEWS', 'REX_EXPLAINS'];
+const ARTICLE_TYPES = ['MORNING_BRIEF', 'GOLD_FOCUS', 'EVENT', 'US_SESSION_PREVIEW', 'MARKET_RECAP', 'ANALYSIS', 'WEEKLY_OUTLOOK', 'NEWS', 'REX_EXPLAINS', 'SIGNAL', 'TRADING_IDEA'];
 
 const typeLabel = e => (e.type === 'REX_EXPLAINS' && FORMAT_LABEL[e.format]) || TYPE_LABEL[e.type] || [e.type, e.type];
 const has = v => typeof v === 'string' ? v.trim() !== '' : v != null;
@@ -128,8 +128,8 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
   function jsonld(lang, e) {
     if (!ARTICLE_TYPES.includes(e.type)) return null;
     const url = abs(lang, e.urlPath);
-    const author = { '@type': 'Organization', name: 'FOXREX', url: SITE.origin + '/' };
-    return { '@context': 'https://schema.org', '@type': e.type === 'NEWS' ? 'NewsArticle' : 'Article', headline: e.title.slice(0, 110), description: (e.seo && e.seo.description) || e.summary,
+    const author = { '@type': 'Organization', name: e.author?.name || e.attribution?.byline || 'FOXREX', url: SITE.origin + (lang==='en'?'/about/':`/${lang}/about/`) };
+    return { '@context': 'https://schema.org', '@type': e.type === 'NEWS' ? 'NewsArticle' : 'Article', headline: e.title, description: (e.seo && e.seo.description) || e.summary,
       datePublished: e.publishedAt, dateModified: e.updatedAt, inLanguage: lang, url, mainEntityOfPage: url, isAccessibleForFree: true, author,
       ...(e.image ? { image: SITE.origin + '/' + e.image.src } : {}), publisher: { '@type': 'Organization', name: 'FOXREX', url: SITE.origin + '/', logo: { '@type': 'ImageObject', url: `${SITE.origin}/assets/brand/icon-512.png` } } };
   }
@@ -168,6 +168,8 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
     return `<figure class="editorial-cover"${isChart?' data-chart':''}>${paired?link(e.image.src,'theme-image--dark')+link(lightSrc,'theme-image--light'):isChart?link(e.image.src):img(e.image.src)}${isChart?`<figcaption>${X(lang,'Tap the chart to view full size','اضغط على الشارت لعرضه بالحجم الكامل')}</figcaption>`:''}</figure>`;
   }
 
+  function relatedArticles(lang,e,b){const list=items.filter(x=>x.language===lang&&x.id!==e.id&&(e.symbol?x.symbol===e.symbol:x.section===e.section)).sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt)).slice(0,3);return list.length?`<nav class="article-navigation" aria-label="${X(lang,'Related articles','مقالات ذات صلة')}"><h2>${X(lang,'Related articles','مقالات ذات صلة')}</h2>${list.map(x=>`<a href="${b}${esc(x.urlPath)}">${L(lang,x.title)}</a>`).join('')}</nav>`:'';}
+
   /* ---------- item pages ---------- */
   for (const e of items) {
     const lang = e.language, other = lang === 'en' ? 'ar' : 'en';
@@ -185,8 +187,8 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
       article: { published: e.publishedAt, modified: e.updatedAt, section: SECTION_LABEL[e.section][lang === 'ar' ? 1 : 0] },
       altHref: sib ? CMS.pathFor(sib.urlPath, other) : CMS.hubPath(e.section, other),
       altHreflangExists: !!sib, active: isCompleteSignal(e) ? 'signals' : e.category === 'technical' ? 'technical' : e.section === 'desk' ? 'home' : e.section,
-      jsonld: () => jsonld(lang, e), scripts: e.freshness && e.freshness.validUntil ? ['scripts/public/item.js'] : [],
-      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang,isCompleteSignal(e)?e.summary:analysisCopy(e.summary))}</p><div class="editorial-meta"><span>${X(lang,'Published','وقت النشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${isCompleteSignal(e)?signalPanel(e,lang,h.signalObservations||h.signalCharts||[]):''}${renderCover(lang,e,r,chart)}${chart?`<p class="signal-chart-source">${X(lang,'Candles through','الشموع حتى')} <bdi dir="ltr">${esc(chart.bars.at(-1).at)} UTC</bdi>. ${X(lang,'Dashed lines are source scenario levels, not executed trades.','الخطوط المتقطعة مستويات سيناريو المصدر، وليست صفقات منفذة.')}</p>`:''}</div></section>
+      jsonld: () => ({'@context':'https://schema.org','@graph':[jsonld(lang,e),{'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:lang==='ar'?'الرئيسية':lang==='tr'?'Ana sayfa':'Home',item:SITE.origin+(lang==='en'?'/':`/${lang}/`)},{'@type':'ListItem',position:2,name:lang==='ar'?'المقالات':lang==='tr'?'Makaleler':'Articles',item:abs(lang,e.category==='technical'?'technical/':CMS.SECTION_HUB[e.section])},{'@type':'ListItem',position:3,name:e.title,item:abs(lang,e.urlPath)}]}].filter(Boolean)}), scripts: e.freshness && e.freshness.validUntil ? ['scripts/public/item.js'] : [],
+      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><nav class="article-breadcrumbs" aria-label="${X(lang,'Breadcrumbs','مسار الصفحة')}"><a href="${b}">${X(lang,'Home','الرئيسية')}</a> / <a href="${b}${e.category==='technical'?'technical/':CMS.SECTION_HUB[e.section]}">${X(lang,e.category==='technical'?'Technical analysis':'Articles',e.category==='technical'?'التحليل التقني':'المقالات')}</a></nav><span class="fx-kicker">${e.tags?.includes('ai-technical')?X(lang,'AI technical analysis','تحليل الذكاء الاصطناعي'):X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang,isCompleteSignal(e)?e.summary:analysisCopy(e.summary))}</p><div class="editorial-meta"><span>${L(lang,e.attribution?.byline||e.author?.name||'FOXREX')}</span><span>${X(lang,'Published','وقت النشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${isCompleteSignal(e)?signalPanel(e,lang,h.signalObservations||h.signalCharts||[]):''}${e.tags?.includes('ai-technical')?`<p class="ai-status">${e.tags.includes('dated-data')?X(lang,'Dated chart — current hourly candles unavailable','شارت مؤرّخ — شموع الساعة الحالية غير متاحة'):X(lang,'Completed chart observations','مشاهدات الشارت المكتملة')}: ${time(lang,e.freshness.dataAsOf)} · ${e.timeframe}</p>`:''}${renderCover(lang,e,r,chart)}${chart?`<p class="signal-chart-source">${X(lang,'Candles through','الشموع حتى')} <bdi dir="ltr">${esc(chart.bars.at(-1).at)} UTC</bdi>. ${X(lang,'Dashed lines are source scenario levels, not executed trades.','الخطوط المتقطعة مستويات سيناريو المصدر، وليست صفقات منفذة.')}</p>`:''}</div></section>
 <div class="editorial-layout"><article class="editorial-body" data-item="${esc(e.id)}" data-layer="${esc(e.layer)}">
 ${badges(lang,e)}${freshnessBlock(lang,e)}${typeBlock(lang,e,sib).replace(/\{\{ROOT\}\}/g,r)}
 ${e.type === 'TRADING_IDEA' || e.type === 'SIGNAL' ? '' : rich.html}
@@ -194,7 +196,7 @@ ${has(e.takeaway) ? `<aside class="editorial-cta"><strong>${X(lang,'Key takeaway
 ${cta(lang,b)}${sourcePanel(lang,{...e,sources:[...(e.sources||[]),...(chart?[{name:'Yahoo Finance',url:chart.sourceUrl}]:[]),...(e.priceRef?.source?[{name:e.priceRef.source,url:e.priceRef.sourceUrl||''}]:[])]})}
 ${has(e.riskDisclosure) ? `<p class="fx-risk">${L(lang,e.riskDisclosure)}</p>` : ''}
 <div class="editorial-related"><a href="${b}${CMS.SECTION_HUB[e.section]}">${X(lang,...SECTION_LABEL[e.section])} ${I.arrow}</a> · <a href="${b}archive/${monthOf(e)}/">${X(lang,'Archive','الأرشيف')}</a></div></article>
-${rich.headings.length ? `<aside class="editorial-toc"><h2>${X(lang,'On this page','في هذا المقال')}</h2><ol>${rich.headings.map(h=>`<li><a href="#${h.id}">${L(lang,h.text)}</a></li>`).join('')}</ol></aside>` : ''}</div>`
+${`<aside class="editorial-toc"><nav class="article-navigation" aria-label="${X(lang,'Explore FOXREX','تصفّح FOXREX')}"><h2>${X(lang,'Explore FOXREX','تصفّح FOXREX')}</h2>${[['news/','Latest forex news','أحدث أخبار الفوركس'],['technical/','Forex technical analysis','التحليل الفني للفوركس'],['signals/','Forex signals','إشارات الفوركس'],['gold/','Gold analysis','تحليل الذهب'],['calendar/','Economic calendar','التقويم الاقتصادي']].map(([p,en,ar])=>`<a href="${b}${p}">${X(lang,en,ar)}</a>`).join('')}</nav><h2>${X(lang,'On this page','في هذا المقال')}</h2><ol>${rich.headings.map(h=>`<li><a href="#${h.id}">${L(lang,h.text)}</a></li>`).join('')}</ol>${relatedArticles(lang,e,b)}</aside>`}</div>`
     });
     sitemap.push({ loc: abs(lang, e.urlPath), lastmod: e.updatedAt, alternates, priority: '0.6', freq: 'weekly' });
   }

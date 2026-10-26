@@ -532,5 +532,20 @@
   "Important": "Önemli",
   "Soon": "Yakında",
   "Pause news ticker": "Haber şeridini duraklat",
-  "Only complete setups with entry, targets and stop-loss appear here. Other scenarios are in Technical analysis.": "Burada yalnızca giriş, hedef ve zarar durdurma seviyeleri tam olan sinyaller gösterilir. Diğer senaryolar Teknik analiz bölümündedir."
+  "Only complete setups with entry, targets and stop-loss appear here. Other scenarios are in Technical analysis.": "Burada yalnızca giriş, hedef ve zarar durdurma seviyeleri tam olan sinyaller gösterilir. Diğer senaryolar Teknik analiz bölümündedir.",
+  "AI technical analysis": "Yapay zekâ teknik analizi",
+  "Select an instrument. Each view states its real candle time and data limitations.": "Bir araç seçin. Her analiz gerçek mum zamanını ve veri sınırlamalarını belirtir.",
+  "Breadcrumbs": "Gezinti yolu",
+  "Articles": "Makaleler",
+  "Explore FOXREX": "FOXREX’i keşfedin",
+  "Latest forex news": "Son forex haberleri",
+  "Forex technical analysis": "Forex teknik analizi",
+  "Forex signals": "Forex sinyalleri",
+  "Related articles": "İlgili makaleler",
+  "Dated chart — current hourly candles unavailable": "Tarihli grafik — güncel saatlik mumlar kullanılamıyor",
+  "Completed chart observations": "Tamamlanmış grafik gözlemleri",
+  "Forex technical analysis, gold and silver": "Forex, altın ve gümüş teknik analizi",
+  "Latest forex and gold news": "Son forex ve altın haberleri",
+  "Forex and gold market analysis": "Forex ve altın piyasası analizi",
+  "Forex trading signals": "Forex işlem sinyalleri"
 }

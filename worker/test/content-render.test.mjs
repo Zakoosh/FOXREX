@@ -50,14 +50,15 @@ test('canonical, hreflang, Open Graph, Twitter and article metadata on item page
   assert.match(ar, /class="lang-toggle" href="\.\.\/\.\.\/\.\.\/gold\/2026-09-28\/"/);
 });
 
-test('structured data only where accurate: Article/NewsArticle, organisation author, never for signals', () => {
+test('article and breadcrumb structured data preserve identity, dates and truthful authorship', () => {
   const { read } = once();
-  const ld = h => { const m = h.match(/<script type="application\/ld\+json">([^<]*)<\/script>/); return m ? JSON.parse(m[1]) : null; };
+  const ld = h => { const m = h.match(/<script type="application\/ld\+json">([^<]*)<\/script>/); return m ? JSON.parse(m[1])['@graph'].find(n=>['Article','NewsArticle'].includes(n['@type'])) || null : null; };
   const news = ld(read('news/test-cpi-release/index.html'));
   assert.equal(news['@type'], 'NewsArticle'); assert.equal(news.datePublished, '2026-09-28T12:35:00Z'); assert.equal(news.inLanguage, 'en');
-  assert.deepEqual(news.author, { '@type': 'Organization', name: 'FOXREX', url: 'https://foxrex.co/' }, 'no invented person');
+  assert.deepEqual(news.author, { '@type': 'Organization', name: 'FOXREX Desk', url: 'https://foxrex.co/about/' }, 'no invented person');
   assert.equal(ld(read('analysis/test-eurusd-ecb/index.html'))['@type'], 'Article');
-  for (const f of ['signals/test-xau-long/index.html', 'signals/test-xau-wait/index.html', 'signals/results/test-xau-long-result/index.html']) assert.equal(ld(read(f)), null, f);
+  for (const f of ['signals/test-xau-long/index.html', 'signals/test-xau-wait/index.html']) assert.equal(ld(read(f))['@type'], 'Article', f);
+  assert.equal(ld(read('signals/results/test-xau-long-result/index.html')),null);
   const all = fs.readdirSync(once().dir, { recursive: true }).filter(f => f.endsWith('.html')).map(f => read(f)).join('');
   assert.ok(!/legalName|"license"|"address"|"foundingDate"/.test(all), 'no legal or organisation claims');
 });
@@ -77,7 +78,7 @@ test('item pages show freshness honestly: "as of" time, snapshot price with sour
   assert.match(read('signals/test-xau-wait/index.html'), /not an order or an instruction/);
 });
 
-test('publication metadata and sources without a public byline; result links to its signal', () => {
+test('publication metadata, byline and end-of-article sources; result links to its signal', () => {
   const { read } = once();
   assert.match(read('news/test-cpi-release/index.html'), /class="editorial-meta"/);
   assert.match(read('news/test-cpi-release/index.html'), /<a href="https:\/\/example\.org\/foxrex-test-source" rel="noopener noreferrer nofollow" target="_blank">TEST fixture source \(Example\)<\/a>/);
