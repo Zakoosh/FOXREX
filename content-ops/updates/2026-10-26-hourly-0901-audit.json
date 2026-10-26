@@ -1,0 +1,179 @@
+{
+  "checkedAt": "2026-10-26T06:02:58.504863+00:00",
+  "baseCommit": "e141251cb09bd50f2f630c445d536aaf4f5a7a3f",
+  "quotes": [
+    {
+      "symbol": "XAUUSD",
+      "price": 4014.5,
+      "asOf": "2026-10-26T06:01:43Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAU",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T06:02:02Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 54.356998,
+      "asOf": "2026-10-26T06:01:43Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAG",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T06:02:04Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.122,
+      "asOf": "2026-10-26T06:01:46Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per EUR",
+      "fetchedAt": "2026-10-26T06:02:03Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.3375,
+      "asOf": "2026-10-26T06:01:46Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per GBP",
+      "fetchedAt": "2026-10-26T06:02:03Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 157.055,
+      "asOf": "2026-10-26T06:02:02Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "JPY",
+      "unit": "JPY per USD",
+      "fetchedAt": "2026-10-26T06:02:03Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 80134.921875,
+      "asOf": "2026-10-26T06:01:46Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/BTC",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per BTC",
+      "fetchedAt": "2026-10-26T06:02:03Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    }
+  ],
+  "servedBeforeUpdate": "Exact match with current main snapshot; metal/crypto snapshots over 15 minutes old, FX under two hours; browser refresh/stale handling preserved.",
+  "independentChecks": [
+    {
+      "symbol": "BTCUSD",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?interval=1m&range=1d",
+      "retrievedAt": "2026-10-26T06:02:06.682770+00:00",
+      "price": 80130.55,
+      "asOf": "2026-10-26T06:02:04+00:00",
+      "timeGapSeconds": 18.0,
+      "snapshotPrice": 80134.921875,
+      "snapshotAsOf": "2026-10-26T06:01:46Z",
+      "differencePercent": -0.0055,
+      "assessment": "Near-time indicative USD spot comparison across providers; time and venue differences do not establish an error or guaranteed accuracy."
+    },
+    {
+      "symbols": [
+        "XAUUSD",
+        "XAGUSD"
+      ],
+      "status": "unavailable",
+      "sourceUrl": "https://data-asg.goldprice.org/dbXRates/USD",
+      "reason": "HTTP Error 403: Forbidden",
+      "note": "Futures not substituted."
+    },
+    {
+      "symbols": [
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY"
+      ],
+      "status": "unavailable",
+      "sourceUrl": "https://www.freeforexapi.com/api/live?pairs=EURUSD,GBPUSD,USDJPY",
+      "reason": "The read operation timed out"
+    }
+  ],
+  "calendar": {
+    "overdueUnverifiedWithin24Hours": [],
+    "nextEvent": "ifo-business-climate-2026-10-26 at 09:30 UTC; not released at check"
+  },
+  "mail": {
+    "authenticatedSender": true,
+    "substantiveSectionsRead": 9,
+    "alreadyProcessed": 6,
+    "excludedExpired": 2,
+    "excludedMissingHorizon": 1,
+    "newPublishableEvents": 0,
+    "sourceTimezone": "Australia/Sydney",
+    "receiptBeforeDetection": "Retained and disclosed in existing publications.",
+    "existingSetupsExpiredAtCheck": 6
+  },
+  "news": {
+    "materialNewDevelopmentVerified": false,
+    "action": "No filler published",
+    "checkedSources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/2026-press.htm",
+      "https://www.ecb.europa.eu/press/pubbydate/html/index.en.html",
+      "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/index.htm",
+      "https://www.bankofengland.co.uk/news/news",
+      "https://www.wsj.com/finance/stocks/asian-stocks-decline-as-appetite-for-risky-assets-ebbs-926087d6"
+    ],
+    "note": "Fresh official-source and reputable-news searches reviewed. Asian-session recap contains commentary and previously reported risks; no independently corroborated new material breaking event selected."
+  },
+  "telegram": {
+    "status": "pending-configuration",
+    "deliveryAttempted": false,
+    "blocker": "No configured authenticated backend and verified destination available in current operational configuration."
+  },
+  "social": {
+    "facebook": "pending-link",
+    "instagram": "pending-link",
+    "reminder": "Prior reminder remains under 24 hours; duplicate reminder suppressed."
+  },
+  "validation": {
+    "marketTests": 4,
+    "workerTests": 146,
+    "feedSchema": "passed",
+    "buildCheck": "passed",
+    "syntax": "passed",
+    "feedItems": 198
+  },
+  "preserved": [
+    "Signals routes and permanent analysis routes",
+    "EN/AR/TR",
+    "light/dark hero and candle previews",
+    "signal OHLC provenance manifest",
+    "sticky educational notice",
+    "Morning brief, ifo explanatory article and rechecked gold D1 chart from latest main"
+  ],
+  "refreshErrors": []
+}
