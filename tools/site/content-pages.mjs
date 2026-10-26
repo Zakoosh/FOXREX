@@ -164,8 +164,9 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
     const isChart=e.category==='technical'&&(!e.tags?.includes('autochartist')||!!chart);
     const lightSrc=e.image.src.replace(/\.webp$/,'-light.webp');
     const paired=isChart&&lightSrc!==e.image.src&&existsSync(new URL('../../'+lightSrc,import.meta.url));
-    const img=(src)=>`<img src="${r}${esc(src)}" alt="${esc(e.image.alt)}" width="1960" height="1120" fetchpriority="high">`;
-    const link=(src,cls='')=>`<a${cls?` class="${cls}"`:''} href="${r}${esc(src)}" target="_blank" rel="noopener" aria-label="${X(lang,'Open full chart','افتح الشارت بالحجم الكامل')}">${img(src)}</a>`;
+    const stamp=e.tags?.includes('ai-technical')?'?v='+Date.parse(e.updatedAt):'';
+    const img=(src)=>`<img src="${r}${esc(src)}${stamp}" alt="${esc(e.image.alt)}" width="1960" height="1120" fetchpriority="high">`;
+    const link=(src,cls='')=>`<a${cls?` class="${cls}"`:''} href="${r}${esc(src)}${stamp}" target="_blank" rel="noopener" aria-label="${X(lang,'Open full chart','افتح الشارت بالحجم الكامل')}">${img(src)}</a>`;
     return `<figure class="editorial-cover"${isChart?' data-chart':''}>${paired?link(e.image.src,'theme-image--dark')+link(lightSrc,'theme-image--light'):isChart?link(e.image.src):img(e.image.src)}${isChart?`<figcaption>${X(lang,'Tap the chart to view full size','اضغط على الشارت لعرضه بالحجم الكامل')}${e.tags?.includes('ai-technical')&&e.timeframe==='D1'?` · ${X(lang,'Daily chart: 00:00 marks the session date, not a verified closing-price timestamp.','الشارت اليومي: 00:00 وسم لتاريخ الجلسة، وليس توقيتًا موثقًا لسعر الإغلاق.')}`:''}</figcaption>`:''}</figure>`;
   }
 
