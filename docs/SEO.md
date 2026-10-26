@@ -22,3 +22,9 @@ claim sitemap submission, indexing or search traffic without verified account ev
 Follow Google Search Central's SEO Starter Guide, localized versions, Article structured
 data and AI content guidance. Monitor actual impressions/queries/CTR when authorized
 Search Console access becomes available; do not promise a rank or a timeline.
+
+Initial publication baseline, 26 October 2026: 267 public articles passed the built-page
+technical audit; 154 Node regressions and 14 market-data tests passed. Nine original
+AI-assisted instrument views (27 language pages) were included. Seven use completed
+H1 FX candles; spot metals retain explicitly dated D1 observations. These checks do
+not verify Google indexing or ranking. The hourly task remained paused.
