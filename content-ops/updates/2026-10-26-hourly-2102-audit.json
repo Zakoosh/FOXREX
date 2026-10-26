@@ -1,0 +1,301 @@
+{
+  "checkedAt": "2026-10-26T18:03:53.099897+00:00",
+  "baseCommit": "ec9ca11b86ccaa2aa914276154c9197905edfde9",
+  "quotes": [
+    {
+      "symbol": "XAUUSD",
+      "price": 4021.699951,
+      "asOf": "2026-10-26T18:02:45Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAU",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T18:03:07Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 54.251999,
+      "asOf": "2026-10-26T18:02:45Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAG",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T18:03:07Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.1193,
+      "asOf": "2026-10-26T18:02:42Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per EUR",
+      "fetchedAt": "2026-10-26T18:03:05Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.3357,
+      "asOf": "2026-10-26T18:02:42Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per GBP",
+      "fetchedAt": "2026-10-26T18:03:05Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 157.416,
+      "asOf": "2026-10-26T18:03:02Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "JPY",
+      "unit": "JPY per USD",
+      "fetchedAt": "2026-10-26T18:03:05Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 80253.820312,
+      "asOf": "2026-10-26T18:02:46Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/BTC",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per BTC",
+      "fetchedAt": "2026-10-26T18:03:07Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    }
+  ],
+  "refreshErrors": [],
+  "servedBeforeUpdate": "Exact match with current main",
+  "independentChecks": [
+    {
+      "symbol": "BTCUSD",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?interval=1m&range=1d",
+      "price": 80225.36,
+      "asOf": "2026-10-26T18:04:14+00:00",
+      "timeGapSeconds": 88.0,
+      "comparable": true,
+      "differencePercent": -0.035462875024949714,
+      "assessment": "Indicative USD spot comparison only when close in time. Venue and timestamp differences do not prove error or guarantee accuracy."
+    },
+    {
+      "symbol": "XAUUSD/XAGUSD",
+      "sourceUrl": "https://data-asg.goldprice.org/dbXRates/USD",
+      "status": "unavailable",
+      "reason": "HTTP Error 403: Forbidden",
+      "note": "Independent confirmation unavailable; no futures or mismatched-time substitution."
+    },
+    {
+      "symbol": "EURUSD/GBPUSD/USDJPY",
+      "sourceUrl": "https://www.freeforexapi.com/api/live?pairs=EURUSD,GBPUSD,USDJPY",
+      "status": "unavailable",
+      "reason": "The read operation timed out",
+      "note": "Independent confirmation unavailable; no futures or mismatched-time substitution."
+    }
+  ],
+  "calendar": {
+    "overdueUnverifiedWithin24Hours": [],
+    "newResults": 0,
+    "existingOfficialResult": "ifo-business-climate-2026-10-26: 90.2 retained with trilingual analysis and provenance"
+  },
+  "mail": {
+    "checkedAt": "2026-10-26T18:04:59.474616+00:00",
+    "accountRouting": "Owner-designated newly connected account explicitly selected",
+    "query": "in:anywhere newer_than:2d {from:alerts@autochartist.email from:alerts@autochartist.com}",
+    "matchedMessages": 5,
+    "newMessages": 0,
+    "latestReport": "Previously authenticated and fully read FP Markets US session report, 26 October AEDT",
+    "newPublishedEvents": [],
+    "processedEvents": 19,
+    "heldEvents": [
+      {
+        "eventId": "ac-2ce17dff8d023ef6135e28c5",
+        "symbol": "EURUSD",
+        "pattern": "support",
+        "detectedAt": "2026-10-26T12:00:00Z",
+        "timeframe": "H1",
+        "direction": "bearish",
+        "sourceLevels": [
+          "1.1180"
+        ],
+        "target": "1.1180",
+        "validUntil": null,
+        "status": "held",
+        "reason": "No explicit source validity horizon"
+      },
+      {
+        "eventId": "ac-e307270b1942365219f9d50e",
+        "symbol": "USDJPY",
+        "pattern": "resistance break",
+        "detectedAt": "2026-10-26T10:00:00Z",
+        "timeframe": "M30",
+        "direction": "bullish",
+        "sourceLevels": [
+          "157.1210"
+        ],
+        "target": "157.5717",
+        "validUntil": null,
+        "status": "held",
+        "reason": "No explicit source validity horizon"
+      },
+      {
+        "eventId": "ac-8500fa871147ec899c3e7525",
+        "symbol": "USDCHF",
+        "pattern": "resistance break",
+        "detectedAt": "2026-10-26T11:30:00Z",
+        "timeframe": "M30",
+        "direction": "bullish",
+        "sourceLevels": [
+          "0.8259"
+        ],
+        "target": "0.8273",
+        "validUntil": null,
+        "status": "held",
+        "reason": "No explicit source validity horizon"
+      },
+      {
+        "eventId": "ac-3a82e98c7f6ab6c3df360dfd",
+        "symbol": "XAUUSD",
+        "pattern": "volatility range",
+        "detectedAt": "2026-10-26T12:00:00Z",
+        "timeframe": "H1",
+        "direction": "bearish",
+        "sourceLevels": [
+          "3987.4832",
+          "4042.8568"
+        ],
+        "target": "3987.4832",
+        "validUntil": "2026-10-26T16:00:00Z",
+        "status": "excluded-expired",
+        "reason": "No verified comparable spot XAUUSD H1 OHLC available; public Yahoo XAUUSD=X returned HTTP 404. Futures not substituted.",
+        "note": "Source window has ended; publication remains excluded. No retroactive current signal."
+      },
+      {
+        "eventId": "ac-63d0e2b6094282c202fa00ab",
+        "symbol": "AUS200",
+        "pattern": "ascending trend",
+        "detectedAt": "2026-10-26T06:00:00Z",
+        "timeframe": "H4",
+        "direction": "bullish",
+        "sourceLevels": [
+          "8694.7500",
+          "8904.0711"
+        ],
+        "target": "8904.0711",
+        "validUntil": "2026-10-29T06:00:00Z",
+        "status": "held",
+        "reason": "Previously held event; no verified OHLC mapping for the exact broker instrument. No cash-index substitute."
+      }
+    ],
+    "action": "No duplicate publication; missing horizons and exact-instrument chart gaps remain held",
+    "status": "checked-no-new-alerts",
+    "attempts": [
+      {
+        "status": "temporarily-rate-limited",
+        "errorCode": "RATE_LIMIT_EXCEEDED"
+      },
+      {
+        "status": "success",
+        "matchedMessages": 5,
+        "newMessages": 0
+      }
+    ]
+  },
+  "charts": {
+    "manifestEvents": 19,
+    "manifest": "Existing source observation manifest and all paired candlestick artwork preserved unchanged",
+    "goldHold": "Matching public XAUUSD H1 source remains unavailable; no futures substituted"
+  },
+  "news": {
+    "materialNewDevelopmentVerified": false,
+    "newRecords": 0,
+    "checkedSources": [
+      "https://www.ecb.europa.eu/press/calendars/weekly/html/index.en.html",
+      "https://www.federalreserve.gov/newsevents/2026-october.htm",
+      "https://www.bankofengland.co.uk/events/upcoming-events",
+      "https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar"
+    ],
+    "note": "Fresh primary and reputable financial-news search did not establish a new consequential breaking event. Already-published SAFE and ifo coverage preserved; dated recaps and future policy previews not recycled."
+  },
+  "telegram": {
+    "status": "pending-configuration",
+    "deliveryAttempted": false,
+    "blocker": "Authenticated configured backend and verified destination unavailable; existing pending state preserved; no SENT or UNKNOWN retried.",
+    "notification": "Previously reported blocker unchanged; duplicate notification suppressed."
+  },
+  "social": {
+    "facebook": "pending-link",
+    "instagram": "pending-link",
+    "reminder": "Previous reminder under 24h; duplicate reminder suppressed."
+  },
+  "validation": {
+    "marketTests": 4,
+    "chartTests": 4,
+    "evidenceRetentionTests": 3,
+    "workerTests": 149,
+    "feedSchema": "passed",
+    "buildCheck": "passed",
+    "syntax": "passed",
+    "feedItems": 240
+  },
+  "preserved": [
+    "EN root and AR/TR siblings",
+    "Signals hub and permanent analysis routes",
+    "Original signal provenance and identities",
+    "Theme pairing and full-size candles",
+    "REX classroom",
+    "Sticky educational risk notice",
+    "Concurrent daily editorial package",
+    "Chronological news filters and latest issued gold-related lead",
+    "Compact Entry/TP(source objective)/SL summaries",
+    "Complete original signal-chart provenance manifest"
+  ],
+  "signalOutcomes": {
+    "checkedAt": "2026-10-26T18:03:09.106518+00:00",
+    "events": 19,
+    "retainedEvidenceOnFailure": [
+      {
+        "event": "ac-2df40f6823840f502222be7d",
+        "lastAttempt": {
+          "at": "2026-10-26T18:03:09.106518+00:00",
+          "status": "retained-verified-evidence",
+          "reason": "AssertionError"
+        }
+      }
+    ],
+    "summaries": {
+      "unverifiable": 9,
+      "objective-not-touched": 6,
+      "objective-touched": 4
+    },
+    "rules": "Actual completed post-detection bars within exact source validity only. Full contiguous window required for negative conclusion. Objective observations are not trade wins, profit or complete trade results."
+  },
+  "refreshAttempts": [
+    {
+      "errors": []
+    }
+  ],
+  "retention": "All six quotes refreshed successfully; failure-preservation behavior and frontend stale status remain unchanged."
+}
