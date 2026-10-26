@@ -5,3 +5,7 @@ test('objective observations never manufacture trade returns or negative results
 assert.equal(signalSummary(e,[]).result,'unverifiable');
 const result=signalSummary(e,[{event:'x',bars:[{at:'2026-10-26T00:00:00Z',high:3,low:1}]}]);assert.equal(result.result,'objective-touched');assert.equal(result.sl,null);assert.equal(result.tradeResult,'missing-trade-rules');
 assert.equal(signalSummary(e,[{event:'x',bars:[{at:'2026-10-26T00:00:00Z',high:1.5,low:1}]}]).result,'unverifiable');});
+test('a bar entirely beyond the objective does not prove an observed touch',()=>{
+ const e={slug:'x',keyLevels:['low: 1','high: 2'],bias:'bullish',timeframe:'H1',freshness:{dataAsOf:'2026-10-26T00:00:00Z',validUntil:'2026-10-26T02:00:00Z'}};
+ assert.equal(signalSummary(e,[{event:'x',bars:[{at:'2026-10-26T00:00:00Z',high:4,low:3}]}]).result,'unverifiable');
+});

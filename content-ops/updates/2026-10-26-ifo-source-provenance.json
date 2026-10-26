@@ -1,0 +1,24 @@
+{
+  "sourceUrl": "https://www.ifo.de/en/facts/2026-10-26/ifo-business-climate-rises-october-2026",
+  "retrievedAt": "2026-10-26T10:00:23Z",
+  "sourceHtmlSha256": "5bae31917e3691ff57392aa7a0abb42b577c3a38c9fb4405e59069d84a87cfab",
+  "officialValues": {
+    "climate": {
+      "october": 90.2,
+      "september": 89.9
+    },
+    "situation": {
+      "october": 88.8,
+      "september": 89.5
+    },
+    "expectations": {
+      "october": 91.6,
+      "september": 90.4
+    }
+  },
+  "sourcePublishedDate": "2026-10-26",
+  "scheduledReleaseAt": "2026-10-26T09:30:00Z",
+  "exactPostingTime": null,
+  "consensus": "Not used; secondary providers disagree",
+  "marketReaction": "Not asserted"
+}

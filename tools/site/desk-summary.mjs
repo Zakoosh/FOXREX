@@ -11,7 +11,7 @@ export function signalSummary(e,charts=[]){
   const start=Date.parse(e.freshness?.dataAsOf),end=Date.parse(e.freshness?.validUntil),step=e.timeframe==='M30'?1800000:3600000;
   const bars=c.bars.filter(b=>Date.parse(b.at)>=start&&Date.parse(b.at)+step<=end);
   observedThrough=bars.at(-1)?.at||null;
-  const hit=bars.some(b=>e.bias==='bearish'?b.low<=target:b.high>=target);
+  const hit=bars.some(b=>Number.isFinite(b.low)&&Number.isFinite(b.high)&&b.low<=target&&target<=b.high);
   // A missing interval prevents a negative conclusion; OHLC cannot resolve TP/SL ordering.
   const complete=Number.isFinite(end)&&bars.length===Math.ceil((end-start)/step)&&bars.every((b,i)=>Date.parse(b.at)===start+i*step);
   if(hit)result='objective-touched';else if(complete)result='objective-not-touched';

@@ -17,7 +17,11 @@ const read=p=>JSON.parse(fs.readFileSync(new URL('../../'+p,import.meta.url),'ut
 test('verified three-language intake publishes once across retries and subsequent dates',()=>{
  const pkg=read('content-ops/daily/2026-10-26/package.json'),source=pkg.records.find(r=>r.type==='ANALYSIS'),records=pkg.records.filter(r=>r.type==='ANALYSIS'&&r.slug===source.slug);
  const calendar=read('data/calendar.json');calendar.updatedAt=now;
- for(const event of calendar.events)event.source.checkedAt=now;
+ for(const event of calendar.events){
+  event.source.checkedAt=now;
+  // Reconstruct the calendar as of the fixture's historical clock.
+  if(Date.parse(event.at)>Date.parse(now)&&event.actual){event.actual=null;event.status='scheduled';}
+ }
  const alert={...base.alerts[0],records};
  const input={...base,sourcePublishedAt:'2026-10-25T23:30:00Z',calendar,alerts:[alert]},feed=read('data/content.json');
  // This fixture runs at a fixed historical time, before later daily editions.

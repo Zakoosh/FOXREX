@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-26T05:46:32Z",
+  "updatedAt": "2026-10-26T10:00:23.570Z",
   "timezone": "Europe/Istanbul",
   "coverage": {
     "en": "Selected verified German, US and euro-area events for 26 October–2 November. Selective coverage, not a full global calendar. No verified consensus or unreleased actuals are supplied.",
@@ -180,15 +180,23 @@
         "tr": "Almanya"
       },
       "impact": "MEDIUM",
-      "status": "scheduled",
+      "status": "released",
       "previous": null,
       "forecast": null,
-      "actual": null,
+      "actual": {
+        "value": "90.2",
+        "sourceUrl": "https://www.ifo.de/en/facts/2026-10-26/ifo-business-climate-rises-october-2026",
+        "reportingPeriod": "2026-10",
+        "sourcePublishedDate": "2026-10-26",
+        "scheduledReleaseAt": "2026-10-26T09:30:00Z",
+        "postingTime": "Not separately supplied by source",
+        "verifiedAt": "2026-10-26T10:00:23Z"
+      },
       "source": {
         "name": "ifo Institute — official release schedule",
         "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
         "timeUrl": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
-        "checkedAt": "2026-10-26T05:46:32Z"
+        "checkedAt": "2026-10-26T10:00:23.570Z"
       },
       "analysisPath": "news/ifo-survey-versus-output-2026-10-26/"
     }
