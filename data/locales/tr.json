@@ -523,5 +523,10 @@
   "Valid until": "Geçerlilik sonu",
   "View signal": "Sinyali görüntüle",
   "Candles through": "Son mum zamanı",
-  "Dashed lines are source scenario levels, not executed trades.": "Kesikli çizgiler kaynak senaryo seviyeleridir; gerçekleşen işlemler değildir."
+  "Dashed lines are source scenario levels, not executed trades.": "Kesikli çizgiler kaynak senaryo seviyeleridir; gerçekleşen işlemler değildir.",
+  "Latest gold news": "En güncel altın haberleri",
+  "Upcoming release": "Yaklaşan açıklama",
+  "Time period": "Zaman aralığı",
+  "All dates": "Tüm tarihler",
+  "Last 7 days": "Son 7 gün"
 }
