@@ -43,3 +43,13 @@ The same task searches for material breaking gold/forex/macro news and publishes
 Facebook/Instagram publication is still not configured. Metricool has been suggested as a possible connector, but it is not confirmed installed or connected. Do not treat this as permission to post or claim social posting is live. The user must first authorize account linking through the provider and identify the intended destinations/publishing scope; never ask for credentials in chat.
 
 Light hero asset: assets/media/home-market-hero-light-v2.webp, created with the built-in image tool from the dark counterpart. Prompt: preserve the gold bars/coins and wide composition; replace the navy night setting with airy ivory marble, pearl architecture and daylight, restrained emerald accents and warm metallic gold; calm bright space for navy text, no text/logo/chart.
+
+## Owner presentation update — 26 October 2026
+
+Show each article's original publication date AND exact hour/minute and its last content update in Europe/Istanbul, including catalog cards. Never replace the article timestamp with a build or source-quote fetch time. Keep publication time separate from market observation time.
+
+Only setups with actual entry, at least one target and a stop-loss qualify for the Signals desk. Incomplete imported records stay ANALYSIS in Technical Analysis with their existing permanent routes; never render blank Entry/TP/SL or trade-result panels for them. Keep analytical range boundaries as ordinary technical levels. Summarize source attribution in the final source disclosure rather than repeatedly naming providers in article copy or beside each data point. Preserve original canonical provenance internally.
+
+The homepage news ribbon now scrolls continuously without manual dragging, with automatic Important and Soon badges (Soon means a release within one hour), hover/focus pause, a pause button and reduced-motion support. Keep duplicated loop content inert and hidden from accessibility readers.
+
+Show indicative daily percentage change with an explicit sign and green/red/neutral color. SPX (^GSPC), NAS100 (^NDX) and US30 (^DJI) are cash index observations in points, not broker CFDs. Use Yahoo's verified regular-session percentage or a true preceding-session daily close, never chartPreviousClose from the beginning of a multi-day range. Spot metals compare the current spot observation against the preceding verified spot daily close, retaining its date and independent source URL. If that prior close is unavailable or too old, show an unavailable change; do not compare against futures or fabricate zero. Never carry a stale reference over to a later session. Keep source timestamps and delayed/stale status.

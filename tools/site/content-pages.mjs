@@ -1,4 +1,4 @@
-import {signalPanel} from './desk-summary.mjs';
+import {signalPanel,isCompleteSignal,analysisCopy} from './desk-summary.mjs';
 /* Permanent content pages for the FOXREX static site, generated from the canonical v3 feed.
    One canonical item → its own page (EN at /<urlPath>, AR at /ar/<urlPath>) + listings derived from it.
    Uses the existing layout and CSS classes only — this is routing and content, not a redesign.
@@ -57,7 +57,7 @@ export function contentPages(feed, h) {
   const freshnessBlock = (lang, e) => {
     const f = e.freshness; if (!f) return '';
     const what = X(lang, 'Information as of', 'المعلومات حتى');
-    const px = e.priceRef ? ` · ${X(lang, 'Price at time of writing', 'السعر وقت الكتابة')}: ${e.priceRef.symbol ? sym(e.priceRef.symbol) + ' ' : ''}${ltr(Number(e.priceRef.price).toLocaleString('en-US', { maximumFractionDigits: 6 }))} · ${L(lang, e.priceRef.source)} · ${time(lang, e.priceRef.sourceTimestamp)}` : '';
+    const px = e.priceRef ? ` · ${X(lang, 'Price at time of writing', 'السعر وقت الكتابة')}: ${e.priceRef.symbol ? sym(e.priceRef.symbol) + ' ' : ''}${ltr(Number(e.priceRef.price).toLocaleString('en-US', { maximumFractionDigits: 6 }))} · ${time(lang, e.priceRef.sourceTimestamp)}` : '';
     const notice = f.validUntil ? `\n<div class="fx-notice fx-notice--info" data-stale-notice hidden>${I.info}<span>${X(lang, 'This analysis may no longer reflect current conditions. Check the publication date.', 'قد لا يعكس هذا التحليل الظروف الحالية. راجع تاريخ النشر.')}</span></div>` : '';
     return `<p class="fx-card__meta" data-freshness${f.validUntil ? ` data-valid-until="${esc(f.validUntil)}"` : ''} data-data-as-of="${esc(f.dataAsOf)}">${what} ${time(lang, f.dataAsOf)}${px}</p>${notice}`;
   };
@@ -171,7 +171,10 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
   /* ---------- item pages ---------- */
   for (const e of items) {
     const lang = e.language, other = lang === 'en' ? 'ar' : 'en';
-    const rich = articleBody(lang,e.body), minutes = Math.max(1,Math.ceil(String(e.body || '').split(/\s+/).length / (lang === 'ar' ? 160 : 210)));
+    const sourceNames=['Autochartist','Yahoo Finance'];
+    let displayBody=isCompleteSignal(e)?String(e.body||''):analysisCopy(e.body);
+    for(const name of sourceNames)displayBody=displayBody.split(name).join(lang==='ar'?'البيانات':lang==='tr'?'veriler':'the data');
+    const rich = articleBody(lang,displayBody), minutes = Math.max(1,Math.ceil(String(e.body || '').split(/\s+/).length / (lang === 'ar' ? 160 : 210)));
     const sib = SELECT.translationOf({ items }, e);
     const alternates = SELECT.alternatesFor({ items }, e, SITE.origin);
     const label = typeLabel(e);
@@ -181,14 +184,14 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
       canonical: abs(lang, e.urlPath), alternates, ogType: 'article', cover: e.image?.src,
       article: { published: e.publishedAt, modified: e.updatedAt, section: SECTION_LABEL[e.section][lang === 'ar' ? 1 : 0] },
       altHref: sib ? CMS.pathFor(sib.urlPath, other) : CMS.hubPath(e.section, other),
-      altHreflangExists: !!sib, active: e.tags?.includes('autochartist') ? 'signals' : e.category === 'technical' ? 'technical' : e.section === 'desk' ? 'home' : e.section,
+      altHreflangExists: !!sib, active: isCompleteSignal(e) ? 'signals' : e.category === 'technical' ? 'technical' : e.section === 'desk' ? 'home' : e.section,
       jsonld: () => jsonld(lang, e), scripts: e.freshness && e.freshness.validUntil ? ['scripts/public/item.js'] : [],
-      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang, e.summary)}</p><div class="editorial-meta"><span>${X(lang,'Published','نُشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${e.tags?.includes('autochartist')?signalPanel(e,lang,h.signalObservations||h.signalCharts||[]):''}${renderCover(lang,e,r,chart)}${chart?`<p class="signal-chart-source">${X(lang,'Candles through','الشموع حتى')} <bdi dir="ltr">${esc(chart.bars.at(-1).at)} UTC</bdi> · <a href="${esc(chart.sourceUrl)}" target="_blank" rel="noopener noreferrer">Yahoo Finance</a>. ${X(lang,'Dashed lines are source scenario levels, not executed trades.','الخطوط المتقطعة مستويات سيناريو المصدر، وليست صفقات منفذة.')}</p>`:''}</div></section>
+      body: (r, b) => `<section class="editorial-hero"><div class="wrap"><span class="fx-kicker">${X(lang, ...label)}</span><h1>${L(lang, e.title)}</h1><p class="editorial-hero__lead">${L(lang,isCompleteSignal(e)?e.summary:analysisCopy(e.summary))}</p><div class="editorial-meta"><span>${X(lang,'Published','وقت النشر')} ${time(lang,e.publishedAt)}</span><span>${lang === 'ar' ? L(lang, minutes === 1 ? 'دقيقة واحدة للقراءة' : minutes === 2 ? 'دقيقتان للقراءة' : `${minutes} ${minutes <= 10 ? 'دقائق' : 'دقيقة'} للقراءة`) : `${minutes} ${X(lang,'min read','دقائق قراءة')}`}</span>${e.updatedAt !== e.publishedAt ? `<span>${X(lang,'Updated','حُدّث')} ${time(lang,e.updatedAt)}</span>` : ''}</div>${isCompleteSignal(e)?signalPanel(e,lang,h.signalObservations||h.signalCharts||[]):''}${renderCover(lang,e,r,chart)}${chart?`<p class="signal-chart-source">${X(lang,'Candles through','الشموع حتى')} <bdi dir="ltr">${esc(chart.bars.at(-1).at)} UTC</bdi>. ${X(lang,'Dashed lines are source scenario levels, not executed trades.','الخطوط المتقطعة مستويات سيناريو المصدر، وليست صفقات منفذة.')}</p>`:''}</div></section>
 <div class="editorial-layout"><article class="editorial-body" data-item="${esc(e.id)}" data-layer="${esc(e.layer)}">
 ${badges(lang,e)}${freshnessBlock(lang,e)}${typeBlock(lang,e,sib).replace(/\{\{ROOT\}\}/g,r)}
 ${e.type === 'TRADING_IDEA' || e.type === 'SIGNAL' ? '' : rich.html}
 ${has(e.takeaway) ? `<aside class="editorial-cta"><strong>${X(lang,'Key takeaway','الفكرة الأساسية')}</strong><p>${L(lang,e.takeaway)}</p></aside>` : ''}
-${cta(lang,b)}${sourcePanel(lang,e)}
+${cta(lang,b)}${sourcePanel(lang,{...e,sources:[...(e.sources||[]),...(chart?[{name:'Yahoo Finance',url:chart.sourceUrl}]:[]),...(e.priceRef?.source?[{name:e.priceRef.source,url:e.priceRef.sourceUrl||''}]:[])]})}
 ${has(e.riskDisclosure) ? `<p class="fx-risk">${L(lang,e.riskDisclosure)}</p>` : ''}
 <div class="editorial-related"><a href="${b}${CMS.SECTION_HUB[e.section]}">${X(lang,...SECTION_LABEL[e.section])} ${I.arrow}</a> · <a href="${b}archive/${monthOf(e)}/">${X(lang,'Archive','الأرشيف')}</a></div></article>
 ${rich.headings.length ? `<aside class="editorial-toc"><h2>${X(lang,'On this page','في هذا المقال')}</h2><ol>${rich.headings.map(h=>`<li><a href="#${h.id}">${L(lang,h.text)}</a></li>`).join('')}</ol></aside>` : ''}</div>`
@@ -210,7 +213,7 @@ ${rich.headings.length ? `<aside class="editorial-toc"><h2>${X(lang,'On this pag
   }
 
   /* ---------- archives & listings: only when they contain items ---------- */
-  const listing = (lang, list) => `<ul class="news-list">${list.map(e => `<li class="news-item">${time(lang, e.publishedAt)}<div><h3><a href="{{ROOT}}${CMS.pathFor(e.urlPath, lang)}">${L(lang, e.title)}</a></h3><p>${L(lang, e.summary)}</p></div><div class="news-item__mk"><span class="fx-badge">${X(lang, ...typeLabel(e))}</span></div></li>`).join('\n')}</ul>`;
+  const listing = (lang, list) => `<ul class="news-list">${list.map(e => `<li class="news-item">${time(lang, e.publishedAt)}<div><h3><a href="{{ROOT}}${CMS.pathFor(e.urlPath, lang)}">${L(lang, e.title)}</a></h3><p>${L(lang,isCompleteSignal(e)?e.summary:analysisCopy(e.summary))}</p></div><div class="news-item__mk"><span class="fx-badge">${X(lang, ...typeLabel(e))}</span></div></li>`).join('\n')}</ul>`;
   const archiveSets = Object.fromEntries(CMS.LANGS.map(lang => [lang, SELECT.archives(byLang(lang))]));
   const addArchive = (key, path, titles, descs, pick, active) => {
     for (const lang of CMS.LANGS) {

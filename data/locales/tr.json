@@ -528,5 +528,9 @@
   "Upcoming release": "Yaklaşan açıklama",
   "Time period": "Zaman aralığı",
   "All dates": "Tüm tarihler",
-  "Last 7 days": "Son 7 gün"
+  "Last 7 days": "Son 7 gün",
+  "Important": "Önemli",
+  "Soon": "Yakında",
+  "Pause news ticker": "Haber şeridini duraklat",
+  "Only complete setups with entry, targets and stop-loss appear here. Other scenarios are in Technical analysis.": "Burada yalnızca giriş, hedef ve zarar durdurma seviyeleri tam olan sinyaller gösterilir. Diğer senaryolar Teknik analiz bölümündedir."
 }

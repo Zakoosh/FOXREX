@@ -1,3 +1,4 @@
+export function isCompleteSignal(e){return ['SIGNAL','TRADING_IDEA'].includes(e.type)&&typeof e.entry==='string'&&e.entry.trim()!==''&&typeof e.stopLoss==='string'&&e.stopLoss.trim()!==''&&Array.isArray(e.targets)&&e.targets.some(v=>String(v).trim()!=='');}
 export function newsTime(e){return (e.tags||[]).find(t=>t.startsWith('source-date-'))?.slice(12)||e.sources?.find(s=>s.publishedAt)?.publishedAt||e.publishedAt;}
 export function newsPhase(e,now=Date.now()){return e.eventTime&&Date.parse(e.eventTime)>now?'upcoming':'published';}
 export function orderedNews(items,now=Date.now()){return [...items].sort((a,b)=>(newsPhase(a,now)==='upcoming')-(newsPhase(b,now)==='upcoming')||newsTime(b).localeCompare(newsTime(a)));}
@@ -19,8 +20,11 @@ export function signalSummary(e,charts=[]){
  return {entry,sl,target,lower:values.length===2?Math.min(...values):null,result,observedThrough,tradeResult:entry==null||sl==null?'missing-trade-rules':'not-tested'};
 }
 export function signalPanel(e,lang,charts=[]){
+ if(!isCompleteSignal(e))return '';
  const q=signalSummary(e,charts),copy={ar:['ملخص الإشارة','غير محدد','هدف المصدر','حد النطاق','تعذّر التحقق من النتيجة','لامس هدف المصدر — ليس إثبات ربح صفقة','لم يلمس الهدف ضمن كامل النافذة','لا يمكن حساب نتيجة صفقة دون دخول ووقف خسارة'],en:['Signal summary','Not supplied','Source objective','Range boundary','Result not verifiable','Source objective touched — not a trade profit','Objective not touched in the complete window','Trade result requires entry and stop-loss rules'],tr:['Sinyal özeti','Belirtilmedi','Kaynak hedefi','Aralık sınırı','Sonuç doğrulanamadı','Kaynak hedefine temas — işlem kârı değildir','Tam süre içinde hedefe temas yok','İşlem sonucu için giriş ve zarar durdurma gerekir']}[lang]||[];
  const value=v=>v==null?copy[1]:String(v);
  const label=q.result==='objective-touched'?copy[5]:q.result==='objective-not-touched'?copy[6]:copy[4];
  return `<aside class="signal-summary" aria-label="${copy[0]}"><strong>${copy[0]}</strong><p><b>Entry:</b> ${value(q.entry)} · <b>TP (${copy[2]}):</b> ${value(q.target)} · <b>SL:</b> ${value(q.sl)}</p><p>${copy[3]}: ${value(q.lower)} · ${e.timeframe||''}</p><p><strong>${label}</strong></p>${q.tradeResult==='missing-trade-rules'?`<small>${copy[7]}</small>`:''}</aside>`;
 }
+
+export function analysisCopy(text){return String(text||'').split(/\n\s*\n/).filter(p=>!/^\s*(What is missing|حدود الإشارة|Eksik bilgiler)/i.test(p)).map(p=>p.replace(/(?:؛|;)\s*(?:لا دخول|No entry|Giriş)[\s\S]*$/i,'').replace(/\.\s+No entry[\s\S]*$/i,'.')).join('\n\n');}

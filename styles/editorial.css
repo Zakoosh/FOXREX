@@ -162,3 +162,10 @@ svg.fx-flip,.editorial-related svg{width:16px;height:16px;min-width:16px;max-wid
 @media(min-width:981px){.site-nav a{padding-inline:8px;font-size:14px}html[lang="ar"] .site-nav a{padding-inline:8px}html[lang="ar"] .site-nav{margin-inline-start:8px}}
 @media(min-width:981px) and (max-width:1250px){.site-head__end .fx-btn--sm{display:none}.site-nav a{font-size:12px;padding-inline:6px}}
 .catalog-card[data-signal-card] img{aspect-ratio:7/4;object-fit:contain}
+
+/* Continuous news ribbon. Keyboard focus and reduced-motion preferences remain accessible. */
+.home-news-strip>.news-marquee{overflow:hidden;display:block;flex:1;min-width:0;direction:ltr}.news-marquee__track{display:flex;width:max-content;animation:foxrex-news-scroll 75s linear infinite}.news-marquee__group{display:flex;align-items:center;flex-shrink:0;gap:28px;padding-inline-end:28px}.news-marquee__group>a{display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:12px}.news-marquee__track:hover,.news-marquee__track:focus-within,.news-marquee[data-paused="true"] .news-marquee__track{animation-play-state:paused}.ticker-badge{background:#9c273e;color:#fff;font-size:10px;padding:2px 6px;border-radius:4px}.ticker-badge:empty{display:none}.ticker-badge[data-soon="true"]{background:#916000}.home-news-strip button{background:transparent;border:1px solid var(--foxrex-border);color:var(--foxrex-text);border-radius:5px;min-width:32px;min-height:32px;cursor:pointer}
+@keyframes foxrex-news-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.news-marquee__track{animation:none}.home-news-strip>.news-marquee{overflow:auto}}
+[data-quote-change]{display:block;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}[data-quote-change][data-direction="up"]{color:#008465}[data-quote-change][data-direction="down"]{color:#c03652}[data-quote-change][data-direction="flat"],[data-quote-change][data-direction="unknown"]{color:var(--foxrex-text-muted)}
+.home-prices__items{grid-template-columns:repeat(9,minmax(145px,1fr));overflow-x:auto}.catalog-card__meta time{font-size:11px}.editorial-meta{font-size:14px}

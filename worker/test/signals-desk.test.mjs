@@ -10,19 +10,21 @@ test('signals have a distinct trilingual tab and retain permanent source-analysi
  assert.deepEqual(charts.map(c=>c.event).sort(),scenarios.map(e=>e.slug).sort());
  for(const lang of ['en','ar','tr']){
   const prefix=lang==='en'?'':lang+'/',hub=read(prefix+'signals/index.html'),tech=read(prefix+'technical/index.html');
-  assert.equal((hub.match(/data-signal-card/g)||[]).length,scenarios.length);
-  assert.equal((tech.match(/class="catalog-card"/g)||[]).length,feed.items.filter(e=>e.language===lang&&e.category==='technical'&&!e.tags?.includes('autochartist')).length);
-  assert.ok(!tech.includes('/ac-'));
+  assert.equal((hub.match(/data-signal-card/g)||[]).length,0);
+  assert.equal((tech.match(/class="catalog-card"/g)||[]).length,feed.items.filter(e=>e.language===lang&&e.category==='technical').length);
+  assert.ok(tech.includes('/ac-'));
+  assert.ok(!hub.includes('Entry:'));
+  assert.ok(!hub.includes('SL:'));
   const nav=hub.match(/<nav class="site-nav"[^>]*>([\s\S]*?)<\/nav>/)[1];
   assert.match(nav,/href="[^\"]*signals\/" aria-current="page"/);
   const entries=feed.items.filter(e=>e.language===lang&&e.tags?.includes('autochartist'));
   for(const e of entries){
    assert.ok(!/autochartist/i.test(e.title));assert.ok(e.sources.some(s=>s.name==='Autochartist'));
-   assert.ok(hub.includes(e.urlPath));
+   assert.ok(tech.includes(e.urlPath));
    const article=read(prefix+e.urlPath+'index.html');
    assert.match(article,/data-chart/);assert.match(article,/theme-image--light/);assert.match(article,/signal-chart-source/);
    const chart=charts.find(c=>c.event===e.slug);
-   assert.ok(article.includes('Yahoo Finance'));assert.ok(e.body.includes(chart.bars.at(-1).at));
+   assert.ok(article.includes('Yahoo Finance'));assert.ok(!article.includes('Entry:'));assert.ok(!article.includes('TP ('));assert.ok(e.body.includes(chart.bars.at(-1).at));
   }
  }
 });
