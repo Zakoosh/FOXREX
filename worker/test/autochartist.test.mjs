@@ -7,6 +7,7 @@ test('email intake rejects old alerts, spoofed senders, and missing source timez
  const run=v=>prepareAutochartist(v,{items:[]},{processedEvents:[]},{now});
  assert.throws(()=>run({...base,sender:'fake@example.com'}),/Sender/);
  assert.throws(()=>run({...base,authenticatedSender:false}),/authentication/);
+ assert.throws(()=>run({...base,sourcePublishedAt:'2026-10-27T00:00:00Z'}),/publication time/);
  assert.throws(()=>run({...base,alerts:[{...base.alerts[0],validUntil:'2026-10-25T01:00:00Z'}]}),/Stale/);
  assert.throws(()=>run({...base,alerts:[{...base.alerts[0],sourceTimezone:''}]}),/source facts/);
  assert.throws(()=>run(base),/EN\/AR\/TR/);
@@ -18,13 +19,18 @@ test('verified three-language intake publishes once across retries and subsequen
  const calendar=read('data/calendar.json');calendar.updatedAt=now;
  for(const event of calendar.events)event.source.checkedAt=now;
  const alert={...base.alerts[0],records};
- const input={...base,calendar,alerts:[alert]},feed=read('data/content.json');
+ const input={...base,sourcePublishedAt:'2026-10-25T23:30:00Z',calendar,alerts:[alert]},feed=read('data/content.json');
  // This fixture runs at a fixed historical time, before later daily editions.
  feed.items=feed.items.filter(e=>Date.parse(e.publishedAt)<=Date.parse(now));
  const result=prepareAutochartist(input,feed,{processedEvents:[]},{now});
  assert.equal(result.receipt.events.length,1);assert.equal(result.receipt.records.length,3);
  assert.equal(result.feed.items.length,feed.items.length+3);
  for(const id of result.receipt.events)assert.ok(result.operations.processedEvents.includes(id));
+ for(const r of result.receipt.records){
+  const entry=result.feed.items.find(e=>e.id===r.id);
+  assert.equal(entry.sources[0].publishedAt,input.sourcePublishedAt);
+  assert.equal(entry.freshness.dataAsOf,alert.detectedAt);
+ }
  const again=prepareAutochartist(input,result.feed,result.operations,{now:'2026-10-26T02:00:00Z'});assert.equal(again.receipt.events.length,0);
  const withoutLedger=prepareAutochartist(input,result.feed,{processedEvents:[]},{now:'2026-10-26T02:00:00Z'});assert.equal(withoutLedger.receipt.events.length,0);
  assert.equal(JSON.stringify(result.feed).includes('alerts@autochartist'),false);

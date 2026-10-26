@@ -1,15 +1,1551 @@
 {
   "$schema": "./content.schema.json",
   "schemaVersion": 3,
-  "updated": "2026-10-26T05:47:02.928Z",
+  "updated": "2026-10-26T07:12:15.726Z",
   "publication": {
-    "id": "pub_79dc99b7b25c7fe7e3910bfb",
-    "at": "2026-10-26T05:47:02.928Z",
-    "contentId": "daily-2026-10-26-xauusd-technical-2026-10-23-tr",
+    "id": "pub_bc1c3d4fe57663bc3b0fb437",
+    "at": "2026-10-26T07:12:15.726Z",
+    "contentId": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a-tr",
     "action": "publish",
-    "version": 2
+    "version": 1
   },
   "items": [
+    {
+      "id": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a",
+      "section": "analysis",
+      "slug": "ac-0af5b63f03891eeffc80856a",
+      "urlPath": "analysis/ac-0af5b63f03891eeffc80856a/",
+      "title": "NZD/JPY: سيناريو صاعد بإطار M30 نحو 89.6880",
+      "summary": "قراءة مؤرخة لـوتد صاعد بين 89.2940 و89.6880، بنافذة 9 ساعات وشموع M30 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist وتد صاعد على NZD/JPY بإطار M30 واحتمال حركة صاعدة نحو 89.6880. المرجع السفلي الوارد هو 89.2940 والعلوي 89.6880. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 17:30 بتوقيت سيدني AEDT، أي 06:30 UTC. يحدد المصدر مدة 9 ساعات تنتهي الساعة 15:30 UTC يوم 26 أكتوبر.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 89.6880 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 89.2940 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nيصف التقرير احتمالًا صاعدًا رغم تسمية الوتد الصاعد. نحافظ على اتجاه المصدر المعلن بدل استبداله بتفسير نمطي؛ وتبقى عوامل الين والنيوزيلندي بحاجة إلى تقييم مستقل.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار M30 حتى 2026-10-26T06:30:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "NZDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-0af5b63f03891eeffc80856a.webp",
+        "alt": "شموع NZD/JPY بإطار M30 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "M30",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 89.2940",
+        "الحد العلوي من المصدر: 89.6880"
+      ],
+      "instruments": [
+        "NZDJPY"
+      ],
+      "timeframes": [
+        "M30"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T06:30:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T15:30:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a",
+      "section": "analysis",
+      "slug": "ac-0af5b63f03891eeffc80856a",
+      "urlPath": "analysis/ac-0af5b63f03891eeffc80856a/",
+      "title": "NZD/JPY: bullish M30 scenario toward 89.6880",
+      "summary": "A dated review of the source’s rising wedge between 89.2940 and 89.6880, with a 9-hour horizon and independently sourced M30 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a rising wedge on NZD/JPY (M30) and a possible upward move toward 89.6880. Its quoted lower reference is 89.2940 and upper reference 89.6880. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 17:30 Australia/Sydney (AEDT), equivalent to 06:30 UTC. The source states a 9-hour horizon, ending at 15:30 UTC on 26 October.\n\nConditional interpretation\nContinuation toward 89.6880 would require later independently checked prices supporting the stated direction. A move back toward 89.2940 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nThe report explicitly describes an upward possibility despite naming a rising wedge. We preserve its stated direction rather than substituting a textbook interpretation; yen and New Zealand dollar drivers still require separate assessment.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance M30 observations through 2026-10-26T06:30:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "NZDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-0af5b63f03891eeffc80856a.webp",
+        "alt": "NZD/JPY M30 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "M30",
+      "keyLevels": [
+        "Source lower boundary: 89.2940",
+        "Source upper boundary: 89.6880"
+      ],
+      "instruments": [
+        "NZDJPY"
+      ],
+      "timeframes": [
+        "M30"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T06:30:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T15:30:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a",
+      "section": "analysis",
+      "slug": "ac-0af5b63f03891eeffc80856a",
+      "urlPath": "analysis/ac-0af5b63f03891eeffc80856a/",
+      "title": "NZD/JPY: 89.6880 yönünde M30 yükseliş senaryosu",
+      "summary": "89.2940–89.6880 arasındaki kaynak yükselen kama için 9 saatlik pencere ve bağımsız M30 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu NZD/JPY için M30 zaman diliminde yükselen kama ve 89.6880 yönünde olası bir yükseliş tanımlar. Alt referans 89.2940, üst referans 89.6880. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 17:30; UTC karşılığı 06:30. Kaynağın 9 saatlik süresi 26 Ekim saat 15:30 UTC’de biter.\n\nKoşullu değerlendirme\n89.6880 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 89.2940 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nRapor yükselen kama adına rağmen açıkça yukarı yönlü bir olasılık belirtir. Kaynağın yönü korunur; yerine genel bir formasyon yorumu konmaz. Yen ve Yeni Zelanda doları etkenleri ayrıca değerlendirilmelidir.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:30:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance M30 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "NZDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-0af5b63f03891eeffc80856a.webp",
+        "alt": "NZD/JPY M30 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "M30",
+      "keyLevels": [
+        "Kaynak alt sınırı: 89.2940",
+        "Kaynak üst sınırı: 89.6880"
+      ],
+      "instruments": [
+        "NZDJPY"
+      ],
+      "timeframes": [
+        "M30"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T06:30:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T15:30:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-0f2f6f178a335d6663312110-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-0f2f6f178a335d6663312110",
+      "section": "analysis",
+      "slug": "ac-0f2f6f178a335d6663312110",
+      "urlPath": "analysis/ac-0f2f6f178a335d6663312110/",
+      "title": "GBP/USD: سيناريو هابط بإطار H1 نحو 1.3352",
+      "summary": "قراءة مؤرخة لـنطاق تقلب بين 1.3352 و1.3394، بنافذة 4 ساعات وشموع H1 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist نطاق تقلب على GBP/USD بإطار H1 واحتمال حركة هابطة نحو 1.3352. المرجع السفلي الوارد هو 1.3352 والعلوي 1.3394. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 18:00 بتوقيت سيدني AEDT، أي 07:00 UTC. يحدد المصدر مدة 4 ساعات تنتهي الساعة 11:00 UTC يوم 26 أكتوبر. وصل البريد الساعة 06:38 UTC قبل وقت الاكتشاف المطبوع. نحتفظ بهذا التعارض ولا ندعي التحقق المستقل من وقت توليد الإشارة.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 1.3352 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 1.3394 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nيلزم فصل أخبار الجنيه الخاصة عن جانب الدولار. السيناريو الهابط لهذا الزوج لا يثبت تراجع الإسترليني أمام جميع العملات.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار H1 حتى 2026-10-26T06:00:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "GBPUSD",
+      "category": "technical",
+      "bias": "bearish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-0f2f6f178a335d6663312110.webp",
+        "alt": "شموع GBP/USD بإطار H1 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 1.3352",
+        "الحد العلوي من المصدر: 1.3394"
+      ],
+      "instruments": [
+        "GBPUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-0f2f6f178a335d6663312110-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-0f2f6f178a335d6663312110",
+      "section": "analysis",
+      "slug": "ac-0f2f6f178a335d6663312110",
+      "urlPath": "analysis/ac-0f2f6f178a335d6663312110/",
+      "title": "GBP/USD: bearish H1 scenario toward 1.3352",
+      "summary": "A dated review of the source’s volatility range between 1.3352 and 1.3394, with a 4-hour horizon and independently sourced H1 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a volatility range on GBP/USD (H1) and a possible downward move toward 1.3352. Its quoted lower reference is 1.3352 and upper reference 1.3394. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 18:00 Australia/Sydney (AEDT), equivalent to 07:00 UTC. The source states a 4-hour horizon, ending at 11:00 UTC on 26 October. Receipt at 06:38 UTC precedes that printed detection time. This discrepancy is retained; the source generation time is not independently confirmed.\n\nConditional interpretation\nContinuation toward 1.3352 would require later independently checked prices supporting the stated direction. A move back toward 1.3394 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nSterling-specific news and the dollar side must be assessed separately. A bearish pair scenario does not establish a broad sterling decline against every currency.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance H1 observations through 2026-10-26T06:00:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "GBPUSD",
+      "category": "technical",
+      "bias": "bearish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-0f2f6f178a335d6663312110.webp",
+        "alt": "GBP/USD H1 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Source lower boundary: 1.3352",
+        "Source upper boundary: 1.3394"
+      ],
+      "instruments": [
+        "GBPUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-0f2f6f178a335d6663312110-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-0f2f6f178a335d6663312110",
+      "section": "analysis",
+      "slug": "ac-0f2f6f178a335d6663312110",
+      "urlPath": "analysis/ac-0f2f6f178a335d6663312110/",
+      "title": "GBP/USD: 1.3352 yönünde H1 düşüş senaryosu",
+      "summary": "1.3352–1.3394 arasındaki kaynak oynaklık aralığı için 4 saatlik pencere ve bağımsız H1 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu GBP/USD için H1 zaman diliminde oynaklık aralığı ve 1.3352 yönünde olası bir düşüş tanımlar. Alt referans 1.3352, üst referans 1.3394. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 18:00; UTC karşılığı 07:00. Kaynağın 4 saatlik süresi 26 Ekim saat 11:00 UTC’de biter. E-posta 06:38 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu tutarsızlık korunur; üretim saati bağımsız olarak doğrulanmış değildir.\n\nKoşullu değerlendirme\n1.3352 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 1.3394 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nSterline özgü haberler ile dolar etkisi ayrı değerlendirilmelidir. Bu paritedeki düşüş senaryosu sterlinin bütün paralara karşı zayıfladığını göstermez.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:00:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance H1 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "GBPUSD",
+      "category": "technical",
+      "bias": "bearish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-0f2f6f178a335d6663312110.webp",
+        "alt": "GBP/USD H1 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Kaynak alt sınırı: 1.3352",
+        "Kaynak üst sınırı: 1.3394"
+      ],
+      "instruments": [
+        "GBPUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692",
+      "section": "analysis",
+      "slug": "ac-1c96b30f56bfae28d91e3692",
+      "urlPath": "analysis/ac-1c96b30f56bfae28d91e3692/",
+      "title": "AUD/USD: سيناريو صاعد بإطار H1 نحو 0.7040",
+      "summary": "قراءة مؤرخة لـنطاق تقلب بين 0.7013 و0.7040، بنافذة 4 ساعات وشموع H1 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist نطاق تقلب على AUD/USD بإطار H1 واحتمال حركة صاعدة نحو 0.7040. المرجع السفلي الوارد هو 0.7013 والعلوي 0.7040. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 18:00 بتوقيت سيدني AEDT، أي 07:00 UTC. يحدد المصدر مدة 4 ساعات تنتهي الساعة 11:00 UTC يوم 26 أكتوبر. وصل البريد الساعة 06:38 UTC قبل وقت الاكتشاف المطبوع. نحتفظ بهذا التعارض ولا ندعي التحقق المستقل من وقت توليد الإشارة.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 0.7040 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 0.7013 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nقد تؤثر توقعات الفائدة الأسترالية وشهية المخاطر العالمية في الدولار الأسترالي، فيما تظل توقعات السياسة الأمريكية عاملًا منفصلًا عبر عملة التسعير.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار H1 حتى 2026-10-26T06:00:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "AUDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-1c96b30f56bfae28d91e3692.webp",
+        "alt": "شموع AUD/USD بإطار H1 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 0.7013",
+        "الحد العلوي من المصدر: 0.7040"
+      ],
+      "instruments": [
+        "AUDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692",
+      "section": "analysis",
+      "slug": "ac-1c96b30f56bfae28d91e3692",
+      "urlPath": "analysis/ac-1c96b30f56bfae28d91e3692/",
+      "title": "AUD/USD: bullish H1 scenario toward 0.7040",
+      "summary": "A dated review of the source’s volatility range between 0.7013 and 0.7040, with a 4-hour horizon and independently sourced H1 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a volatility range on AUD/USD (H1) and a possible upward move toward 0.7040. Its quoted lower reference is 0.7013 and upper reference 0.7040. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 18:00 Australia/Sydney (AEDT), equivalent to 07:00 UTC. The source states a 4-hour horizon, ending at 11:00 UTC on 26 October. Receipt at 06:38 UTC precedes that printed detection time. This discrepancy is retained; the source generation time is not independently confirmed.\n\nConditional interpretation\nContinuation toward 0.7040 would require later independently checked prices supporting the stated direction. A move back toward 0.7013 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nAustralian rate expectations and changes in global risk appetite may affect the Australian dollar; US policy expectations remain a separate influence through the quote currency.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance H1 observations through 2026-10-26T06:00:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "AUDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-1c96b30f56bfae28d91e3692.webp",
+        "alt": "AUD/USD H1 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Source lower boundary: 0.7013",
+        "Source upper boundary: 0.7040"
+      ],
+      "instruments": [
+        "AUDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692",
+      "section": "analysis",
+      "slug": "ac-1c96b30f56bfae28d91e3692",
+      "urlPath": "analysis/ac-1c96b30f56bfae28d91e3692/",
+      "title": "AUD/USD: 0.7040 yönünde H1 yükseliş senaryosu",
+      "summary": "0.7013–0.7040 arasındaki kaynak oynaklık aralığı için 4 saatlik pencere ve bağımsız H1 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu AUD/USD için H1 zaman diliminde oynaklık aralığı ve 0.7040 yönünde olası bir yükseliş tanımlar. Alt referans 0.7013, üst referans 0.7040. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 18:00; UTC karşılığı 07:00. Kaynağın 4 saatlik süresi 26 Ekim saat 11:00 UTC’de biter. E-posta 06:38 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu tutarsızlık korunur; üretim saati bağımsız olarak doğrulanmış değildir.\n\nKoşullu değerlendirme\n0.7040 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 0.7013 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nAvustralya faiz beklentileri ve küresel risk iştahı Avustralya dolarını etkileyebilir; ABD politika beklentileri ise karşı para üzerinden ayrı bir etkendir.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:00:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance H1 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "AUDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-1c96b30f56bfae28d91e3692.webp",
+        "alt": "AUD/USD H1 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Kaynak alt sınırı: 0.7013",
+        "Kaynak üst sınırı: 0.7040"
+      ],
+      "instruments": [
+        "AUDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03",
+      "section": "analysis",
+      "slug": "ac-77daa28b72c4cc0364361f03",
+      "urlPath": "analysis/ac-77daa28b72c4cc0364361f03/",
+      "title": "USD/JPY: سيناريو صاعد بإطار H1 نحو 157.2446",
+      "summary": "قراءة مؤرخة لـمثلث صاعد بين 156.6440 و157.2446، بنافذة 6 ساعات وشموع H1 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist مثلث صاعد على USD/JPY بإطار H1 واحتمال حركة صاعدة نحو 157.2446. المرجع السفلي الوارد هو 156.6440 والعلوي 157.2446. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 17:00 بتوقيت سيدني AEDT، أي 06:00 UTC. يحدد المصدر مدة 6 ساعات تنتهي الساعة 12:00 UTC يوم 26 أكتوبر.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 157.2446 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 156.6440 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nفروق العوائد الأمريكية واليابانية والطلب على العملات الدفاعية قد يدفعان الزوج باتجاهات متباينة. تسمية المثلث الصاعد وحدها لا تحسم هذه العوامل.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار H1 حتى 2026-10-26T06:00:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "USDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-77daa28b72c4cc0364361f03.webp",
+        "alt": "شموع USD/JPY بإطار H1 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 156.6440",
+        "الحد العلوي من المصدر: 157.2446"
+      ],
+      "instruments": [
+        "USDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T06:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T12:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03",
+      "section": "analysis",
+      "slug": "ac-77daa28b72c4cc0364361f03",
+      "urlPath": "analysis/ac-77daa28b72c4cc0364361f03/",
+      "title": "USD/JPY: bullish H1 scenario toward 157.2446",
+      "summary": "A dated review of the source’s ascending triangle between 156.6440 and 157.2446, with a 6-hour horizon and independently sourced H1 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a ascending triangle on USD/JPY (H1) and a possible upward move toward 157.2446. Its quoted lower reference is 156.6440 and upper reference 157.2446. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 17:00 Australia/Sydney (AEDT), equivalent to 06:00 UTC. The source states a 6-hour horizon, ending at 12:00 UTC on 26 October.\n\nConditional interpretation\nContinuation toward 157.2446 would require later independently checked prices supporting the stated direction. A move back toward 156.6440 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nRelative US and Japanese yields and demand for defensive currencies can pull this pair in different directions. An upward triangle label alone cannot resolve those competing drivers.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance H1 observations through 2026-10-26T06:00:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "USDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-77daa28b72c4cc0364361f03.webp",
+        "alt": "USD/JPY H1 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Source lower boundary: 156.6440",
+        "Source upper boundary: 157.2446"
+      ],
+      "instruments": [
+        "USDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T06:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T12:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03",
+      "section": "analysis",
+      "slug": "ac-77daa28b72c4cc0364361f03",
+      "urlPath": "analysis/ac-77daa28b72c4cc0364361f03/",
+      "title": "USD/JPY: 157.2446 yönünde H1 yükseliş senaryosu",
+      "summary": "156.6440–157.2446 arasındaki kaynak yükselen üçgen için 6 saatlik pencere ve bağımsız H1 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu USD/JPY için H1 zaman diliminde yükselen üçgen ve 157.2446 yönünde olası bir yükseliş tanımlar. Alt referans 156.6440, üst referans 157.2446. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 17:00; UTC karşılığı 06:00. Kaynağın 6 saatlik süresi 26 Ekim saat 12:00 UTC’de biter.\n\nKoşullu değerlendirme\n157.2446 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 156.6440 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nABD ile Japonya getirileri arasındaki fark ve güvenli para talebi pariteyi farklı yönlere çekebilir. Yükselen üçgen etiketi bu etkenleri tek başına çözmez.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:00:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance H1 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "USDJPY",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-77daa28b72c4cc0364361f03.webp",
+        "alt": "USD/JPY H1 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Kaynak alt sınırı: 156.6440",
+        "Kaynak üst sınırı: 157.2446"
+      ],
+      "instruments": [
+        "USDJPY"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T06:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T12:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-7debf78785afa061715ecc1a-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-7debf78785afa061715ecc1a",
+      "section": "analysis",
+      "slug": "ac-7debf78785afa061715ecc1a",
+      "urlPath": "analysis/ac-7debf78785afa061715ecc1a/",
+      "title": "USD/CHF: سيناريو صاعد بإطار H1 نحو 0.8256",
+      "summary": "قراءة مؤرخة لـنطاق تقلب بين 0.8228 و0.8256، بنافذة 4 ساعات وشموع H1 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist نطاق تقلب على USD/CHF بإطار H1 واحتمال حركة صاعدة نحو 0.8256. المرجع السفلي الوارد هو 0.8228 والعلوي 0.8256. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 18:00 بتوقيت سيدني AEDT، أي 07:00 UTC. يحدد المصدر مدة 4 ساعات تنتهي الساعة 11:00 UTC يوم 26 أكتوبر. وصل البريد الساعة 06:38 UTC قبل وقت الاكتشاف المطبوع. نحتفظ بهذا التعارض ولا ندعي التحقق المستقل من وقت توليد الإشارة.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 0.8256 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 0.8228 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nقد تعاكس تغيرات الطلب الدفاعي على الفرنك تحركات الدولار أو تعززها. هذا الزوج وحده لا يثبت توجه المستثمرين إلى الذهب طلبًا للأمان.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار H1 حتى 2026-10-26T06:00:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "USDCHF",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-7debf78785afa061715ecc1a.webp",
+        "alt": "شموع USD/CHF بإطار H1 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 0.8228",
+        "الحد العلوي من المصدر: 0.8256"
+      ],
+      "instruments": [
+        "USDCHF"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-7debf78785afa061715ecc1a-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-7debf78785afa061715ecc1a",
+      "section": "analysis",
+      "slug": "ac-7debf78785afa061715ecc1a",
+      "urlPath": "analysis/ac-7debf78785afa061715ecc1a/",
+      "title": "USD/CHF: bullish H1 scenario toward 0.8256",
+      "summary": "A dated review of the source’s volatility range between 0.8228 and 0.8256, with a 4-hour horizon and independently sourced H1 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a volatility range on USD/CHF (H1) and a possible upward move toward 0.8256. Its quoted lower reference is 0.8228 and upper reference 0.8256. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 18:00 Australia/Sydney (AEDT), equivalent to 07:00 UTC. The source states a 4-hour horizon, ending at 11:00 UTC on 26 October. Receipt at 06:38 UTC precedes that printed detection time. This discrepancy is retained; the source generation time is not independently confirmed.\n\nConditional interpretation\nContinuation toward 0.8256 would require later independently checked prices supporting the stated direction. A move back toward 0.8228 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nChanges in defensive demand for the franc may offset or reinforce changes in the dollar. This pair alone does not establish whether investors are seeking safety in gold.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance H1 observations through 2026-10-26T06:00:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "USDCHF",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-7debf78785afa061715ecc1a.webp",
+        "alt": "USD/CHF H1 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Source lower boundary: 0.8228",
+        "Source upper boundary: 0.8256"
+      ],
+      "instruments": [
+        "USDCHF"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-7debf78785afa061715ecc1a-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-7debf78785afa061715ecc1a",
+      "section": "analysis",
+      "slug": "ac-7debf78785afa061715ecc1a",
+      "urlPath": "analysis/ac-7debf78785afa061715ecc1a/",
+      "title": "USD/CHF: 0.8256 yönünde H1 yükseliş senaryosu",
+      "summary": "0.8228–0.8256 arasındaki kaynak oynaklık aralığı için 4 saatlik pencere ve bağımsız H1 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu USD/CHF için H1 zaman diliminde oynaklık aralığı ve 0.8256 yönünde olası bir yükseliş tanımlar. Alt referans 0.8228, üst referans 0.8256. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 18:00; UTC karşılığı 07:00. Kaynağın 4 saatlik süresi 26 Ekim saat 11:00 UTC’de biter. E-posta 06:38 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu tutarsızlık korunur; üretim saati bağımsız olarak doğrulanmış değildir.\n\nKoşullu değerlendirme\n0.8256 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 0.8228 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nFranga yönelik güvenli liman talebi dolardaki değişimi dengeleyebilir ya da güçlendirebilir. Bu parite tek başına altına güvenli liman talebini kanıtlamaz.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:00:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance H1 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "USDCHF",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-7debf78785afa061715ecc1a.webp",
+        "alt": "USD/CHF H1 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Kaynak alt sınırı: 0.8228",
+        "Kaynak üst sınırı: 0.8256"
+      ],
+      "instruments": [
+        "USDCHF"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb",
+      "section": "analysis",
+      "slug": "ac-a06d2af2687bb5fd8b7368cb",
+      "urlPath": "analysis/ac-a06d2af2687bb5fd8b7368cb/",
+      "title": "EUR/USD: سيناريو صاعد بإطار H1 نحو 1.1235",
+      "summary": "قراءة مؤرخة لـنطاق تقلب بين 1.1198 و1.1235، بنافذة 4 ساعات وشموع H1 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist نطاق تقلب على EUR/USD بإطار H1 واحتمال حركة صاعدة نحو 1.1235. المرجع السفلي الوارد هو 1.1198 والعلوي 1.1235. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 18:00 بتوقيت سيدني AEDT، أي 07:00 UTC. يحدد المصدر مدة 4 ساعات تنتهي الساعة 11:00 UTC يوم 26 أكتوبر. وصل البريد الساعة 06:38 UTC قبل وقت الاكتشاف المطبوع. نحتفظ بهذا التعارض ولا ندعي التحقق المستقل من وقت توليد الإشارة.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 1.1235 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 1.1198 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nتوقعات الفائدة الأوروبية والأمريكية قد تؤثر في الزوج؛ وقد يتزامن تحرك الدولار الواسع مع تغير الذهب المقوم به دون أن يثبت ذلك علاقة سببية.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار H1 حتى 2026-10-26T06:00:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "EURUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-a06d2af2687bb5fd8b7368cb.webp",
+        "alt": "شموع EUR/USD بإطار H1 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 1.1198",
+        "الحد العلوي من المصدر: 1.1235"
+      ],
+      "instruments": [
+        "EURUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb",
+      "section": "analysis",
+      "slug": "ac-a06d2af2687bb5fd8b7368cb",
+      "urlPath": "analysis/ac-a06d2af2687bb5fd8b7368cb/",
+      "title": "EUR/USD: bullish H1 scenario toward 1.1235",
+      "summary": "A dated review of the source’s volatility range between 1.1198 and 1.1235, with a 4-hour horizon and independently sourced H1 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a volatility range on EUR/USD (H1) and a possible upward move toward 1.1235. Its quoted lower reference is 1.1198 and upper reference 1.1235. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 18:00 Australia/Sydney (AEDT), equivalent to 07:00 UTC. The source states a 4-hour horizon, ending at 11:00 UTC on 26 October. Receipt at 06:38 UTC precedes that printed detection time. This discrepancy is retained; the source generation time is not independently confirmed.\n\nConditional interpretation\nContinuation toward 1.1235 would require later independently checked prices supporting the stated direction. A move back toward 1.1198 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nEuro-area and US rate expectations can affect this pair; a broad dollar move may also change the USD gold quote without proving causation.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance H1 observations through 2026-10-26T06:00:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "EURUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-a06d2af2687bb5fd8b7368cb.webp",
+        "alt": "EUR/USD H1 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Source lower boundary: 1.1198",
+        "Source upper boundary: 1.1235"
+      ],
+      "instruments": [
+        "EURUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb",
+      "section": "analysis",
+      "slug": "ac-a06d2af2687bb5fd8b7368cb",
+      "urlPath": "analysis/ac-a06d2af2687bb5fd8b7368cb/",
+      "title": "EUR/USD: 1.1235 yönünde H1 yükseliş senaryosu",
+      "summary": "1.1198–1.1235 arasındaki kaynak oynaklık aralığı için 4 saatlik pencere ve bağımsız H1 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu EUR/USD için H1 zaman diliminde oynaklık aralığı ve 1.1235 yönünde olası bir yükseliş tanımlar. Alt referans 1.1198, üst referans 1.1235. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 18:00; UTC karşılığı 07:00. Kaynağın 4 saatlik süresi 26 Ekim saat 11:00 UTC’de biter. E-posta 06:38 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu tutarsızlık korunur; üretim saati bağımsız olarak doğrulanmış değildir.\n\nKoşullu değerlendirme\n1.1235 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 1.1198 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nEuro bölgesi ve ABD faiz beklentileri pariteyi etkileyebilir; doların genel hareketi dolar cinsi altını da etkileyebilir, ancak bu tek başına nedensellik kanıtı değildir.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:00:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance H1 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "EURUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-a06d2af2687bb5fd8b7368cb.webp",
+        "alt": "EUR/USD H1 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Kaynak alt sınırı: 1.1198",
+        "Kaynak üst sınırı: 1.1235"
+      ],
+      "instruments": [
+        "EURUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90",
+      "section": "analysis",
+      "slug": "ac-bd5b5449c1f2b74efdaa6f90",
+      "urlPath": "analysis/ac-bd5b5449c1f2b74efdaa6f90/",
+      "title": "NZD/USD: سيناريو صاعد بإطار H1 نحو 0.5712",
+      "summary": "قراءة مؤرخة لـنطاق تقلب بين 0.5687 و0.5712، بنافذة 4 ساعات وشموع H1 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist نطاق تقلب على NZD/USD بإطار H1 واحتمال حركة صاعدة نحو 0.5712. المرجع السفلي الوارد هو 0.5687 والعلوي 0.5712. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 18:00 بتوقيت سيدني AEDT، أي 07:00 UTC. يحدد المصدر مدة 4 ساعات تنتهي الساعة 11:00 UTC يوم 26 أكتوبر. وصل البريد الساعة 06:38 UTC قبل وقت الاكتشاف المطبوع. نحتفظ بهذا التعارض ولا ندعي التحقق المستقل من وقت توليد الإشارة.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 0.5712 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 0.5687 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nتوقعات السياسة النيوزيلندية وظروف المخاطرة العالمية مهمة إلى جانب الدولار. لا يجوز تحويل نافذة المصدر القصيرة إلى توقع للسياسة يمتد أيامًا.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار H1 حتى 2026-10-26T06:00:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "NZDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-bd5b5449c1f2b74efdaa6f90.webp",
+        "alt": "شموع NZD/USD بإطار H1 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 0.5687",
+        "الحد العلوي من المصدر: 0.5712"
+      ],
+      "instruments": [
+        "NZDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90",
+      "section": "analysis",
+      "slug": "ac-bd5b5449c1f2b74efdaa6f90",
+      "urlPath": "analysis/ac-bd5b5449c1f2b74efdaa6f90/",
+      "title": "NZD/USD: bullish H1 scenario toward 0.5712",
+      "summary": "A dated review of the source’s volatility range between 0.5687 and 0.5712, with a 4-hour horizon and independently sourced H1 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a volatility range on NZD/USD (H1) and a possible upward move toward 0.5712. Its quoted lower reference is 0.5687 and upper reference 0.5712. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 18:00 Australia/Sydney (AEDT), equivalent to 07:00 UTC. The source states a 4-hour horizon, ending at 11:00 UTC on 26 October. Receipt at 06:38 UTC precedes that printed detection time. This discrepancy is retained; the source generation time is not independently confirmed.\n\nConditional interpretation\nContinuation toward 0.5712 would require later independently checked prices supporting the stated direction. A move back toward 0.5687 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nNew Zealand policy expectations and global risk conditions matter alongside the dollar. This short source window cannot be extended into a multi-day policy forecast.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance H1 observations through 2026-10-26T06:00:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "NZDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-bd5b5449c1f2b74efdaa6f90.webp",
+        "alt": "NZD/USD H1 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Source lower boundary: 0.5687",
+        "Source upper boundary: 0.5712"
+      ],
+      "instruments": [
+        "NZDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90",
+      "section": "analysis",
+      "slug": "ac-bd5b5449c1f2b74efdaa6f90",
+      "urlPath": "analysis/ac-bd5b5449c1f2b74efdaa6f90/",
+      "title": "NZD/USD: 0.5712 yönünde H1 yükseliş senaryosu",
+      "summary": "0.5687–0.5712 arasındaki kaynak oynaklık aralığı için 4 saatlik pencere ve bağımsız H1 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu NZD/USD için H1 zaman diliminde oynaklık aralığı ve 0.5712 yönünde olası bir yükseliş tanımlar. Alt referans 0.5687, üst referans 0.5712. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 18:00; UTC karşılığı 07:00. Kaynağın 4 saatlik süresi 26 Ekim saat 11:00 UTC’de biter. E-posta 06:38 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu tutarsızlık korunur; üretim saati bağımsız olarak doğrulanmış değildir.\n\nKoşullu değerlendirme\n0.5712 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 0.5687 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nYeni Zelanda politika beklentileri ve küresel risk koşulları doların yanında önemlidir. Kaynağın kısa penceresi çok günlük politika tahminine dönüştürülemez.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:00:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance H1 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "NZDUSD",
+      "category": "technical",
+      "bias": "bullish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-bd5b5449c1f2b74efdaa6f90.webp",
+        "alt": "NZD/USD H1 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Kaynak alt sınırı: 0.5687",
+        "Kaynak üst sınırı: 0.5712"
+      ],
+      "instruments": [
+        "NZDUSD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f-ar",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "ar",
+      "translationGroupId": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f",
+      "section": "analysis",
+      "slug": "ac-e8ac26746544a8cc7d34698f",
+      "urlPath": "analysis/ac-e8ac26746544a8cc7d34698f/",
+      "title": "EUR/NZD: سيناريو هابط بإطار H1 نحو 1.9650",
+      "summary": "قراءة مؤرخة لـنطاق تقلب بين 1.9650 و1.9704، بنافذة 4 ساعات وشموع H1 من مصدر مستقل. الدخول ووقف الخسارة غير محددين.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "ما الذي يقوله المصدر\nيرصد تقرير الجلسة الأوروبية من Autochartist نطاق تقلب على EUR/NZD بإطار H1 واحتمال حركة هابطة نحو 1.9650. المرجع السفلي الوارد هو 1.9650 والعلوي 1.9704. هذه مستويات سيناريو المصدر، وليست مناطق محسوبة حديثًا لدى FOXREX أو رد فعل سعري لاحق ثبت وقوعه.\n\nالتوقيت والصلاحية\nتاريخ ترويسة التقرير 26 أكتوبر 2026 الساعة 17:14 AEDT، أي 06:14 UTC؛ وقت التقرير المطبوع منفصل عن وقت اكتشاف كل سيناريو. وقت الاكتشاف المطبوع هو 26 أكتوبر 2026، الساعة 18:00 بتوقيت سيدني AEDT، أي 07:00 UTC. يحدد المصدر مدة 4 ساعات تنتهي الساعة 11:00 UTC يوم 26 أكتوبر. وصل البريد الساعة 06:38 UTC قبل وقت الاكتشاف المطبوع. نحتفظ بهذا التعارض ولا ندعي التحقق المستقل من وقت توليد الإشارة.\n\nقراءة مشروطة للمستويات\nاستمرار الحركة نحو 1.9650 يحتاج إلى أسعار لاحقة متحقق منها بشكل مستقل تدعم اتجاه المصدر. العودة باتجاه 1.9704 تضعف القراءة، لكنها لا تحول المرجع تلقائيًا إلى وقف خسارة. لمس الخط وحده لا يثبت اختراقًا مستدامًا، ولا ندعي تحقق الهدف.\n\nسياق الأداة\nيسعر هذا التقاطع الدولار النيوزيلندي لكل يورو. هبوطه قد يعكس ضعف اليورو أو قوة النيوزيلندي أو كليهما، ولا يقتضي حركة مماثلة في اليورو مقابل الدولار الأمريكي.\n\nدليل الشموع المستقل\nيستخدم الرسم شموع Yahoo Finance فعلية ومكتملة بإطار H1 حتى 2026-10-26T06:00:00Z، مع حفظ وقت جلب البيانات منفصلًا في سجل المصدر. توقيت الشمعة يمثل بدايتها. الرسم سياق مؤرخ وليس سعرًا حيًا أو دليل نجاح السيناريو. أضيفت مستويات المصدر بدقتها، واستبعدت الشموع المفقودة أو غير المتسقة أو غير المكتملة دون اختراع بدائل. يتوفر الرسم بالثيمين الفاتح والداكن ويفتح بالحجم الكامل.\n\nتفاصيل التنفيذ غير المتوفرة\nلم يقدم المصدر دخولًا أو وقف خسارة أو حجم صفقة أو نسبة نجاح. هذا تحليل تعليمي وليس إشارة تداول مكتملة. نافذة المصدر تحدد أفق السيناريو ولا تضمن بلوغ الهدف. بعد انتهائها تبقى الصفحة مراجعة تاريخية مؤرخة.\n\nالخطوة التالية\nراجع التقويم الاقتصادي ودليل الأسعار المؤرخ للأداة قبل تقييم المخاطر. المحتوى والإشارات للتعليم فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "EURNZD",
+      "category": "technical",
+      "bias": "bearish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-e8ac26746544a8cc7d34698f.webp",
+        "alt": "شموع EUR/NZD بإطار H1 ومستويات سيناريو المصدر"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "التداول ينطوي على مخاطر عالية للخسارة. هذا المحتوى للمعلومات والتعليم فقط، ولا يُعد نصيحة استثمارية.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "الحد السفلي من المصدر: 1.9650",
+        "الحد العلوي من المصدر: 1.9704"
+      ],
+      "instruments": [
+        "EURNZD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f-en",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "en",
+      "translationGroupId": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f",
+      "section": "analysis",
+      "slug": "ac-e8ac26746544a8cc7d34698f",
+      "urlPath": "analysis/ac-e8ac26746544a8cc7d34698f/",
+      "title": "EUR/NZD: bearish H1 scenario toward 1.9650",
+      "summary": "A dated review of the source’s volatility range between 1.9650 and 1.9704, with a 4-hour horizon and independently sourced H1 candles. Entry and stop-loss are unspecified.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "What the source says\nThe European-session Autochartist report identifies a volatility range on EUR/NZD (H1) and a possible downward move toward 1.9650. Its quoted lower reference is 1.9650 and upper reference 1.9704. These are source scenario levels, not newly calculated FOXREX zones or a confirmed subsequent market reaction.\n\nTiming and validity\nThe report header is dated 26 October 2026 at 17:14 AEDT (06:14 UTC); this printed report time is distinct from each alert’s detection time. The printed detection time is 26 October 2026 at 18:00 Australia/Sydney (AEDT), equivalent to 07:00 UTC. The source states a 4-hour horizon, ending at 11:00 UTC on 26 October. Receipt at 06:38 UTC precedes that printed detection time. This discrepancy is retained; the source generation time is not independently confirmed.\n\nConditional interpretation\nContinuation toward 1.9650 would require later independently checked prices supporting the stated direction. A move back toward 1.9704 would weaken this reading, without turning that reference into an automatic stop-loss. Touching a line alone would not prove a sustained breakout. No target achievement is asserted.\n\nInstrument context\nThis cross quotes New Zealand dollars per euro. A fall may reflect a weaker euro, a stronger New Zealand dollar, or both; it does not require a matching move in EUR/USD.\n\nIndependent candlestick evidence\nThe chart uses actual completed Yahoo Finance H1 observations through 2026-10-26T06:00:00Z, with retrieval time recorded separately in provenance. Candle timestamps mark bar starts. The chart is dated context, not a live quote or evidence that the scenario succeeded. Source levels are overlaid exactly; missing, inconsistent and incomplete bars are excluded without invented replacements. Both light and dark images open at full size.\n\nMissing execution details\nThe report supplies no entry, stop-loss, position size or success probability. This is an educational analysis, not a complete trade signal. The source horizon is a deadline for the scenario, not a guarantee that the target will be reached. After expiry the page remains a historical source review.\n\nNext step\nReview the economic calendar and the instrument’s dated price evidence before assessing risk. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "EURNZD",
+      "category": "technical",
+      "bias": "bearish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-e8ac26746544a8cc7d34698f.webp",
+        "alt": "EUR/NZD H1 candlestick chart with source scenario levels"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "Trading carries a high risk of loss. This content is for information and education only and is not investment advice.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Source lower boundary: 1.9650",
+        "Source upper boundary: 1.9704"
+      ],
+      "instruments": [
+        "EURNZD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
+    {
+      "id": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f-tr",
+      "type": "ANALYSIS",
+      "layer": "MARKET_INTELLIGENCE",
+      "language": "tr",
+      "translationGroupId": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f",
+      "section": "analysis",
+      "slug": "ac-e8ac26746544a8cc7d34698f",
+      "urlPath": "analysis/ac-e8ac26746544a8cc7d34698f/",
+      "title": "EUR/NZD: 1.9650 yönünde H1 düşüş senaryosu",
+      "summary": "1.9650–1.9704 arasındaki kaynak oynaklık aralığı için 4 saatlik pencere ve bağımsız H1 mumlarıyla tarihli inceleme. Giriş ve zarar durdur belirtilmemiştir.",
+      "publishedAt": "2026-10-26T07:12:15.726Z",
+      "updatedAt": "2026-10-26T07:12:15.726Z",
+      "publishVersion": 1,
+      "editorialDate": "2026-10-26",
+      "access": "PUBLIC",
+      "origin": "scheduled-editorial",
+      "attribution": {
+        "byline": "FOXREX Desk",
+        "assistance": "ai-assisted"
+      },
+      "author": {
+        "name": "FOXREX Desk"
+      },
+      "body": "Kaynağın belirttiği senaryo\nAvrupa seansı Autochartist raporu EUR/NZD için H1 zaman diliminde oynaklık aralığı ve 1.9650 yönünde olası bir düşüş tanımlar. Alt referans 1.9650, üst referans 1.9704. Bunlar kaynağın senaryo seviyeleridir; FOXREX tarafından yeni hesaplanmış bölgeler veya doğrulanmış sonraki fiyat tepkisi değildir.\n\nZaman ve geçerlilik\nRapor başlığı 26 Ekim 2026, 17:14 AEDT (06:14 UTC) tarihini taşır; bu basılı rapor saati her senaryonun tespit saatinden ayrıdır. Basılı tespit zamanı 26 Ekim 2026, Australia/Sydney (AEDT) saatiyle 18:00; UTC karşılığı 07:00. Kaynağın 4 saatlik süresi 26 Ekim saat 11:00 UTC’de biter. E-posta 06:38 UTC’de, basılı tespit saatinden önce ulaşmıştır. Bu tutarsızlık korunur; üretim saati bağımsız olarak doğrulanmış değildir.\n\nKoşullu değerlendirme\n1.9650 yönünde devam için sonradan bağımsız doğrulanmış fiyatların belirtilen yönü desteklemesi gerekir. 1.9704 yönüne dönüş bu okumayı zayıflatabilir; ancak o seviye otomatik zarar durdur emri olmaz. Çizgiye dokunmak kalıcı kırılmayı kanıtlamaz. Hedefin gerçekleştiği ileri sürülmez.\n\nParite bağlamı\nBu çapraz bir euro başına Yeni Zelanda dolarıdır. Düşüş euro zayıflığı, Yeni Zelanda doları gücü veya ikisinden kaynaklanabilir; EUR/USD ile aynı hareketi gerektirmez.\n\nBağımsız mum verileri\nGrafik 2026-10-26T06:00:00Z tarihine kadar gerçek ve tamamlanmış Yahoo Finance H1 mumlarını kullanır. Veri alım zamanı kaynak kaydında ayrıca saklanır. Mum saati çubuğun başlangıcıdır. Grafik tarihli bağlam sunar; canlı fiyat veya senaryonun başarılı olduğuna dair kanıt değildir. Kaynak seviyeleri aynen işaretlenmiştir. Eksik, tutarsız veya tamamlanmamış mumlar çıkarılmış; yerlerine veri üretilmemiştir. Açık ve koyu grafikler tam boy açılır.\n\nEksik işlem bilgileri\nKaynak giriş, zarar durdur, pozisyon büyüklüğü veya başarı olasılığı vermemiştir. Bu eğitim amaçlı analizdir; eksiksiz işlem sinyali değildir. Kaynağın süresi hedef garantisi oluşturmaz. Süre dolunca sayfa tarihli kaynak incelemesi olarak kalır.\n\nSonraki adım\nRiski değerlendirmeden önce ekonomik takvimi ve paritenin tarihli fiyat kanıtını inceleyin. Tüm içerik ve sinyaller yalnızca eğitim içindir, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "EURNZD",
+      "category": "technical",
+      "bias": "bearish",
+      "tags": [
+        "autochartist"
+      ],
+      "image": {
+        "src": "assets/media/signal-ac-e8ac26746544a8cc7d34698f.webp",
+        "alt": "EUR/NZD H1 mum grafiği ve kaynak senaryo seviyeleri"
+      },
+      "sources": [
+        {
+          "name": "Autochartist",
+          "url": "https://autochartist.com/",
+          "publisher": "Autochartist",
+          "publishedAt": "2026-10-26T06:14:00Z",
+          "retrievedAt": "2026-10-26T07:12:15.726Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "riskDisclosure": "İşlem yapmak yüksek kayıp riski taşır. Bu içerik yalnızca bilgilendirme ve eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "timeframe": "H1",
+      "keyLevels": [
+        "Kaynak alt sınırı: 1.9650",
+        "Kaynak üst sınırı: 1.9704"
+      ],
+      "instruments": [
+        "EURNZD"
+      ],
+      "timeframes": [
+        "H1"
+      ],
+      "freshness": {
+        "dataAsOf": "2026-10-26T07:00:00Z",
+        "dataAsOfBasis": "editor",
+        "validUntil": "2026-10-26T11:00:00Z",
+        "stalePolicy": "hide"
+      }
+    },
     {
       "id": "daily-2026-10-26-ifo-survey-versus-output-2026-10-26-ar",
       "type": "NEWS",

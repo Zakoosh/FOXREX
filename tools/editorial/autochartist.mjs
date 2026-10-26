@@ -11,6 +11,7 @@ export function prepareAutochartist(input,feed,operations,{now=new Date().toISOS
  if(input.authorization!=='owner-autochartist-2026-10-26')throw Error('Missing Autochartist mandate');
  if(!['alerts@autochartist.email','alerts@autochartist.com'].includes(input.sender))throw Error('Sender not allowed');
  if(!input.authenticatedSender)throw Error('Verify original sender authentication from full MIME');
+ if(input.sourcePublishedAt&&(!/^\d{4}-\d{2}-\d{2}T.*Z$/.test(input.sourcePublishedAt)||!Number.isFinite(Date.parse(input.sourcePublishedAt))||Date.parse(input.sourcePublishedAt)>Date.parse(now)))throw Error('Invalid source report publication time');
  if(!Array.isArray(input.alerts)||!input.alerts.length)throw Error('No alerts');
  const processed=new Set(operations.processedEvents||[]),records=[],events=[];
  const date=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Istanbul'}).format(new Date(now));
@@ -23,7 +24,7 @@ export function prepareAutochartist(input,feed,operations,{now=new Date().toISOS
   if(!a.records||a.records.length!==3||new Set(a.records.map(r=>r.language)).size!==3||!['en','ar','tr'].every(l=>a.records.some(r=>r.language===l)))throw Error('EN/AR/TR required');
   for(const r of a.records){
    if(/mail\.google|unsubscribe|uhash=|user=|@gmail|<html|<script/i.test(JSON.stringify(r)))throw Error('Raw mail or private metadata must not be published');
-   records.push({...r,type:'ANALYSIS',slug:id,symbol:a.symbol,category:'technical',tags:[...new Set([...(r.tags||[]),'autochartist'])],sourceReferences:[{name:'Autochartist',url:'https://autochartist.com/',sourceType:'market-data-provider',publisher:'Autochartist',publishedAt:a.detectedAt,retrievedAt:now}],fields:{...(r.fields||{}),timeframe:a.timeframe,dataAsOf:a.detectedAt,validUntil:a.validUntil}});
+   records.push({...r,type:'ANALYSIS',slug:id,symbol:a.symbol,category:'technical',tags:[...new Set([...(r.tags||[]),'autochartist'])],sourceReferences:[{name:'Autochartist',url:'https://autochartist.com/',sourceType:'market-data-provider',publisher:'Autochartist',publishedAt:input.sourcePublishedAt||a.detectedAt,retrievedAt:now}],fields:{...(r.fields||{}),timeframe:a.timeframe,dataAsOf:a.detectedAt,validUntil:a.validUntil}});
   }
   events.push(id);
  }

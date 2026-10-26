@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-26",
+  "at": "2026-10-26T07:12:15.726Z",
+  "authorization": "owner-authorized-2026-10-25",
+  "actor": "FOXREX Editorial Automation",
+  "records": [
+    {
+      "id": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb-en",
+      "urlPath": "analysis/ac-a06d2af2687bb5fd8b7368cb/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb-ar",
+      "urlPath": "analysis/ac-a06d2af2687bb5fd8b7368cb/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-a06d2af2687bb5fd8b7368cb-tr",
+      "urlPath": "analysis/ac-a06d2af2687bb5fd8b7368cb/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03-en",
+      "urlPath": "analysis/ac-77daa28b72c4cc0364361f03/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03-ar",
+      "urlPath": "analysis/ac-77daa28b72c4cc0364361f03/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-77daa28b72c4cc0364361f03-tr",
+      "urlPath": "analysis/ac-77daa28b72c4cc0364361f03/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-0f2f6f178a335d6663312110-en",
+      "urlPath": "analysis/ac-0f2f6f178a335d6663312110/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-0f2f6f178a335d6663312110-ar",
+      "urlPath": "analysis/ac-0f2f6f178a335d6663312110/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-0f2f6f178a335d6663312110-tr",
+      "urlPath": "analysis/ac-0f2f6f178a335d6663312110/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692-en",
+      "urlPath": "analysis/ac-1c96b30f56bfae28d91e3692/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692-ar",
+      "urlPath": "analysis/ac-1c96b30f56bfae28d91e3692/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-1c96b30f56bfae28d91e3692-tr",
+      "urlPath": "analysis/ac-1c96b30f56bfae28d91e3692/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-7debf78785afa061715ecc1a-en",
+      "urlPath": "analysis/ac-7debf78785afa061715ecc1a/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-7debf78785afa061715ecc1a-ar",
+      "urlPath": "analysis/ac-7debf78785afa061715ecc1a/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-7debf78785afa061715ecc1a-tr",
+      "urlPath": "analysis/ac-7debf78785afa061715ecc1a/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90-en",
+      "urlPath": "analysis/ac-bd5b5449c1f2b74efdaa6f90/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90-ar",
+      "urlPath": "analysis/ac-bd5b5449c1f2b74efdaa6f90/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-bd5b5449c1f2b74efdaa6f90-tr",
+      "urlPath": "analysis/ac-bd5b5449c1f2b74efdaa6f90/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f-en",
+      "urlPath": "analysis/ac-e8ac26746544a8cc7d34698f/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f-ar",
+      "urlPath": "analysis/ac-e8ac26746544a8cc7d34698f/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-e8ac26746544a8cc7d34698f-tr",
+      "urlPath": "analysis/ac-e8ac26746544a8cc7d34698f/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a-en",
+      "urlPath": "analysis/ac-0af5b63f03891eeffc80856a/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a-ar",
+      "urlPath": "analysis/ac-0af5b63f03891eeffc80856a/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ac-0af5b63f03891eeffc80856a-tr",
+      "urlPath": "analysis/ac-0af5b63f03891eeffc80856a/",
+      "language": "tr",
+      "publishVersion": 1
+    }
+  ],
+  "events": [
+    "ac-a06d2af2687bb5fd8b7368cb",
+    "ac-77daa28b72c4cc0364361f03",
+    "ac-0f2f6f178a335d6663312110",
+    "ac-1c96b30f56bfae28d91e3692",
+    "ac-7debf78785afa061715ecc1a",
+    "ac-bd5b5449c1f2b74efdaa6f90",
+    "ac-e8ac26746544a8cc7d34698f",
+    "ac-0af5b63f03891eeffc80856a"
+  ]
+}

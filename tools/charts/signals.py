@@ -17,35 +17,41 @@ from matplotlib.patches import Rectangle
 from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 SNAPSHOT = ROOT / 'data/market/2026-10-26-signal-charts.json'
-SYMBOLS = {'EURUSD': 'EURUSD=X', 'USDJPY': 'JPY=X', 'AUDUSD': 'AUDUSD=X', 'USDCHF': 'CHF=X', 'NZDUSD': 'NZDUSD=X', 'NZDJPY': 'NZDJPY=X'}
+SYMBOLS = {'EURUSD': 'EURUSD=X', 'USDJPY': 'JPY=X', 'AUDUSD': 'AUDUSD=X', 'USDCHF': 'CHF=X', 'NZDUSD': 'NZDUSD=X', 'NZDJPY': 'NZDJPY=X', 'GBPUSD': 'GBPUSD=X', 'EURNZD': 'EURNZD=X'}
+INTERVALS = {'H1': (60, 3600), 'M30': (30, 1800)}
 def iso(value):
     return dt.datetime.fromtimestamp(value, dt.timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
 def valid_bar(bar):
     return all(type(bar.get(k)) in (int, float) and math.isfinite(bar[k]) for k in ('open','high','low','close')) and 0 < bar['low'] <= min(bar['open'],bar['close']) <= max(bar['open'],bar['close']) <= bar['high']
 def fetch_chart(item):
     key = SYMBOLS[item['symbol']]
-    url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + key.replace('=', '%3D') + '?interval=60m&range=5d'
+    timeframe = item.get('timeframe', 'H1')
+    minutes, seconds = INTERVALS[timeframe]
+    url = 'https://query1.finance.yahoo.com/v8/finance/chart/' + key.replace('=', '%3D') + f'?interval={minutes}m&range=5d'
     request = urllib.request.Request(url, headers={'User-Agent':'FOXREX/1.0 (educational candlestick charts)'})
     with urllib.request.urlopen(request, timeout=30) as response:
         result = json.load(response)['chart']['result'][0]
     assert result['meta']['symbol'] == key
-    expected = 'JPY' if item['symbol'].endswith('JPY') else 'CHF' if item['symbol']=='USDCHF' else 'USD'
+    expected = item['symbol'][-3:]
     assert result['meta']['currency'] == expected
+    accepted_granularities = {'60m', '1h'} if timeframe == 'H1' else {'30m'}
+    assert result['meta'].get('dataGranularity') in accepted_granularities, 'Provider timeframe mismatch'
     fetched = dt.datetime.now(dt.timezone.utc).timestamp()
     quote = result['indicators']['quote'][0]
     bars, excluded = [], []
     for i, timestamp in enumerate(result.get('timestamp', [])):
         bar = {'at':iso(timestamp), 'open':quote['open'][i], 'high':quote['high'][i], 'low':quote['low'][i], 'close':quote['close'][i]}
-        if timestamp + 3600 > fetched:
-            excluded.append({'at':bar['at'], 'reason':'incomplete or future hourly candle'})
+        if timestamp + seconds > fetched:
+            excluded.append({'at':bar['at'], 'reason':'incomplete or future candle'})
         elif not valid_bar(bar):
             excluded.append({'at':bar['at'], 'reason':'missing or inconsistent provider OHLC'})
         else:
             bars.append(bar)
-    assert len(bars) >= 14, 'Insufficient verified H1 candles: ' + item['symbol']
+    assert len(bars) >= 14, 'Insufficient verified candles: ' + item['symbol']
     assert [b['at'] for b in bars] == sorted(set(b['at'] for b in bars))
     bounds = [float(level.rsplit(':',1)[1].strip()) for level in item['keyLevels']]
-    return {'event':item['slug'],'symbol':item['symbol'],'timeframe':'H1','provider':'Yahoo Finance','quoteCurrency':expected,'sourceUrl':url,'retrievedAt':iso(fetched),'bars':bars,'excludedBars':excluded,'levels':{'lower':bounds[0],'upper':bounds[1]},'signalDataAsOf':item['freshness']['dataAsOf'],'validUntil':item['freshness']['validUntil'],'assetStem':'signal-' + item['slug']}
+    assert len(bounds) == 2 and all(math.isfinite(v) and v > 0 for v in bounds) and bounds[0] < bounds[1]
+    return {'event':item['slug'],'symbol':item['symbol'],'timeframe':timeframe,'direction':item.get('bias','bullish'),'provider':'Yahoo Finance','quoteCurrency':expected,'sourceUrl':url,'retrievedAt':iso(fetched),'bars':bars,'excludedBars':excluded,'levels':{'lower':bounds[0],'upper':bounds[1]},'signalDataAsOf':item['freshness']['dataAsOf'],'validUntil':item['freshness']['validUntil'],'assetStem':'signal-' + item['slug']}
 def render(chart, light=False):
     bars=chart['bars'][-48:]
     assert all(valid_bar(b) for b in bars)
@@ -61,8 +67,9 @@ def render(chart, light=False):
         height=abs(b['close']-b['open'])
         if height:ax.add_patch(Rectangle((i-.3,min(b['open'],b['close'])),.6,height,facecolor=color,edgecolor=color))
         else:ax.hlines(b['close'],i-.3,i+.3,color=color,lw=1.4)
-    decimals=3 if chart['quoteCurrency']=='JPY' else 5
-    for key,color,label in [('lower',gold,'Source lower boundary'),('upper',green,'Source upside objective')]:
+    decimals=4 if chart['quoteCurrency']=='JPY' else 5
+    bearish = chart.get('direction') == 'bearish'
+    for key,color,label in [('lower',gold,'Source downside objective' if bearish else 'Source lower boundary'),('upper',green,'Source upper boundary' if bearish else 'Source upside objective')]:
         value=chart['levels'][key]
         ax.axhline(value,color=color,ls='--',lw=1.3)
         ax.text(n+1,value,f'{label}\n{value:.{decimals}f}',va='center',color=color,fontsize=10)
@@ -71,14 +78,18 @@ def render(chart, light=False):
     ax.set_xticks(ticks);ax.set_xticklabels([bars[i]['at'][5:16].replace('T',' ') for i in ticks],fontsize=9)
     ax.set_ylabel(chart['quoteCurrency']);ax.grid(axis='y',alpha=.13)
     for spine in ax.spines.values():spine.set_visible(False)
-    fig.text(.075,.94,f"FOXREX  /  {chart['symbol']}  /  H1",fontsize=24,weight='bold',color=green)
+    fig.text(.075,.94,f"FOXREX  /  {chart['symbol']}  /  {chart['timeframe']}",fontsize=24,weight='bold',color=green)
     fig.text(.075,.89,f"Actual completed candles | Last bar: {bars[-1]['at']} | Yahoo Finance",fontsize=11)
     fig.text(.075,.055,'Dashed lines: source scenario levels. They are not entry or stop-loss orders.',fontsize=10,color=gold)
     fig.text(.075,.025,'Historical price context; gaps and unavailable bars are not filled. All chart times are UTC.',fontsize=9,color=muted)
     fig.subplots_adjust(left=.075,right=.98,top=.84,bottom=.14)
     buf=io.BytesIO();fig.savefig(buf,format='png')
     asset=ROOT/'assets/media'/(chart['assetStem']+('-light' if light else '')+'.webp')
-    Image.open(buf).convert('RGB').save(asset,'WEBP',quality=91)
+    temporary = asset.with_suffix('.tmp.webp')
+    Image.open(buf).convert('RGB').save(temporary,'WEBP',quality=91)
+    with Image.open(temporary) as checked:
+        checked.verify()
+    temporary.replace(asset)
     plt.close(fig)
 if __name__=='__main__':
     if '--render-only' in sys.argv:
