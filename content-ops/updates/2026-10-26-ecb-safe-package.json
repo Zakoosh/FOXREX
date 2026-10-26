@@ -1,0 +1,330 @@
+{
+  "authorization": "owner-authorized-2026-10-25",
+  "date": "2026-10-26",
+  "records": [
+    {
+      "type": "NEWS",
+      "language": "en",
+      "slug": "ecb-safe-credit-tightening-2026-10-26",
+      "title": "ECB business survey: tighter credit, with a warning on inflation comparisons",
+      "summary": "Euro-area firms report further tightening in borrowing conditions. A changed survey sample makes headline price expectations harder to interpret.",
+      "body": "Confirmed release\nThe ECB’s 26 October SAFE release covers euro-area enterprises in the third quarter of 2026. The balance of firms reporting higher bank-loan interest rates was 46%, against 42% in the preceding round. These are net survey responses: they do not mean that borrowing rates reached 46%, or rose by 46 percentage points. Loan availability fell more than firms’ financing needs, leaving a positive financing-gap indicator.\n\nThe comparability warning matters\nThe ECB says first-time respondents made up most of this round’s sample. Among firms interviewed in both rounds, median inflation expectations were broadly stable; the full sample showed a substantial rise. A changed sample can affect a headline even without an equivalent change in the views of the same companies. The release therefore cannot safely be read as clean evidence of accelerating inflation expectations. Nor does it establish that the entire change is a sampling effect.\n\nCredit conditions and the euro\nIf tighter financing restrains investment and working capital, European growth risks could become more relevant to EUR/USD. If persistent price pressure instead keeps policy restrictive, the interest-rate channel could work differently. The survey alone settles neither path. Compare the next ECB decision with the US policy outlook, and distinguish firms’ reported lending conditions from a new central-bank rate decision.\n\nWhat it could mean for gold\nThe possible gold link is indirect. Weaker European activity could influence the euro and dollar; changes in global yields could alter the cost of holding non-yielding gold. Demand for safety could pull in another direction. A stronger dollar could weigh on dollar-priced gold, while falling real yields could support it. These conditional channels are not a verified market reaction, price target or trading instruction.\n\nTiming, scope and next step\nThe source is dated 26 October; it supplies no separately verified posting time here. The ECB calendar lists the SAFE dataset for 10:00 CET, or 12:00 Istanbul, distinct from FOXREX’s publication time. Interviews ran from 26 August to 2 October. This survey is historical evidence about business financing, not a live quotation or a forecast consensus. Use the economic calendar to follow the next official policy releases. All content and signals are educational only, not investment recommendations; trading involves risk.",
+      "symbol": "EURUSD",
+      "category": "economic",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ECB — SAFE official release, 26 October 2026",
+          "url": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.pr261026~bde7b6d11a.en.html",
+          "retrievedAt": "2026-10-26T15:06:34.360Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — weekly release calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/weekly/html/index.en.html",
+          "retrievedAt": "2026-10-26T15:08:56.933Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/ecb-safe-credit-20261026.webp",
+        "alt": "Factory and offices facing a narrow gateway, a conceptual illustration of access to credit"
+      },
+      "fields": {
+        "importance": "MEDIUM",
+        "affectedMarkets": [
+          "EURUSD",
+          "XAUUSD"
+        ],
+        "eventTime": "2026-10-26T09:00:00Z",
+        "dataAsOf": "2026-10-26T15:06:34.360Z",
+        "validUntil": "2026-10-30T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "ar",
+      "slug": "ecb-safe-credit-tightening-2026-10-26",
+      "title": "مسح المركزي الأوروبي: تمويل أشد وتحذير من مقارنة توقعات التضخم",
+      "summary": "الشركات الأوروبية تُبلغ عن تشدد إضافي بشروط الاقتراض، لكن تغيّر عيّنة المسح يستدعي الحذر عند قراءة توقعات الأسعار.",
+      "body": "ما الذي تأكد رسميًا؟\nأصدر المركزي الأوروبي في 26 أكتوبر نتائج مسح SAFE للشركات في منطقة اليورو عن الربع الثالث من 2026. بلغ صافي الشركات المبلغة عن ارتفاع فوائد القروض المصرفية 46%، مقابل 42% في الجولة السابقة. هذه نسبة صافية لإجابات المشاركين؛ لا تعني أن فائدة القرض أصبحت 46% أو ارتفعت 46 نقطة مئوية. كما تراجع توافر القروض بأكثر من تراجع احتياجات التمويل، فبقي مؤشر فجوة التمويل موجبًا.\n\nلماذا يهم تغيّر العيّنة؟\nأوضح البنك أن المشاركين للمرة الأولى شكّلوا غالبية العيّنة الجديدة. بقي وسيط توقعات التضخم مستقرًا عمومًا لدى الشركات المشتركة بين الجولتين، بينما ارتفع بوضوح في العيّنة الكاملة. لذلك قد يتغيّر العنوان الإحصائي جزئيًا بسبب اختلاف المشاركين، دون تغيّر مماثل لدى الشركات نفسها. لا تكفي النتيجة لإثبات تسارع واضح في توقعات التضخم، ولا لإثبات أن اختلاف العيّنة يفسّر التغيّر كله.\n\nقناة التأثير المحتملة على اليورو\nإذا ضغط التمويل الأصعب على الاستثمار ورأس المال العامل، فقد تزداد أهمية مخاطر النمو لزوج EUR/USD. أما إذا استمر ضغط الأسعار وأبقى السياسة مقيدة، فقد تعمل قناة الفائدة باتجاه مختلف. المسح وحده لا يحسم أي مسار. يلزم مقارنة قرار المركزي الأوروبي المقبل بالسياسة الأمريكية، مع الفصل بين شروط الإقراض التي تذكرها الشركات وقرار جديد للفائدة الرسمية.\n\nوماذا عن الذهب؟\nالرابط المحتمل غير مباشر: ضعف النشاط الأوروبي قد يؤثر في اليورو والدولار، وتغيّر العوائد العالمية قد يغيّر تكلفة الاحتفاظ بالذهب الذي لا يدفع فائدة. وقد يتحرك طلب الملاذ الآمن باتجاه آخر. قوة الدولار قد تضغط على الذهب المسعّر به، بينما قد يدعمه هبوط العوائد الحقيقية. هذه تفسيرات مشروطة وليست ردة فعل سعرية موثقة أو هدفًا للسعر أو تعليمات تداول.\n\nالتوقيت وحدود البيانات والخطوة التالية\nالمصدر مؤرخ في 26 أكتوبر؛ لم نتحقق من وقت نشر منفصل بالدقيقة. يدرج تقويم البنك بيانات SAFE عند 10:00 بتوقيت وسط أوروبا، أي 12:00 إسطنبول، وهو موعد مختلف عن وقت نشر FOXREX. جُمعت الإجابات بين 26 أغسطس و2 أكتوبر. هذا دليل تاريخي عن تمويل الشركات، وليس سعرًا حيًا أو إجماع توقعات. تابع التقويم الاقتصادي لمواعيد القرارات الرسمية المقبلة. جميع المحتويات والإشارات تعليمية فقط وليست توصيات استثمارية، والتداول ينطوي على مخاطر.",
+      "symbol": "EURUSD",
+      "category": "economic",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ECB — SAFE official release, 26 October 2026",
+          "url": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.pr261026~bde7b6d11a.en.html",
+          "retrievedAt": "2026-10-26T15:06:34.360Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — weekly release calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/weekly/html/index.en.html",
+          "retrievedAt": "2026-10-26T15:08:56.933Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/ecb-safe-credit-20261026.webp",
+        "alt": "مجسم مصنع ومكاتب أمام بوابة ضيقة في تصور فني للوصول إلى التمويل"
+      },
+      "fields": {
+        "importance": "MEDIUM",
+        "affectedMarkets": [
+          "EURUSD",
+          "XAUUSD"
+        ],
+        "eventTime": "2026-10-26T09:00:00Z",
+        "dataAsOf": "2026-10-26T15:06:34.360Z",
+        "validUntil": "2026-10-30T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "tr",
+      "slug": "ecb-safe-credit-tightening-2026-10-26",
+      "title": "ECB şirket anketi: kredi koşulları sıkılaşıyor, örneklem uyarısı önem taşıyor",
+      "summary": "Euro bölgesi şirketleri daha sıkı borçlanma koşulları bildiriyor. Değişen anket örneklemi fiyat beklentilerinin karşılaştırılmasını zorlaştırıyor.",
+      "body": "Doğrulanan açıklama\nECB, 26 Ekim’de euro bölgesi işletmelerinin 2026 üçüncü çeyreğine ilişkin SAFE sonuçlarını yayımladı. Banka kredisi faizlerinde artış bildiren şirketlerin net oranı önceki turdaki %42’den %46’ya çıktı. Bu, anket yanıtlarının net dengesidir; kredi faizinin %46 olduğu veya 46 yüzde puan arttığı anlamına gelmez. Krediye erişim, finansman ihtiyacından daha fazla daraldığı için finansman açığı göstergesi pozitif kaldı.\n\nÖrneklem neden önemli?\nECB’ye göre ilk kez katılan şirketler bu turdaki örneklemin çoğunluğunu oluşturdu. Her iki tura katılan şirketlerde medyan enflasyon beklentileri genel olarak sabit kalırken, örneklemin tamamında belirgin artış görüldü. Katılımcı grubundaki değişim, aynı işletmelerin görüşleri aynı ölçüde değişmeden de manşeti etkileyebilir. Sonuç, enflasyon beklentilerinin hızlandığına dair temiz bir kanıt olarak okunamaz. Değişimin tamamının örneklemden kaynaklandığı da söylenemez.\n\nEuro için koşullu aktarım\nDaha zor finansman yatırım ve işletme sermayesini baskılarsa, Avrupa büyümesine ilişkin riskler EUR/USD açısından önem kazanabilir. Kalıcı fiyat baskıları para politikasını sıkı tutarsa faiz kanalı farklı çalışabilir. Anket tek başına bu yolları belirlemez. Bir sonraki ECB kararını ABD politikasıyla birlikte değerlendirin; şirketlerin bildirdiği kredi koşulları yeni bir politika faizi kararı değildir.\n\nAltınla bağlantı\nBağlantı dolaylıdır. Daha zayıf Avrupa faaliyeti euroyu ve doları etkileyebilir; küresel tahvil getirileri ise faiz ödemeyen altını elde tutmanın maliyetini değiştirebilir. Güvenli liman talebi farklı yönde çalışabilir. Güçlü dolar, dolar cinsinden altını baskılayabilir; düşen reel getiriler destek verebilir. Bunlar doğrulanmış piyasa tepkisi, fiyat hedefi veya işlem talimatı değil, koşullu açıklamalardır.\n\nZaman, kapsam ve sonraki adım\nKaynak 26 Ekim tarihini taşıyor; ayrıca doğrulanmış kesin bir yayımlanma saati sunmuyoruz. ECB takvimi SAFE verilerini 10.00 CET, yani İstanbul saatiyle 12.00 için listeliyor. Bu saat FOXREX’in yayın saatinden ayrıdır. Görüşmeler 26 Ağustos–2 Ekim arasında yapıldı. Anket işletme finansmanına ilişkin geçmiş dönem kanıtıdır; canlı fiyat veya tahmin uzlaşısı değildir. Sonraki resmî kararları ekonomik takvimden izleyin. Tüm içerikler ve sinyaller yalnızca eğitim amaçlıdır, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "symbol": "EURUSD",
+      "category": "economic",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ECB — SAFE official release, 26 October 2026",
+          "url": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.pr261026~bde7b6d11a.en.html",
+          "retrievedAt": "2026-10-26T15:06:34.360Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — weekly release calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/weekly/html/index.en.html",
+          "retrievedAt": "2026-10-26T15:08:56.933Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/ecb-safe-credit-20261026.webp",
+        "alt": "Krediye erişimi simgeleyen dar bir geçidin önünde fabrika ve ofis maketleri"
+      },
+      "fields": {
+        "importance": "MEDIUM",
+        "affectedMarkets": [
+          "EURUSD",
+          "XAUUSD"
+        ],
+        "eventTime": "2026-10-26T09:00:00Z",
+        "dataAsOf": "2026-10-26T15:06:34.360Z",
+        "validUntil": "2026-10-30T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    }
+  ],
+  "calendar": {
+    "schemaVersion": 1,
+    "updatedAt": "2026-10-26T10:00:23.570Z",
+    "timezone": "Europe/Istanbul",
+    "coverage": {
+      "en": "Selected verified German, US and euro-area events for 26 October–2 November. Selective coverage, not a full global calendar. No verified consensus or unreleased actuals are supplied.",
+      "ar": "أحداث ألمانية وأمريكية وأوروبية مختارة وموثقة للفترة 26 أكتوبر–2 نوفمبر. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. لا تُدرج توقعات غير موثقة أو نتائج قبل صدورها.",
+      "tr": "26 Ekim–2 Kasım için Almanya, ABD ve euro bölgesinden seçilmiş doğrulanmış olaylar. Küresel takvimin tamamı değildir. Doğrulanmamış beklentiler ve açıklanmamış sonuçlar verilmez."
+    },
+    "events": [
+      {
+        "id": "fomc-2026-10-28",
+        "at": "2026-10-28T18:00:00Z",
+        "title": {
+          "en": "FOMC policy decision",
+          "ar": "قرار السياسة النقدية للفيدرالي",
+          "tr": "Fed faiz kararı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/fed-decision-october-28-2026/"
+      },
+      {
+        "id": "fomc-press-2026-10-28",
+        "at": "2026-10-28T18:30:00Z",
+        "title": {
+          "en": "FOMC press conference",
+          "ar": "المؤتمر الصحفي للفيدرالي",
+          "tr": "Fed basın toplantısı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/fed-decision-october-28-2026/"
+      },
+      {
+        "id": "gdp-q3-advance-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "US GDP — Q3 advance estimate",
+          "ar": "الناتج المحلي الأمريكي — التقدير الأول للربع الثالث",
+          "tr": "ABD GSYH — 3. çeyrek ilk tahmin"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/us-gdp-q3-october-29-2026/"
+      },
+      {
+        "id": "pce-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "Personal Income and Outlays — September (PCE)",
+          "ar": "الدخل والإنفاق الشخصي — سبتمبر (PCE)",
+          "tr": "Kişisel gelir ve harcamalar — Eylül (PCE)"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/pce-september-october-29-2026/"
+      },
+      {
+        "id": "ecb-2026-10-29",
+        "at": "2026-10-29T13:15:00Z",
+        "title": {
+          "en": "ECB monetary policy decision",
+          "ar": "قرار السياسة النقدية للبنك المركزي الأوروبي",
+          "tr": "ECB para politikası kararı"
+        },
+        "currency": "EUR",
+        "country": {
+          "en": "Euro area",
+          "ar": "منطقة اليورو",
+          "tr": "Euro bölgesi"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "checkedAt": "2026-10-26T05:46:32Z",
+          "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
+        },
+        "analysisPath": "news/ecb-decision-october-29-2026/"
+      },
+      {
+        "id": "eci-2026-10-30",
+        "at": "2026-10-30T12:30:00Z",
+        "title": {
+          "en": "Employment Cost Index — Q3",
+          "ar": "مؤشر تكلفة التوظيف — الربع الثالث",
+          "tr": "İstihdam Maliyeti Endeksi — 3. çeyrek"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BLS — October releases",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/employment-cost-q3-october-30-2026/"
+      },
+      {
+        "id": "ifo-business-climate-2026-10-26",
+        "at": "2026-10-26T09:30:00Z",
+        "title": {
+          "en": "Germany ifo Business Climate — October",
+          "ar": "مناخ الأعمال الألماني إيفو — أكتوبر",
+          "tr": "Almanya ifo İş Ortamı — Ekim"
+        },
+        "currency": "EUR",
+        "country": {
+          "en": "Germany",
+          "ar": "ألمانيا",
+          "tr": "Almanya"
+        },
+        "impact": "MEDIUM",
+        "status": "released",
+        "previous": null,
+        "forecast": null,
+        "actual": {
+          "value": "90.2",
+          "sourceUrl": "https://www.ifo.de/en/facts/2026-10-26/ifo-business-climate-rises-october-2026",
+          "reportingPeriod": "2026-10",
+          "sourcePublishedDate": "2026-10-26",
+          "scheduledReleaseAt": "2026-10-26T09:30:00Z",
+          "postingTime": "Not separately supplied by source",
+          "verifiedAt": "2026-10-26T10:00:23Z"
+        },
+        "source": {
+          "name": "ifo Institute — official release schedule",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "timeUrl": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+          "checkedAt": "2026-10-26T10:00:23.570Z"
+        },
+        "analysisPath": "news/ifo-survey-versus-output-2026-10-26/"
+      }
+    ]
+  }
+}

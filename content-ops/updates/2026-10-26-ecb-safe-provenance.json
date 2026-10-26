@@ -1,0 +1,17 @@
+{
+  "url": "https://www.ecb.europa.eu/press/pr/date/2026/html/ecb.pr261026~bde7b6d11a.en.html",
+  "retrievedAt": "2026-10-26T15:06:34.360190+00:00",
+  "sha256": "89bc0799fca4c3ce7a8df73963e396dcc07e9dedc90bdbee07ae8747325d836d",
+  "sourcePublishedDate": "2026-10-26",
+  "exactPostingTime": null,
+  "scheduledDatasetReleaseAt": "2026-10-26T09:00:00Z",
+  "eventIdentity": "ecb-safe-credit-tightening-2026-10-26",
+  "verification": "Official full release independently retrieved; source URLs and canonical feed checked for duplicates",
+  "confirmedFacts": {
+    "loanRateNetResponses": 46,
+    "priorLoanRateNetResponses": 42,
+    "sampleChange": "Majority first-time participants; repeated-firm median inflation expectations broadly stable"
+  },
+  "coverMethod": "Built-in image tool, original conceptual artwork",
+  "coverPrompt": "Factory and office models facing an emerald credit-access gateway, blank survey cards, restrained euro sculpture, midnight navy and gold, no text/chart/logo/documentary scene"
+}

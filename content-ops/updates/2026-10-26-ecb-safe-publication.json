@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-26",
+  "at": "2026-10-26T15:10:01.806Z",
+  "authorization": "owner-authorized-2026-10-25",
+  "actor": "FOXREX Editorial Automation",
+  "records": [
+    {
+      "id": "daily-2026-10-26-ecb-safe-credit-tightening-2026-10-26-en",
+      "urlPath": "news/ecb-safe-credit-tightening-2026-10-26/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ecb-safe-credit-tightening-2026-10-26-ar",
+      "urlPath": "news/ecb-safe-credit-tightening-2026-10-26/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ecb-safe-credit-tightening-2026-10-26-tr",
+      "urlPath": "news/ecb-safe-credit-tightening-2026-10-26/",
+      "language": "tr",
+      "publishVersion": 1
+    }
+  ]
+}
