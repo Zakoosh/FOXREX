@@ -5,6 +5,7 @@
  function validQuote(q,now){return !!q&&/^[A-Z0-9]{3,10}$/.test(q.symbol)&&typeof q.price==='number'&&isFinite(q.price)&&q.price>0&&Number.isFinite(Date.parse(q.asOf))&&Date.parse(q.asOf)<=now+60000;}
  function previousTradingDate(iso){var day=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'}).format(new Date(iso)),d=new Date(day+'T12:00:00Z');do{d.setUTCDate(d.getUTCDate()-1);}while(d.getUTCDay()===0||d.getUTCDay()===6);return d.toISOString().slice(0,10);}
  function dailyPercent(q,previous){if(Number.isFinite(q.dailyChangePct))return q;var base=previous&&previous.previousClose;if(Number.isFinite(base)&&base>0&&previous.previousCloseDate===previousTradingDate(q.asOf))return Object.assign({},q,{previousClose:base,previousCloseDate:previous.previousCloseDate,dailyChangePct:(q.price/base-1)*100,changeBasis:previous.changeBasis,changeSourceUrl:previous.changeSourceUrl});return q;}
+ function mergeQuote(q,current,baseline){if(Number.isFinite(q.previousClose)&&q.previousClose>0)baseline=q;if(current&&Date.parse(q.asOf)<Date.parse(current.asOf))q=current;return {quote:dailyPercent(q,baseline||current),baseline:baseline};}
  function staleQuote(q,now){return now-Date.parse(q.asOf)>(q.source==='Gold API'?15*60000:2*3600000);}
  function eventState(e,now){
   if(e.status==='cancelled'||e.status==='postponed')return e.status;
@@ -13,14 +14,14 @@
   return diff<=0?'awaiting':diff<=15*60000?'soon':'scheduled';
  }
  function visibleEvents(events,now){return events.filter(function(e){return !['cancelled','postponed'].includes(e.status)&&Date.parse(e.at)>=now-86400000;}).sort(function(a,b){return a.at.localeCompare(b.at);}).slice(0,4);}
- if(typeof module==='object'&&module.exports)module.exports={validQuote:validQuote,staleQuote:staleQuote,eventState:eventState,visibleEvents:visibleEvents,dailyPercent:dailyPercent};
+ if(typeof module==='object'&&module.exports)module.exports={validQuote:validQuote,staleQuote:staleQuote,eventState:eventState,visibleEvents:visibleEvents,dailyPercent:dailyPercent,mergeQuote:mergeQuote};
  if(typeof document==='undefined'||!document.querySelector('[data-home-quotes]'))return;
  var defaultStatus=document.querySelector('[data-quote-status]').textContent;
- var lang=document.documentElement.lang,root=document.body.getAttribute('data-root')||'',prefix=lang==='en'?'/':'/'+lang+'/',calendar=null,quotes={},pending=false;
+ var lang=document.documentElement.lang,root=document.body.getAttribute('data-root')||'',prefix=lang==='en'?'/':'/'+lang+'/',calendar=null,quotes={},baselines={},pending=false;
  var copy={en:{scheduled:'Scheduled',soon:'Release in',awaiting:'Awaiting official confirmation',released:'Released',previous:'Previous quote',min:'min',alert:'High-impact event approaching',confirm:'Release time reached — checking the official result',failed:'Some sources are unavailable; last verified values keep their original timestamps.'},ar:{scheduled:'مجدول',soon:'الخبر بعد',awaiting:'بانتظار التأكيد الرسمي',released:'صدر',previous:'سعر سابق',min:'دقيقة',alert:'اقترب موعد خبر عالي التأثير',confirm:'حان موعد الخبر — بانتظار النتيجة الرسمية',failed:'بعض المصادر غير متاحة؛ تبقى آخر القيم الموثقة مع توقيتها الأصلي.'},tr:{scheduled:'Planlandı',soon:'Açıklamaya kalan',awaiting:'Resmî doğrulama bekleniyor',released:'Açıklandı',previous:'Önceki fiyat',min:'dk',alert:'Önemli veri yaklaşıyor',confirm:'Açıklama saati geldi — resmî sonuç bekleniyor',failed:'Bazı kaynaklara erişilemiyor; son doğrulanmış değerler özgün saatleriyle korunur.'}}[lang]||{};
  function el(tag,text,cls){var e=document.createElement(tag);if(text!=null)e.textContent=text;if(cls)e.className=cls;return e;}
  function stamp(iso){return new Intl.DateTimeFormat(lang,{timeZone:'Europe/Istanbul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(iso));}
- function putQuote(q){if(!validQuote(q,Date.now())||(quotes[q.symbol]&&Date.parse(q.asOf)<Date.parse(quotes[q.symbol].asOf)))return;q=dailyPercent(q,quotes[q.symbol]);quotes[q.symbol]=q;var item=document.querySelector('[data-quote="'+q.symbol+'"]');if(!item)return;
+ function putQuote(q){if(!validQuote(q,Date.now()))return;var merged=mergeQuote(q,quotes[q.symbol],baselines[q.symbol]);baselines[q.symbol]=merged.baseline;q=merged.quote;quotes[q.symbol]=q;var item=document.querySelector('[data-quote="'+q.symbol+'"]');if(!item)return;
   item.querySelector('[data-quote-price]').textContent=q.price.toLocaleString('en-US',{maximumFractionDigits:q.symbol.endsWith('JPY')?3:q.price<10?5:2});
   var change=item.querySelector('[data-quote-change]');if(change){var pct=q.dailyChangePct;change.textContent=Number.isFinite(pct)?(pct>0?'+':'')+pct.toFixed(2)+'%':'—';change.dataset.direction=Number.isFinite(pct)?pct>0?'up':pct<0?'down':'flat':'unknown';change.title=Number.isFinite(pct)?(q.previousCloseDate||'')+' '+(q.changeBasis||''):'';}
   var time=item.querySelector('[data-quote-time]');time.textContent=stamp(q.asOf);time.dateTime=q.asOf;
