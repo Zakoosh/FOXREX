@@ -1,72 +1,72 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-26T07:14:10Z",
+  "updatedAt": "2026-10-26T08:41:20Z",
   "quotes": [
     {
       "symbol": "XAUUSD",
-      "price": 4007.100098,
-      "asOf": "2026-10-26T07:13:43Z",
+      "price": 4018.199951,
+      "asOf": "2026-10-26T08:41:13Z",
       "source": "Gold API",
       "sourceUrl": "https://api.gold-api.com/price/XAU",
       "timeBasis": "provider-fetch",
       "currency": "USD",
       "unit": "USD per troy ounce",
-      "fetchedAt": "2026-10-26T07:14:08Z"
+      "fetchedAt": "2026-10-26T08:41:17Z"
     },
     {
       "symbol": "XAGUSD",
-      "price": 53.977001,
-      "asOf": "2026-10-26T07:13:42Z",
+      "price": 54.286999,
+      "asOf": "2026-10-26T08:41:13Z",
       "source": "Gold API",
       "sourceUrl": "https://api.gold-api.com/price/XAG",
       "timeBasis": "provider-fetch",
       "currency": "USD",
       "unit": "USD per troy ounce",
-      "fetchedAt": "2026-10-26T07:14:08Z"
+      "fetchedAt": "2026-10-26T08:41:17Z"
     },
     {
       "symbol": "EURUSD",
-      "price": 1.1215,
-      "asOf": "2026-10-26T07:13:43Z",
+      "price": 1.1208,
+      "asOf": "2026-10-26T08:40:45Z",
       "source": "Yahoo Finance",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "USD per EUR",
-      "fetchedAt": "2026-10-26T07:14:10Z"
+      "fetchedAt": "2026-10-26T08:41:20Z"
     },
     {
       "symbol": "GBPUSD",
-      "price": 1.3371,
-      "asOf": "2026-10-26T07:13:43Z",
+      "price": 1.3349,
+      "asOf": "2026-10-26T08:40:45Z",
       "source": "Yahoo Finance",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "USD per GBP",
-      "fetchedAt": "2026-10-26T07:14:10Z"
+      "fetchedAt": "2026-10-26T08:41:20Z"
     },
     {
       "symbol": "USDJPY",
-      "price": 157.023,
-      "asOf": "2026-10-26T07:14:09Z",
+      "price": 157.212,
+      "asOf": "2026-10-26T08:41:19Z",
       "source": "Yahoo Finance",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
       "timeBasis": "market-observation",
       "currency": "JPY",
       "unit": "JPY per USD",
-      "fetchedAt": "2026-10-26T07:14:10Z"
+      "fetchedAt": "2026-10-26T08:41:20Z"
     },
     {
       "symbol": "BTCUSD",
-      "price": 80015.59375,
-      "asOf": "2026-10-26T07:13:44Z",
+      "price": 80136.351562,
+      "asOf": "2026-10-26T08:41:14Z",
       "source": "Gold API",
       "sourceUrl": "https://api.gold-api.com/price/BTC",
       "timeBasis": "provider-fetch",
       "currency": "USD",
       "unit": "USD per BTC",
-      "fetchedAt": "2026-10-26T07:14:08Z"
+      "fetchedAt": "2026-10-26T08:41:17Z"
     }
   ],
   "errors": []
