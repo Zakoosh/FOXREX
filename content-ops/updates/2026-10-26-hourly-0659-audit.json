@@ -1,0 +1,175 @@
+{
+  "checkedAt": "2026-10-26T04:01:07.503845+00:00",
+  "baseCommit": "708c15436144af5b08f1958548a2ed42dcf312e8",
+  "quotes": [
+    {
+      "symbol": "XAUUSD",
+      "price": 4008.899902,
+      "asOf": "2026-10-26T04:00:13Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAU",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T04:00:31Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 54.236,
+      "asOf": "2026-10-26T04:00:12Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAG",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T04:00:31Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.1226,
+      "asOf": "2026-10-26T03:59:44Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per EUR",
+      "fetchedAt": "2026-10-26T04:00:30Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.3382,
+      "asOf": "2026-10-26T03:59:44Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per GBP",
+      "fetchedAt": "2026-10-26T04:00:30Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 156.864,
+      "asOf": "2026-10-26T04:00:29Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "JPY",
+      "unit": "JPY per USD",
+      "fetchedAt": "2026-10-26T04:00:30Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 79333.1875,
+      "asOf": "2026-10-26T04:00:16Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/BTC",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per BTC",
+      "fetchedAt": "2026-10-26T04:00:31Z",
+      "stale": false,
+      "nonRegression": true,
+      "mappingValidated": true
+    }
+  ],
+  "servedBeforeUpdate": "Exact match with current main snapshot; metal/crypto snapshots over 15 minutes old, FX under two hours; browser refresh/stale handling preserved.",
+  "independentChecks": [
+    {
+      "symbol": "BTCUSD",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?interval=1m&range=1d",
+      "retrievedAt": "2026-10-26T04:00:32.314271+00:00",
+      "price": 79471.0,
+      "asOf": "2026-10-26T04:00:27+00:00",
+      "timeGapSeconds": 11.0,
+      "snapshotPrice": 79333.1875,
+      "snapshotAsOf": "2026-10-26T04:00:16Z",
+      "differencePercent": 0.1737,
+      "assessment": "Near-time indicative USD spot comparison across providers; time and venue differences do not establish an error or guaranteed accuracy."
+    },
+    {
+      "symbols": [
+        "XAUUSD",
+        "XAGUSD"
+      ],
+      "status": "unavailable",
+      "sourceUrl": "https://data-asg.goldprice.org/dbXRates/USD",
+      "reason": "HTTP Error 403: Forbidden",
+      "note": "Futures not substituted."
+    },
+    {
+      "symbols": [
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY"
+      ],
+      "status": "unavailable",
+      "sourceUrl": "https://www.freeforexapi.com/api/live?pairs=EURUSD,GBPUSD,USDJPY",
+      "reason": "The read operation timed out"
+    }
+  ],
+  "calendar": {
+    "overdueUnverifiedWithin24Hours": []
+  },
+  "mail": {
+    "authenticatedSender": true,
+    "substantiveSectionsRead": 9,
+    "alreadyProcessed": 6,
+    "excludedExpired": 2,
+    "excludedMissingHorizon": 1,
+    "newPublishableEvents": 0,
+    "sourceTimezone": "Australia/Sydney",
+    "receiptBeforeDetection": "Retained and disclosed in existing publications.",
+    "existingSetupsExpiredAtCheck": 6
+  },
+  "news": {
+    "materialNewDevelopmentVerified": false,
+    "action": "No filler published",
+    "checkedSources": [
+      "https://www.federalreserve.gov/newsevents/pressreleases/2026-press-fomc.htm",
+      "https://www.ecb.europa.eu/press/pubbydate/html/index.en.html",
+      "https://www.boj.or.jp/en/mopo/mpmdeci/mpr_2026/index.htm",
+      "https://www.bankofengland.co.uk/news"
+    ],
+    "note": "Official-source searches and financial news reviewed; Asian FX commentary and existing gold recaps do not establish a new corroborated consequential breaking event."
+  },
+  "telegram": {
+    "status": "pending-configuration",
+    "deliveryAttempted": false,
+    "blocker": "No configured authenticated backend and verified destination available in current operational configuration."
+  },
+  "social": {
+    "facebook": "pending-link",
+    "instagram": "pending-link",
+    "reminder": "Prior reminder remains under 24 hours; duplicate reminder suppressed."
+  },
+  "validation": {
+    "marketTests": 4,
+    "workerTests": 146,
+    "feedSchema": "passed",
+    "buildCheck": "passed",
+    "syntax": "passed"
+  },
+  "preserved": [
+    "Signals routes and permanent analysis routes",
+    "EN/AR/TR",
+    "light/dark hero and candle previews",
+    "signal OHLC provenance manifest",
+    "sticky educational notice"
+  ],
+  "refreshErrors": []
+}
