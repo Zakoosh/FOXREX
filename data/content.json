@@ -1,7 +1,7 @@
 {
   "$schema": "./content.schema.json",
   "schemaVersion": 3,
-  "updated": "2026-10-26T19:34:29Z",
+  "updated": "2026-10-26T19:58:22Z",
   "publication": {
     "id": "pub_ec2958ed1fa807138b01a7d1",
     "at": "2026-10-26T15:10:01.806Z",
@@ -15082,22 +15082,22 @@
       "section": "analysis",
       "slug": "ai-technical-xauusd",
       "urlPath": "analysis/ai-technical-xauusd/",
-      "title": "XAUUSD: AI technical analysis — D1",
+      "title": "XAUUSD: REX Analysis — D1",
       "summary": "XAUUSD: range / mixed bias, reference price 4011.30, support 3975.64, resistance 4280.56; D1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 4011.30 (USD per troy ounce) at 2026-10-26T19:34:16Z. Direction: range / mixed. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 3975.64 is the lowest low of the last 20 completed bars; price distance +0.90%. A sustained break and failed recovery would weaken the buyer balance. Resistance 4280.56 is the highest high of that same sample; distance +6.71%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 4135.85; RSI14 30.50622; ATR14 73.87505. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Omitted for insufficient history: EMA50, EMA200. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 4280.56: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 3975.64: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nStale data: 2026-10-23T00:00:00Z. Last checked 2026-10-26T19:34:29Z. Spot metals H1 unavailable; dated daily spot chart only. A newer quote cannot refresh old candles. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 4011.30 (USD per troy ounce) at 2026-10-26T19:34:16Z. Direction: range / mixed. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 3975.64 is the lowest low of the last 20 completed bars; price distance +0.90%. A sustained break and failed recovery would weaken the buyer balance. Resistance 4280.56 is the highest high of that same sample; distance +6.71%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 4135.85; RSI14 30.50622; ATR14 73.87505. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Omitted for insufficient history: EMA50, EMA200. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 4280.56: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 3975.64: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nStale data: 2026-10-23T00:00:00Z. Last checked 2026-10-26T19:34:29Z. Spot metals H1 unavailable; dated daily spot chart only. A newer quote cannot refresh old candles. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "XAUUSD",
       "category": "technical",
       "bias": "neutral",
@@ -15108,7 +15108,7 @@
       ],
       "image": {
         "src": "assets/media/ai-xauusd.webp",
-        "alt": "XAUUSD D1 AI technical analysis"
+        "alt": "XAUUSD D1 REX Analysis"
       },
       "sources": [
         {
@@ -15156,22 +15156,22 @@
       "section": "analysis",
       "slug": "ai-technical-xauusd",
       "urlPath": "analysis/ai-technical-xauusd/",
-      "title": "XAUUSD: تحليل الذكاء الاصطناعي — D1",
+      "title": "XAUUSD: تحليلات ريكس — D1",
       "summary": "XAUUSD: الاتجاه نطاق / مختلط، السعر المرجعي 4011.30، دعم 3975.64 ومقاومة 4280.56؛ إطار D1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 4011.30 (USD لكل أونصة تروي) عند 2026-10-26T19:34:16Z. الاتجاه نطاق / مختلط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 3975.64 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.90%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 4280.56 أعلى سعر في نفس العينة؛ المسافة إليها +6.71%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 4135.85; RSI14 30.50622; ATR14 73.87505. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. لم تُحسب EMA50, EMA200 لنقص العينة. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 4280.56: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 3975.64: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nبيانات قديمة: 2026-10-23T00:00:00Z. آخر فحص 2026-10-26T19:34:29Z. تعذّر الحصول على شموع H1 للذهب/الفضة الفورية؛ نعرض الشارت اليومي المؤرّخ فقط. السعر الحديث لا يحدّث عمر الشارت. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 4011.30 (USD لكل أونصة تروي) عند 2026-10-26T19:34:16Z. الاتجاه نطاق / مختلط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 3975.64 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.90%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 4280.56 أعلى سعر في نفس العينة؛ المسافة إليها +6.71%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 4135.85; RSI14 30.50622; ATR14 73.87505. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. لم تُحسب EMA50, EMA200 لنقص العينة. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 4280.56: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 3975.64: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nبيانات قديمة: 2026-10-23T00:00:00Z. آخر فحص 2026-10-26T19:34:29Z. تعذّر الحصول على شموع H1 للذهب/الفضة الفورية؛ نعرض الشارت اليومي المؤرّخ فقط. السعر الحديث لا يحدّث عمر الشارت. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "XAUUSD",
       "category": "technical",
       "bias": "neutral",
@@ -15182,7 +15182,7 @@
       ],
       "image": {
         "src": "assets/media/ai-xauusd.webp",
-        "alt": "XAUUSD D1 تحليل الذكاء الاصطناعي"
+        "alt": "XAUUSD D1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -15230,22 +15230,22 @@
       "section": "analysis",
       "slug": "ai-technical-xauusd",
       "urlPath": "analysis/ai-technical-xauusd/",
-      "title": "XAUUSD: Yapay zekâ teknik analizi — D1",
+      "title": "XAUUSD: REX Analizleri — D1",
       "summary": "XAUUSD: yön yatay / karışık, referans fiyat 4011.30, destek 3975.64, direnç 4280.56; D1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 4011.30 (USD / troy ons), zaman 2026-10-26T19:34:16Z. Yön yatay / karışık. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 3975.64, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.90%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 4280.56, aynı örneğin en yükseği; uzaklık +6.71%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 4135.85; RSI14 30.50622; ATR14 73.87505. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yetersiz örnek nedeniyle hesaplanmayanlar: EMA50, EMA200. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n4280.56 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 3975.64 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nEski veri: 2026-10-23T00:00:00Z. Son kontrol 2026-10-26T19:34:29Z. Spot altın/gümüş H1 verisi yok; yalnız tarihli günlük grafik. Yeni fiyat eski mumları güncellemez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 4011.30 (USD / troy ons), zaman 2026-10-26T19:34:16Z. Yön yatay / karışık. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 3975.64, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.90%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 4280.56, aynı örneğin en yükseği; uzaklık +6.71%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 4135.85; RSI14 30.50622; ATR14 73.87505. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yetersiz örnek nedeniyle hesaplanmayanlar: EMA50, EMA200. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n4280.56 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 3975.64 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nEski veri: 2026-10-23T00:00:00Z. Son kontrol 2026-10-26T19:34:29Z. Spot altın/gümüş H1 verisi yok; yalnız tarihli günlük grafik. Yeni fiyat eski mumları güncellemez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "XAUUSD",
       "category": "technical",
       "bias": "neutral",
@@ -15256,7 +15256,7 @@
       ],
       "image": {
         "src": "assets/media/ai-xauusd.webp",
-        "alt": "XAUUSD D1 Yapay zekâ teknik analizi"
+        "alt": "XAUUSD D1 REX Analizleri"
       },
       "sources": [
         {
@@ -15304,22 +15304,22 @@
       "section": "analysis",
       "slug": "ai-technical-xagusd",
       "urlPath": "analysis/ai-technical-xagusd/",
-      "title": "XAGUSD: AI technical analysis — D1",
+      "title": "XAGUSD: REX Analysis — D1",
       "summary": "XAGUSD: range / mixed bias, reference price 53.98800, support 53.02730, resistance 64.24270; D1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 53.98800 (USD per troy ounce) at 2026-10-26T19:34:15Z. Direction: range / mixed. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 53.02730 is the lowest low of the last 20 completed bars; price distance +1.81%. A sustained break and failed recovery would weaken the buyer balance. Resistance 64.24270 is the highest high of that same sample; distance +18.99%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 58.93723; RSI14 26.25454; ATR14 2.11017. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Omitted for insufficient history: EMA50, EMA200. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 64.24270: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 53.02730: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nStale data: 2026-10-23T00:00:00Z. Last checked 2026-10-26T19:34:29Z. Spot metals H1 unavailable; dated daily spot chart only. A newer quote cannot refresh old candles. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 53.98800 (USD per troy ounce) at 2026-10-26T19:34:15Z. Direction: range / mixed. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 53.02730 is the lowest low of the last 20 completed bars; price distance +1.81%. A sustained break and failed recovery would weaken the buyer balance. Resistance 64.24270 is the highest high of that same sample; distance +18.99%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 58.93723; RSI14 26.25454; ATR14 2.11017. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Omitted for insufficient history: EMA50, EMA200. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 64.24270: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 53.02730: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nStale data: 2026-10-23T00:00:00Z. Last checked 2026-10-26T19:34:29Z. Spot metals H1 unavailable; dated daily spot chart only. A newer quote cannot refresh old candles. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "XAGUSD",
       "category": "technical",
       "bias": "neutral",
@@ -15330,7 +15330,7 @@
       ],
       "image": {
         "src": "assets/media/ai-xagusd.webp",
-        "alt": "XAGUSD D1 AI technical analysis"
+        "alt": "XAGUSD D1 REX Analysis"
       },
       "sources": [
         {
@@ -15378,22 +15378,22 @@
       "section": "analysis",
       "slug": "ai-technical-xagusd",
       "urlPath": "analysis/ai-technical-xagusd/",
-      "title": "XAGUSD: تحليل الذكاء الاصطناعي — D1",
+      "title": "XAGUSD: تحليلات ريكس — D1",
       "summary": "XAGUSD: الاتجاه نطاق / مختلط، السعر المرجعي 53.98800، دعم 53.02730 ومقاومة 64.24270؛ إطار D1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 53.98800 (USD لكل أونصة تروي) عند 2026-10-26T19:34:15Z. الاتجاه نطاق / مختلط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 53.02730 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +1.81%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 64.24270 أعلى سعر في نفس العينة؛ المسافة إليها +18.99%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 58.93723; RSI14 26.25454; ATR14 2.11017. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. لم تُحسب EMA50, EMA200 لنقص العينة. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 64.24270: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 53.02730: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nبيانات قديمة: 2026-10-23T00:00:00Z. آخر فحص 2026-10-26T19:34:29Z. تعذّر الحصول على شموع H1 للذهب/الفضة الفورية؛ نعرض الشارت اليومي المؤرّخ فقط. السعر الحديث لا يحدّث عمر الشارت. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 53.98800 (USD لكل أونصة تروي) عند 2026-10-26T19:34:15Z. الاتجاه نطاق / مختلط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 53.02730 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +1.81%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 64.24270 أعلى سعر في نفس العينة؛ المسافة إليها +18.99%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 58.93723; RSI14 26.25454; ATR14 2.11017. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. لم تُحسب EMA50, EMA200 لنقص العينة. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 64.24270: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 53.02730: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nبيانات قديمة: 2026-10-23T00:00:00Z. آخر فحص 2026-10-26T19:34:29Z. تعذّر الحصول على شموع H1 للذهب/الفضة الفورية؛ نعرض الشارت اليومي المؤرّخ فقط. السعر الحديث لا يحدّث عمر الشارت. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "XAGUSD",
       "category": "technical",
       "bias": "neutral",
@@ -15404,7 +15404,7 @@
       ],
       "image": {
         "src": "assets/media/ai-xagusd.webp",
-        "alt": "XAGUSD D1 تحليل الذكاء الاصطناعي"
+        "alt": "XAGUSD D1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -15452,22 +15452,22 @@
       "section": "analysis",
       "slug": "ai-technical-xagusd",
       "urlPath": "analysis/ai-technical-xagusd/",
-      "title": "XAGUSD: Yapay zekâ teknik analizi — D1",
+      "title": "XAGUSD: REX Analizleri — D1",
       "summary": "XAGUSD: yön yatay / karışık, referans fiyat 53.98800, destek 53.02730, direnç 64.24270; D1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 53.98800 (USD / troy ons), zaman 2026-10-26T19:34:15Z. Yön yatay / karışık. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 53.02730, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +1.81%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 64.24270, aynı örneğin en yükseği; uzaklık +18.99%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 58.93723; RSI14 26.25454; ATR14 2.11017. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yetersiz örnek nedeniyle hesaplanmayanlar: EMA50, EMA200. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n64.24270 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 53.02730 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nEski veri: 2026-10-23T00:00:00Z. Son kontrol 2026-10-26T19:34:29Z. Spot altın/gümüş H1 verisi yok; yalnız tarihli günlük grafik. Yeni fiyat eski mumları güncellemez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 53.98800 (USD / troy ons), zaman 2026-10-26T19:34:15Z. Yön yatay / karışık. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 53.02730, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +1.81%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 64.24270, aynı örneğin en yükseği; uzaklık +18.99%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 58.93723; RSI14 26.25454; ATR14 2.11017. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yetersiz örnek nedeniyle hesaplanmayanlar: EMA50, EMA200. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n64.24270 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 53.02730 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nEski veri: 2026-10-23T00:00:00Z. Son kontrol 2026-10-26T19:34:29Z. Spot altın/gümüş H1 verisi yok; yalnız tarihli günlük grafik. Yeni fiyat eski mumları güncellemez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "XAGUSD",
       "category": "technical",
       "bias": "neutral",
@@ -15478,7 +15478,7 @@
       ],
       "image": {
         "src": "assets/media/ai-xagusd.webp",
-        "alt": "XAGUSD D1 Yapay zekâ teknik analizi"
+        "alt": "XAGUSD D1 REX Analizleri"
       },
       "sources": [
         {
@@ -15526,22 +15526,22 @@
       "section": "analysis",
       "slug": "ai-technical-eurusd",
       "urlPath": "analysis/ai-technical-eurusd/",
-      "title": "EURUSD: AI technical analysis — H1",
+      "title": "EURUSD: REX Analysis — H1",
       "summary": "EURUSD: bearish bias, reference price 1.11840, support 1.11769, resistance 1.12296; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 1.11840 (USD per EUR) at 2026-10-26T19:33:44Z. Direction: bearish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 1.11769 is the lowest low of the last 20 completed bars; price distance +0.06%. A sustained break and failed recovery would weaken the buyer balance. Resistance 1.12296 is the highest high of that same sample; distance +0.41%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 1.11982; EMA50 1.12070; EMA200 1.12186; RSI14 40.08143; ATR14 0.00097. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 1.12296: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 1.11769: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 1.11840 (USD per EUR) at 2026-10-26T19:33:44Z. Direction: bearish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 1.11769 is the lowest low of the last 20 completed bars; price distance +0.06%. A sustained break and failed recovery would weaken the buyer balance. Resistance 1.12296 is the highest high of that same sample; distance +0.41%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 1.11982; EMA50 1.12070; EMA200 1.12186; RSI14 40.08143; ATR14 0.00097. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 1.12296: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 1.11769: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "EURUSD",
       "category": "technical",
       "bias": "bearish",
@@ -15552,7 +15552,7 @@
       ],
       "image": {
         "src": "assets/media/ai-eurusd.webp",
-        "alt": "EURUSD H1 AI technical analysis"
+        "alt": "EURUSD H1 REX Analysis"
       },
       "sources": [
         {
@@ -15595,22 +15595,22 @@
       "section": "analysis",
       "slug": "ai-technical-eurusd",
       "urlPath": "analysis/ai-technical-eurusd/",
-      "title": "EURUSD: تحليل الذكاء الاصطناعي — H1",
+      "title": "EURUSD: تحليلات ريكس — H1",
       "summary": "EURUSD: الاتجاه هابط، السعر المرجعي 1.11840، دعم 1.11769 ومقاومة 1.12296؛ إطار H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 1.11840 (USD لكل EUR) عند 2026-10-26T19:33:44Z. الاتجاه هابط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 1.11769 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.06%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 1.12296 أعلى سعر في نفس العينة؛ المسافة إليها +0.41%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 1.11982; EMA50 1.12070; EMA200 1.12186; RSI14 40.08143; ATR14 0.00097. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 1.12296: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 1.11769: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 1.11840 (USD لكل EUR) عند 2026-10-26T19:33:44Z. الاتجاه هابط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 1.11769 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.06%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 1.12296 أعلى سعر في نفس العينة؛ المسافة إليها +0.41%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 1.11982; EMA50 1.12070; EMA200 1.12186; RSI14 40.08143; ATR14 0.00097. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 1.12296: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 1.11769: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "EURUSD",
       "category": "technical",
       "bias": "bearish",
@@ -15621,7 +15621,7 @@
       ],
       "image": {
         "src": "assets/media/ai-eurusd.webp",
-        "alt": "EURUSD H1 تحليل الذكاء الاصطناعي"
+        "alt": "EURUSD H1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -15664,22 +15664,22 @@
       "section": "analysis",
       "slug": "ai-technical-eurusd",
       "urlPath": "analysis/ai-technical-eurusd/",
-      "title": "EURUSD: Yapay zekâ teknik analizi — H1",
+      "title": "EURUSD: REX Analizleri — H1",
       "summary": "EURUSD: yön düşüş, referans fiyat 1.11840, destek 1.11769, direnç 1.12296; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 1.11840 (USD / EUR), zaman 2026-10-26T19:33:44Z. Yön düşüş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 1.11769, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.06%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 1.12296, aynı örneğin en yükseği; uzaklık +0.41%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 1.11982; EMA50 1.12070; EMA200 1.12186; RSI14 40.08143; ATR14 0.00097. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n1.12296 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 1.11769 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 1.11840 (USD / EUR), zaman 2026-10-26T19:33:44Z. Yön düşüş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 1.11769, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.06%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 1.12296, aynı örneğin en yükseği; uzaklık +0.41%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 1.11982; EMA50 1.12070; EMA200 1.12186; RSI14 40.08143; ATR14 0.00097. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n1.12296 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 1.11769 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "EURUSD",
       "category": "technical",
       "bias": "bearish",
@@ -15690,7 +15690,7 @@
       ],
       "image": {
         "src": "assets/media/ai-eurusd.webp",
-        "alt": "EURUSD H1 Yapay zekâ teknik analizi"
+        "alt": "EURUSD H1 REX Analizleri"
       },
       "sources": [
         {
@@ -15733,22 +15733,22 @@
       "section": "analysis",
       "slug": "ai-technical-gbpusd",
       "urlPath": "analysis/ai-technical-gbpusd/",
-      "title": "GBPUSD: AI technical analysis — H1",
+      "title": "GBPUSD: REX Analysis — H1",
       "summary": "GBPUSD: bearish bias, reference price 1.33480, support 1.33296, resistance 1.33880; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 1.33480 (USD per GBP) at 2026-10-26T19:33:44Z. Direction: bearish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 1.33296 is the lowest low of the last 20 completed bars; price distance +0.14%. A sustained break and failed recovery would weaken the buyer balance. Resistance 1.33880 is the highest high of that same sample; distance +0.30%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 1.33577; EMA50 1.33687; EMA200 1.33415; RSI14 43.70584; ATR14 0.00110. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 1.33880: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 1.33296: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 5 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 1.33480 (USD per GBP) at 2026-10-26T19:33:44Z. Direction: bearish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 1.33296 is the lowest low of the last 20 completed bars; price distance +0.14%. A sustained break and failed recovery would weaken the buyer balance. Resistance 1.33880 is the highest high of that same sample; distance +0.30%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 1.33577; EMA50 1.33687; EMA200 1.33415; RSI14 43.70584; ATR14 0.00110. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 1.33880: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 1.33296: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 5 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "GBPUSD",
       "category": "technical",
       "bias": "bearish",
@@ -15759,7 +15759,7 @@
       ],
       "image": {
         "src": "assets/media/ai-gbpusd.webp",
-        "alt": "GBPUSD H1 AI technical analysis"
+        "alt": "GBPUSD H1 REX Analysis"
       },
       "sources": [
         {
@@ -15802,22 +15802,22 @@
       "section": "analysis",
       "slug": "ai-technical-gbpusd",
       "urlPath": "analysis/ai-technical-gbpusd/",
-      "title": "GBPUSD: تحليل الذكاء الاصطناعي — H1",
+      "title": "GBPUSD: تحليلات ريكس — H1",
       "summary": "GBPUSD: الاتجاه هابط، السعر المرجعي 1.33480، دعم 1.33296 ومقاومة 1.33880؛ إطار H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 1.33480 (USD لكل GBP) عند 2026-10-26T19:33:44Z. الاتجاه هابط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 1.33296 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.14%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 1.33880 أعلى سعر في نفس العينة؛ المسافة إليها +0.30%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 1.33577; EMA50 1.33687; EMA200 1.33415; RSI14 43.70584; ATR14 0.00110. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 1.33880: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 1.33296: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 5 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 1.33480 (USD لكل GBP) عند 2026-10-26T19:33:44Z. الاتجاه هابط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 1.33296 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.14%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 1.33880 أعلى سعر في نفس العينة؛ المسافة إليها +0.30%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 1.33577; EMA50 1.33687; EMA200 1.33415; RSI14 43.70584; ATR14 0.00110. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 1.33880: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 1.33296: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 5 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "GBPUSD",
       "category": "technical",
       "bias": "bearish",
@@ -15828,7 +15828,7 @@
       ],
       "image": {
         "src": "assets/media/ai-gbpusd.webp",
-        "alt": "GBPUSD H1 تحليل الذكاء الاصطناعي"
+        "alt": "GBPUSD H1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -15871,22 +15871,22 @@
       "section": "analysis",
       "slug": "ai-technical-gbpusd",
       "urlPath": "analysis/ai-technical-gbpusd/",
-      "title": "GBPUSD: Yapay zekâ teknik analizi — H1",
+      "title": "GBPUSD: REX Analizleri — H1",
       "summary": "GBPUSD: yön düşüş, referans fiyat 1.33480, destek 1.33296, direnç 1.33880; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 1.33480 (USD / GBP), zaman 2026-10-26T19:33:44Z. Yön düşüş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 1.33296, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.14%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 1.33880, aynı örneğin en yükseği; uzaklık +0.30%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 1.33577; EMA50 1.33687; EMA200 1.33415; RSI14 43.70584; ATR14 0.00110. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n1.33880 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 1.33296 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 5 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 1.33480 (USD / GBP), zaman 2026-10-26T19:33:44Z. Yön düşüş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 1.33296, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.14%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 1.33880, aynı örneğin en yükseği; uzaklık +0.30%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 1.33577; EMA50 1.33687; EMA200 1.33415; RSI14 43.70584; ATR14 0.00110. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n1.33880 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 1.33296 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 5 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "GBPUSD",
       "category": "technical",
       "bias": "bearish",
@@ -15897,7 +15897,7 @@
       ],
       "image": {
         "src": "assets/media/ai-gbpusd.webp",
-        "alt": "GBPUSD H1 Yapay zekâ teknik analizi"
+        "alt": "GBPUSD H1 REX Analizleri"
       },
       "sources": [
         {
@@ -15940,22 +15940,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdjpy",
       "urlPath": "analysis/ai-technical-usdjpy/",
-      "title": "USDJPY: AI technical analysis — H1",
+      "title": "USDJPY: REX Analysis — H1",
       "summary": "USDJPY: bullish bias, reference price 157.47200, support 156.64500, resistance 157.64200; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 157.47200 (JPY per USD) at 2026-10-26T19:34:32Z. Direction: bullish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 156.64500 is the lowest low of the last 20 completed bars; price distance +0.53%. A sustained break and failed recovery would weaken the buyer balance. Resistance 157.64200 is the highest high of that same sample; distance +0.11%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 157.25947; EMA50 157.19217; EMA200 157.62891; RSI14 57.73458; ATR14 0.19772. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 157.64200: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 156.64500: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 9 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 157.47200 (JPY per USD) at 2026-10-26T19:34:32Z. Direction: bullish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 156.64500 is the lowest low of the last 20 completed bars; price distance +0.53%. A sustained break and failed recovery would weaken the buyer balance. Resistance 157.64200 is the highest high of that same sample; distance +0.11%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 157.25947; EMA50 157.19217; EMA200 157.62891; RSI14 57.73458; ATR14 0.19772. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 157.64200: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 156.64500: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 9 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "USDJPY",
       "category": "technical",
       "bias": "bullish",
@@ -15966,7 +15966,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdjpy.webp",
-        "alt": "USDJPY H1 AI technical analysis"
+        "alt": "USDJPY H1 REX Analysis"
       },
       "sources": [
         {
@@ -16009,22 +16009,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdjpy",
       "urlPath": "analysis/ai-technical-usdjpy/",
-      "title": "USDJPY: تحليل الذكاء الاصطناعي — H1",
+      "title": "USDJPY: تحليلات ريكس — H1",
       "summary": "USDJPY: الاتجاه صاعد، السعر المرجعي 157.47200، دعم 156.64500 ومقاومة 157.64200؛ إطار H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 157.47200 (JPY لكل USD) عند 2026-10-26T19:34:32Z. الاتجاه صاعد. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 156.64500 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.53%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 157.64200 أعلى سعر في نفس العينة؛ المسافة إليها +0.11%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 157.25947; EMA50 157.19217; EMA200 157.62891; RSI14 57.73458; ATR14 0.19772. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 157.64200: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 156.64500: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 9 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 157.47200 (JPY لكل USD) عند 2026-10-26T19:34:32Z. الاتجاه صاعد. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 156.64500 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.53%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 157.64200 أعلى سعر في نفس العينة؛ المسافة إليها +0.11%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 157.25947; EMA50 157.19217; EMA200 157.62891; RSI14 57.73458; ATR14 0.19772. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 157.64200: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 156.64500: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 9 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "USDJPY",
       "category": "technical",
       "bias": "bullish",
@@ -16035,7 +16035,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdjpy.webp",
-        "alt": "USDJPY H1 تحليل الذكاء الاصطناعي"
+        "alt": "USDJPY H1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -16078,22 +16078,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdjpy",
       "urlPath": "analysis/ai-technical-usdjpy/",
-      "title": "USDJPY: Yapay zekâ teknik analizi — H1",
+      "title": "USDJPY: REX Analizleri — H1",
       "summary": "USDJPY: yön yükseliş, referans fiyat 157.47200, destek 156.64500, direnç 157.64200; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 157.47200 (JPY / USD), zaman 2026-10-26T19:34:32Z. Yön yükseliş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 156.64500, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.53%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 157.64200, aynı örneğin en yükseği; uzaklık +0.11%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 157.25947; EMA50 157.19217; EMA200 157.62891; RSI14 57.73458; ATR14 0.19772. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n157.64200 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 156.64500 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 9 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 157.47200 (JPY / USD), zaman 2026-10-26T19:34:32Z. Yön yükseliş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 156.64500, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.53%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 157.64200, aynı örneğin en yükseği; uzaklık +0.11%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 157.25947; EMA50 157.19217; EMA200 157.62891; RSI14 57.73458; ATR14 0.19772. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n157.64200 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 156.64500 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 9 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "USDJPY",
       "category": "technical",
       "bias": "bullish",
@@ -16104,7 +16104,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdjpy.webp",
-        "alt": "USDJPY H1 Yapay zekâ teknik analizi"
+        "alt": "USDJPY H1 REX Analizleri"
       },
       "sources": [
         {
@@ -16147,22 +16147,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdchf",
       "urlPath": "analysis/ai-technical-usdchf/",
-      "title": "USDCHF: AI technical analysis — H1",
+      "title": "USDCHF: REX Analysis — H1",
       "summary": "USDCHF: bullish bias, reference price 0.82740, support 0.82316, resistance 0.82771; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 0.82740 (CHF per USD) at 2026-10-26T19:34:30Z. Direction: bullish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 0.82316 is the lowest low of the last 20 completed bars; price distance +0.52%. A sustained break and failed recovery would weaken the buyer balance. Resistance 0.82771 is the highest high of that same sample; distance +0.04%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 0.82582; EMA50 0.82462; EMA200 0.82575; RSI14 63.10339; ATR14 0.00105. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 0.82771: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 0.82316: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 9 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 0.82740 (CHF per USD) at 2026-10-26T19:34:30Z. Direction: bullish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 0.82316 is the lowest low of the last 20 completed bars; price distance +0.52%. A sustained break and failed recovery would weaken the buyer balance. Resistance 0.82771 is the highest high of that same sample; distance +0.04%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 0.82582; EMA50 0.82462; EMA200 0.82575; RSI14 63.10339; ATR14 0.00105. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 0.82771: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 0.82316: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 9 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "USDCHF",
       "category": "technical",
       "bias": "bullish",
@@ -16173,7 +16173,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdchf.webp",
-        "alt": "USDCHF H1 AI technical analysis"
+        "alt": "USDCHF H1 REX Analysis"
       },
       "sources": [
         {
@@ -16216,22 +16216,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdchf",
       "urlPath": "analysis/ai-technical-usdchf/",
-      "title": "USDCHF: تحليل الذكاء الاصطناعي — H1",
+      "title": "USDCHF: تحليلات ريكس — H1",
       "summary": "USDCHF: الاتجاه صاعد، السعر المرجعي 0.82740، دعم 0.82316 ومقاومة 0.82771؛ إطار H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 0.82740 (CHF لكل USD) عند 2026-10-26T19:34:30Z. الاتجاه صاعد. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 0.82316 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.52%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 0.82771 أعلى سعر في نفس العينة؛ المسافة إليها +0.04%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 0.82582; EMA50 0.82462; EMA200 0.82575; RSI14 63.10339; ATR14 0.00105. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 0.82771: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 0.82316: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 9 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 0.82740 (CHF لكل USD) عند 2026-10-26T19:34:30Z. الاتجاه صاعد. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 0.82316 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.52%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 0.82771 أعلى سعر في نفس العينة؛ المسافة إليها +0.04%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 0.82582; EMA50 0.82462; EMA200 0.82575; RSI14 63.10339; ATR14 0.00105. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 0.82771: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 0.82316: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 9 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "USDCHF",
       "category": "technical",
       "bias": "bullish",
@@ -16242,7 +16242,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdchf.webp",
-        "alt": "USDCHF H1 تحليل الذكاء الاصطناعي"
+        "alt": "USDCHF H1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -16285,22 +16285,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdchf",
       "urlPath": "analysis/ai-technical-usdchf/",
-      "title": "USDCHF: Yapay zekâ teknik analizi — H1",
+      "title": "USDCHF: REX Analizleri — H1",
       "summary": "USDCHF: yön yükseliş, referans fiyat 0.82740, destek 0.82316, direnç 0.82771; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 0.82740 (CHF / USD), zaman 2026-10-26T19:34:30Z. Yön yükseliş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 0.82316, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.52%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 0.82771, aynı örneğin en yükseği; uzaklık +0.04%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 0.82582; EMA50 0.82462; EMA200 0.82575; RSI14 63.10339; ATR14 0.00105. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n0.82771 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 0.82316 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 9 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 0.82740 (CHF / USD), zaman 2026-10-26T19:34:30Z. Yön yükseliş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 0.82316, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.52%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 0.82771, aynı örneğin en yükseği; uzaklık +0.04%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 0.82582; EMA50 0.82462; EMA200 0.82575; RSI14 63.10339; ATR14 0.00105. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n0.82771 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 0.82316 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 9 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "USDCHF",
       "category": "technical",
       "bias": "bullish",
@@ -16311,7 +16311,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdchf.webp",
-        "alt": "USDCHF H1 Yapay zekâ teknik analizi"
+        "alt": "USDCHF H1 REX Analizleri"
       },
       "sources": [
         {
@@ -16354,22 +16354,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdcad",
       "urlPath": "analysis/ai-technical-usdcad/",
-      "title": "USDCAD: AI technical analysis — H1",
+      "title": "USDCAD: REX Analysis — H1",
       "summary": "USDCAD: bullish bias, reference price 1.40180, support 1.39940, resistance 1.40555; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 1.40180 (CAD per USD) at 2026-10-26T19:34:36Z. Direction: bullish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 1.39940 is the lowest low of the last 20 completed bars; price distance +0.17%. A sustained break and failed recovery would weaken the buyer balance. Resistance 1.40555 is the highest high of that same sample; distance +0.27%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 1.40171; EMA50 1.40168; EMA200 1.40790; RSI14 52.24749; ATR14 0.00163. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 1.40555: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 1.39940: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 1.40180 (CAD per USD) at 2026-10-26T19:34:36Z. Direction: bullish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 1.39940 is the lowest low of the last 20 completed bars; price distance +0.17%. A sustained break and failed recovery would weaken the buyer balance. Resistance 1.40555 is the highest high of that same sample; distance +0.27%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 1.40171; EMA50 1.40168; EMA200 1.40790; RSI14 52.24749; ATR14 0.00163. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 1.40555: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 1.39940: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "USDCAD",
       "category": "technical",
       "bias": "bullish",
@@ -16380,7 +16380,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdcad.webp",
-        "alt": "USDCAD H1 AI technical analysis"
+        "alt": "USDCAD H1 REX Analysis"
       },
       "sources": [
         {
@@ -16423,22 +16423,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdcad",
       "urlPath": "analysis/ai-technical-usdcad/",
-      "title": "USDCAD: تحليل الذكاء الاصطناعي — H1",
+      "title": "USDCAD: تحليلات ريكس — H1",
       "summary": "USDCAD: الاتجاه صاعد، السعر المرجعي 1.40180، دعم 1.39940 ومقاومة 1.40555؛ إطار H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 1.40180 (CAD لكل USD) عند 2026-10-26T19:34:36Z. الاتجاه صاعد. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 1.39940 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.17%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 1.40555 أعلى سعر في نفس العينة؛ المسافة إليها +0.27%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 1.40171; EMA50 1.40168; EMA200 1.40790; RSI14 52.24749; ATR14 0.00163. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 1.40555: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 1.39940: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 1.40180 (CAD لكل USD) عند 2026-10-26T19:34:36Z. الاتجاه صاعد. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 1.39940 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.17%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 1.40555 أعلى سعر في نفس العينة؛ المسافة إليها +0.27%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 1.40171; EMA50 1.40168; EMA200 1.40790; RSI14 52.24749; ATR14 0.00163. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 1.40555: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 1.39940: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "USDCAD",
       "category": "technical",
       "bias": "bullish",
@@ -16449,7 +16449,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdcad.webp",
-        "alt": "USDCAD H1 تحليل الذكاء الاصطناعي"
+        "alt": "USDCAD H1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -16492,22 +16492,22 @@
       "section": "analysis",
       "slug": "ai-technical-usdcad",
       "urlPath": "analysis/ai-technical-usdcad/",
-      "title": "USDCAD: Yapay zekâ teknik analizi — H1",
+      "title": "USDCAD: REX Analizleri — H1",
       "summary": "USDCAD: yön yükseliş, referans fiyat 1.40180, destek 1.39940, direnç 1.40555; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 1.40180 (CAD / USD), zaman 2026-10-26T19:34:36Z. Yön yükseliş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 1.39940, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.17%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 1.40555, aynı örneğin en yükseği; uzaklık +0.27%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 1.40171; EMA50 1.40168; EMA200 1.40790; RSI14 52.24749; ATR14 0.00163. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n1.40555 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 1.39940 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 1.40180 (CAD / USD), zaman 2026-10-26T19:34:36Z. Yön yükseliş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 1.39940, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.17%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 1.40555, aynı örneğin en yükseği; uzaklık +0.27%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 1.40171; EMA50 1.40168; EMA200 1.40790; RSI14 52.24749; ATR14 0.00163. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n1.40555 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 1.39940 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "USDCAD",
       "category": "technical",
       "bias": "bullish",
@@ -16518,7 +16518,7 @@
       ],
       "image": {
         "src": "assets/media/ai-usdcad.webp",
-        "alt": "USDCAD H1 Yapay zekâ teknik analizi"
+        "alt": "USDCAD H1 REX Analizleri"
       },
       "sources": [
         {
@@ -16561,22 +16561,22 @@
       "section": "analysis",
       "slug": "ai-technical-audusd",
       "urlPath": "analysis/ai-technical-audusd/",
-      "title": "AUDUSD: AI technical analysis — H1",
+      "title": "AUDUSD: REX Analysis — H1",
       "summary": "AUDUSD: range / mixed bias, reference price 0.70220, support 0.70161, resistance 0.70418; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 0.70220 (USD per AUD) at 2026-10-26T19:32:44Z. Direction: range / mixed. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 0.70161 is the lowest low of the last 20 completed bars; price distance +0.08%. A sustained break and failed recovery would weaken the buyer balance. Resistance 0.70418 is the highest high of that same sample; distance +0.28%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 0.70271; EMA50 0.70258; EMA200 0.70041; RSI14 47.36357; ATR14 0.00060. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 0.70418: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 0.70161: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 0.70220 (USD per AUD) at 2026-10-26T19:32:44Z. Direction: range / mixed. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 0.70161 is the lowest low of the last 20 completed bars; price distance +0.08%. A sustained break and failed recovery would weaken the buyer balance. Resistance 0.70418 is the highest high of that same sample; distance +0.28%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 0.70271; EMA50 0.70258; EMA200 0.70041; RSI14 47.36357; ATR14 0.00060. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 0.70418: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 0.70161: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "AUDUSD",
       "category": "technical",
       "bias": "neutral",
@@ -16587,7 +16587,7 @@
       ],
       "image": {
         "src": "assets/media/ai-audusd.webp",
-        "alt": "AUDUSD H1 AI technical analysis"
+        "alt": "AUDUSD H1 REX Analysis"
       },
       "sources": [
         {
@@ -16630,22 +16630,22 @@
       "section": "analysis",
       "slug": "ai-technical-audusd",
       "urlPath": "analysis/ai-technical-audusd/",
-      "title": "AUDUSD: تحليل الذكاء الاصطناعي — H1",
+      "title": "AUDUSD: تحليلات ريكس — H1",
       "summary": "AUDUSD: الاتجاه نطاق / مختلط، السعر المرجعي 0.70220، دعم 0.70161 ومقاومة 0.70418؛ إطار H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 0.70220 (USD لكل AUD) عند 2026-10-26T19:32:44Z. الاتجاه نطاق / مختلط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 0.70161 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.08%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 0.70418 أعلى سعر في نفس العينة؛ المسافة إليها +0.28%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 0.70271; EMA50 0.70258; EMA200 0.70041; RSI14 47.36357; ATR14 0.00060. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 0.70418: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 0.70161: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 0.70220 (USD لكل AUD) عند 2026-10-26T19:32:44Z. الاتجاه نطاق / مختلط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 0.70161 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.08%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 0.70418 أعلى سعر في نفس العينة؛ المسافة إليها +0.28%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 0.70271; EMA50 0.70258; EMA200 0.70041; RSI14 47.36357; ATR14 0.00060. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 0.70418: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 0.70161: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "AUDUSD",
       "category": "technical",
       "bias": "neutral",
@@ -16656,7 +16656,7 @@
       ],
       "image": {
         "src": "assets/media/ai-audusd.webp",
-        "alt": "AUDUSD H1 تحليل الذكاء الاصطناعي"
+        "alt": "AUDUSD H1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -16699,22 +16699,22 @@
       "section": "analysis",
       "slug": "ai-technical-audusd",
       "urlPath": "analysis/ai-technical-audusd/",
-      "title": "AUDUSD: Yapay zekâ teknik analizi — H1",
+      "title": "AUDUSD: REX Analizleri — H1",
       "summary": "AUDUSD: yön yatay / karışık, referans fiyat 0.70220, destek 0.70161, direnç 0.70418; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 0.70220 (USD / AUD), zaman 2026-10-26T19:32:44Z. Yön yatay / karışık. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 0.70161, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.08%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 0.70418, aynı örneğin en yükseği; uzaklık +0.28%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 0.70271; EMA50 0.70258; EMA200 0.70041; RSI14 47.36357; ATR14 0.00060. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n0.70418 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 0.70161 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 0.70220 (USD / AUD), zaman 2026-10-26T19:32:44Z. Yön yatay / karışık. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 0.70161, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.08%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 0.70418, aynı örneğin en yükseği; uzaklık +0.28%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 0.70271; EMA50 0.70258; EMA200 0.70041; RSI14 47.36357; ATR14 0.00060. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n0.70418 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 0.70161 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "AUDUSD",
       "category": "technical",
       "bias": "neutral",
@@ -16725,7 +16725,7 @@
       ],
       "image": {
         "src": "assets/media/ai-audusd.webp",
-        "alt": "AUDUSD H1 Yapay zekâ teknik analizi"
+        "alt": "AUDUSD H1 REX Analizleri"
       },
       "sources": [
         {
@@ -16768,22 +16768,22 @@
       "section": "analysis",
       "slug": "ai-technical-nzdusd",
       "urlPath": "analysis/ai-technical-nzdusd/",
-      "title": "NZDUSD: AI technical analysis — H1",
+      "title": "NZDUSD: REX Analysis — H1",
       "summary": "NZDUSD: bearish bias, reference price 0.56860, support 0.56725, resistance 0.57068; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Price and direction\nPrice 0.56860 (USD per NZD) at 2026-10-26T19:32:44Z. Direction: bearish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 0.56725 is the lowest low of the last 20 completed bars; price distance +0.24%. A sustained break and failed recovery would weaken the buyer balance. Resistance 0.57068 is the highest high of that same sample; distance +0.37%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 0.56896; EMA50 0.56910; EMA200 0.56708; RSI14 47.02973; ATR14 0.00056. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 0.57068: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 0.56725: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. Original text was authored with AI assistance using disclosed rules. The refresh command recalculates and updates rule-based wording; it does not call a paid model or imply human review.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
+      "body": "Price and direction\nPrice 0.56860 (USD per NZD) at 2026-10-26T19:32:44Z. Direction: bearish. Indicative quote is separate from the completed candle close.\n\nImportant levels and our interpretation\nSupport 0.56725 is the lowest low of the last 20 completed bars; price distance +0.24%. A sustained break and failed recovery would weaken the buyer balance. Resistance 0.57068 is the highest high of that same sample; distance +0.37%. A close followed by acceptance or a retest matters more than a touch; these are calculated references, not repeatedly validated zones.\n\nMomentum and methodology\nEMA20 0.56896; EMA50 0.56910; EMA200 0.56708; RSI14 47.02973; ATR14 0.00056. Bullish requires close > EMA20 > EMA50 and RSI > 50; bearish is the reverse; otherwise mixed. EMA starts with the mean of the first N closes; RSI/ATR use Wilder smoothing. Only these indicators are selected; no artificial FX volume or filled gaps. Calculations use valid completed observations, not calendar intervals.\n\nConditional scenarios\nAbove 0.57068: a confirmed close and successful retest strengthen the upside reading; a return below invalidates the breakout. Below 0.56725: acceptance supports downside caution; recovery invalidates that break. These are analytical conditions, not entry, TP or SL orders.\n\nData age and limitations\nCompleted candles through 2026-10-26T19:00:00Z. Last checked 2026-10-26T19:34:29Z. 6 missing/partial observations excluded. Quote and candle times can differ; H4/D1 context is omitted without an independently verified series. The REX view follows the disclosed calculation method; levels and scenarios change with the available observations.\n\nNext economic risk\nFOMC policy decision — 2026-10-28T18:00:00Z. Release-time volatility and slippage can rise; no unreleased outcome is assumed.",
       "symbol": "NZDUSD",
       "category": "technical",
       "bias": "bearish",
@@ -16794,7 +16794,7 @@
       ],
       "image": {
         "src": "assets/media/ai-nzdusd.webp",
-        "alt": "NZDUSD H1 AI technical analysis"
+        "alt": "NZDUSD H1 REX Analysis"
       },
       "sources": [
         {
@@ -16837,22 +16837,22 @@
       "section": "analysis",
       "slug": "ai-technical-nzdusd",
       "urlPath": "analysis/ai-technical-nzdusd/",
-      "title": "NZDUSD: تحليل الذكاء الاصطناعي — H1",
+      "title": "NZDUSD: تحليلات ريكس — H1",
       "summary": "NZDUSD: الاتجاه هابط، السعر المرجعي 0.56860، دعم 0.56725 ومقاومة 0.57068؛ إطار H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "لقطة السعر والاتجاه\nالسعر 0.56860 (USD لكل NZD) عند 2026-10-26T19:32:44Z. الاتجاه هابط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 0.56725 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.24%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 0.57068 أعلى سعر في نفس العينة؛ المسافة إليها +0.37%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 0.56896; EMA50 0.56910; EMA200 0.56708; RSI14 47.02973; ATR14 0.00056. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 0.57068: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 0.56725: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. النص الأصلي أُعدّ بمساعدة الذكاء الاصطناعي وفق قواعد معلنة؛ أمر التحديث يعيد الحسابات والصياغة القاعدية، ولا يستدعي نموذجًا مدفوعًا ولا يزعم مراجعة بشرية.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
+      "body": "لقطة السعر والاتجاه\nالسعر 0.56860 (USD لكل NZD) عند 2026-10-26T19:32:44Z. الاتجاه هابط. السعر من لقطة مؤشرّة منفصلة عن إغلاق الشمعة؛ لا يعني تحديث الشارت.\n\nالمستويات المهمة ورأينا\nالدعم 0.56725 هو أدنى سعر في آخر 20 شمعة مكتملة؛ بُعد السعر عنه +0.24%. رأينا: الهبوط تحته ثم الفشل باستعادته يضعف توازن المشترين. المقاومة 0.57068 أعلى سعر في نفس العينة؛ المسافة إليها +0.37%. رأينا: الاختراق يحتاج إغلاقًا ثم ثباتًا أو إعادة اختبار، واللمسة وحدها لا تثبت تحول الاتجاه.\n\nالزخم والمنهج\nEMA20 0.56896; EMA50 0.56910; EMA200 0.56708; RSI14 47.02973; ATR14 0.00056. الاتجاه الصاعد يتطلب إغلاقًا فوق EMA20 فوق EMA50 وRSI فوق 50؛ والهابط عكس ذلك. غير ذلك نصنفه مختلطًا. EMA يبدأ بمتوسط أول N إغلاقات؛ RSI وATR بطريقة Wilder. اخترنا هذه المؤشرات فقط؛ لا نستخدم حجم تداول الفوركس غير الحقيقي. الاستبعادات والفجوات لا تُملأ ببيانات مصطنعة.\n\nسيناريوهات مشروطة\nفوق 0.57068: نراقب الإغلاق ثم إعادة الاختبار قبل تقوية قراءة الصعود؛ العودة تحته تلغي الاختراق. دون 0.56725: ثبات الكسر يدعم الحذر من استمرار الضغط؛ استعادته تلغي قراءة الكسر. هذه شروط تحليل وليست مستويات دخول أو TP/SL.\n\nعمر البيانات والحدود\nالشموع مكتملة حتى 2026-10-26T19:00:00Z. آخر فحص 2026-10-26T19:34:29Z. استُبعدت 6 مشاهدة ناقصة أو جزئية. السعر والمؤشرات قد يختلفان بالتوقيت. لا يُضاف سياق H4/D1 دون سلسلة موثقة مستقلة. قراءة ريكس مبنية على المنهج الحسابي الموضّح؛ تتغير المستويات والسيناريوهات مع البيانات المتاحة.\n\nخطر اقتصادي قادم\nقرار السياسة النقدية للفيدرالي — 2026-10-28T18:00:00Z. قد تزيد التقلبات والانزلاقات وقت الخبر؛ لا نفترض نتيجة قبل صدورها.",
       "symbol": "NZDUSD",
       "category": "technical",
       "bias": "bearish",
@@ -16863,7 +16863,7 @@
       ],
       "image": {
         "src": "assets/media/ai-nzdusd.webp",
-        "alt": "NZDUSD H1 تحليل الذكاء الاصطناعي"
+        "alt": "NZDUSD H1 تحليلات ريكس"
       },
       "sources": [
         {
@@ -16906,22 +16906,22 @@
       "section": "analysis",
       "slug": "ai-technical-nzdusd",
       "urlPath": "analysis/ai-technical-nzdusd/",
-      "title": "NZDUSD: Yapay zekâ teknik analizi — H1",
+      "title": "NZDUSD: REX Analizleri — H1",
       "summary": "NZDUSD: yön düşüş, referans fiyat 0.56860, destek 0.56725, direnç 0.57068; H1.",
       "publishedAt": "2026-10-26T19:33:42Z",
-      "updatedAt": "2026-10-26T19:34:29Z",
-      "publishVersion": 3,
+      "updatedAt": "2026-10-26T19:58:22Z",
+      "publishVersion": 4,
       "editorialDate": "2026-10-26",
       "access": "PUBLIC",
       "origin": "scheduled-editorial",
       "attribution": {
-        "byline": "FOXREX AI",
+        "byline": "REX",
         "assistance": "ai-assisted"
       },
       "author": {
-        "name": "FOXREX AI"
+        "name": "REX"
       },
-      "body": "Fiyat ve yön\nFiyat 0.56860 (USD / NZD), zaman 2026-10-26T19:32:44Z. Yön düşüş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 0.56725, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.24%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 0.57068, aynı örneğin en yükseği; uzaklık +0.37%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 0.56896; EMA50 0.56910; EMA200 0.56708; RSI14 47.02973; ATR14 0.00056. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n0.57068 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 0.56725 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. Özgün metin açıklanan kurallarla yapay zekâ yardımıyla hazırlanmıştır. Yenileme komutu kurallı hesap ve metni yeniler; ücretli model çağrısı veya insan incelemesi iddiası yoktur.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
+      "body": "Fiyat ve yön\nFiyat 0.56860 (USD / NZD), zaman 2026-10-26T19:32:44Z. Yön düşüş. Gösterge kotasyonu mum kapanışından ayrıdır.\n\nÖnemli seviyeler ve yorumumuz\nDestek 0.56725, son 20 tamamlanmış mumun en düşüğü; fiyat uzaklığı +0.24%. Altında kalıcılık ve başarısız geri alma alıcı dengesini zayıflatır. Direnç 0.57068, aynı örneğin en yükseği; uzaklık +0.37%. Kırılma yorumunu güçlendirmek için kapanış ve kalıcılık veya yeniden test gerekir; tek temas yeterli değildir.\n\nMomentum ve yöntem\nEMA20 0.56896; EMA50 0.56910; EMA200 0.56708; RSI14 47.02973; ATR14 0.00056. Yükseliş: kapanış > EMA20 > EMA50 ve RSI > 50. Düşüş bunun tersidir; aksi halde karışık. EMA ilk N kapanışın ortalamasından başlar; RSI/ATR Wilder yöntemi. Yalnız bu göstergeler seçildi; sahte forex hacmi kullanılmaz, boşluklar doldurulmaz.\n\nKoşullu senaryolar\n0.57068 üzerinde kapanış ve yeniden test yükseliş yorumunu destekler; altına dönüş kırılmayı geçersiz kılar. 0.56725 altında kalıcılık baskıyı destekler; geri alma düşüş kırılmasını geçersiz kılar. İşlem emri veya giriş/TP/SL değildir.\n\nVeri yaşı ve sınırlamalar\nTamamlanmış mumların sonu: 2026-10-26T19:00:00Z. Son kontrol 2026-10-26T19:34:29Z. 6 eksik/kısmi gözlem dışlandı. Kotasyon zamanı farklı olabilir; doğrulanmış bağımsız seri olmadan H4/D1 bağlamı eklenmez. REX yorumu açıklanan hesaplama yöntemine dayanır; seviyeler ve senaryolar mevcut verilerle değişir.\n\nSonraki ekonomik risk\nFed faiz kararı — 2026-10-28T18:00:00Z. Haber sırasında oynaklık ve kayma artabilir; açıklanmamış sonuç varsayılmaz.",
       "symbol": "NZDUSD",
       "category": "technical",
       "bias": "bearish",
@@ -16932,7 +16932,7 @@
       ],
       "image": {
         "src": "assets/media/ai-nzdusd.webp",
-        "alt": "NZDUSD H1 Yapay zekâ teknik analizi"
+        "alt": "NZDUSD H1 REX Analizleri"
       },
       "sources": [
         {

@@ -68,3 +68,9 @@ Preserve the prominent nine-instrument AI-assisted series in Technical, its real
 and chart-age limits, paired palettes and stable URLs. Read docs/AI-TECHNICAL.md. Every
 article has a useful navigation sidebar, related articles, visible authorship, breadcrumbs
 and honest publication/update times. Read docs/SEO.md and run the built-page SEO audit.
+
+Arabic ticker timestamps must use separate isolated ASCII date and clock fields,
+YYYY-MM-DD · HH:mm, in one non-shrinking LTR inline-flex time element. Use Istanbul
+time; do not pass localized RTL punctuation/marks into the numeric timestamp. Keep
+headlines RTL and the seamless motion active. The technical series brand is now
+تحليلات ريكس / REX Analysis / REX Analizleri. Preserve internal provenance and URLs.

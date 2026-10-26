@@ -173,3 +173,7 @@ svg.fx-flip,.editorial-related svg{width:16px;height:16px;min-width:16px;max-wid
 /* Keep physical marquee motion independent of each headline's bidi context. */
 [dir="rtl"] .news-marquee__group>a{direction:rtl;unicode-bidi:isolate}.news-marquee__title{display:block;unicode-bidi:isolate;text-align:start}.news-marquee__group time{unicode-bidi:isolate}
 .article-breadcrumbs{display:flex;gap:10px;margin-bottom:22px;font-size:13px;color:var(--foxrex-text-muted)}.article-navigation{display:grid;gap:14px;margin-bottom:26px}.article-navigation h2{margin-bottom:0}.ai-navigation{margin-block:22px;padding:24px;border:1px solid var(--foxrex-border);border-radius:16px;background:var(--foxrex-surface)}.ai-navigation nav{display:flex;flex-wrap:wrap;gap:10px}.ai-navigation nav a{padding:8px 14px;border:1px solid var(--foxrex-border);border-radius:8px}.ai-status{padding:14px;border-inline-start:3px solid var(--foxrex-warning);background:var(--foxrex-surface)}
+
+/* The numeric timestamp is one unshrinkable LTR unit inside an RTL headline row. */
+.home-news-strip .news-marquee__time{display:inline-flex;direction:ltr;unicode-bidi:isolate;align-items:center;gap:5px;flex:0 0 auto;white-space:nowrap;min-width:max-content;font-variant-numeric:tabular-nums}
+.news-marquee__time bdi{direction:ltr;unicode-bidi:isolate;display:inline-block;flex:none}.news-marquee__group>a{flex:none}

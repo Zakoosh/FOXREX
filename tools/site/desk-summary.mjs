@@ -28,3 +28,6 @@ export function signalPanel(e,lang,charts=[]){
 }
 
 export function analysisCopy(text){return String(text||'').split(/\n\s*\n/).filter(p=>!/^\s*(What is missing|حدود الإشارة|Eksik bilgiler)/i.test(p)).map(p=>p.replace(/(?:؛|;)\s*(?:لا دخول|No entry|Giriş)[\s\S]*$/i,'').replace(/\.\s+No entry[\s\S]*$/i,'.')).join('\n\n');}
+
+/** Explicit ASCII fields avoid embedded Arabic directional marks splitting clock/date. */
+export function tickerTimestamp(iso){const parts=new Intl.DateTimeFormat('en-GB-u-nu-latn',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(iso));const p=Object.fromEntries(parts.map(x=>[x.type,x.value]));return {date:`${p.year}-${p.month}-${p.day}`,time:`${p.hour}:${p.minute}`};}

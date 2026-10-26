@@ -38,3 +38,7 @@ Spot D1 input has session-date precision only. The editor-basis ISO anchor is a
 conservative freshness boundary, not a provider close timestamp. Public text shows
 the date only; 00:00 on the chart is explicitly a session-date marker. Actual writing
 and indicative quote timestamps remain separate and exact.
+
+Owner naming correction: the public series name is تحليلات ريكس / REX Analysis /
+REX Analizleri, with REX as the branded byline and chart heading. Preserve internal
+ai-assisted provenance and stable URLs; never imply that REX is a human reviewer.

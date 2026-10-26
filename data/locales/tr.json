@@ -549,5 +549,7 @@
   "Forex and gold market analysis": "Forex ve altın piyasası analizi",
   "Forex trading signals": "Forex işlem sinyalleri",
   "Session date only; exact close time unavailable": "Yalnız seans tarihi; kesin kapanış saati mevcut değil",
-  "Daily chart: 00:00 marks the session date, not a verified closing-price timestamp.": "Günlük grafik: 00:00 seans tarihini işaretler; doğrulanmış kapanış fiyatı zamanı değildir."
+  "Daily chart: 00:00 marks the session date, not a verified closing-price timestamp.": "Günlük grafik: 00:00 seans tarihini işaretler; doğrulanmış kapanış fiyatı zamanı değildir.",
+  "REX Analysis": "REX Analizleri",
+  "Published · Istanbul time": "Yayın zamanı · İstanbul saati"
 }
