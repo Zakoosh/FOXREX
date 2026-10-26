@@ -1,0 +1,241 @@
+{
+  "checkedAt": "2026-10-26T09:14:32.468580+00:00",
+  "baseCommit": "e4c751588d3111f68f5e9a8f2e53d1778acf3fa5",
+  "quotes": [
+    {
+      "symbol": "XAUUSD",
+      "price": 4017.300049,
+      "asOf": "2026-10-26T09:13:13Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAU",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T09:13:38Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "XAGUSD",
+      "price": 54.202,
+      "asOf": "2026-10-26T09:13:13Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/XAG",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per troy ounce",
+      "fetchedAt": "2026-10-26T09:13:38Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "EURUSD",
+      "price": 1.1216,
+      "asOf": "2026-10-26T09:12:46Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per EUR",
+      "fetchedAt": "2026-10-26T09:13:38Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "GBPUSD",
+      "price": 1.3351,
+      "asOf": "2026-10-26T09:12:46Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "USD",
+      "unit": "USD per GBP",
+      "fetchedAt": "2026-10-26T09:13:37Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "USDJPY",
+      "price": 157.264,
+      "asOf": "2026-10-26T09:13:37Z",
+      "source": "Yahoo Finance",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
+      "timeBasis": "market-observation",
+      "currency": "JPY",
+      "unit": "JPY per USD",
+      "fetchedAt": "2026-10-26T09:13:38Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    },
+    {
+      "symbol": "BTCUSD",
+      "price": 80161.179688,
+      "asOf": "2026-10-26T09:13:14Z",
+      "source": "Gold API",
+      "sourceUrl": "https://api.gold-api.com/price/BTC",
+      "timeBasis": "provider-fetch",
+      "currency": "USD",
+      "unit": "USD per BTC",
+      "fetchedAt": "2026-10-26T09:13:38Z",
+      "mappingValidated": true,
+      "nonRegression": true,
+      "stale": false
+    }
+  ],
+  "refreshErrors": [],
+  "servedBeforeUpdate": "Exact match with current main; prior metal/crypto snapshot older than 15 minutes, FX under two hours. Original source times and frontend stale handling preserved.",
+  "independentChecks": [
+    {
+      "symbol": "BTCUSD",
+      "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?interval=1m&range=1d",
+      "retrievedAt": "2026-10-26T09:14:07.269094+00:00",
+      "price": 80124.34,
+      "asOf": "2026-10-26T09:14:03+00:00",
+      "snapshotPrice": 80161.179688,
+      "snapshotAsOf": "2026-10-26T09:13:14Z",
+      "timeGapSeconds": 49.0,
+      "differencePercent": -0.046,
+      "assessment": "Near-time indicative spot USD comparison; time and venue differences do not prove an error or guarantee accuracy."
+    },
+    {
+      "symbols": [
+        "XAUUSD",
+        "XAGUSD"
+      ],
+      "sourceUrl": "https://data-asg.goldprice.org/dbXRates/USD",
+      "status": "unavailable",
+      "reason": "HTTP Error 403: Forbidden",
+      "note": "No futures or mismatched instruments substituted."
+    },
+    {
+      "symbols": [
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY"
+      ],
+      "sourceUrl": "https://www.freeforexapi.com/api/live?pairs=EURUSD,GBPUSD,USDJPY",
+      "status": "unavailable",
+      "reason": "The read operation timed out",
+      "note": "No futures or mismatched instruments substituted."
+    }
+  ],
+  "calendar": {
+    "overdueUnverifiedWithin24Hours": [],
+    "nextEvent": "ifo-business-climate-2026-10-26 at 09:30 UTC / 12:30 Istanbul; not released at check",
+    "officialTimeSource": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+    "officialResultPage": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+    "officialResultPageState": "Dated release placeholder still has no October actual; scheduled 09:30 UTC has not passed at this check.",
+    "secondaryReminderTime": "New authenticated email says 09:00 UTC; official 10:30 CET / 09:30 UTC takes precedence."
+  },
+  "mail": {
+    "authenticatedSender": true,
+    "authentication": "No newly received MIME requiring reprocessing; prior authenticated reports and reminder already read in full.",
+    "newMessages": 0,
+    "newMessageKind": "No new report or signal since previously reviewed economic-calendar reminder",
+    "newSubstantiveSignalSections": 0,
+    "existingProcessedEvents": 14,
+    "newPublishedEvents": [],
+    "heldEvents": [
+      {
+        "eventId": "ac-72064dcbcc6bce9722ff19e9",
+        "symbol": "XAUUSD",
+        "pattern": "resistance",
+        "detectedAt": "2026-10-26T05:30:00Z",
+        "timeframe": "M30",
+        "direction": "bullish",
+        "sourceLevels": [
+          "4034.1799"
+        ],
+        "target": "4034.1799",
+        "validUntil": null,
+        "sourceTimezone": "Australia/Sydney",
+        "status": "held",
+        "reason": "Source provides no validity horizon; no expiry invented."
+      },
+      {
+        "eventId": "ac-63d0e2b6094282c202fa00ab",
+        "symbol": "AUS200",
+        "pattern": "ascending trend",
+        "detectedAt": "2026-10-26T06:00:00Z",
+        "timeframe": "H4",
+        "direction": "bullish",
+        "sourceLevels": [
+          "8694.7500",
+          "8904.0711"
+        ],
+        "target": "8904.0711",
+        "validUntil": "2026-10-29T06:00:00Z",
+        "sourceTimezone": "Australia/Sydney",
+        "status": "held",
+        "reason": "No independently verified OHLC mapping for the source broker AUS200 instrument at H4; an Australian cash equity index is not automatically the same instrument."
+      }
+    ],
+    "heldState": "Unchanged from previous audit; already reported, no duplicate notification",
+    "sourceTimezone": "Australia/Sydney retained for existing source alerts"
+  },
+  "charts": {
+    "status": "Unchanged; all 14 existing scenario provenance records and paired OHLC artwork preserved",
+    "timeframes": [
+      "H1",
+      "M30"
+    ],
+    "sourceTimeDistinctFromDetection": true
+  },
+  "news": {
+    "materialNewDevelopmentVerified": false,
+    "action": "No filler published",
+    "checkedSources": [
+      "https://www.federalreserve.gov/",
+      "https://www.ecb.europa.eu/home/html/index.en.html",
+      "https://www.boj.or.jp/en/",
+      "https://www.bankofengland.co.uk/",
+      "https://www.wsj.com/finance/currencies/asian-currencies-consolidate-fed-meet-in-focus-c2958e7e",
+      "https://www.wsj.com/finance/stocks/asian-stocks-decline-as-appetite-for-risky-assets-ebbs-926087d6"
+    ],
+    "note": "Fresh official-source and reputable-news search reviewed. Market recaps and previews, including upcoming ECB/Fed commentary, do not establish a new independently corroborated consequential breaking event. No market reaction or consensus imported."
+  },
+  "telegram": {
+    "status": "pending-configuration",
+    "deliveryAttempted": false,
+    "blocker": "No authenticated configured backend and verified destination available. No SENT or UNKNOWN submissions retried.",
+    "pendingEvents": [
+      "ac-a06d2af2687bb5fd8b7368cb",
+      "ac-77daa28b72c4cc0364361f03",
+      "ac-0f2f6f178a335d6663312110",
+      "ac-1c96b30f56bfae28d91e3692",
+      "ac-7debf78785afa061715ecc1a",
+      "ac-bd5b5449c1f2b74efdaa6f90",
+      "ac-e8ac26746544a8cc7d34698f",
+      "ac-0af5b63f03891eeffc80856a"
+    ],
+    "notification": "Existing configuration blocker unchanged and previously reported; no repeat notification."
+  },
+  "social": {
+    "facebook": "pending-link",
+    "instagram": "pending-link",
+    "reminder": "Previous reminder under 24h; duplicate reminder suppressed."
+  },
+  "validation": {
+    "marketTests": 4,
+    "chartTests": 4,
+    "workerTests": 146,
+    "feedSchema": "passed",
+    "buildCheck": "passed",
+    "syntax": "passed",
+    "feedItems": 222
+  },
+  "preserved": [
+    "EN root and AR/TR siblings",
+    "Signals hub and permanent analysis routes",
+    "Original signal provenance and identities",
+    "Theme pairing and full-size candles",
+    "REX classroom",
+    "Sticky educational risk notice",
+    "Concurrent daily editorial package"
+  ]
+}
