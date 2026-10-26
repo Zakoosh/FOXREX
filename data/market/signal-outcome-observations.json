@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-26T15:05:36.318026+00:00",
+  "checkedAt": "2026-10-26T16:03:50.718690+00:00",
   "charts": [
     {
       "event": "ac-016c2d32ba6444ec9fe29602",
@@ -9,7 +9,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "JPY",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/NZDJPY%3DX?interval=30m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T11:00:00Z",
@@ -66,6 +66,20 @@
           "high": 89.48400115966797,
           "low": 89.3489990234375,
           "close": 89.4489974975586
+        },
+        {
+          "at": "2026-10-26T15:00:00Z",
+          "open": 89.4489974975586,
+          "high": 89.50800323486328,
+          "low": 89.43399810791016,
+          "close": 89.4990005493164
+        },
+        {
+          "at": "2026-10-26T15:30:00Z",
+          "open": 89.4990005493164,
+          "high": 89.5199966430664,
+          "low": 89.45899963378906,
+          "close": 89.50399780273438
         }
       ],
       "levels": {
@@ -84,7 +98,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "NZD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURNZD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T10:00:00Z",
@@ -120,6 +134,13 @@
           "high": 1.9712799787521362,
           "low": 1.968500018119812,
           "close": 1.9688999652862549
+        },
+        {
+          "at": "2026-10-26T15:00:00Z",
+          "open": 1.9687199592590332,
+          "high": 1.9693000316619873,
+          "low": 1.967079997062683,
+          "close": 1.9677200317382812
         }
       ],
       "levels": {
@@ -138,7 +159,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/NZDUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T09:00:00Z",
@@ -181,6 +202,13 @@
           "high": 0.5681495070457458,
           "low": 0.5672471523284912,
           "close": 0.5680204629898071
+        },
+        {
+          "at": "2026-10-26T15:00:00Z",
+          "open": 0.5680527091026306,
+          "high": 0.5682787299156189,
+          "low": 0.5679236650466919,
+          "close": 0.5682464241981506
         }
       ],
       "levels": {
@@ -199,7 +227,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/AUDUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T12:00:00Z",
@@ -221,6 +249,13 @@
           "high": 0.7021978497505188,
           "low": 0.7017051577568054,
           "close": 0.7017543911933899
+        },
+        {
+          "at": "2026-10-26T15:00:00Z",
+          "open": 0.7018036246299744,
+          "high": 0.7021485567092896,
+          "low": 0.7017543911933899,
+          "close": 0.702049970626831
         }
       ],
       "levels": {
@@ -239,7 +274,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T12:00:00Z",
@@ -261,6 +296,13 @@
           "high": 1.334899663925171,
           "low": 1.333173394203186,
           "close": 1.334614634513855
+        },
+        {
+          "at": "2026-10-26T15:00:00Z",
+          "open": 1.3344007730484009,
+          "high": 1.335006594657898,
+          "low": 1.3341693878173828,
+          "close": 1.3346858024597168
         }
       ],
       "levels": {
@@ -279,7 +321,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "JPY",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/NZDJPY%3DX?interval=30m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T06:30:00Z",
@@ -399,6 +441,13 @@
           "high": 89.48400115966797,
           "low": 89.3489990234375,
           "close": 89.4489974975586
+        },
+        {
+          "at": "2026-10-26T15:00:00Z",
+          "open": 89.4489974975586,
+          "high": 89.50800323486328,
+          "low": 89.43399810791016,
+          "close": 89.4990005493164
         }
       ],
       "levels": {
@@ -417,7 +466,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T07:00:00Z",
@@ -464,7 +513,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/AUDUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:41Z",
+      "retrievedAt": "2026-10-26T16:03:57Z",
       "bars": [
         {
           "at": "2026-10-26T07:00:00Z",
@@ -511,7 +560,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "JPY",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:47Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T06:00:00Z",
@@ -572,7 +621,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "CHF",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/CHF%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T14:37:59Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T07:00:00Z",
@@ -609,12 +658,7 @@
       },
       "signalDataAsOf": "2026-10-26T07:00:00Z",
       "validUntil": "2026-10-26T11:00:00Z",
-      "assetStem": "signal-ac-7debf78785afa061715ecc1a",
-      "lastAttempt": {
-        "at": "2026-10-26T15:05:36.318026+00:00",
-        "status": "retained-verified-evidence",
-        "reason": "AssertionError"
-      }
+      "assetStem": "signal-ac-7debf78785afa061715ecc1a"
     },
     {
       "event": "ac-a06d2af2687bb5fd8b7368cb",
@@ -624,7 +668,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:47Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T07:00:00Z",
@@ -671,7 +715,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/NZDUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:47Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T07:00:00Z",
@@ -718,7 +762,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "NZD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURNZD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:47Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T07:00:00Z",
@@ -765,7 +809,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "CHF",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/CHF%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T14:37:59Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T00:00:00Z",
@@ -795,12 +839,7 @@
       },
       "signalDataAsOf": "2026-10-25T23:00:00Z",
       "validUntil": "2026-10-26T03:00:00Z",
-      "assetStem": "signal-ac-1d3d0ba652f80706f994cb35",
-      "lastAttempt": {
-        "at": "2026-10-26T15:05:36.318026+00:00",
-        "status": "retained-verified-evidence",
-        "reason": "AssertionError"
-      }
+      "assetStem": "signal-ac-1d3d0ba652f80706f994cb35"
     },
     {
       "event": "ac-1fc40d5e04cef95d1bd464f3",
@@ -810,7 +849,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "JPY",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/NZDJPY%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:47Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T00:00:00Z",
@@ -850,7 +889,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:47Z",
+      "retrievedAt": "2026-10-26T16:04:02Z",
       "bars": [
         {
           "at": "2026-10-26T00:00:00Z",
@@ -890,7 +929,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "JPY",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:52Z",
+      "retrievedAt": "2026-10-26T16:04:08Z",
       "bars": [
         {
           "at": "2026-10-26T00:00:00Z",
@@ -930,7 +969,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/NZDUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:52Z",
+      "retrievedAt": "2026-10-26T16:04:08Z",
       "bars": [
         {
           "at": "2026-10-26T00:00:00Z",
@@ -970,7 +1009,7 @@
       "provider": "Yahoo Finance",
       "quoteCurrency": "USD",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/AUDUSD%3DX?interval=60m&range=5d",
-      "retrievedAt": "2026-10-26T15:05:52Z",
+      "retrievedAt": "2026-10-26T16:04:08Z",
       "bars": [
         {
           "at": "2026-10-26T00:00:00Z",
