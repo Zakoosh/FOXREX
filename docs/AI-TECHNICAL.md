@@ -33,3 +33,8 @@ must include chart palettes, feed, snapshots, revisions and generated pages.
 The ChatGPT hourly task was observed paused during this change. Running this script
 once does not resume a paused task or establish reliable background refresh. Do not
 claim continuous hourly publication from a successful manual run.
+
+Spot D1 input has session-date precision only. The editor-basis ISO anchor is a
+conservative freshness boundary, not a provider close timestamp. Public text shows
+the date only; 00:00 on the chart is explicitly a session-date marker. Actual writing
+and indicative quote timestamps remain separate and exact.
