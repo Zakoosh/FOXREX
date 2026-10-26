@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-26T05:50:10Z",
+  "baseCommit": "4136c96f2c1b0eb6bbcd978e0a11f58e6ca22188",
+  "date": "2026-10-26",
+  "newGroups": [
+    "morning-brief-2026-10-26",
+    "ifo-survey-versus-output-2026-10-26"
+  ],
+  "updatedGroup": "xauusd-technical-2026-10-23",
+  "languages": [
+    "en",
+    "ar",
+    "tr"
+  ],
+  "calendar": "Seven verified selected events, 26 October\u20132 November; ifo added at 09:30 UTC/12:30 Istanbul. Official results and consensus left null.",
+  "taskVerification": "Five existing exact-time release tasks privately checked: enabled, schedules match current official times. No duplicate tasks created. New ifo result uses existing hourly delayed-result coverage; no separate task created during scheduled execution.",
+  "market": "Six current public snapshots refreshed with zero errors; original observation times retained.",
+  "gold": "20 rechecked completed weekday D1 bars; current Monday and short Sunday observations excluded and disclosed. First publication and permanent URLs preserved.",
+  "images": [
+    {
+      "path": "assets/media/daily-brief-20261026.webp",
+      "tool": "built-in image generation",
+      "prompt": "Wide premium editorial still life of gold and unlettered currency forms on navy desk, emerald architectural glass, morning light; no chart, text or logo."
+    },
+    {
+      "path": "assets/media/ifo-survey-production-20261026.webp",
+      "tool": "built-in image generation",
+      "prompt": "German business sentiment versus production: blank emerald survey cards balanced against a miniature industrial workshop, navy and gold conceptual still life; no text, charts, logos or documentary claim."
+    }
+  ],
+  "publication": "Owner-authorized editorial pipeline; no social delivery or paid API use."
+}

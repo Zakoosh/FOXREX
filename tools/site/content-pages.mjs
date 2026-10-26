@@ -4,6 +4,7 @@
    Every value is escaped at build time (plain text in, escaped HTML out). Output is deterministic:
    nothing depends on the build clock; "is this stale?" is decided in the browser (scripts/public/item.js). */
 import { createRequire } from 'node:module';
+import { existsSync } from 'node:fs';
 import { esc, enText, arText } from './text.mjs';
 import { tr } from './tr.mjs';
 
@@ -159,9 +160,11 @@ ${local ? `<p><a class="fx-link" href="{{ROOT}}${CMS.pathFor(local.urlPath, lang
   function renderCover(lang,e,r,chart) {
     if (!e.image) return '';
     const isChart=e.category==='technical'&&(!e.tags?.includes('autochartist')||!!chart);
+    const lightSrc=e.image.src.replace(/\.webp$/,'-light.webp');
+    const paired=isChart&&lightSrc!==e.image.src&&existsSync(new URL('../../'+lightSrc,import.meta.url));
     const img=(src)=>`<img src="${r}${esc(src)}" alt="${esc(e.image.alt)}" width="1960" height="1120" fetchpriority="high">`;
     const link=(src,cls='')=>`<a${cls?` class="${cls}"`:''} href="${r}${esc(src)}" target="_blank" rel="noopener" aria-label="${X(lang,'Open full chart','افتح الشارت بالحجم الكامل')}">${img(src)}</a>`;
-    return `<figure class="editorial-cover"${isChart?' data-chart':''}>${chart?link(e.image.src,'theme-image--dark')+link(e.image.src.replace(/\.webp$/,'-light.webp'),'theme-image--light'):isChart?link(e.image.src):img(e.image.src)}${isChart?`<figcaption>${X(lang,'Tap the chart to view full size','اضغط على الشارت لعرضه بالحجم الكامل')}</figcaption>`:''}</figure>`;
+    return `<figure class="editorial-cover"${isChart?' data-chart':''}>${paired?link(e.image.src,'theme-image--dark')+link(lightSrc,'theme-image--light'):isChart?link(e.image.src):img(e.image.src)}${isChart?`<figcaption>${X(lang,'Tap the chart to view full size','اضغط على الشارت لعرضه بالحجم الكامل')}</figcaption>`:''}</figure>`;
   }
 
   /* ---------- item pages ---------- */

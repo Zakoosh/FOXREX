@@ -16,8 +16,11 @@ const read=p=>JSON.parse(fs.readFileSync(new URL('../../'+p,import.meta.url),'ut
 test('verified three-language intake publishes once across retries and subsequent dates',()=>{
  const pkg=read('content-ops/daily/2026-10-26/package.json'),source=pkg.records.find(r=>r.type==='ANALYSIS'),records=pkg.records.filter(r=>r.type==='ANALYSIS'&&r.slug===source.slug);
  const calendar=read('data/calendar.json');calendar.updatedAt=now;
+ for(const event of calendar.events)event.source.checkedAt=now;
  const alert={...base.alerts[0],records};
  const input={...base,calendar,alerts:[alert]},feed=read('data/content.json');
+ // This fixture runs at a fixed historical time, before later daily editions.
+ feed.items=feed.items.filter(e=>Date.parse(e.publishedAt)<=Date.parse(now));
  const result=prepareAutochartist(input,feed,{processedEvents:[]},{now});
  assert.equal(result.receipt.events.length,1);assert.equal(result.receipt.records.length,3);
  assert.equal(result.feed.items.length,feed.items.length+3);

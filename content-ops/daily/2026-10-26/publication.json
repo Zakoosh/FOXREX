@@ -1,330 +1,60 @@
 {
   "date": "2026-10-26",
-  "at": "2026-10-25T23:03:50.594Z",
+  "at": "2026-10-26T05:47:02.928Z",
   "authorization": "owner-authorized-2026-10-25",
   "actor": "FOXREX Editorial Automation",
   "records": [
     {
-      "id": "daily-2026-10-26-eurusd-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/eurusd-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurusd-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/eurusd-d1-outlook-2026-10-26/",
+      "id": "daily-2026-10-26-morning-brief-2026-10-26-en",
+      "urlPath": "desk/2026-10-26/morning-brief/",
       "language": "en",
-      "publishVersion": 2
+      "publishVersion": 1
     },
     {
-      "id": "daily-2026-10-26-eurusd-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/eurusd-d1-outlook-2026-10-26/",
+      "id": "daily-2026-10-26-morning-brief-2026-10-26-ar",
+      "urlPath": "desk/2026-10-26/morning-brief/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-morning-brief-2026-10-26-tr",
+      "urlPath": "desk/2026-10-26/morning-brief/",
       "language": "tr",
-      "publishVersion": 2
+      "publishVersion": 1
     },
     {
-      "id": "daily-2026-10-26-gbpusd-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/gbpusd-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-gbpusd-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/gbpusd-d1-outlook-2026-10-26/",
+      "id": "daily-2026-10-26-ifo-survey-versus-output-2026-10-26-en",
+      "urlPath": "news/ifo-survey-versus-output-2026-10-26/",
       "language": "en",
-      "publishVersion": 2
+      "publishVersion": 1
     },
     {
-      "id": "daily-2026-10-26-gbpusd-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/gbpusd-d1-outlook-2026-10-26/",
+      "id": "daily-2026-10-26-ifo-survey-versus-output-2026-10-26-ar",
+      "urlPath": "news/ifo-survey-versus-output-2026-10-26/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-10-26-ifo-survey-versus-output-2026-10-26-tr",
+      "urlPath": "news/ifo-survey-versus-output-2026-10-26/",
       "language": "tr",
-      "publishVersion": 2
+      "publishVersion": 1
     },
     {
-      "id": "daily-2026-10-26-usdjpy-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/usdjpy-d1-outlook-2026-10-26/",
+      "id": "daily-2026-10-26-xauusd-technical-2026-10-23-ar",
+      "urlPath": "analysis/xauusd-technical-2026-10-23/",
       "language": "ar",
       "publishVersion": 2
     },
     {
-      "id": "daily-2026-10-26-usdjpy-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/usdjpy-d1-outlook-2026-10-26/",
+      "id": "daily-2026-10-26-xauusd-technical-2026-10-23-en",
+      "urlPath": "analysis/xauusd-technical-2026-10-23/",
       "language": "en",
       "publishVersion": 2
     },
     {
-      "id": "daily-2026-10-26-usdjpy-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/usdjpy-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-audusd-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/audusd-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-audusd-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/audusd-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-audusd-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/audusd-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-nzdusd-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/nzdusd-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-nzdusd-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/nzdusd-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-nzdusd-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/nzdusd-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-usdcad-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/usdcad-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-usdcad-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/usdcad-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-usdcad-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/usdcad-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-usdchf-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/usdchf-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-usdchf-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/usdchf-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-usdchf-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/usdchf-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurgbp-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/eurgbp-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurgbp-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/eurgbp-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurgbp-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/eurgbp-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurjpy-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/eurjpy-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurjpy-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/eurjpy-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurjpy-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/eurjpy-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-gbpjpy-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/gbpjpy-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-gbpjpy-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/gbpjpy-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-gbpjpy-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/gbpjpy-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-audjpy-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/audjpy-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-audjpy-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/audjpy-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-audjpy-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/audjpy-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-cadjpy-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/cadjpy-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-cadjpy-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/cadjpy-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-cadjpy-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/cadjpy-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-chfjpy-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/chfjpy-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-chfjpy-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/chfjpy-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-chfjpy-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/chfjpy-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-euraud-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/euraud-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-euraud-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/euraud-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-euraud-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/euraud-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurnzd-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/eurnzd-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurnzd-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/eurnzd-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-eurnzd-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/eurnzd-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-gbpaud-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/gbpaud-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-gbpaud-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/gbpaud-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-gbpaud-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/gbpaud-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-btcusd-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/btcusd-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-btcusd-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/btcusd-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-btcusd-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/btcusd-d1-outlook-2026-10-26/",
-      "language": "tr",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-ethusd-d1-outlook-2026-10-26-ar",
-      "urlPath": "analysis/ethusd-d1-outlook-2026-10-26/",
-      "language": "ar",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-ethusd-d1-outlook-2026-10-26-en",
-      "urlPath": "analysis/ethusd-d1-outlook-2026-10-26/",
-      "language": "en",
-      "publishVersion": 2
-    },
-    {
-      "id": "daily-2026-10-26-ethusd-d1-outlook-2026-10-26-tr",
-      "urlPath": "analysis/ethusd-d1-outlook-2026-10-26/",
+      "id": "daily-2026-10-26-xauusd-technical-2026-10-23-tr",
+      "urlPath": "analysis/xauusd-technical-2026-10-23/",
       "language": "tr",
       "publishVersion": 2
     }

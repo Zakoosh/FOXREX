@@ -1,0 +1,721 @@
+{
+  "authorization": "owner-authorized-2026-10-25",
+  "date": "2026-10-26",
+  "records": [
+    {
+      "type": "MORNING_BRIEF",
+      "language": "en",
+      "slug": "morning-brief-2026-10-26",
+      "title": "Monday brief: ifo today, Fed and ECB later this week",
+      "summary": "26 October: verified indicative prices and the next official releases, with conditional gold and major-FX scenarios.",
+      "body": "Verified observations\nXAUUSD: 4012.899902 (USD; 2026-10-26T05:42:13Z; Gold API); EURUSD: 1.1221 (USD; 2026-10-26T05:41:46Z; Yahoo Finance); GBPUSD: 1.3374 (USD; 2026-10-26T05:41:46Z; Yahoo Finance); USDJPY: 157.072 (JPY; 2026-10-26T05:42:18Z; Yahoo Finance). These are indicative source snapshots, not executable quotes. Gold API timestamps describe provider updates; Yahoo FX timestamps describe market observations. They are separate observations, not simultaneous prices.\n\nToday and the week ahead\nGermany’s ifo release is scheduled today at 12:30 Istanbul. The Fed decision and press conference follow on Wednesday 28 October at 21:00 and 21:30. Thursday brings US GDP and PCE-related income/outlays at 15:30, then the ECB decision at 16:15. Employment costs follow Friday at 15:30. No results or consensus are assumed.\n\nConditional gold and FX framework\nGold could benefit if policy expectations ease and real yields fall; stronger yields and a firmer dollar could weigh instead. EUR/USD requires comparing both policy paths. GBP/USD and USD/JPY may respond to the dollar and US yields, while domestic developments can alter that interpretation. These are scenarios, not observed reactions or trade instructions.\n\nNext step\nUse the economic calendar for exact times and open the dated gold chart for reference levels. Today’s price snapshot must not be confused with the last completed daily candle.",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — policy meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — decision release time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BLS — October schedule",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ifo — October release",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Gold API — XAUUSD",
+          "url": "https://api.gold-api.com/price/XAU",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Gold API — XAGUSD",
+          "url": "https://api.gold-api.com/price/XAG",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — EURUSD",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — GBPUSD",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — USDJPY",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Gold API — BTCUSD",
+          "url": "https://api.gold-api.com/price/BTC",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "image": {
+        "src": "assets/media/daily-brief-20261026.webp",
+        "alt": "Gold and currency forms in morning light"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-26T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "MORNING_BRIEF",
+      "language": "ar",
+      "slug": "morning-brief-2026-10-26",
+      "title": "نشرة الاثنين: إيفو اليوم والفيدرالي والأوروبي لاحقًا",
+      "summary": "26 أكتوبر: أسعار استرشادية موثقة ومواعيد رسمية، مع سيناريوهات مشروطة للذهب وأزواج الفوركس.",
+      "body": "الأسعار الموثقة\nXAUUSD: 4012.899902 (USD; 2026-10-26T05:42:13Z; Gold API); EURUSD: 1.1221 (USD; 2026-10-26T05:41:46Z; Yahoo Finance); GBPUSD: 1.3374 (USD; 2026-10-26T05:41:46Z; Yahoo Finance); USDJPY: 157.072 (JPY; 2026-10-26T05:42:18Z; Yahoo Finance). هذه لقطات استرشادية من المصادر وليست أسعار تنفيذ. توقيت Gold API هو وقت تحديث المزوّد، وتوقيت أسعار الفوركس لدى Yahoo هو وقت الملاحظة السوقية. الملاحظات منفصلة وليست أسعارًا متزامنة.\n\nاليوم وبقية الأسبوع\nإصدار إيفو الألماني مقرر اليوم الساعة 12:30 بتوقيت إسطنبول. قرار الفيدرالي الأربعاء 28 أكتوبر الساعة 21:00 ومؤتمره 21:30. الخميس تصدر بيانات الناتج المحلي والدخل والإنفاق المرتبطة بتضخم PCE الساعة 15:30، ثم قرار المركزي الأوروبي 16:15. مؤشر تكلفة التوظيف الجمعة 15:30. لا نفترض نتائج أو توقعات غير موثقة.\n\nسيناريوهات الذهب والفوركس\nقد يستفيد الذهب إذا خفّت توقعات التشديد وتراجعت العوائد الحقيقية؛ وقد تضغط عليه عوائد أعلى ودولار أقوى. قراءة EUR/USD تتطلب مقارنة مساري السياسة. ويمكن أن يتأثر GBP/USD وUSD/JPY بالدولار والعوائد الأمريكية، مع بقاء التطورات المحلية عاملًا مستقلًا. هذه سيناريوهات وليست رصدًا لرد فعل أو تعليمات تداول.\n\nخطوة المتابعة\nراجع التقويم للمواعيد الدقيقة وافتح شارت الذهب المؤرخ للمستويات المرجعية. لا تخلط لقطة السعر الحالية بآخر شمعة يومية مكتملة.",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — policy meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — decision release time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BLS — October schedule",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ifo — October release",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Gold API — XAUUSD",
+          "url": "https://api.gold-api.com/price/XAU",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Gold API — XAGUSD",
+          "url": "https://api.gold-api.com/price/XAG",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — EURUSD",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — GBPUSD",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — USDJPY",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Gold API — BTCUSD",
+          "url": "https://api.gold-api.com/price/BTC",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "image": {
+        "src": "assets/media/daily-brief-20261026.webp",
+        "alt": "ذهب وأشكال نقدية في ضوء الصباح"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-26T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "MORNING_BRIEF",
+      "language": "tr",
+      "slug": "morning-brief-2026-10-26",
+      "title": "Pazartesi bülteni: bugün ifo, hafta içinde Fed ve ECB",
+      "summary": "26 Ekim: doğrulanmış gösterge fiyatlar, resmî takvim ve altın ile başlıca döviz çiftleri için koşullu senaryolar.",
+      "body": "Doğrulanmış gözlemler\nXAUUSD: 4012.899902 (USD; 2026-10-26T05:42:13Z; Gold API); EURUSD: 1.1221 (USD; 2026-10-26T05:41:46Z; Yahoo Finance); GBPUSD: 1.3374 (USD; 2026-10-26T05:41:46Z; Yahoo Finance); USDJPY: 157.072 (JPY; 2026-10-26T05:42:18Z; Yahoo Finance). Bunlar gösterge niteliğinde kaynak anlık görüntüleridir; işlem fiyatı değildir. Gold API zamanı sağlayıcı güncellemesini, Yahoo döviz zamanı piyasa gözlemini gösterir. Farklı zamanlardaki fiyatlar eşzamanlı kabul edilmemelidir.\n\nBugün ve haftanın devamı\nAlmanya ifo açıklaması bugün İstanbul saatiyle 12:30 için planlanıyor. Fed kararı 28 Ekim Çarşamba 21:00, basın toplantısı 21:30. Perşembe ABD GSYH ve PCE ile ilgili gelir-harcama verileri 15:30, ECB kararı 16:15. İstihdam maliyetleri cuma 15:30. Açıklanmamış sonuç veya doğrulanmamış beklenti kullanılmıyor.\n\nAltın ve döviz için koşullu çerçeve\nPolitika beklentileri gevşer ve reel getiriler düşerse altın destek bulabilir. Daha yüksek getiriler ve güçlü dolar ters yönde etkileyebilir. EUR/USD için iki politika patikası birlikte incelenmeli. GBP/USD ve USD/JPY dolar ve ABD getirilerinden etkilenebilir; yerel gelişmeler yorumu değiştirebilir. Bunlar gözlenmiş tepki veya işlem talimatı değildir.\n\nSonraki adım\nKesin saatler için ekonomik takvimi, referans seviyeler için tarihli altın grafiğini açın. Güncel fiyat görüntüsünü son tamamlanan günlük mumla karıştırmayın.",
+      "sourceReferences": [
+        {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — policy meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ECB — decision release time",
+          "url": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BLS — October schedule",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ifo — October release",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "Gold API — XAUUSD",
+          "url": "https://api.gold-api.com/price/XAU",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Gold API — XAGUSD",
+          "url": "https://api.gold-api.com/price/XAG",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — EURUSD",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/EURUSD%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — GBPUSD",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Yahoo Finance — USDJPY",
+          "url": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        },
+        {
+          "name": "Gold API — BTCUSD",
+          "url": "https://api.gold-api.com/price/BTC",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "image": {
+        "src": "assets/media/daily-brief-20261026.webp",
+        "alt": "Sabah ışığında altın ve para biçimleri"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-26T20:59:59Z",
+        "stalePolicy": "warn"
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "en",
+      "slug": "ifo-survey-versus-output-2026-10-26",
+      "title": "ifo before the release: business expectations are not measured output",
+      "summary": "How to read business conditions and expectations before connecting a German survey to EUR/USD or gold.",
+      "body": "What is confirmed today\nThe official ifo page schedules the October release for 26 October at 10:30 Central European time, 12:30 in Istanbul. At this check no October result is published there. This article is an explanation ahead of the release, not a result report.\n\nTwo components, different questions\nThe survey combines firms’ assessment of current conditions with their expectations for the next six months. An improvement in optimism can therefore lift the headline even when current trading conditions remain weak. Read both components before calling the whole economy stronger.\n\nWhy sentiment is different from output\nA survey records assessments. National accounts estimate production over a reporting period. A more optimistic survey does not by itself establish a GDP growth rate, and a single weak month does not prove a recession. Look for consistency with later output, spending and employment evidence.\n\nA conditional route to EUR/USD\nIf expectations and current conditions improve together, investors could reassess European growth risks. Whether that helps the euro still depends on ECB expectations and the dollar side of the pair. If optimism improves but conditions deteriorate, the signal is mixed; a headline-only interpretation can miss that tension. No exchange-rate reaction is claimed here.\n\nThe gold connection is indirect\nA German sentiment change does not mechanically set the gold price. A possible route runs through the euro, the dollar and interest-rate expectations, while risk sentiment can pull differently. Confirm each link rather than inferring a gold rally or decline from the survey alone.\n\nA practical release checklist\nCheck the official headline, current conditions and expectations, note any revisions and the reporting period, then compare them with a separately sourced consensus if one is available. No verified consensus is supplied here, so a surprise score would be unjustified. Open the FOXREX calendar and revisit this page after official verification. Educational analysis only; not an investment recommendation.",
+      "category": "economic",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ifo — October release",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ifo — survey methodology",
+          "url": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — GDP overview",
+          "url": "https://www.bea.gov/data/gdp/gross-domestic-product",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/ifo-survey-production-20261026.webp",
+        "alt": "Business opinion cards balanced against industrial production"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-26T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "MEDIUM",
+        "eventTime": "2026-10-26T09:30:00Z",
+        "affectedMarkets": [
+          "EURUSD",
+          "XAUUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "ar",
+      "slug": "ifo-survey-versus-output-2026-10-26",
+      "title": "قبل صدور إيفو: توقعات الشركات لا تعني نموًا تحقق",
+      "summary": "كيف تفصل بين وضع الأعمال وتوقعاتها قبل ربط المسح الألماني باليورو أو الذهب؟",
+      "body": "ما هو مؤكد اليوم\nيحدد موقع إيفو الرسمي إصدار أكتوبر في 26 أكتوبر الساعة 10:30 بتوقيت وسط أوروبا، أي 12:30 في إسطنبول. لم تكن نتيجة أكتوبر منشورة هناك وقت التحقق. هذا شرح قبل الإصدار وليس تقريرًا عن نتيجة صدرت.\n\nمكوّنان وسؤالان مختلفان\nيجمع المسح تقييم الشركات لأوضاعها الحالية وتوقعاتها للأشهر الستة المقبلة. لذلك قد يرفع تحسن التفاؤل المؤشر العام رغم استمرار ضعف النشاط الحالي. اقرأ المكوّنين قبل وصف الاقتصاد كله بأنه أصبح أقوى.\n\nلماذا يختلف المزاج عن الإنتاج؟\nالمسح يسجل تقييمات، بينما تقدر الحسابات القومية الإنتاج خلال فترة محددة. تحسن التفاؤل لا يثبت وحده معدل نمو للناتج، كما أن شهرًا ضعيفًا لا يثبت ركودًا. ابحث عن توافق مع بيانات الإنتاج والإنفاق والتوظيف اللاحقة.\n\nمسار مشروط نحو اليورو\nإذا تحسنت التوقعات والأوضاع الحالية معًا، فقد يعيد المستثمرون تقييم مخاطر النمو الأوروبي. لكن أثر ذلك على اليورو يعتمد أيضًا على توقعات المركزي الأوروبي وجانب الدولار في الزوج. وإذا تحسن التفاؤل وتدهور الوضع الحالي فالإشارة مختلطة؛ قراءة العنوان وحده قد تخفي هذا التباين. لا نزعم حدوث حركة سعرية.\n\nصلة الذهب غير مباشرة\nتغير المزاج الألماني لا يحدد سعر الذهب آليًا. قد يمر التأثير عبر اليورو والدولار وتوقعات الفائدة، بينما تتحرك شهية المخاطرة في اتجاه آخر. تحقق من كل حلقة بدل استنتاج صعود الذهب أو هبوطه من المسح وحده.\n\nقائمة عملية عند الإصدار\nراجع المؤشر العام والوضع الحالي والتوقعات من المصدر، وسجّل التعديلات وفترة التقرير، ثم قارن بتوقعات موثقة بشكل منفصل إن توفرت. لا نقدم إجماعًا موثقًا هنا، لذلك لا يصح حساب مفاجأة رقمية. افتح تقويم FOXREX وعد لهذه الصفحة بعد تأكيد النتيجة رسميًا. تحليل تعليمي وليس توصية استثمارية.",
+      "category": "economic",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ifo — October release",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ifo — survey methodology",
+          "url": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — GDP overview",
+          "url": "https://www.bea.gov/data/gdp/gross-domestic-product",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/ifo-survey-production-20261026.webp",
+        "alt": "بطاقات آراء الشركات في ميزان مقابل الإنتاج الصناعي"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-26T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "MEDIUM",
+        "eventTime": "2026-10-26T09:30:00Z",
+        "affectedMarkets": [
+          "EURUSD",
+          "XAUUSD"
+        ]
+      }
+    },
+    {
+      "type": "NEWS",
+      "language": "tr",
+      "slug": "ifo-survey-versus-output-2026-10-26",
+      "title": "ifo öncesi: şirket beklentileri gerçekleşmiş üretim değildir",
+      "summary": "Alman anketini EUR/USD veya altınla ilişkilendirmeden önce mevcut durum ile beklentileri ayırın.",
+      "body": "Bugün doğrulanan bilgi\nResmî ifo sayfası ekim açıklamasını 26 Ekim Orta Avrupa saatiyle 10:30, İstanbul saatiyle 12:30 olarak planlıyor. Kontrol sırasında ekim sonucu sayfada yayımlanmamıştı. Bu yazı açıklama öncesi bir rehberdir; gerçekleşmiş sonuç haberi değildir.\n\nİki bileşen, iki farklı soru\nAnket şirketlerin mevcut iş koşullarını ve gelecek altı aya ilişkin beklentilerini birleştirir. Bu nedenle mevcut faaliyet zayıf kalırken iyimserlikteki artış manşet endeksi yükseltebilir. Ekonominin bütünü güçlendi demeden önce iki bileşeni birlikte okuyun.\n\nDuyarlılık neden üretimden farklıdır?\nAnket değerlendirmeleri kaydeder; millî hesaplar belirli dönemdeki üretimi tahmin eder. Daha iyimser bir anket tek başına GSYH büyüme oranını kanıtlamaz. Tek bir zayıf ay da resesyonu ispatlamaz. Daha sonra gelen üretim, harcama ve istihdam verileriyle tutarlılık arayın.\n\nEUR/USD için koşullu aktarım\nBeklentiler ve mevcut koşullar birlikte iyileşirse yatırımcılar Avrupa büyüme risklerini yeniden değerlendirebilir. Bunun euroya destek olup olmayacağı ECB beklentilerine ve paritenin dolar tarafına da bağlıdır. İyimserlik artarken mevcut koşullar bozulursa sinyal karışıktır. Yalnızca manşete bakmak bu ayrımı gizler. Burada gerçekleşmiş kur tepkisi ileri sürülmüyor.\n\nAltın bağlantısı dolaylıdır\nAlmanya’daki duyarlılık değişimi altının fiyatını mekanik biçimde belirlemez. Olası aktarım euro, dolar ve faiz beklentilerinden geçebilir; risk iştahı başka yönde etkileyebilir. Yalnızca ankete bakarak altın yükseldi veya düştü sonucuna varmayın.\n\nAçıklama için kontrol listesi\nResmî manşeti, mevcut durumu ve beklentileri inceleyin; revizyonları ve dönemi kaydedin. Varsa ayrı bir kaynaktan doğrulanmış beklentiyle karşılaştırın. Burada doğrulanmış beklenti verilmediğinden sayısal sürpriz hesabı yapılamaz. FOXREX takvimini açın ve resmî doğrulama sonrası sayfayı yeniden ziyaret edin. Eğitim amaçlıdır; yatırım tavsiyesi değildir.",
+      "category": "economic",
+      "symbol": "EURUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "ifo — October release",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "ifo — survey methodology",
+          "url": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        },
+        {
+          "name": "BEA — GDP overview",
+          "url": "https://www.bea.gov/data/gdp/gross-domestic-product",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/ifo-survey-production-20261026.webp",
+        "alt": "Sanayi üretimiyle dengelenen şirket görüşü kartları"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-26T20:59:59Z",
+        "stalePolicy": "warn",
+        "importance": "MEDIUM",
+        "eventTime": "2026-10-26T09:30:00Z",
+        "affectedMarkets": [
+          "EURUSD",
+          "XAUUSD"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "ar",
+      "slug": "xauusd-technical-2026-10-23",
+      "title": "الذهب: شارت يومي ودعوم ومقاومات — 23 أكتوبر",
+      "summary": "إغلاق 3995.80، محور 4001.87، ومناطق دعم ومقاومة محسوبة من آخر جلسة مكتملة.",
+      "body": "التحقق صباح الاثنين\nأُعيد الفحص في 26 أكتوبر: 20 شمعة يومية متسقة من جلسات أيام العمل حتى 23 أكتوبر. استُبعدت شمعة 26 أكتوبر الجارية وشمعة الأحد القصيرة بتاريخ 25 أكتوبر؛ لا تُعامل أي منهما كجلسة يومية قياسية مكتملة. الإغلاق والمستويات المحسوبة أدناه لم تتغير. السعر الاسترشادي الحالي ملاحظة منفصلة.\n\nقراءة الشارت\nإغلاق الذهب أدنى المحور، وقريب من قاع 23 أكتوبر 3975.64. نراقب هذه المنطقة المرصودة قبل الدعم الحسابي S1؛ فالفشل في استعادة المحور يبقي قراءة الارتداد حذرة.\n\nالبيانات المستخدمة\nالشارت اليومي D1 يعرض 20 شمعة موثقة من Investing.com حتى 23 أكتوبر 2026. إغلاق آخر جلسة 3995.80؛ هذه لقطة تاريخية وليست سعرًا مباشرًا. التواريخ المستبعدة لعدم اتساق OHLC: —. لا نصحح الشموع أو نملأ الفراغات ببيانات مصطنعة.\n\nالدعم والمقاومة\nالمحور P = 4001.87. الدعم الحسابي الأول S1 = 3969.57 والثاني S2 = 3943.34. المقاومة الأولى R1 = 4028.10 والثانية R2 = 4060.40. هذه مستويات مرجعية محسوبة وليست مناطق مثبتة بتكرار اللمس.\n\nطريقة الحساب\nنستخدم أعلى وأدنى وإغلاق 23 أكتوبر: P=(H+L+C)/3، وS1=2P−H، وR1=2P−L، وS2=P−(H−L)، وR2=P+(H−L). لا ننشر متوسطات طويلة المدى من هذه العينة القصيرة.\n\nخطة المتابعة\nثبات يومي فوق R1 يفتح مراقبة R2، وكسر S1 مع استمرار الضغط يوجه الانتباه إلى S2. عودة السعر داخل المجال تلغي قراءة الاختراق. راجع التقويم وحدّث البيانات قبل تطبيق هذه المستويات على جلسة جديدة.",
+      "category": "technical",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAUUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xau-usd-historical-data",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xauusd-d1-rechecked-20261026.webp",
+        "alt": "شموع الذهب اليومية حتى 23 أكتوبر، أُعيد التحقق منها في 26 أكتوبر"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 3943.34",
+          "S1 3969.57",
+          "P 4001.87",
+          "R1 4028.10",
+          "R2 4060.40"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "en",
+      "slug": "xauusd-technical-2026-10-23",
+      "title": "Gold: daily chart, support and resistance — 23 October",
+      "summary": "Close 3995.80, pivot 4001.87, and calculated reference levels from the last completed session.",
+      "body": "Monday verification\nRechecked on 26 October: 20 consistent completed weekday D1 bars through 23 October. The ongoing 26 October bar and short 25 October Sunday bar are excluded; neither is treated as a completed standard session. Last close and pivot references below remain unchanged. Today’s indicative quote is a separate observation.\n\nChart reading\nGold closed below the pivot, near the observed 23 October low of 3975.64. Watch that traded low before calculated S1; failure to regain the pivot keeps a rebound interpretation cautious.\n\nData behind the chart\nThis D1 chart contains 20 checked candles from Investing.com through 23 October 2026. The last session close is 3995.80; this is a dated snapshot, not a live quote. Dates omitted for inconsistent OHLC: —. No candles are corrected or fabricated to fill gaps.\n\nSupport and resistance\nPivot P = 4001.87. Calculated support: S1 = 3969.57, S2 = 3943.34. Calculated resistance: R1 = 4028.10, R2 = 4060.40. These are mathematical reference levels, not zones confirmed by repeated touches.\n\nCalculation method\nUsing the 23 October high, low and close: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). We do not publish long-term moving averages from this short sample.\n\nFollow-up framework\nA daily hold above R1 brings R2 into focus; a sustained S1 break brings S2 into focus. Returning inside the range invalidates that breakout reading. Check the calendar and refresh observations before applying these references to a new session.",
+      "category": "technical",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAUUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xau-usd-historical-data",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xauusd-d1-rechecked-20261026.webp",
+        "alt": "Gold daily candlesticks through 23 October, rechecked on 26 October"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 3943.34",
+          "S1 3969.57",
+          "P 4001.87",
+          "R1 4028.10",
+          "R2 4060.40"
+        ]
+      }
+    },
+    {
+      "type": "ANALYSIS",
+      "language": "tr",
+      "slug": "xauusd-technical-2026-10-23",
+      "title": "Altın: günlük grafik, destek ve direnç — 23 Ekim",
+      "summary": "Kapanış 3995.80, pivot 4001.87; son tamamlanmış seanstan hesaplanan referans seviyeler.",
+      "body": "Pazartesi doğrulaması\n26 Ekim’de yeniden kontrol edildi: 23 Ekim’e kadar 20 tutarlı tamamlanmış hafta içi D1 mumu. Devam eden 26 Ekim ve kısa 25 Ekim pazar mumu dışlandı; standart tamamlanmış seans kabul edilmedi. Son kapanış ve aşağıdaki hesaplanmış seviyeler değişmedi. Güncel gösterge fiyat ayrı bir gözlemdir.\n\nGrafik değerlendirmesi\nAltın pivotun altında, 23 Ekim’de görülen 3975.64 dibine yakın kapandı. Hesaplanan S1’den önce bu işlem görmüş dibi izliyoruz; pivot geri alınamazsa tepki yorumuna temkinli yaklaşırız.\n\nGrafiğin verileri\nD1 grafik, Investing.com kaynağından 23 Ekim 2026’ya kadar 20 kontrol edilmiş mum içeriyor. Son kapanış 3995.80; bu tarihli bir görüntüdür, canlı fiyat değildir. OHLC tutarsızlığı nedeniyle çıkarılan tarihler: —. Boşluklar yapay mumlarla doldurulmaz ve veriler düzeltilmez.\n\nDestek ve direnç\nPivot P = 4001.87. Hesaplanan destekler S1 = 3969.57, S2 = 3943.34; dirençler R1 = 4028.10, R2 = 4060.40. Bunlar matematiksel referanslardır; tekrarlanan temaslarla doğrulanmış bölgeler değildir.\n\nHesaplama yöntemi\n23 Ekim yüksek, düşük ve kapanışı kullanılır: P=(H+L+C)/3; S1=2P−H; R1=2P−L; S2=P−(H−L); R2=P+(H−L). Bu kısa örneklemden uzun vadeli hareketli ortalama yayımlamıyoruz.\n\nTakip çerçevesi\nR1 üstünde günlük kalıcılık R2’yi, S1 altında süren kırılma S2’yi gündeme getirir. Banda dönüş bu kırılma yorumunu geçersiz kılar. Yeni seansta kullanmadan önce takvimi kontrol edin ve verileri yenileyin.",
+      "category": "technical",
+      "symbol": "XAUUSD",
+      "bias": "neutral",
+      "sourceReferences": [
+        {
+          "name": "Investing.com — XAUUSD historical OHLC",
+          "url": "https://www.investing.com/currencies/xau-usd-historical-data",
+          "retrievedAt": "2026-10-26T05:46:32Z",
+          "sourceType": "market-data-provider"
+        }
+      ],
+      "image": {
+        "src": "assets/media/xauusd-d1-rechecked-20261026.webp",
+        "alt": "26 Ekim’de doğrulanan, 23 Ekim’e kadar günlük altın mumları"
+      },
+      "fields": {
+        "dataAsOf": "2026-10-26T05:46:32Z",
+        "validUntil": "2026-10-31T20:59:59Z",
+        "stalePolicy": "warn",
+        "timeframe": "D1",
+        "keyLevels": [
+          "S2 3943.34",
+          "S1 3969.57",
+          "P 4001.87",
+          "R1 4028.10",
+          "R2 4060.40"
+        ]
+      }
+    }
+  ],
+  "calendar": {
+    "schemaVersion": 1,
+    "updatedAt": "2026-10-26T05:46:32Z",
+    "timezone": "Europe/Istanbul",
+    "coverage": {
+      "en": "Selected verified German, US and euro-area events for 26 October–2 November. Selective coverage, not a full global calendar. No verified consensus or unreleased actuals are supplied.",
+      "ar": "أحداث ألمانية وأمريكية وأوروبية مختارة وموثقة للفترة 26 أكتوبر–2 نوفمبر. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. لا تُدرج توقعات غير موثقة أو نتائج قبل صدورها.",
+      "tr": "26 Ekim–2 Kasım için Almanya, ABD ve euro bölgesinden seçilmiş doğrulanmış olaylar. Küresel takvimin tamamı değildir. Doğrulanmamış beklentiler ve açıklanmamış sonuçlar verilmez."
+    },
+    "events": [
+      {
+        "id": "fomc-2026-10-28",
+        "at": "2026-10-28T18:00:00Z",
+        "title": {
+          "en": "FOMC policy decision",
+          "ar": "قرار السياسة النقدية للفيدرالي",
+          "tr": "Fed faiz kararı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/fed-decision-october-28-2026/"
+      },
+      {
+        "id": "fomc-press-2026-10-28",
+        "at": "2026-10-28T18:30:00Z",
+        "title": {
+          "en": "FOMC press conference",
+          "ar": "المؤتمر الصحفي للفيدرالي",
+          "tr": "Fed basın toplantısı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/fed-decision-october-28-2026/"
+      },
+      {
+        "id": "gdp-q3-advance-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "US GDP — Q3 advance estimate",
+          "ar": "الناتج المحلي الأمريكي — التقدير الأول للربع الثالث",
+          "tr": "ABD GSYH — 3. çeyrek ilk tahmin"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/us-gdp-q3-october-29-2026/"
+      },
+      {
+        "id": "pce-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "Personal Income and Outlays — September (PCE)",
+          "ar": "الدخل والإنفاق الشخصي — سبتمبر (PCE)",
+          "tr": "Kişisel gelir ve harcamalar — Eylül (PCE)"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/pce-september-october-29-2026/"
+      },
+      {
+        "id": "ecb-2026-10-29",
+        "at": "2026-10-29T13:15:00Z",
+        "title": {
+          "en": "ECB monetary policy decision",
+          "ar": "قرار السياسة النقدية للبنك المركزي الأوروبي",
+          "tr": "ECB para politikası kararı"
+        },
+        "currency": "EUR",
+        "country": {
+          "en": "Euro area",
+          "ar": "منطقة اليورو",
+          "tr": "Euro bölgesi"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "checkedAt": "2026-10-26T05:46:32Z",
+          "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
+        },
+        "analysisPath": "news/ecb-decision-october-29-2026/"
+      },
+      {
+        "id": "eci-2026-10-30",
+        "at": "2026-10-30T12:30:00Z",
+        "title": {
+          "en": "Employment Cost Index — Q3",
+          "ar": "مؤشر تكلفة التوظيف — الربع الثالث",
+          "tr": "İstihdam Maliyeti Endeksi — 3. çeyrek"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BLS — October releases",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/employment-cost-q3-october-30-2026/"
+      },
+      {
+        "id": "ifo-business-climate-2026-10-26",
+        "at": "2026-10-26T09:30:00Z",
+        "title": {
+          "en": "Germany ifo Business Climate — October",
+          "ar": "مناخ الأعمال الألماني إيفو — أكتوبر",
+          "tr": "Almanya ifo İş Ortamı — Ekim"
+        },
+        "currency": "EUR",
+        "country": {
+          "en": "Germany",
+          "ar": "ألمانيا",
+          "tr": "Almanya"
+        },
+        "impact": "MEDIUM",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "ifo Institute — official release schedule",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "timeUrl": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/ifo-survey-versus-output-2026-10-26/"
+      }
+    ]
+  }
+}

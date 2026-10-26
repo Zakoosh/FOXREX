@@ -1,0 +1,179 @@
+{
+  "symbol": "XAUUSD",
+  "timeframe": "D1",
+  "quoteCurrency": "USD",
+  "provider": "Investing.com",
+  "sourceUrl": "https://www.investing.com/currencies/xau-usd-historical-data",
+  "retrievedAt": "2026-10-26T05:46:32Z",
+  "bars": [
+    {
+      "date": "2026-09-28",
+      "open": 4277.9,
+      "high": 4280.56,
+      "low": 4110.95,
+      "close": 4115.27
+    },
+    {
+      "date": "2026-09-29",
+      "open": 4113.87,
+      "high": 4185.42,
+      "low": 4113.57,
+      "close": 4182.8
+    },
+    {
+      "date": "2026-09-30",
+      "open": 4182.8,
+      "high": 4219.46,
+      "low": 4147.47,
+      "close": 4157.34
+    },
+    {
+      "date": "2026-10-01",
+      "open": 4157.35,
+      "high": 4193.03,
+      "low": 4139.29,
+      "close": 4178.86
+    },
+    {
+      "date": "2026-10-02",
+      "open": 4175.31,
+      "high": 4225.62,
+      "low": 4125.25,
+      "close": 4142.96
+    },
+    {
+      "date": "2026-10-05",
+      "open": 4144.15,
+      "high": 4170.51,
+      "low": 4122.9,
+      "close": 4139.89
+    },
+    {
+      "date": "2026-10-06",
+      "open": 4141.35,
+      "high": 4184.46,
+      "low": 4104.32,
+      "close": 4164.35
+    },
+    {
+      "date": "2026-10-07",
+      "open": 4164.65,
+      "high": 4170.12,
+      "low": 4066.06,
+      "close": 4111.05
+    },
+    {
+      "date": "2026-10-08",
+      "open": 4110.4,
+      "high": 4146.3,
+      "low": 4103.13,
+      "close": 4134.93
+    },
+    {
+      "date": "2026-10-09",
+      "open": 4134.7,
+      "high": 4207.69,
+      "low": 4130.52,
+      "close": 4194.46
+    },
+    {
+      "date": "2026-10-12",
+      "open": 4194.25,
+      "high": 4217.47,
+      "low": 4154.6,
+      "close": 4171.69
+    },
+    {
+      "date": "2026-10-13",
+      "open": 4171.69,
+      "high": 4200.64,
+      "low": 4147.01,
+      "close": 4157.95
+    },
+    {
+      "date": "2026-10-14",
+      "open": 4161.0,
+      "high": 4170.48,
+      "low": 4073.44,
+      "close": 4105.7
+    },
+    {
+      "date": "2026-10-15",
+      "open": 4105.2,
+      "high": 4177.59,
+      "low": 4099.77,
+      "close": 4170.87
+    },
+    {
+      "date": "2026-10-16",
+      "open": 4170.87,
+      "high": 4198.84,
+      "low": 4147.26,
+      "close": 4165.5
+    },
+    {
+      "date": "2026-10-19",
+      "open": 4159.93,
+      "high": 4190.57,
+      "low": 4136.59,
+      "close": 4140.87
+    },
+    {
+      "date": "2026-10-20",
+      "open": 4141.14,
+      "high": 4155.64,
+      "low": 4111.63,
+      "close": 4124.94
+    },
+    {
+      "date": "2026-10-21",
+      "open": 4124.67,
+      "high": 4142.63,
+      "low": 4104.73,
+      "close": 4140.97
+    },
+    {
+      "date": "2026-10-22",
+      "open": 4140.33,
+      "high": 4145.4,
+      "low": 4020.99,
+      "close": 4024.23
+    },
+    {
+      "date": "2026-10-23",
+      "open": 4025.38,
+      "high": 4034.17,
+      "low": 3975.64,
+      "close": 3995.8
+    }
+  ],
+  "excludedBars": [
+    {
+      "date": "2026-10-26",
+      "open": 3996.86,
+      "high": 4017.18,
+      "low": 3978.19,
+      "close": 4017.0,
+      "reason": "Current incomplete day or short Sunday session; excluded from completed weekday D1 analysis."
+    },
+    {
+      "date": "2026-10-25",
+      "open": 3999.13,
+      "high": 4004.08,
+      "low": 3988.06,
+      "close": 3997.53,
+      "reason": "Current incomplete day or short Sunday session; excluded from completed weekday D1 analysis."
+    }
+  ],
+  "assetStem": "xauusd-d1-rechecked-20261026",
+  "metrics": {
+    "close": 3995.8,
+    "pivot": 4001.8700000000003,
+    "s1": 3969.5700000000006,
+    "r1": 4028.100000000001,
+    "s2": 3943.34,
+    "r2": 4060.4000000000005,
+    "observedLow": 3975.64,
+    "observedHigh": 4280.56
+  }
+}

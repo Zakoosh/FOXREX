@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-25T23:21:41Z",
+  "updatedAt": "2026-10-26T05:46:32Z",
   "timezone": "Europe/Istanbul",
   "coverage": {
-    "en": "Selected verified US and euro-area high-impact events. Coverage is selective, not a complete global calendar. Missing consensus and actual figures are left blank.",
-    "ar": "أحداث مختارة موثقة وعالية التأثير من الولايات المتحدة ومنطقة اليورو. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. تُترك التوقعات والنتائج غير الموثقة فارغة.",
-    "tr": "ABD ve euro bölgesinden seçilmiş, doğrulanmış önemli olaylar. Liste tüm dünyayı kapsamaz. Doğrulanmamış beklenti ve gerçekleşen değerler boş bırakılır."
+    "en": "Selected verified German, US and euro-area events for 26 October–2 November. Selective coverage, not a full global calendar. No verified consensus or unreleased actuals are supplied.",
+    "ar": "أحداث ألمانية وأمريكية وأوروبية مختارة وموثقة للفترة 26 أكتوبر–2 نوفمبر. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. لا تُدرج توقعات غير موثقة أو نتائج قبل صدورها.",
+    "tr": "26 Ekim–2 Kasım için Almanya, ABD ve euro bölgesinden seçilmiş doğrulanmış olaylar. Küresel takvimin tamamı değildir. Doğrulanmamış beklentiler ve açıklanmamış sonuçlar verilmez."
   },
   "events": [
     {
@@ -30,7 +30,7 @@
       "source": {
         "name": "Federal Reserve — October calendar",
         "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
-        "checkedAt": "2026-10-25T21:39:24Z"
+        "checkedAt": "2026-10-26T05:46:32Z"
       },
       "analysisPath": "news/fed-decision-october-28-2026/"
     },
@@ -56,7 +56,7 @@
       "source": {
         "name": "Federal Reserve — October calendar",
         "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
-        "checkedAt": "2026-10-25T21:39:24Z"
+        "checkedAt": "2026-10-26T05:46:32Z"
       },
       "analysisPath": "news/fed-decision-october-28-2026/"
     },
@@ -82,7 +82,7 @@
       "source": {
         "name": "BEA — release schedule",
         "url": "https://www.bea.gov/news/schedule",
-        "checkedAt": "2026-10-25T21:39:24Z"
+        "checkedAt": "2026-10-26T05:46:32Z"
       },
       "analysisPath": "news/us-gdp-q3-october-29-2026/"
     },
@@ -108,7 +108,7 @@
       "source": {
         "name": "BEA — release schedule",
         "url": "https://www.bea.gov/news/schedule",
-        "checkedAt": "2026-10-25T21:39:24Z"
+        "checkedAt": "2026-10-26T05:46:32Z"
       },
       "analysisPath": "news/pce-september-october-29-2026/"
     },
@@ -134,7 +134,7 @@
       "source": {
         "name": "ECB — meeting calendar",
         "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
-        "checkedAt": "2026-10-25T21:39:24Z",
+        "checkedAt": "2026-10-26T05:46:32Z",
         "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
       },
       "analysisPath": "news/ecb-decision-october-29-2026/"
@@ -161,9 +161,36 @@
       "source": {
         "name": "BLS — October releases",
         "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
-        "checkedAt": "2026-10-25T21:39:24Z"
+        "checkedAt": "2026-10-26T05:46:32Z"
       },
       "analysisPath": "news/employment-cost-q3-october-30-2026/"
+    },
+    {
+      "id": "ifo-business-climate-2026-10-26",
+      "at": "2026-10-26T09:30:00Z",
+      "title": {
+        "en": "Germany ifo Business Climate — October",
+        "ar": "مناخ الأعمال الألماني إيفو — أكتوبر",
+        "tr": "Almanya ifo İş Ortamı — Ekim"
+      },
+      "currency": "EUR",
+      "country": {
+        "en": "Germany",
+        "ar": "ألمانيا",
+        "tr": "Almanya"
+      },
+      "impact": "MEDIUM",
+      "status": "scheduled",
+      "previous": null,
+      "forecast": null,
+      "actual": null,
+      "source": {
+        "name": "ifo Institute — official release schedule",
+        "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+        "timeUrl": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+        "checkedAt": "2026-10-26T05:46:32Z"
+      },
+      "analysisPath": "news/ifo-survey-versus-output-2026-10-26/"
     }
   ]
 }
