@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-26T07:12:15.726Z",
+  "checkedAt": "2026-10-26T12:08:50.188Z",
   "autochartist": {
     "status": "published",
     "message": "نُشرت أحدث التحليلات الموثقة من Autochartist."
@@ -27,6 +27,11 @@
     "ac-7debf78785afa061715ecc1a",
     "ac-bd5b5449c1f2b74efdaa6f90",
     "ac-e8ac26746544a8cc7d34698f",
-    "ac-0af5b63f03891eeffc80856a"
+    "ac-0af5b63f03891eeffc80856a",
+    "ac-db3bcce9d66ac6049ace3bbc",
+    "ac-c2c469d93e065539c6c29f70",
+    "ac-57f673b5c29e809362ec8c35",
+    "ac-424949b59ff5603e1cd7b4f6",
+    "ac-016c2d32ba6444ec9fe29602"
   ]
 }
