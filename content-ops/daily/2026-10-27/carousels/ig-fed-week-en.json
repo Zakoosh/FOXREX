@@ -1,0 +1,42 @@
+{
+  "id": "FXR-20261027-IG-CAR-EN-01",
+  "aspect": "4:5 (1080x1350)",
+  "slides": [
+    {
+      "n": 1,
+      "headline": "Fed week: read the order, not just the headline",
+      "visual": "REX the fox, folded arms (assets/rex/rex-educator-v2.webp) on midnight navy; emerald accent line"
+    },
+    {
+      "n": 2,
+      "headline": "Wed 28 Oct",
+      "body": "Fed decision + press conference",
+      "visual": "Calendar tile, Inter numerals"
+    },
+    {
+      "n": 3,
+      "headline": "Thu 29 Oct",
+      "body": "ECB decision · US GDP & PCE (reported)",
+      "visual": "Calendar tile"
+    },
+    {
+      "n": 4,
+      "headline": "Statement ≠ press conference",
+      "body": "The first reaction and the full message can differ.",
+      "visual": "Two-panel split, no price data"
+    },
+    {
+      "n": 5,
+      "headline": "Gold near $4,000?",
+      "body": "Analysts call it a pivot. That's their view, not a signal. Conditional, not guaranteed.",
+      "visual": "Round-number graphic only; no chart levels invented"
+    },
+    {
+      "n": 6,
+      "headline": "Your move",
+      "body": "Write what would change your view before the event.",
+      "cta": "Follow FOXREX for the daily brief",
+      "footer": "Educational content only, not investment advice. Trading involves risk."
+    }
+  ]
+}

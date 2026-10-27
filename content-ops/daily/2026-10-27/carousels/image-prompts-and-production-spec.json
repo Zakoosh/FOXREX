@@ -1,0 +1,44 @@
+{
+  "brandPalette": {
+    "navy": "#0B1320",
+    "emerald": "#00D4A7",
+    "secondary": "#00A884",
+    "caution": "#F5B942",
+    "text": "#E5E7EB"
+  },
+  "fonts": {
+    "ar": "IBM Plex Sans Arabic",
+    "latin": "Inter"
+  },
+  "existingAssets": [
+    "assets/rex/rex-educator-v2.webp",
+    "assets/rex/rex-arms.jpg",
+    "assets/brand/foxrex-lockup.jpg",
+    "assets/brand/foxrex-mark.png"
+  ],
+  "prompts": [
+    {
+      "id": "P1",
+      "for": [
+        "IG carousel cover",
+        "FB post"
+      ],
+      "text": "Premium 3D editorial illustration of REX, the friendly anthropomorphic red fox in a navy suit and emerald tie, folded arms, warm smile, midnight navy studio background with emerald rim lighting, generous negative space on one side. No text, logo, numbers, charts or watermark.",
+      "note": "Prefer reusing the existing REX asset; generate only after owner approval (one image per approved request per GENERATION.md)."
+    },
+    {
+      "id": "P2",
+      "for": [
+        "Reel scene 2"
+      ],
+      "text": "Abstract minimal composition of a glowing emerald ring on deep navy, subtle brushed-gold highlight, cinematic depth of field. No text, numbers, logos or charts.",
+      "note": "Decorative round-number metaphor; contains no price data."
+    }
+  ],
+  "rules": [
+    "Text overlays added in editing, not baked into generated images",
+    "No invented prices, levels, results or product claims",
+    "Disclaimer visible on every final frame/slide/caption"
+  ],
+  "generationExecuted": false
+}

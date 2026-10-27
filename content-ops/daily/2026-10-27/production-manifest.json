@@ -1,0 +1,91 @@
+{
+  "runId": "run-20261027-foxrex-daily-01",
+  "date": "2026-10-27",
+  "createdAt": "2026-10-27T06:38:49Z",
+  "contentCount": 8,
+  "contentIds": [
+    "FXR-20261027-TG-EN-01",
+    "FXR-20261027-TG-AR-01",
+    "FXR-20261027-FB-EN-01",
+    "FXR-20261027-FB-AR-01",
+    "FXR-20261027-IG-CAR-EN-01",
+    "FXR-20261027-IG-CAR-AR-01",
+    "FXR-20261027-IG-REEL-EN-01",
+    "FXR-20261027-IG-REEL-AR-01"
+  ],
+  "files": [
+    {
+      "path": "ar/facebook-week-map.md",
+      "sha256": "49155676bace2761565328b96bd78fdfc876bd8f03664ccab7fbc8909c43d258"
+    },
+    {
+      "path": "ar/instagram-carousel-caption.md",
+      "sha256": "b102e3d69e94d9538c7108a33bb52d5e569c5bde73304ab222c991a348158e6a"
+    },
+    {
+      "path": "ar/telegram-morning-note.md",
+      "sha256": "c264913039d08be19ea117e653f452f2baf83b245b17e042911931c399d2e173"
+    },
+    {
+      "path": "carousels/ig-fed-week-ar.json",
+      "sha256": "e0ad3557ebe8f8e90d3932e2595a8badeb0ea43e43c8718c4410c93c4e700647"
+    },
+    {
+      "path": "carousels/ig-fed-week-en.json",
+      "sha256": "d494bdbcf8fa06f1c5a6124f61a8adba842d5faf2a48fd458c5c9006baf90c32"
+    },
+    {
+      "path": "carousels/image-prompts-and-production-spec.json",
+      "sha256": "cf167b2f23c9d6709e79cb3541e7a28fffadda91e1cadfc814cb71fafdb2f7bd"
+    },
+    {
+      "path": "content-plan.json",
+      "sha256": "a8e8ed9bc2f4f81010f030d6ab2557bc13ae905c0fb03cda4815da6ef6cf51b9"
+    },
+    {
+      "path": "en/facebook-week-map.md",
+      "sha256": "2cdb3d481356c11f18d6e8ebd4fd1e3183a49232fa7ecf55a0a909e07bea8270"
+    },
+    {
+      "path": "en/instagram-carousel-caption.md",
+      "sha256": "297c0a7bdac07ee67104b36eb16a1a7c54a592f3b3258e87b9a7a9c11f19583a"
+    },
+    {
+      "path": "en/telegram-morning-note.md",
+      "sha256": "69b938b98974ab26bbcff821fcb573d35ac731e3299b881ca0cbeb6fc239c9b6"
+    },
+    {
+      "path": "market-brief.md",
+      "sha256": "bce5daeb9a8f4dfce48f143b8b6cd499b7835d3d9443cbaa863cd61eca41e94c"
+    },
+    {
+      "path": "reels/ig-reel-gold-pivot-ar.json",
+      "sha256": "aadd6943ca845fe07d3512f197ff866428d462cab345557972d199ea8cb2733b"
+    },
+    {
+      "path": "reels/ig-reel-gold-pivot-en.json",
+      "sha256": "60235f6bad3bf75feb03ab1ee37ece081a78a82ab19db700eaeb272ebab4ea82"
+    },
+    {
+      "path": "sources.json",
+      "sha256": "07931ad3e03839b95f159413a9ed00933d6decff01707c6a94a89e1797ea17ce"
+    }
+  ],
+  "validation": {
+    "structural": "PASS",
+    "errors": [],
+    "checks": [
+      "all referenced files exist",
+      "disclaimer present in every item",
+      "source IDs resolve",
+      "no policy rate levels / chair name / entry-SL-TP used",
+      "bilingual AR+EN parity per item"
+    ],
+    "limitations": [
+      "Official sources not directly fetched; facts rely on search summaries",
+      "Prices move quickly; re-verify before publishing"
+    ]
+  },
+  "status": "PENDING_COMMIT_VERIFICATION",
+  "publishing": "none performed"
+}

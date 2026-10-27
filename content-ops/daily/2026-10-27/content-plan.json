@@ -1,0 +1,224 @@
+{
+  "date": "2026-10-27",
+  "runId": "run-20261027-foxrex-daily-01",
+  "themes": [
+    {
+      "id": "T1",
+      "title": "Fed-week event map",
+      "rationale": "Highest-impact scheduled event cluster of the week; fully calendar-based, low factual risk."
+    },
+    {
+      "id": "T2",
+      "title": "Gold near $4,000: pivot is not prediction",
+      "rationale": "Gold is the brand focus; framed as analyst view with conditional language."
+    }
+  ],
+  "platformStrategy": {
+    "telegram": "Concise text note with ordered list and sources.",
+    "facebook": "Conversational discussion post with engagement question.",
+    "instagram": "Visual carousel (save-worthy) and short reel."
+  },
+  "contentItems": [
+    {
+      "contentId": "FXR-20261027-TG-EN-01",
+      "theme": "Fed-week map",
+      "format": "text",
+      "platform": "telegram",
+      "language": "en",
+      "title": "Morning Note: Fed week map",
+      "files": [
+        "en/telegram-morning-note.md"
+      ],
+      "factIds": [
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F9"
+      ],
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S6"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    },
+    {
+      "contentId": "FXR-20261027-TG-AR-01",
+      "theme": "خريطة أسبوع الفيدرالي",
+      "format": "text",
+      "platform": "telegram",
+      "language": "ar",
+      "title": "ملاحظة الصباح: خريطة أسبوع الفيدرالي",
+      "files": [
+        "ar/telegram-morning-note.md"
+      ],
+      "factIds": [
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F9"
+      ],
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S5",
+        "S6"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    },
+    {
+      "contentId": "FXR-20261027-FB-EN-01",
+      "theme": "Fed-week map",
+      "format": "post",
+      "platform": "facebook",
+      "language": "en",
+      "title": "Four central banks, one week",
+      "files": [
+        "en/facebook-week-map.md"
+      ],
+      "factIds": [
+        "F1",
+        "F3",
+        "F4",
+        "F9"
+      ],
+      "sourceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    },
+    {
+      "contentId": "FXR-20261027-FB-AR-01",
+      "theme": "خريطة الأسبوع",
+      "format": "post",
+      "platform": "facebook",
+      "language": "ar",
+      "title": "أربعة بنوك مركزية في أسبوع واحد",
+      "files": [
+        "ar/facebook-week-map.md"
+      ],
+      "factIds": [
+        "F1",
+        "F3",
+        "F4",
+        "F9"
+      ],
+      "sourceIds": [
+        "S1",
+        "S5",
+        "S6",
+        "S7"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    },
+    {
+      "contentId": "FXR-20261027-IG-CAR-EN-01",
+      "theme": "Fed-week map",
+      "format": "carousel",
+      "platform": "instagram",
+      "language": "en",
+      "title": "Fed week in 6 slides",
+      "files": [
+        "carousels/ig-fed-week-en.json",
+        "en/instagram-carousel-caption.md"
+      ],
+      "factIds": [
+        "F1",
+        "F3",
+        "F4",
+        "F5",
+        "F7"
+      ],
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S5"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    },
+    {
+      "contentId": "FXR-20261027-IG-CAR-AR-01",
+      "theme": "خريطة الأسبوع",
+      "format": "carousel",
+      "platform": "instagram",
+      "language": "ar",
+      "title": "أسبوع الفيدرالي في 6 شرائح",
+      "files": [
+        "carousels/ig-fed-week-ar.json",
+        "ar/instagram-carousel-caption.md"
+      ],
+      "factIds": [
+        "F1",
+        "F3",
+        "F4",
+        "F5",
+        "F7"
+      ],
+      "sourceIds": [
+        "S1",
+        "S3",
+        "S5"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    },
+    {
+      "contentId": "FXR-20261027-IG-REEL-EN-01",
+      "theme": "Gold $4,000 pivot",
+      "format": "reel",
+      "platform": "instagram",
+      "language": "en",
+      "title": "Pivot is not prediction",
+      "files": [
+        "reels/ig-reel-gold-pivot-en.json"
+      ],
+      "factIds": [
+        "F5",
+        "F7"
+      ],
+      "sourceIds": [
+        "S2",
+        "S3"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    },
+    {
+      "contentId": "FXR-20261027-IG-REEL-AR-01",
+      "theme": "محور الذهب 4,000",
+      "format": "reel",
+      "platform": "instagram",
+      "language": "ar",
+      "title": "النقطة المحورية ليست توقعًا",
+      "files": [
+        "reels/ig-reel-gold-pivot-ar.json"
+      ],
+      "factIds": [
+        "F5",
+        "F7"
+      ],
+      "sourceIds": [
+        "S2",
+        "S3"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAfter": "human approval only"
+    }
+  ],
+  "publishing": "NONE — drafts only; human approval required"
+}
