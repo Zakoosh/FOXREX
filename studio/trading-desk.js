@@ -87,8 +87,8 @@ function installTradingDesk(){
   if(sb.length>=20&&sb[sb.length-1].date===prev) return {bars:sb,basis:0,src:'سعر فوري يومي ('+(spot.provider||'Investing.com')+')',fresh:true};
   const gc=D.gcd&&D.gcd.bars||[], gq=quote('GCFUT'), xq=quote('XAUUSD');
   let basis=null, basisNote='';
-  if(gq&&xq&&Math.abs(Date.parse(gq.asOf)-Date.parse(xq.asOf))<=10*60000){ basis=xq.price-gq.price; basisNote=when(xq.asOf); }
-  else if(gq&&D.gold&&Math.abs(Date.parse(gq.asOf)-Date.parse(D.gold.updatedAt))<=20*60000){ basis=D.gold.price-gq.price; basisNote=when(D.gold.updatedAt); }
+  if(gq&&xq&&Math.abs(Date.parse(gq.asOf)-Date.parse(xq.asOf))<=25*60000){ basis=xq.price-gq.price; basisNote=when(xq.asOf); }
+  else if(gq&&D.gold&&Math.abs(Date.parse(gq.asOf)-Date.parse(D.gold.updatedAt))<=25*60000){ basis=D.gold.price-gq.price; basisNote=when(D.gold.updatedAt); }
   if(gc.length>=20&&basis!==null){ const last=gc[gc.length-1].date; return {bars:gc.map(b=>({date:b.date,open:b.open+basis,high:b.high+basis,low:b.low+basis,close:b.close+basis})),basis,basisNote,src:'عقود COMEX الآجلة GC محوّلة للفوري',fresh:last>=prevWeekday(prev)}; }
   if(sb.length>=20) return {bars:sb,basis:0,src:'سعر فوري يومي (قديم)',fresh:false};
   return null;
