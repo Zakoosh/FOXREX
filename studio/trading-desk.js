@@ -274,12 +274,12 @@ function installTradingDesk(){
   let conf=dir?(Math.abs(trend)+Math.abs(bias)>=2?'عالية':'متوسطة'):'منخفضة';
   if(!V.gb.fresh&&conf==='عالية') conf='متوسطة';
   const L=[]; let verdict, tone;
-  if(dir<0){ verdict='الاتجاه هابط · تجنّب الشراء'; tone='bear';
+  if(dir<0){ verdict=(trend<0?'الاتجاه هابط':'الميل هابط')+' · تجنّب الشراء'; tone='bear';
    if(r1) L.push(`البيع عند الارتداد إلى <b class="num">${zp(r1)}</b> مع وقف فوق <b class="num">${f(r1.hi+buf)}</b> (مخاطرة نحو <b class="num">${f(r1.hi+buf-r1.lo)}${u}</b> من أدنى المنطقة).`);
    if(s1) L.push(`الهدف الأول <b class="num">${zp(s1)}</b>${s2?`، ثم <b class="num">${zp(s2)}</b>`:''}.`);
    if(s1&&price-s1.hi<atr*.3) L.push(`السعر قريب من دعم <b class="num">${zp(s1)}</b>: لا تبع هنا. انتظر ارتداداً للمقاومة أو إغلاق ساعة تحت <b class="num">${f(s1.lo)}</b>.`);
    L.push(`يتغير الرأي بإغلاق يومي فوق <b class="num">${f((r2||r1||{hi:price+atr}).hi)}</b>.`);
-  } else if(dir>0){ verdict='الاتجاه صاعد · تجنّب البيع'; tone='bull';
+  } else if(dir>0){ verdict=(trend>0?'الاتجاه صاعد':'الميل صاعد')+' · تجنّب البيع'; tone='bull';
    if(s1) L.push(`الشراء عند التراجع إلى <b class="num">${zp(s1)}</b> مع وقف تحت <b class="num">${f(s1.lo-buf)}</b> (مخاطرة نحو <b class="num">${f(s1.hi-(s1.lo-buf))}${u}</b> من أعلى المنطقة).`);
    if(r1) L.push(`الهدف الأول <b class="num">${zp(r1)}</b>${r2?`، ثم <b class="num">${zp(r2)}</b>`:''}.`);
    if(r1&&r1.lo-price<atr*.3) L.push(`السعر قريب من مقاومة <b class="num">${zp(r1)}</b>: لا تشترِ هنا. انتظر تراجعاً للدعم أو إغلاق ساعة فوق <b class="num">${f(r1.hi)}</b>.`);
