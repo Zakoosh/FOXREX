@@ -241,11 +241,11 @@ function installTradingDesk(){
   .td-lv-now{display:grid;justify-items:end;gap:2px}.td-lv-now>b{font-size:28px;line-height:1.1}
   .td-lv-sum{margin:0 0 12px;font-size:15px;line-height:1.8;background:rgba(229,231,235,.04);border-radius:var(--r1);padding:10px 12px}
   .td-lv-ladder{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-  .td-lv-row{display:grid;grid-template-columns:78px 110px 62px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border-radius:var(--r1);border-inline-start:3px solid transparent;font-size:13.5px}
+  .td-lv-row{display:grid;grid-template-columns:78px 150px 62px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border-radius:var(--r1);border-inline-start:3px solid transparent;font-size:13.5px}
   .td-lv-row.r{background:rgba(255,92,122,.06);border-inline-start-color:var(--sell)}.td-lv-row.s{background:rgba(0,212,167,.06);border-inline-start-color:var(--teal)}
   .td-lv-row.now{background:rgba(245,185,66,.14);border-inline-start-color:var(--pend);font-weight:600}
   .td-lv-tag{font-size:12.5px;color:var(--muted)}.td-lv-row.now .td-lv-tag{color:var(--pend)}
-  .td-lv-p{font-size:15px}.td-lv-str{letter-spacing:1px;color:var(--pend);font-size:12px}
+  .td-lv-p{font-size:15px;white-space:nowrap}.td-lv-str{letter-spacing:1px;color:var(--pend);font-size:12px}
   .td-lv-why{color:var(--muted);font-size:12.5px;min-width:0}.td-lv-d{font-size:12.5px;color:var(--muted);white-space:nowrap}
   @media (max-width:760px){.td-lv-row{grid-template-columns:auto 1fr auto;row-gap:2px}.td-lv-str{grid-column:3}.td-lv-why{grid-column:1/-1}.td-lv-d{grid-column:2/-1;text-align:end}.td-lv-now{justify-items:start}}
   table.t td.ok{color:var(--teal)}table.t td.old{color:var(--pend)}table.t td.bad{color:var(--sell)}
