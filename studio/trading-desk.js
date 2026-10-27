@@ -77,12 +77,12 @@ function installTradingDesk(){
  /* Automatic readings: each returns {k, why} or null when the data is missing or stale. */
  function auto(){
   const out={}, MAXQ=36*60; // quotes older than 36h are ignored (weekend-aware enough for a session read)
-  const dxy=quote('DXY'); if(fresh(dxy,MAXQ)&&pctOf(dxy)!==null) out.dxy={k:tri(pctOf(dxy),.15,-.15),why:`DXY ${num(dxy.price,2)} (${sgn(pctOf(dxy))}) · ${dxy.source} ${hm(dxy.asOf)}`};
-  const y=quote('US10Y'); if(fresh(y,MAXQ)&&pctOf(y)!==null){ const bp=(y.price-y.price/(1+pctOf(y)/100))*100; out.y10={k:tri(bp,3,-3),why:`العائد ${num(y.price,3)}% (${bp>0?'+':''}${bp.toFixed(1)} نقطة أساس) · ${hm(y.asOf)}`}; }
-  const vix=quote('VIX'); if(fresh(vix,MAXQ)&&pctOf(vix)!==null) out.vix={k:tri(pctOf(vix),3,-3),why:`VIX ${num(vix.price,2)} (${sgn(pctOf(vix))}) · ${hm(vix.asOf)}`};
-  const oil=[quote('BRENT'),quote('WTI')].find(q=>fresh(q,MAXQ)&&pctOf(q)!==null); if(oil) out.oil={k:tri(pctOf(oil),1,-1),why:`${oil.symbol==='BRENT'?'برنت':'WTI'} ${num(oil.price,2)}$ (${sgn(pctOf(oil))}) · ${hm(oil.asOf)}`};
+  const dxy=quote('DXY'); if(fresh(dxy,MAXQ)&&pctOf(dxy)!==null) out.dxy={k:tri(pctOf(dxy),.15,-.15),why:`DXY ${num(dxy.price,2)} (${sgn(pctOf(dxy))}) · ${dxy.source} ${when(dxy.asOf)}`};
+  const y=quote('US10Y'); if(fresh(y,MAXQ)&&pctOf(y)!==null){ const bp=(y.price-y.price/(1+pctOf(y)/100))*100; out.y10={k:tri(bp,3,-3),why:`العائد ${num(y.price,3)}% (${bp>0?'+':''}${bp.toFixed(1)} نقطة أساس) · ${when(y.asOf)}`}; }
+  const vix=quote('VIX'); if(fresh(vix,MAXQ)&&pctOf(vix)!==null) out.vix={k:tri(pctOf(vix),3,-3),why:`VIX ${num(vix.price,2)} (${sgn(pctOf(vix))}) · ${when(vix.asOf)}`};
+  const oil=[quote('BRENT'),quote('WTI')].find(q=>fresh(q,MAXQ)&&pctOf(q)!==null); if(oil) out.oil={k:tri(pctOf(oil),1,-1),why:`${oil.symbol==='BRENT'?'برنت':'WTI'} ${num(oil.price,2)}$ (${sgn(pctOf(oil))}) · ${when(oil.asOf)}`};
   const fut=['ES','NQ'].map(quote).filter(q=>fresh(q,12*60)&&pctOf(q)!==null);
-  if(fut.length){ const avg=fut.reduce((s,q)=>s+pctOf(q),0)/fut.length; out.fut={k:tri(avg,.2,-.2),why:fut.map(q=>`${q.symbol} ${sgn(pctOf(q))}`).join(' · ')+` · ${hm(fut[0].asOf)}`}; }
+  if(fut.length){ const avg=fut.reduce((s,q)=>s+pctOf(q),0)/fut.length; out.fut={k:tri(avg,.2,-.2),why:fut.map(q=>`${q.symbol} ${sgn(pctOf(q))}`).join(' · ')+` · ${when(fut[0].asOf)}`}; }
   const gs=goldSeries();
   if(gs&&gs.bars&&gs.bars.length>=20){
    const bars=gs.bars, last=bars[bars.length-1], closes=bars.map(b=>b.close), lastDay=last.at.slice(0,10);
