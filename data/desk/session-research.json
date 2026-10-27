@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "date": "2026-10-27",
   "checkedAt": "2026-10-27T09:15:00Z",
-  "note": "Read by the admin session checklist (studio/trading-desk.js). Update once per trading day before the London open. Values: 0 = first option (rising / hawkish / escalation / yes), 1 = middle, 2 = third option. Judgement factors live here. Market factors (DXY, 10Y, VIX, oil, futures, gold trend, calendar) are computed automatically from data/quotes.json, data/market/ai-technical.json and data/calendar.json; the values here are only a fallback when that data is missing or stale.",
+  "note": "Read by the admin session checklist (studio/trading-desk.js). Update once per trading day before the London open. Values: 0 = first option (rising / hawkish / escalation / yes), 1 = middle, 2 = third option. Judgement factors live here. Market factors (DXY, 10Y, VIX, oil, futures, gold trend, calendar) are computed automatically from data/quotes.json, data/market/ai-technical.json and data/calendar.json; the values here are only a fallback when that data is missing or stale. levels.goldLevels: analyst spot levels from today's sources ({p: price, l: Arabic label}); the desk merges them with computed levels.",
   "values": {
     "dxy": 0,
     "y10": 1,
@@ -61,7 +61,33 @@
   ],
   "levels": {
     "gold": "R 4,075–4,110 · S 3,975 (3M low) · S 3,940–3,960 · S 3,890 / 3,800",
-    "indices": "SPX 7,677 (+0.7%) · Nasdaq Comp 26,169 (+0.8%) — close 26 Oct"
+    "indices": "SPX 7,677 (+0.7%) · Nasdaq Comp 26,169 (+0.8%) — close 26 Oct",
+    "goldLevels": [
+      {
+        "p": 4110,
+        "l": "هدف سيناريو الصعود (FinanceFeeds)"
+      },
+      {
+        "p": 4075,
+        "l": "بداية منطقة الارتداد 4,075–4,110 (Shvedov)"
+      },
+      {
+        "p": 3975.23,
+        "l": "أدنى 3 أشهر (الجمعة 23 أكتوبر)"
+      },
+      {
+        "p": 3950,
+        "l": "منطقة قيعان يونيو 3,940–3,960"
+      },
+      {
+        "p": 3890,
+        "l": "هدف سيناريو الهبوط"
+      },
+      {
+        "p": 3800,
+        "l": "تحذير Tastylive: كسر 3,900 يفتح 3,800"
+      }
+    ]
   },
   "sources": [
     {

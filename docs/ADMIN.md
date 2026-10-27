@@ -16,6 +16,14 @@
   On Windows PowerShell set the variables with `$env:FOXREX_ADMIN_USER="FOXREX"` and `$env:FOXREX_ADMIN_PASSWORD="…"` first.
 - "Sign out" is at the bottom of the sidebar.
 
+## Trading desk → Gold levels (top of the checklist)
+
+The first panel on `/admin/#checklist` is the gold levels summary: the live price (Gold API, every 20 seconds), a one-paragraph read (between which support and resistance, what a break opens, which side is nearer) and a ladder of up to four resistance and four support zones with strength and distance.
+
+- Daily data: spot D1 bars from `data/market/ai-technical.json` when they include the previous session; otherwise COMEX gold futures bars from `data/market/gold-daily.json` (written by the market-data workflow, completed sessions only) converted to spot with the spot–futures basis measured in the same refresh (XAUUSD − GCFUT).
+- Levels: prior session high/low/close, daily pivot P/R1/R2/S1/S2, previous week high/low, 20-day high/low, swing highs/lows of the last 60 sessions, 20/50-day averages, round numbers (50/100) and the analyst levels in `data/desk/session-research.json` → `levels.goldLevels`. Levels within ~0.12 × ATR merge into one zone; strength is the weighted count of levels in the zone.
+- Update cadence: computed levels change automatically after each completed session; the price and distances update continuously; analyst levels change when the research file is updated.
+
 ## Trading desk → Session checklist
 
 Open before each session (direct link: `/admin/#checklist`). Each factor has three states and a weight for gold and for US indices; the two gauges show the session bias.
@@ -42,5 +50,5 @@ Shows each data file with its last update and age, every stored quote with its s
 ## Market data pipeline
 
 - `.github/workflows/market-data.yml` runs `tools/market/refresh.py` every 15 minutes on weekdays and hourly at weekends, and commits `data/quotes.json` only when it changes. Run it by hand from GitHub → Actions → "Refresh market data" → Run workflow.
-- Symbols: XAUUSD, XAGUSD, BTCUSD (Gold API); EURUSD, GBPUSD, USDJPY, SPX, NAS100, US30, DXY, US10Y, VIX, WTI, BRENT, ES, NQ (Yahoo Finance chart API). A failed source keeps its last verified value and timestamp and is listed in `errors`.
+- Symbols: XAUUSD, XAGUSD, BTCUSD (Gold API); EURUSD, GBPUSD, USDJPY, SPX, NAS100, US30, DXY, US10Y, VIX, WTI, BRENT, ESFUT, NQFUT, GCFUT (Yahoo Finance chart API), plus completed GC daily sessions in `data/market/gold-daily.json`. A failed source keeps its last verified value and timestamp and is listed in `errors`.
 - The public ticker (`scripts/public/market.js`) reads the snapshot every minute and Gold API every 20 seconds. A price older than 30 minutes is dimmed. A live change is shown only against the previous trading day's close.

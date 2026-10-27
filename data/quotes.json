@@ -190,7 +190,7 @@
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?interval=1d&range=5d"
     },
     {
-      "symbol": "ES",
+      "symbol": "ESFUT",
       "price": 7719.75,
       "asOf": "2026-10-27T09:32:11Z",
       "source": "Yahoo Finance",
@@ -204,7 +204,7 @@
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/ES%3DF?interval=1d&range=5d"
     },
     {
-      "symbol": "NQ",
+      "symbol": "NQFUT",
       "price": 29458.5,
       "asOf": "2026-10-27T09:32:11Z",
       "source": "Yahoo Finance",
