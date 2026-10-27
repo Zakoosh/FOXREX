@@ -74,18 +74,22 @@ def quote(pair,now):
  q=checked(dict(symbol=symbol,price=j['regularMarketPrice'],asOf=iso(j['regularMarketTime']),source='Yahoo Finance',sourceUrl=url,timeBasis='market-observation',currency=j['currency'],unit=UNITS[symbol],fetchedAt=iso(datetime.datetime.now(datetime.timezone.utc).timestamp())),now)
  return yahoo_change(q,result)
 
-UNITS={'GCFUT':'USD per troy ounce (COMEX front-month futures)','EURUSD':'USD per EUR','GBPUSD':'USD per GBP','USDJPY':'JPY per USD','SPX':'index points','NAS100':'index points','US30':'index points','DXY':'index points','VIX':'index points','US10Y':'percent yield','WTI':'USD per barrel','BRENT':'USD per barrel','ESFUT':'futures index points','NQFUT':'futures index points'}
+UNITS={'YMFUT':'futures index points (CBOT mini Dow)','GCFUT':'USD per troy ounce (COMEX front-month futures)','EURUSD':'USD per EUR','GBPUSD':'USD per GBP','USDJPY':'JPY per USD','SPX':'index points','NAS100':'index points','US30':'index points','DXY':'index points','VIX':'index points','US10Y':'percent yield','WTI':'USD per barrel','BRENT':'USD per barrel','ESFUT':'futures index points','NQFUT':'futures index points'}
 # Core site quotes first (rendered on the public site), then session-desk context used by the admin checklist.
 PAIRS=[('XAUUSD','XAU'),('XAGUSD','XAG'),('EURUSD','EURUSD=X'),('GBPUSD','GBPUSD=X'),('USDJPY','JPY=X'),('BTCUSD','BTC'),('SPX','^GSPC'),('NAS100','^NDX'),('US30','^DJI'),
- ('DXY','DX-Y.NYB'),('US10Y','^TNX'),('VIX','^VIX'),('WTI','CL=F'),('BRENT','BZ=F'),('ESFUT','ES=F'),('NQFUT','NQ=F'),('GCFUT','GC=F')]
+ ('DXY','DX-Y.NYB'),('US10Y','^TNX'),('VIX','^VIX'),('WTI','CL=F'),('BRENT','BZ=F'),('ESFUT','ES=F'),('NQFUT','NQ=F'),('GCFUT','GC=F'),('YMFUT','YM=F')]
 
 GOLD_DAILY=ROOT/'data/market/gold-daily.json'
-def gold_daily(now):
- """Completed COMEX gold daily sessions (GC=F) for the admin levels ladder. Today's open session is excluded,
- so the file changes once per trading day. The desk converts levels to spot with the live spot-futures basis."""
- url='https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1d&range=6mo'
+US30_DAILY=ROOT/'data/market/us30-daily.json'
+DAILY={'GC':('GC=F','COMEX gold futures, front month (GC=F)',GOLD_DAILY,'Spot levels on the admin desk = futures level + live spot-futures basis (XAUUSD - GCFUT in data/quotes.json).'),
+ 'YM':('YM=F','CBOT E-mini Dow futures, front month (YM=F)',US30_DAILY,'US30 CFD levels on the admin desk = futures level + cash basis (Dow cash index ^DJI - YM=F), measured while both quotes are within 20 minutes of each other.')}
+def daily_bars(key,now):
+ """Completed daily sessions for the admin levels ladder. Today's open session is excluded,
+ so the bars change once per trading day."""
+ sym,label,_,note=DAILY[key]
+ url='https://query1.finance.yahoo.com/v8/finance/chart/'+urllib.parse.quote(sym,safe='')+'?interval=1d&range=6mo'
  r=fetch(url)['chart']['result'][0];m=r['meta']
- assert m['symbol']=='GC=F' and m['currency']=='USD'
+ assert m['symbol']==sym and m['currency']=='USD'
  zone=ZoneInfo(m.get('exchangeTimezoneName') or 'America/New_York');today=now.astimezone(zone).date();q=r['indicators']['quote'][0];bars=[]
  for i,t in enumerate(r.get('timestamp',[])):
   o,h,l,c=(q[k][i] for k in ('open','high','low','close'))
@@ -95,15 +99,28 @@ def gold_daily(now):
   if bars and bars[-1]['date']==d.isoformat():bars.pop()
   bars.append(dict(date=d.isoformat(),open=round(o,2),high=round(h,2),low=round(l,2),close=round(c,2)))
  assert len(bars)>=30,'Not enough completed sessions'
- return dict(schemaVersion=1,symbol='GC',instrument='COMEX gold futures, front month (GC=F)',source='Yahoo Finance',sourceUrl=url,timeframe='D1',
-  note='Completed daily sessions only. Spot levels on the admin desk = futures level + live spot-futures basis (XAUUSD - GCFUT in data/quotes.json).',bars=bars[-120:])
+ return dict(schemaVersion=1,symbol=key,instrument=label,source='Yahoo Finance',sourceUrl=url,timeframe='D1',note='Completed daily sessions only. '+note,bars=bars[-120:])
+def gold_daily(now):return daily_bars('GC',now)
 
-def write_gold_daily(now,errors):
+def cash_basis(qs,cash,fut,max_gap_min=20):
+ """Cash minus futures when both observations are close in time; None otherwise."""
+ a,b=qs.get(cash),qs.get(fut)
+ if not a or not b:return None
+ ta=datetime.datetime.fromisoformat(a['asOf'].replace('Z','+00:00'));tb=datetime.datetime.fromisoformat(b['asOf'].replace('Z','+00:00'))
+ if abs((ta-tb).total_seconds())>max_gap_min*60:return None
+ return dict(value=round(a['price']-b['price'],2),cash=a['price'],futures=b['price'],at=max(a['asOf'],b['asOf']))
+
+def write_daily(key,now,errors,qs):
+ path=DAILY[key][2]
  try:
-  d=gold_daily(now);old=json.loads(GOLD_DAILY.read_text()) if GOLD_DAILY.exists() else {}
-  if old.get('bars')!=d['bars']:
-   d['updatedAt']=iso(datetime.datetime.now(datetime.timezone.utc).timestamp());GOLD_DAILY.write_text(json.dumps(d,indent=1)+'\n')
- except Exception as e:errors.append({'symbol':'GC-D1','message':type(e).__name__})
+  d=daily_bars(key,now);old=json.loads(path.read_text()) if path.exists() else {}
+  d['basis']=old.get('basis')
+  if key=='YM':
+   b=cash_basis(qs,'US30','YMFUT')
+   if b:d['basis']=b
+  if {k:old.get(k) for k in ('bars','basis')}!={k:d.get(k) for k in ('bars','basis')}:
+   d['updatedAt']=iso(datetime.datetime.now(datetime.timezone.utc).timestamp());path.write_text(json.dumps(d,indent=1)+'\n')
+ except Exception as e:errors.append({'symbol':key+'-D1','message':type(e).__name__})
 
 if __name__=='__main__':
  now=datetime.datetime.now(datetime.timezone.utc);p=ROOT/'data/quotes.json';old=json.loads(p.read_text()) if p.exists() else {'quotes':[]};qs={q['symbol']:q for q in old['quotes']};errors=[]
@@ -116,7 +133,7 @@ if __name__=='__main__':
     if previous and datetime.datetime.fromisoformat(q['asOf'].replace('Z','+00:00'))<datetime.datetime.fromisoformat(previous['asOf'].replace('Z','+00:00')):raise ValueError('Provider observation regressed')
     qs[q['symbol']]=q
    except Exception as e:errors.append({'symbol':future[f],'message':type(e).__name__})
- write_gold_daily(now,errors)
+ for key in DAILY:write_daily(key,now,errors,qs)
  data=dict(schemaVersion=1,updatedAt=iso(datetime.datetime.now(datetime.timezone.utc).timestamp()),quotes=[qs[s] for s,_ in pairs if s in qs],errors=errors)
  assert data['quotes'],'No verified quotes available'
  p.write_text(json.dumps(data,indent=2)+'\n');print(json.dumps({'quotes':len(data['quotes']),'errors':errors}))

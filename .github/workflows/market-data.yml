@@ -47,7 +47,7 @@ jobs:
           fi
           git config user.name "foxrex-market-bot"
           git config user.email "foxrex-market-bot@users.noreply.github.com"
-          git add data/quotes.json data/market/gold-daily.json $(git diff --name-only) 2>/dev/null || git add data/quotes.json $(git diff --name-only)
+          git add data/quotes.json data/market/*-daily.json $(git diff --name-only)
           git commit -m "Refresh market quotes"
           for i in 1 2 3; do
             if git pull --rebase origin "${GITHUB_REF_NAME}"; then
@@ -57,7 +57,7 @@ jobs:
               git rebase --abort || true
               git reset --hard "origin/${GITHUB_REF_NAME}"
               python -m tools.market.refresh && node tools/site/build.mjs
-              git add data/quotes.json data/market/gold-daily.json $(git diff --name-only) 2>/dev/null || git add data/quotes.json $(git diff --name-only)
+              git add data/quotes.json data/market/*-daily.json $(git diff --name-only)
               git commit -m "Refresh market quotes" || exit 0
             fi
             sleep 5

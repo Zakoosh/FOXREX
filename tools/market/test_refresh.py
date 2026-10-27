@@ -41,6 +41,12 @@ class GoldDailyBars(unittest.TestCase):
    d=refresh.gold_daily(now)
   dates=[b['date'] for b in d['bars']]
   self.assertEqual(dates[-1],'2026-10-26');self.assertNotIn('2026-10-27',dates);self.assertNotIn('2026-09-04',dates)
+class CashBasis(unittest.TestCase):
+ def test_basis_only_when_observations_align(self):
+  qs={'US30':dict(price=52400.0,asOf='2026-10-27T15:00:00Z'),'YMFUT':dict(price=52500.0,asOf='2026-10-27T14:50:00Z')}
+  self.assertEqual(refresh.cash_basis(qs,'US30','YMFUT')['value'],-100.0)
+  qs['YMFUT']['asOf']='2026-10-27T13:00:00Z'
+  self.assertIsNone(refresh.cash_basis(qs,'US30','YMFUT'))
 class DailyChangeIntegrity(unittest.TestCase):
  def test_provider_session_change_is_used_not_five_day_chart_reference(self):
   q=dict(price=110,sourceUrl='https://example.com')

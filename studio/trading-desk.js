@@ -54,14 +54,15 @@ function installTradingDesk(){
  async function load(){
   if(D.loading) return; const first=!D.loaded; D.loading=true; D.error='';
   const v=Math.floor(Date.now()/60000);
-  const [q,c,t,r,g,gd]=await Promise.allSettled([getJSON('../data/quotes.json?v='+v),getJSON('../data/calendar.json?v='+v),getJSON('../data/market/ai-technical.json?v='+v),getJSON('../data/desk/session-research.json?v='+v),getJSON('https://api.gold-api.com/price/XAU'),getJSON('../data/market/gold-daily.json?v='+v)]);
+  const [q,c,t,r,g,gd,yd]=await Promise.allSettled([getJSON('../data/quotes.json?v='+v),getJSON('../data/calendar.json?v='+v),getJSON('../data/market/ai-technical.json?v='+v),getJSON('../data/desk/session-research.json?v='+v),getJSON('https://api.gold-api.com/price/XAU'),getJSON('../data/market/gold-daily.json?v='+v),getJSON('../data/market/us30-daily.json?v='+v)]);
   D.gcd=gd.status==='fulfilled'&&Array.isArray(gd.value.bars)?gd.value:null;
+  D.ymd=yd.status==='fulfilled'&&Array.isArray(yd.value.bars)?yd.value:null;
   D.quotes=q.status==='fulfilled'?q.value:null; D.cal=c.status==='fulfilled'?c.value:null; D.tech=t.status==='fulfilled'?t.value:null; D.research=r.status==='fulfilled'?r.value:null;
   D.gold=g.status==='fulfilled'&&g.value.symbol==='XAU'&&g.value.currency==='USD'?g.value:null;
   if(q.status!=='fulfilled') D.error='تعذّر تحميل data/quotes.json';
   D.loaded=true; D.loading=false;
   if(st.d!==today()) st=loadState();
-  if(!first&&S.view==='checklist'&&document.getElementById('td-facts')&&D._mounted){ document.getElementById('td-facts').innerHTML=factsHtml(); paintLevels(); paint(); }
+  if(!first&&S.view==='checklist'&&document.getElementById('td-facts')&&D._mounted){ document.getElementById('td-facts').innerHTML=factsHtml(); paint(); }
   else if(['checklist','marketdata'].includes(S.view)) render();
  }
  const quote=sym=>(D.quotes&&D.quotes.quotes||[]).find(x=>x.symbol===sym);
@@ -93,9 +94,25 @@ function installTradingDesk(){
   if(sb.length>=20) return {bars:sb,basis:0,src:'سعر فوري يومي (قديم)',fresh:false};
   return null;
  }
- /* Support/resistance zones around the live price. Each source level carries a weight; nearby levels merge into a zone. */
- function goldLevels(){
-  const gb=goldBars(), g=goldNow(); if(!gb||!g) return null;
+ function us30Bars(){
+  const ym=D.ymd&&D.ymd.bars||[], b=D.ymd&&D.ymd.basis; if(ym.length<20) return null;
+  const basis=b&&typeof b.value==='number'?b.value:0, last=ym[ym.length-1].date;
+  return {bars:ym.map(x=>({date:x.date,open:x.open+basis,high:x.high+basis,low:x.low+basis,close:x.close+basis})),basis,basisNote:b?when(b.at):'',src:b?'عقود داو الآجلة YM محوّلة لسعر الكاش':'عقود داو الآجلة YM',fresh:last>=prevWeekday(prevWeekday(today()))};
+ }
+ function us30Now(){
+  const c=quote('US30'), f=quote('YMFUT'), b=D.ymd&&D.ymd.basis;
+  if(c&&ageMin(c.asOf)<=30) return {price:c.price,at:c.asOf,src:'مؤشر داو (الكاش)'};
+  if(f&&b&&typeof b.value==='number') return {price:f.price+b.value,at:f.asOf,src:'عقود YM + فرق الكاش'};
+  if(f) return {price:f.price,at:f.asOf,src:'عقود YM'};
+  if(c) return {price:c.price,at:c.asOf,src:'مؤشر داو (آخر إغلاق)'};
+  return null;
+ }
+ const INSTR=[
+  {id:'gold',title:'الذهب XAU/USD',sym:'XAU/USD',u:'$',pdp:2,steps:[[50,.5],[100,1]],bars:()=>goldBars(),now:()=>goldNow(),analyst:r=>r&&r.levels&&r.levels.goldLevels,ix:0,live:'السعر كل 20 ثانية'},
+  {id:'us30',title:'US30 CFD · داو جونز',sym:'US30',u:' نقطة',pdp:0,steps:[[250,.5],[500,1]],bars:()=>us30Bars(),now:()=>us30Now(),analyst:r=>r&&r.levels&&r.levels.us30Levels,ix:1,live:'لقطات كل 15 دقيقة'}];
+ /* Support/resistance zones around the current price. Each source level carries a weight; nearby levels merge into a zone. */
+ function levelsFor(inst){
+  const gb=inst.bars(), g=inst.now(); if(!gb||!g) return null;
   const B=gb.bars, last=B[B.length-1], price=g.price, closes=B.map(b=>b.close);
   const tr=B.slice(1).map((b,i)=>Math.max(b.high-b.low,Math.abs(b.high-B[i].close),Math.abs(b.low-B[i].close)));
   let atr=tr.slice(0,14).reduce((s,x)=>s+x,0)/14; for(const x of tr.slice(14)) atr=(atr*13+x)/14;
@@ -103,26 +120,25 @@ function installTradingDesk(){
   const H=last.high, Lo=last.low, C=last.close, P=(H+Lo+C)/3, yd=last.date===prevWeekday(today()), sess=yd?'أمس':'جلسة '+arDay(last.date);
   add(H,'أعلى '+sess,3); add(Lo,'أدنى '+sess,3); add(C,'إغلاق '+sess,1);
   add(P,'المحور اليومي P',1.5); add(2*P-Lo,'R1',1.5); add(2*P-H,'S1',1.5); add(P+(H-Lo),'R2',1); add(P-(H-Lo),'S2',1);
-  // previous completed week (Mon–Fri) high/low
   const wk=d=>{ const x=new Date(d+'T12:00:00Z'); x.setUTCDate(x.getUTCDate()-((x.getUTCDay()+6)%7)); return x.toISOString().slice(0,10); };
   const thisWk=wk(today()), pw=B.filter(b=>wk(b.date)<thisWk), pwKey=pw.length?wk(pw[pw.length-1].date):null, pwb=pw.filter(b=>wk(b.date)===pwKey);
   if(pwb.length){ add(Math.max(...pwb.map(b=>b.high)),'أعلى الأسبوع الماضي',2.5); add(Math.min(...pwb.map(b=>b.low)),'أدنى الأسبوع الماضي',2.5); }
   const r20=B.slice(-20); add(Math.max(...r20.map(b=>b.high)),'أعلى 20 يوماً',2); add(Math.min(...r20.map(b=>b.low)),'أدنى 20 يوماً',2);
-  // swing highs/lows (2 bars each side) over the last 60 sessions
   const sw=B.slice(-60); for(let i=2;i<sw.length-2;i++){ const b=sw[i];
    if(b.high>sw[i-1].high&&b.high>sw[i-2].high&&b.high>sw[i+1].high&&b.high>sw[i+2].high) add(b.high,'قمة '+arDay(b.date),1.5);
    if(b.low<sw[i-1].low&&b.low<sw[i-2].low&&b.low<sw[i+1].low&&b.low<sw[i+2].low) add(b.low,'قاع '+arDay(b.date),1.5); }
   const e20=emaOf(closes,20), e50=emaOf(closes,50); if(e20) add(e20,'متوسط 20 يوم',1); if(e50) add(e50,'متوسط 50 يوم',1);
-  for(const step of [50,100]){ const lo=Math.floor(price/step)*step; [lo,lo+step].forEach(x=>add(x,'رقم نفسي '+num(x,0),step===100?1:.5)); }
-  const r=research(); ((r&&r.levels&&r.levels.goldLevels)||[]).forEach(x=>add(+x.p,x.l,2.5));
-  // merge into zones
+  for(const [step,w] of inst.steps){ const lo=Math.floor(price/step)*step; [lo,lo+step].forEach(x=>add(x,'رقم نفسي '+num(x,0),w)); }
+  (inst.analyst(research())||[]).forEach(x=>add(+x.p,x.l,2.5));
   L.sort((a,b)=>a.p-b.p); const tol=Math.max(atr*.12,price*.0012), Z=[];
   for(const l of L){ const z=Z[Z.length-1]; if(z&&l.p-z.hi<=tol){ z.hi=l.p; z.items.push(l); } else Z.push({lo:l.p,hi:l.p,items:[l]}); }
   Z.forEach(z=>{ z.w=z.items.reduce((s,x)=>s+x.w,0); z.mid=z.items.reduce((s,x)=>s+x.p*x.w,0)/z.w; z.labels=[...new Set(z.items.map(x=>x.label))]; });
-  const res=Z.filter(z=>z.lo>price).sort((a,b)=>a.lo-b.lo).slice(0,4), sup=Z.filter(z=>z.hi<price).sort((a,b)=>b.hi-a.hi).slice(0,4);
+  const res=Z.filter(z=>z.lo>price).sort((a,b)=>a.lo-b.lo).slice(0,3), sup=Z.filter(z=>z.hi<price).sort((a,b)=>b.hi-a.hi).slice(0,3);
   const inside=Z.find(z=>z.lo<=price&&z.hi>=price);
-  return {price,at:g.at,src:g.src,atr,last,res,sup,inside,gb,pdc:C};
+  const trend=last.close>e20&&e20>(e50||e20)?1:last.close<e20&&e20<(e50||e20)?-1:0;
+  return {price,at:g.at,src:g.src,atr,last,res,sup,inside,gb,pdc:C,e20,e50,trend};
  }
+ function goldLevels(){ return levelsFor(INSTR[0]); }
 
  /* Automatic readings: each returns {k, why} or null when the data is missing or stale. */
  function auto(){
@@ -143,6 +159,12 @@ function installTradingDesk(){
    }
    const g=goldNow();
    if(g&&last.date===prevWeekday(today())){ const k=g.price>last.high?0:g.price<last.low?2:1; out.gLvl={k,why:`السعر ${num(g.price,2)} · أعلى أمس ${num(last.high,2)} · أدنى أمس ${num(last.low,2)} (${last.date})`}; }
+  }
+  const ub=us30Bars(), un=us30Now();
+  if(ub&&ub.bars.length>=20){
+   const bars=ub.bars, last=bars[bars.length-1], closes=bars.map(b=>b.close), f=emaOf(closes,20), sl=emaOf(closes,50)||sma(closes,20);
+   if((Date.now()-Date.parse(last.date+'T22:00:00Z'))/864e5<=5) out.iTr={k:last.close>f&&f>sl?0:last.close<f&&f<sl?2:1,why:`US30: آخر إغلاق ${num(last.close,0)} · متوسط 20 يوماً ${num(f,0)} · متوسط 50 يوماً ${num(sl,0)}`};
+   if(un&&last.date===prevWeekday(today())) out.iLvl={k:un.price>last.high?0:un.price<last.low?2:1,why:`US30 ${num(un.price,0)} · أعلى أمس ${num(last.high,0)} · أدنى أمس ${num(last.low,0)}`};
   }
   if(D.cal&&Array.isArray(D.cal.events)){
    const t=today(), ev=D.cal.events.filter(e=>dayOf(e.at)===t&&e.currency==='USD'&&e.impact==='HIGH');
@@ -205,9 +227,18 @@ function installTradingDesk(){
   .td-notes textarea{width:100%;min-height:90px;background:var(--ink);border:1px solid var(--faint);border-radius:var(--r1);padding:10px;font-family:var(--num);font-size:13px;direction:ltr;text-align:left;resize:vertical}
   .td-check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--faint);cursor:pointer}.td-check:first-child{border-top:0}.td-check input{margin-top:6px;accent-color:var(--teal)}
   .td-plan p{margin:0 0 8px}
-  .td-lv{margin-bottom:16px;border-color:rgba(245,185,66,.35)}
+  .td-lv-wrap{display:grid;gap:16px;margin-bottom:6px}
+  .td-lv{border-color:rgba(245,185,66,.35)}
+  .td-disclaimer{margin:0 0 16px;font-size:12px}
+  .td-ai{border-radius:var(--r2);padding:12px 14px;margin-bottom:12px;border:1px solid var(--faint)}
+  .td-ai.bear{background:rgba(255,92,122,.08);border-color:rgba(255,92,122,.4)}.td-ai.bull{background:rgba(0,212,167,.08);border-color:rgba(0,212,167,.4)}.td-ai.wait{background:rgba(245,185,66,.08);border-color:rgba(245,185,66,.4)}
+  .td-ai-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}.td-ai-k{font-size:12px;color:var(--muted);letter-spacing:.02em}
+  .td-ai-v{font-size:19px}.td-ai.bear .td-ai-v{color:var(--sell)}.td-ai.bull .td-ai-v{color:var(--teal)}.td-ai.wait .td-ai-v{color:var(--pend)}
+  .td-ai-c{font-size:12.5px;color:var(--muted);margin-inline-start:auto}
+  .td-ai-why{margin:4px 0 6px;font-size:13px;color:var(--muted)}
+  .td-ai ul{margin:0;padding-inline-start:18px;display:grid;gap:3px;font-size:14px}
   .td-lv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px}.td-lv-head h2{margin:0 0 2px}
-  .td-lv-now{display:grid;justify-items:end;gap:2px}.td-lv-now b{font-size:28px;line-height:1.1}
+  .td-lv-now{display:grid;justify-items:end;gap:2px}.td-lv-now>b{font-size:28px;line-height:1.1}
   .td-lv-sum{margin:0 0 12px;font-size:15px;line-height:1.8;background:rgba(229,231,235,.04);border-radius:var(--r1);padding:10px 12px}
   .td-lv-ladder{list-style:none;margin:0;padding:0;display:grid;gap:4px}
   .td-lv-row{display:grid;grid-template-columns:78px 110px 62px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border-radius:var(--r1);border-inline-start:3px solid transparent;font-size:13.5px}
@@ -234,27 +265,57 @@ function installTradingDesk(){
  const arDay=d=>new Date(d+'T12:00:00Z').toLocaleDateString('ar',{day:'numeric',month:'long',timeZone:'UTC'});
  const strength=w=>w>=6?[4,'قوي جداً']:w>=4?[3,'قوي']:w>=2.5?[2,'متوسط']:[1,'ضعيف'];
  const zp=z=>z.hi-z.lo<0.5?num(z.mid,0):`${num(z.lo,0)}–${num(z.hi,0)}`;
- function levelsHtml(){
-  const V=goldLevels();
-  if(!V) return `<div class="td-lv-head"><h2>مستويات الذهب اليوم</h2></div><p class="hint" style="margin:0">${D.loaded?'لا تتوفر بيانات يومية حديثة للذهب بعد. تتحدث تلقائياً مع أول تشغيل لتحديث الأسعار.':'جارٍ تحميل المستويات…'}</p>`;
-  const {price,res,sup,inside,atr,pdc,gb}=V, chg=price-pdc;
+ /* Rules-based session recommendation: daily trend + checklist bias + nearest zones + event risk. Educational, not advice. */
+ function advice(inst,V){
+  const sc=score(resolve(),inst.ix), bias=sc.n?(sc.v>=.15?1:sc.v<=-.15?-1:0):0, trend=V.trend;
+  const {price,res:R,sup:Sp,atr}=V, r1=R[0],r2=R[1],s1=Sp[0],s2=Sp[1], buf=atr*.25, f=x=>num(x,0), u=inst.u;
+  const dir=(trend<0&&bias<=0)||(trend===0&&bias<0)?-1:(trend>0&&bias>=0)||(trend===0&&bias>0)?1:0;
+  const tTxt=trend>0?'صاعد':trend<0?'هابط':'عرضي', bTxt=!sc.n?'غير محددة':bias>0?'داعمة للصعود':bias<0?'ضاغطة للهبوط':'محايدة';
+  let conf=dir?(Math.abs(trend)+Math.abs(bias)>=2?'عالية':'متوسطة'):'منخفضة';
+  if(!V.gb.fresh&&conf==='عالية') conf='متوسطة';
+  const L=[]; let verdict, tone;
+  if(dir<0){ verdict='الاتجاه هابط · تجنّب الشراء'; tone='bear';
+   if(r1) L.push(`البيع عند الارتداد إلى <b class="num">${zp(r1)}</b> مع وقف فوق <b class="num">${f(r1.hi+buf)}</b> (مخاطرة نحو <b class="num">${f(r1.hi+buf-r1.lo)}${u}</b> من أدنى المنطقة).`);
+   if(s1) L.push(`الهدف الأول <b class="num">${zp(s1)}</b>${s2?`، ثم <b class="num">${zp(s2)}</b>`:''}.`);
+   if(s1&&price-s1.hi<atr*.3) L.push(`السعر قريب من دعم <b class="num">${zp(s1)}</b>: لا تبع هنا. انتظر ارتداداً للمقاومة أو إغلاق ساعة تحت <b class="num">${f(s1.lo)}</b>.`);
+   L.push(`يتغير الرأي بإغلاق يومي فوق <b class="num">${f((r2||r1||{hi:price+atr}).hi)}</b>.`);
+  } else if(dir>0){ verdict='الاتجاه صاعد · تجنّب البيع'; tone='bull';
+   if(s1) L.push(`الشراء عند التراجع إلى <b class="num">${zp(s1)}</b> مع وقف تحت <b class="num">${f(s1.lo-buf)}</b> (مخاطرة نحو <b class="num">${f(s1.hi-(s1.lo-buf))}${u}</b> من أعلى المنطقة).`);
+   if(r1) L.push(`الهدف الأول <b class="num">${zp(r1)}</b>${r2?`، ثم <b class="num">${zp(r2)}</b>`:''}.`);
+   if(r1&&r1.lo-price<atr*.3) L.push(`السعر قريب من مقاومة <b class="num">${zp(r1)}</b>: لا تشترِ هنا. انتظر تراجعاً للدعم أو إغلاق ساعة فوق <b class="num">${f(r1.hi)}</b>.`);
+   L.push(`يتغير الرأي بإغلاق يومي تحت <b class="num">${f((s2||s1||{lo:price-atr}).lo)}</b>.`);
+  } else { verdict='لا اتجاه واضح · انتظر الاختراق'; tone='wait';
+   if(r1) L.push(`شراء فقط بعد إغلاق ساعة فوق <b class="num">${f(r1.hi)}</b>${r2?`، والهدف <b class="num">${zp(r2)}</b>`:''}.`);
+   if(s1) L.push(`بيع فقط بعد إغلاق ساعة تحت <b class="num">${f(s1.lo)}</b>${s2?`، والهدف <b class="num">${zp(s2)}</b>`:''}.`);
+   L.push('بين المستويين السوق متذبذب: أحجام صغيرة أو بلا صفقات.');
+  }
+  const ev=((D.cal&&D.cal.events)||[]).filter(e=>e.impact==='HIGH'&&e.currency==='USD'&&Date.parse(e.at)>Date.now()&&Date.parse(e.at)-Date.now()<36*36e5);
+  if(ev.length) L.push(`<span style="color:var(--pend)">تنبيه:</span> ${esc(ev.slice(0,2).map(e=>e.title.ar+' '+(dayOf(e.at)===today()?'اليوم':'غداً')+' '+hm(e.at)).join(' · '))}. خفّف الحجم وتجنّب الدخول قبل الخبر بـ15 دقيقة.`);
+  return {verdict,tone,conf,why:`الاتجاه اليومي ${tTxt} · عوامل التشيك ليست ${bTxt}`,lines:L};
+ }
+ function levelsHtml(inst){
+  const V=levelsFor(inst);
+  if(!V) return `<div class="td-lv-head"><h2>${inst.title}</h2></div><p class="hint" style="margin:0">${D.loaded?'لا تتوفر بيانات يومية حديثة بعد. تتحدث تلقائياً مع تشغيل تحديث الأسعار التالي.':'جارٍ تحميل المستويات…'}</p>`;
+  const {price,res,sup,inside,atr,pdc,gb}=V, chg=price-pdc, u=inst.u, ddp=inst.pdp?1:0;
   const row=(z,kind,i)=>{ const [n,lbl]=strength(z.w), d=kind==='r'?z.lo-price:price-z.hi, pct=d/price*100;
-   return `<li class="td-lv-row ${kind}"><span class="td-lv-tag">${kind==='r'?'مقاومة':'دعم'} ${i+1}</span><b class="num td-lv-p">${zp(z)}</b><span class="td-lv-str" title="${lbl}" aria-label="قوة المستوى: ${lbl}">${'●'.repeat(n)}${'○'.repeat(4-n)}</span><span class="td-lv-why">${iso(esc(z.labels.slice(0,4).join(' · ')))}</span><span class="num td-lv-d">${kind==='r'?'+':'−'}${num(d,1)}$ · ${pct.toFixed(2)}%</span></li>`; };
+   return `<li class="td-lv-row ${kind}"><span class="td-lv-tag">${kind==='r'?'مقاومة':'دعم'} ${i+1}</span><b class="num td-lv-p">${zp(z)}</b><span class="td-lv-str" title="${lbl}" aria-label="قوة المستوى: ${lbl}">${'●'.repeat(n)}${'○'.repeat(4-n)}</span><span class="td-lv-why">${iso(esc(z.labels.slice(0,4).join(' · ')))}</span><span class="td-lv-d"><span class="num">${kind==='r'?'+':'−'}${num(d,ddp)}</span>${u} · <span class="num">${pct.toFixed(2)}%</span></span></li>`; };
   const r1=res[0], r2=res[1], s1=sup[0], s2=sup[1];
-  let sum=`السعر <b class="num">${num(price,2)}</b> ${s1&&r1?`بين دعم <b class="num">${zp(s1)}</b> ومقاومة <b class="num">${zp(r1)}</b>.`:''}`;
+  let sum=`السعر <b class="num">${num(price,inst.pdp)}</b> ${s1&&r1?`بين دعم <b class="num">${zp(s1)}</b> ومقاومة <b class="num">${zp(r1)}</b>.`:''}`;
   if(inside) sum+=` السعر الآن داخل منطقة <b class="num">${zp(inside)}</b> (${iso(esc(inside.labels.slice(0,2).join('، ')))}).`;
   if(r1) sum+=` الإغلاق فوق <b class="num">${num(r1.hi,0)}</b> يفتح الطريق إلى <b class="num">${r2?zp(r2):'—'}</b>`;
   if(s1) sum+=`${r1?'، و':' '}الكسر تحت <b class="num">${num(s1.lo,0)}</b> يفتح <b class="num">${s2?zp(s2):'—'}</b>.`;
-  if(r1&&s1){ const dr=r1.lo-price, ds=price-s1.hi; sum+=` الأقرب الآن: ${dr<ds?'المقاومة':'الدعم'} على بعد <b class="num">${num(Math.min(dr,ds),1)}$</b>.`; }
-  return `<div class="td-lv-head"><div><h2>مستويات الذهب اليوم</h2><p class="hint" style="margin:0">دعوم ومقاومات محسوبة تلقائياً وتتحدث يومياً، والسعر يتحدث كل 20 ثانية.</p></div>
-   <div class="td-lv-now"><span class="hint" style="margin:0">XAU/USD الآن</span><b class="num">${num(price,2)}</b><span><span class="num ${chg>=0?'td-up':'td-dn'}">${chg>=0?'+':'−'}${num(Math.abs(chg),2)} (${(chg/pdc*100).toFixed(2)}%)</span> عن إغلاق ${arDay(V.last.date)}</span><span class="hint num" style="margin:0">${esc(V.src)} · ${when(V.at)}</span></div></div>
+  const A=advice(inst,V);
+  return `<div class="td-lv-head"><div><h2>${inst.title}</h2><p class="hint" style="margin:0">دعوم ومقاومات تتحدث يومياً · ${inst.live}</p></div>
+   <div class="td-lv-now"><b class="num">${num(price,inst.pdp)}</b><span><span class="num ${chg>=0?'td-up':'td-dn'}">${chg>=0?'+':'−'}${num(Math.abs(chg),inst.pdp)} (${(chg/pdc*100).toFixed(2)}%)</span> عن إغلاق ${arDay(V.last.date)}</span><span class="hint" style="margin:0">${esc(V.src)} · <span class="num">${when(V.at)}</span></span></div></div>
+  <div class="td-ai ${A.tone}"><div class="td-ai-top"><span class="td-ai-k">توصية الذكاء الاصطناعي</span><b class="td-ai-v">${A.verdict}</b><span class="td-ai-c">الثقة: ${A.conf}</span></div>
+   <p class="td-ai-why">${A.why}</p><ul>${A.lines.map(l=>`<li>${l}</li>`).join('')}</ul></div>
   <p class="td-lv-sum">${sum}</p>
   <ol class="td-lv-ladder">${res.slice().reverse().map((z,i,a)=>row(z,'r',a.length-1-i)).join('')}
-   <li class="td-lv-row now"><span class="td-lv-tag">السعر</span><b class="num td-lv-p">${num(price,2)}</b><span></span><span class="td-lv-why">${inside?'داخل منطقة '+iso(esc(zp(inside))):''}</span><span></span></li>
+   <li class="td-lv-row now"><span class="td-lv-tag">السعر</span><b class="num td-lv-p">${num(price,inst.pdp)}</b><span></span><span class="td-lv-why">${inside?'داخل منطقة '+iso(esc(zp(inside))):''}</span><span></span></li>
    ${sup.map((z,i)=>row(z,'s',i)).join('')}</ol>
-  <p class="hint" style="margin:10px 0 0">متوسط المدى اليومي (ATR 14): <b class="num">${num(atr,0)}$</b> · المدى المعتاد اليوم من آخر إغلاق: <b class="num">${num(pdc-atr,0)}–${num(pdc+atr,0)}</b>. القوة = عدد المستويات المتقاربة ووزنها (أعلى/أدنى أمس والأسبوع، المحاور، القمم والقيعان، المتوسطات، الأرقام النفسية، ومستويات المحللين). المصدر: ${esc(gb.src)}${gb.basis?` · فرق الأساس ${gb.basis>0?'+':'−'}${num(Math.abs(gb.basis),1)}$ (${esc(gb.basisNote||'')})`:''}${gb.fresh?'':' · <span style="color:var(--pend)">البيانات اليومية ليست من أمس</span>'}.</p>`;
+  <p class="hint" style="margin:10px 0 0">متوسط المدى اليومي (ATR 14): <b class="num">${num(atr,0)}</b>${u} · المدى المعتاد اليوم: <b class="num">${num(pdc-atr,0)}–${num(pdc+atr,0)}</b> · المصدر: ${esc(gb.src)}${gb.basis?` · فرق الأساس <span class="num">${gb.basis>0?'+':'−'}${num(Math.abs(gb.basis),1)}</span> (${esc(gb.basisNote||'')})`:''}${gb.fresh?'':' · <span style="color:var(--pend)">البيانات اليومية ليست من أمس</span>'}.</p>`;
  }
- function paintLevels(){ const el=document.getElementById('td-levels'); if(el) el.innerHTML=levelsHtml(); }
+ function paintLevels(){ INSTR.forEach(inst=>{ const el=document.getElementById('td-lv-'+inst.id); if(el) el.innerHTML=levelsHtml(inst); }); }
  function factsHtml(){
   const g=goldNow(), r=research();
   const live=['DXY','US10Y','VIX','BRENT','ESFUT','NQFUT','SPX','NAS100'].map(quote).filter(Boolean).slice(0,6);
@@ -272,7 +333,8 @@ function installTradingDesk(){
   setTimeout(mount,0);
   return `<div class="head"><div><p class="fx-kicker">FOXREX · TRADING DESK</p><h1>تشيك ليست بداية الجلسة</h1><p>الذهب والمؤشرات الأمريكية · ${new Date().toLocaleDateString('ar',{weekday:'long',day:'numeric',month:'long',timeZone:TZ})}</p></div>
    <div class="row"><button class="btn" data-act="td-refresh">${D.loading?'جارٍ التحديث…':'تحديث البيانات'}</button><button class="btn" data-act="td-reset">إلغاء تعديلاتي</button></div></div>
-  <section class="panel td-lv" id="td-levels" aria-live="polite">${levelsHtml()}</section>
+  <div id="td-levels" class="td-lv-wrap">${INSTR.map(inst=>`<section class="panel td-lv" id="td-lv-${inst.id}" aria-live="polite">${levelsHtml(inst)}</section>`).join('')}</div>
+  <p class="hint td-disclaimer">التوصيات آلية وتعليمية، مبنية على الاتجاه اليومي وعوامل التشيك ليست والمستويات. ليست نصيحة استثمارية، وأكّد الدخول من حركة السعر.</p>
   <div class="td-clock" id="td-clock">${clockHtml()}</div>
   <div class="td-gauges grid2">${gauge('gold','الذهب XAU/USD')}${gauge('idx','المؤشرات الأمريكية')}</div>
   <div class="warnbox" id="td-alert" hidden style="margin:0 0 16px"></div>
@@ -293,6 +355,7 @@ function installTradingDesk(){
    <section class="panel td-plan"><h2>المسار المقترح</h2><div id="td-plan"></div></section></div>`;
  };
  function paint(){
+  paintLevels();
   const res=resolve();
   ALL.forEach(it=>{ const r=res[it.id];
    document.querySelectorAll(`[data-act="td-set"][data-id="${it.id}"]`).forEach(b=>b.setAttribute('aria-pressed',String(r.k===+b.dataset.k)));
