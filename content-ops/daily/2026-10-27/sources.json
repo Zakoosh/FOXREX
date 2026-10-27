@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-27",
+  "runId": "run-20261027-foxrex-daily-01",
+  "retrievedAt": "2026-10-27T06:38:49Z",
+  "note": "Official domains (federalreserve.gov, ecb.europa.eu, bea.gov) were not directly fetchable from the run sandbox (proxy 403/DNS). All entries were surfaced via web search results; directlyFetched=false for every source. Re-verify before publishing.",
+  "sources": [
+    {
+      "id": "S1",
+      "name": "Federal Reserve — October 2026 calendar",
+      "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+      "type": "official",
+      "timestamp": "undated page; surfaced by search 2026-10-27",
+      "supports": [
+        "FOMC meets Oct 27–28; press conference on Oct 28"
+      ],
+      "directlyFetched": false
+    },
+    {
+      "id": "S2",
+      "name": "FXStreet — Gold reclaims $4,000 as Oil eases, Fed decision tests recovery",
+      "url": "https://www.fxstreet.com/news/gold-reclaims-4-000-as-oil-eases-fed-decision-tests-recovery-202610261742",
+      "type": "media",
+      "timestamp": "2026-10-26 (URL stamp 17:42)",
+      "supports": [
+        "Spot gold back near/above $4,000 on Oct 26"
+      ],
+      "directlyFetched": false
+    },
+    {
+      "id": "S3",
+      "name": "FXStreet — Gold Price Forecast: XAU/USD trades with caution as Fed's policy takes centre stage",
+      "url": "https://www.fxstreet.com/analysis/gold-price-forecast-xau-usd-trades-with-caution-as-feds-policy-takes-centre-stage-202610270330",
+      "type": "media",
+      "timestamp": "2026-10-27 (URL stamp 03:30)",
+      "supports": [
+        "Gold ~ $4,010–4,020 Oct 26–27 per search summary",
+        "Analyst views mixed"
+      ],
+      "directlyFetched": false
+    },
+    {
+      "id": "S4",
+      "name": "FXStreet — Morning briefing: EUR/USD heads lower ahead of the ECB policy meeting",
+      "url": "https://www.fxstreet.com/analysis/morning-briefing-eur-usd-heads-lower-ahead-of-the-ecb-policy-meeting-202610270403",
+      "type": "media",
+      "timestamp": "2026-10-27 (URL stamp 04:03)",
+      "supports": [
+        "EUR/USD below 1.12; DXY above 102 per search summary"
+      ],
+      "directlyFetched": false
+    },
+    {
+      "id": "S5",
+      "name": "FXStreet — Apart from central banks, US PCE and US and EU GDP fill out a packed week of data",
+      "url": "https://www.fxstreet.com/analysis/gold-and-the-dollar-await-the-feds-meeting-202610261958",
+      "type": "media",
+      "timestamp": "2026-10-26 (URL stamp 19:58)",
+      "supports": [
+        "Week includes Fed, ECB, US GDP/PCE, EU GDP"
+      ],
+      "directlyFetched": false
+    },
+    {
+      "id": "S6",
+      "name": "RoboForex — Fed Meeting October: Four Central Banks in One Week",
+      "url": "https://roboforex.com/blog/analysis/fed-meeting-october-market-week-ahead-october-26-30/",
+      "type": "broker-blog",
+      "timestamp": "2026-10-26",
+      "supports": [
+        "BoC and BoJ also decide this week (BoJ Friday) — broker claim, verify"
+      ],
+      "directlyFetched": false
+    },
+    {
+      "id": "S7",
+      "name": "Admiral Markets — ECB Meeting October 2026",
+      "url": "https://admiralmarkets.com/analytics/traders-blog/ecb-meeting-october-2026",
+      "type": "broker-blog",
+      "timestamp": "undated",
+      "supports": [
+        "ECB decision Oct 29; non-projection meeting"
+      ],
+      "directlyFetched": false
+    },
+    {
+      "id": "S8",
+      "name": "BEA — release schedule",
+      "url": "https://www.bea.gov/news/schedule",
+      "type": "official",
+      "timestamp": "retrieved 2026-10-25T21:39:24Z by prior FOXREX run (content-ops/daily/2026-10-26/package.json)",
+      "supports": [
+        "GDP / income & outlays on Thu Oct 29 (as stated in existing FOXREX package)"
+      ],
+      "directlyFetched": false
+    }
+  ],
+  "unresolvedConflicts": [
+    "Fed funds target range: sources disagree (3.50–3.75%, 3.75–4.00%, 4.00%). Not used in any copy.",
+    "ECB deposit rate: sources disagree (2.00%, 2.50%, 2.65%). Not used in any copy.",
+    "Fed chair name unconfirmed. Not used.",
+    "Rate-hike pricing (~80%+ December Fed hike) is a single-source CME FedWatch paraphrase. Not used as a number in copy."
+  ]
+}
