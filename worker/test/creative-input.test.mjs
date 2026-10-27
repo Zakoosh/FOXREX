@@ -17,7 +17,7 @@ test('plain creative input survives a rerender before blur and invalidates unsub
 });
 
 test('a text field change rerenders only after focus moves, and returns focus to the clicked field', () => {
-  const html = fs.readFileSync(new URL('../../studio/index.html', import.meta.url), 'utf8');
+  const html = fs.readFileSync(new URL('../../admin/index.html', import.meta.url), 'utf8');
   const helper = html.slice(html.indexOf('const fieldKey='), html.indexOf('\n', html.indexOf('function renderAfterBlur(')));
   const field = (attrs) => ({ attrs, getAttribute: k => attrs[k] ?? null, selectionStart: 3, selectionEnd: 3, focus() { doc.activeElement = this; }, setSelectionRange(s, e) { this.sel = [s, e]; } });
   let clicked = field({ 'data-creative': 'tone' }), rerendered = null, timers = [], renders = 0;

@@ -18,7 +18,7 @@ test('event alert boundaries distinguish pre-release countdown, waiting and a ve
 test('quote observations reject missing/future timestamps and invalid values; source dates are preserved',()=>{
  const now=Date.parse('2026-10-26T00:00:00Z'),q={symbol:'XAUUSD',price:3996.9,asOf:'2026-10-25T22:00:12Z'};
  assert.equal(model.validQuote(q,now),true);assert.equal(model.validQuote({...q,price:NaN},now),false);assert.equal(model.validQuote({...q,price:-1},now),false);assert.equal(model.validQuote({...q,asOf:'2026-10-27T00:00:00Z'},now),false);
- const qs=JSON.parse(read('data/quotes.json'));assert.equal(qs.quotes.length,9);
+ const qs=JSON.parse(read('data/quotes.json'));const core=['XAUUSD','XAGUSD','EURUSD','GBPUSD','USDJPY','BTCUSD','SPX','NAS100','US30'];assert.deepEqual(qs.quotes.map(q=>q.symbol).slice(0,9),core);
  for(const q of qs.quotes){assert.equal(model.validQuote(q,Date.now()),true);assert.ok(q.sourceUrl.startsWith('https://'));}
 });
 function packageFor(){

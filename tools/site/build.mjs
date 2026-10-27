@@ -197,7 +197,7 @@ const more = (href, en, ar) => `<a class="fx-link" href="${href}">${t(en, ar)} $
 
 function ticker() {
   return `<section class="fx-ticker" aria-label="${AR() ? 'نظرة على الأسواق' : 'Market overview'}" data-market-ticker>
-  <div class="fx-ticker__state"><span class="fx-status" data-state="off" data-market-state>${t('Market feed not connected', 'بيانات السوق غير متصلة')}</span></div>
+  <div class="fx-ticker__state"><span class="fx-status" data-state="off" data-market-state>${t('Connecting to market data…', 'جارٍ الاتصال ببيانات السوق…')}</span></div>
   <ul class="fx-ticker__list">
     ${MARKETS.map(m => `<li class="fx-ticker__item" data-symbol="${m.sym}"><span class="fx-sym">${m.sym}</span><span><span class="fx-ticker__px" data-px>—</span> <span class="fx-ticker__chg" data-chg></span></span></li>`).join('\n    ')}
   </ul>
@@ -350,7 +350,7 @@ PAGES.push({ id: 'markets', path: 'markets', title: 'Markets', titleAr: 'الأ�
   body: (r, b) => `${pageHero(t('Markets', 'الأسواق'), t('The markets we cover', 'الأسواق التي نغطيها'), t('What each instrument is and what moves it. Live quotes appear only from a connected, verified data feed.', 'ما هي كل أداة، وما الذي يحركها. الأسعار الحية تظهر فقط من مصدر بيانات متصل وموثق.'))}
 ${ticker()}
 <section class="section section--tight"><div class="wrap">
-  <div class="fx-notice fx-notice--info" style="margin-bottom:28px">${I.info}<span>${t('The FOXREX market feed is not connected yet, so no prices are shown. We will never display estimated or delayed prices as live data.', 'مصدر بيانات السوق في FOXREX غير متصل بعد، لذلك لا تظهر أي أسعار. ولن نعرض أبدًا أسعارًا تقديرية أو متأخرة على أنها حية.')}</span></div>
+  <div class="fx-notice fx-notice--info" style="margin-bottom:28px">${I.info}<span>${t('Prices refresh automatically: gold and Bitcoin every 20 seconds from Gold API, other markets from sourced snapshots updated every 15 minutes. Quotes are indicative, not an executable feed; a dimmed price is older than 30 minutes.', 'تتحدث الأسعار تلقائيًا: الذهب والبيتكوين كل 20 ثانية من Gold API، وباقي الأسواق من لقطات موثقة المصدر تُحدَّث كل 15 دقيقة. الأسعار استرشادية وليست للتنفيذ، والسعر الباهت أقدم من 30 دقيقة.')}</span></div>
   <div class="grid grid--3">
   ${MARKETS.map(m => `<article class="fx-card reveal" id="${m.sym.toLowerCase()}"><div class="fx-card__meta"><span class="fx-badge">${tp(m.cls)}</span></div><h3><span class="fx-sym">${m.sym}</span></h3><p style="color:var(--foxrex-text)">${tp(m.name)}</p><p>${tp(m.about)}</p>${m.sym === 'XAUUSD' ? `<div class="fx-card__foot">${more(`${b}gold/`, 'Gold Focus', 'تركيز الذهب')}</div>` : ''}</article>`).join('\n  ')}
   </div>
@@ -536,7 +536,7 @@ const sitemapUrls = PAGES.map(p => {
 }).join('\n');
 const extra = {
   'scripts/public/tr.js': '/* Generated from data/locales/tr.json. */\nwindow.FOXREX_TR=' + JSON.stringify(TR) + ';\n',
-  'robots.txt': `User-agent: *\nAllow: /\nDisallow: /studio/\nDisallow: /foxrex-studio.html\n\nSitemap: ${SITE.origin}/sitemap.xml\n`,
+  'robots.txt': `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /studio/\nDisallow: /foxrex-studio.html\n\nSitemap: ${SITE.origin}/sitemap.xml\n`,
   'sitemap.xml': `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${sitemapUrls}${contentSitemap ? '\n' + contentSitemap : ''}\n</urlset>\n`,
   'site.webmanifest': JSON.stringify({ name: 'FOXREX', short_name: 'FOXREX', description: SITE.description, start_url: '/', display: 'standalone', background_color: '#0B1320', theme_color: '#0B1320', icons: [{ src: '/assets/brand/icon-512.png', sizes: '512x512', type: 'image/png' }, { src: '/assets/brand/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }] }, null, 2) + '\n'
 };

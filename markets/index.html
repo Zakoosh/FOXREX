@@ -71,7 +71,7 @@
 <main id="main">
 <section class="page-hero"><div class="wrap"><span class="fx-kicker">Markets</span><h1>The markets we cover</h1><p>What each instrument is and what moves it. Live quotes appear only from a connected, verified data feed.</p></div></section>
 <section class="fx-ticker" aria-label="Market overview" data-market-ticker>
-  <div class="fx-ticker__state"><span class="fx-status" data-state="off" data-market-state>Market feed not connected</span></div>
+  <div class="fx-ticker__state"><span class="fx-status" data-state="off" data-market-state>Connecting to market data…</span></div>
   <ul class="fx-ticker__list">
     <li class="fx-ticker__item" data-symbol="XAUUSD"><span class="fx-sym">XAUUSD</span><span><span class="fx-ticker__px" data-px>—</span> <span class="fx-ticker__chg" data-chg></span></span></li>
     <li class="fx-ticker__item" data-symbol="EURUSD"><span class="fx-sym">EURUSD</span><span><span class="fx-ticker__px" data-px>—</span> <span class="fx-ticker__chg" data-chg></span></span></li>
@@ -82,7 +82,7 @@
   </ul>
 </section>
 <section class="section section--tight"><div class="wrap">
-  <div class="fx-notice fx-notice--info" style="margin-bottom:28px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>The FOXREX market feed is not connected yet, so no prices are shown. We will never display estimated or delayed prices as live data.</span></div>
+  <div class="fx-notice fx-notice--info" style="margin-bottom:28px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>Prices refresh automatically: gold and Bitcoin every 20 seconds from Gold API, other markets from sourced snapshots updated every 15 minutes. Quotes are indicative, not an executable feed; a dimmed price is older than 30 minutes.</span></div>
   <div class="grid grid--3">
   <article class="fx-card reveal" id="xauusd"><div class="fx-card__meta"><span class="fx-badge">Commodities</span></div><h3><span class="fx-sym">XAUUSD</span></h3><p style="color:var(--foxrex-text)">Gold / US Dollar</p><p>The price of one troy ounce of gold in US dollars. Sensitive to real yields, the dollar, risk sentiment and central-bank demand.</p><div class="fx-card__foot"><a class="fx-link" href="../gold/">Gold Focus <svg class="fx-flip" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></article>
   <article class="fx-card reveal" id="eurusd"><div class="fx-card__meta"><span class="fx-badge">FX majors</span></div><h3><span class="fx-sym">EURUSD</span></h3><p style="color:var(--foxrex-text)">Euro / US Dollar</p><p>The most traded currency pair. Driven by the policy gap between the ECB and the Federal Reserve and by relative growth.</p></article>

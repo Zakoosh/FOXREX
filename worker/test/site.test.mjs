@@ -35,7 +35,7 @@ test('every public page uses the foxrex.co canonical identity and complete socia
 });
 
 test('relative links and assets on every page resolve to real files', () => {
-  const files = [...ALL, '404.html', 'studio/index.html', 'foxrex-studio.html'];
+  const files = [...ALL, '404.html', 'admin/index.html', 'studio/index.html', 'foxrex-studio.html'];
   for (const f of files) {
     const html = read(f), dir = path.dirname(path.join(root, f));
     for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
@@ -69,12 +69,20 @@ test('no fabricated market data ships with the site', async () => {
   for (const e of c.items.filter(e=>e.type==='NEWS' && /\d+(?:\.\d+)?\s*%/.test(e.summary))) assert.ok(e.sources?.some(s=>s.url && s.retrievedAt), 'economic percentage figures require checked provenance');
 });
 
-test('Studio is served from /studio/, legacy URL redirects, and no credentials or fake auth ship in static files', () => {
-  const studio = read('studio/index.html');
-  assert.match(studio, /noindex/);
-  assert.ok(!/data-protected|auth\.js|FoxAuth|login\.html/.test(studio), 'no client-side pseudo-authentication');
-  assert.match(read('foxrex-studio.html'), /location\.replace\("studio\/"/);
-  const shipped = [studio, read('studio/creative-studio.js'), ...ALL.map(read), ...fs.readdirSync(path.join(root, 'scripts/public')).map(f => read('scripts/public/' + f))].join('\n');
+test('Admin is served from /admin/ behind the encrypted gate; old Studio URLs redirect; no credentials ship in static files', () => {
+  const admin = read('admin/index.html'), gateJs = read('admin/gate.js'), gate = JSON.parse(read('admin/gate.json'));
+  assert.match(admin, /noindex/);
+  assert.match(admin, /<div class="app" id="app" hidden>/, 'app stays hidden until unlocked');
+  assert.match(admin, /window\.FOXREX_BOOT=function/, 'Studio boots only after unlock');
+  assert.ok(admin.indexOf('src="gate.js"') < admin.indexOf('src="../studio/creative-studio.js"'), 'gate loads before the app');
+  assert.deepEqual(Object.keys(gate).sort(), ['cipher', 'ct', 'iterations', 'iv', 'kdf', 'salt', 'schemaVersion']);
+  assert.ok(gate.iterations >= 600000 && gate.kdf === 'PBKDF2-SHA256' && gate.cipher === 'AES-256-GCM');
+  assert.ok(!/\b(?:pass(?:word)?|user(?:name)?)\b\s*(?:[!=]==?|:)\s*['"]/i.test(gateJs), 'no credential literal or comparison in the gate');
+  assert.match(gateJs, /crypto\.subtle\.decrypt/, 'gate proves the key by decrypting the verifier');
+  assert.match(read('studio/index.html'), /location\.replace\("\.\.\/admin\/"/);
+  assert.match(read('foxrex-studio.html'), /location\.replace\("admin\/"/);
+  assert.match(read('robots.txt'), /Disallow: \/admin\//);
+  const shipped = [admin, gateJs, read('studio/creative-studio.js'), read('studio/trading-desk.js'), ...ALL.map(read), ...fs.readdirSync(path.join(root, 'scripts/public')).map(f => read('scripts/public/' + f))].join('\n');
   assert.ok(!/Bearer\s+[A-Za-z0-9._-]{12,}/.test(shipped), 'hard-coded bearer token');
   assert.ok(!/-----BEGIN [A-Z ]*PRIVATE KEY-----|sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}/.test(shipped), 'secret-like value');
 });
@@ -128,8 +136,8 @@ test('Arabic typography path: IBM Plex Sans Arabic + Inter self-hosted, AR token
   const ar = read('ar/index.html');
   assert.match(ar, /styles\/fonts\.css/); assert.match(ar, /styles\/ar\.css/);
   assert.match(ar, /preload" href="assets\/fonts\/ibm-plex-sans-arabic-arabic-400-normal\.woff2|preload" href="\.\.\/assets\/fonts\/ibm-plex-sans-arabic-arabic-400-normal\.woff2/);
-  assert.ok(!/fonts\.googleapis/.test(ALL.map(read).join('') + read('studio/index.html')), 'no third-party font dependency');
-  assert.match(read('studio/index.html'), /\.\.\/styles\/fonts\.css[\s\S]*\.\.\/styles\/tokens\.css/, 'Studio shares the typography system');
+  assert.ok(!/fonts\.googleapis/.test(ALL.map(read).join('') + read('admin/index.html')), 'no third-party font dependency');
+  assert.match(read('admin/index.html'), /\.\.\/styles\/fonts\.css[\s\S]*\.\.\/styles\/tokens\.css/, 'Studio shares the typography system');
   assert.ok(fs.existsSync(path.join(root, 'docs/ARABIC-BRAND-TYPOGRAPHY.md')));
 });
 

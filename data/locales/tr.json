@@ -42,8 +42,6 @@
   "Mobile": "Mobil menü",
   "Filter": "Filtrele",
   "Market overview": "Piyasalara genel bakış",
-  "Market feed not connected": "Piyasa veri akışı bağlı değil",
-  "The FOXREX market feed is not connected yet, so no prices are shown. We will never display estimated or delayed prices as live data.": "FOXREX piyasa veri akışı henüz bağlı olmadığı için fiyat gösterilmiyor. Tahmini veya gecikmeli fiyatlar canlı veri olarak sunulmaz.",
   "FOXREX turns market noise into clear, structured intelligence — technical analysis, gold coverage, economic news and trading education, always published with its risk.": "FOXREX, piyasa gündemini anlaşılır bir çerçeveye taşır: teknik analiz, altın, ekonomi haberleri ve işlem eğitimi. Riskler her zaman açıkça belirtilir.",
   "What FOXREX covers": "FOXREX'in odak alanları",
   "From the desk": "Günün içeriği",
@@ -551,5 +549,8 @@
   "Session date only; exact close time unavailable": "Yalnız seans tarihi; kesin kapanış saati mevcut değil",
   "Daily chart: 00:00 marks the session date, not a verified closing-price timestamp.": "Günlük grafik: 00:00 seans tarihini işaretler; doğrulanmış kapanış fiyatı zamanı değildir.",
   "REX Analysis": "REX Analizleri",
-  "Published · Istanbul time": "Yayın zamanı · İstanbul saati"
+  "Published · Istanbul time": "Yayın zamanı · İstanbul saati",
+  "Connecting to market data…": "Piyasa verilerine bağlanılıyor…",
+  "Prices refresh automatically: gold and Bitcoin every 20 seconds from Gold API, other markets from sourced snapshots updated every 15 minutes. Quotes are indicative, not an executable feed; a dimmed price is older than 30 minutes.": "Fiyatlar otomatik güncellenir: altın ve Bitcoin her 20 saniyede Gold API'den, diğer piyasalar her 15 dakikada güncellenen kaynaklı anlık görüntülerden. Fiyatlar gösterge niteliğindedir, işlem akışı değildir; soluk görünen fiyat 30 dakikadan eskidir.",
+  "Market feed unavailable": "Piyasa veri akışı kullanılamıyor"
 }

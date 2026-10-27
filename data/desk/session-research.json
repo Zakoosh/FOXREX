@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-27",
+  "checkedAt": "2026-10-27T09:15:00Z",
+  "note": "Read by the admin session checklist (studio/trading-desk.js). Update once per trading day before the London open. Values: 0 = first option (rising / hawkish / escalation / yes), 1 = middle, 2 = third option. Judgement factors live here. Market factors (DXY, 10Y, VIX, oil, futures, gold trend, calendar) are computed automatically from data/quotes.json, data/market/ai-technical.json and data/calendar.json; the values here are only a fallback when that data is missing or stale.",
+  "values": {
+    "dxy": 0,
+    "y10": 1,
+    "vix": 2,
+    "oil": 2,
+    "gTr": 2,
+    "fed": 0,
+    "real": 1,
+    "geo": 1,
+    "flows": 1,
+    "earn": 1,
+    "spk": 2,
+    "ah": 0
+  },
+  "why": {
+    "dxy": "قرب أعلى أسبوعين؛ مقاومة 102.35–102.50 ودعم 101.50 (احتياطي إلى أن تصل لقطة DXY الحية).",
+    "y10": "حول 5.00% وتراجع أقل من نقطة أساس أمس.",
+    "vix": "18.27 بانخفاض 6% أمس بعد أن تجاوز 20 الأسبوع الماضي.",
+    "oil": "برنت ~115$ وتراجع 1.8% أمس بعد أن كان قرب أعلى 6 أشهر.",
+    "gTr": "أدنى 3 أشهر عند 3,975 يوم الجمعة، وأسوأ أسبوع منذ 4 أشهر.",
+    "fed": "تثبيت الفائدة غداً مسعّر بنحو 90%، واحتمال رفع ديسمبر 76–82% (CME FedWatch). بنك أوف أمريكا يتوقع رفعاً هذا الأسبوع.",
+    "real": "لا توجد قراءة موثقة لعوائد TIPS اليوم؛ العائد الاسمي لعشر سنوات قرب 5.00% بعد قمة فوق 5.3% مطلع أكتوبر.",
+    "geo": "وزير الدفاع السعودي في طهران لمحادثات تهدئة، والسوق يشكك في نجاحها؛ برنت قرب 115$.",
+    "flows": "لا بيانات موثقة عن تدفقات صناديق الذهب أو مشتريات البنوك المركزية في مصادر اليوم.",
+    "earn": "لا نتائج لشركات التكنولوجيا الكبرى اليوم. مايكروسوفت وألفابت بعد إغلاق 28 أكتوبر، وأمازون 29 أكتوبر.",
+    "spk": "فترة الصمت الإعلامي للفيدرالي قبل قرار 28 أكتوبر.",
+    "ah": "فيزا وروبنهود بعد إغلاق اليوم."
+  },
+  "facts": [
+    {
+      "k": "الذهب الفوري",
+      "v": "4,003",
+      "d": "−0.3% · قرب أدنى 3 أشهر"
+    },
+    {
+      "k": "فائدة الفيدرالي",
+      "v": "3.75–4.00%",
+      "d": "القرار 28 أكتوبر 21:00 إسطنبول"
+    },
+    {
+      "k": "احتمال رفع ديسمبر",
+      "v": "76–82%",
+      "d": "التثبيت هذا الأسبوع ~90%"
+    },
+    {
+      "k": "برنت",
+      "v": "~115$",
+      "d": "يتراجع مع محادثات طهران"
+    }
+  ],
+  "brief": [
+    "الذهب يتداول على توقعات الفيدرالي أكثر من الخليج: أسوأ أسبوع منذ 4 أشهر، والدولار قرب أعلى أسبوعين يحدّ من الارتدادات.",
+    "المؤشرات الأمريكية أغلقت مرتفعة في 26 أكتوبر بدعم موجة الذكاء الاصطناعي بعد إعلان اكتتاب Anthropic، وتراجع النفط خفّف ضغط التضخم.",
+    "السؤال يوم 28 أكتوبر هو لغة الرئيس وارش بشأن ديسمبر، وليس قرار هذا الأسبوع.",
+    "سيناريو الذهب: صعود لـ4,110 إذا بقي باب ديسمبر مفتوحاً وجاء PCE ضعيفاً، وهبوط لـ3,890 إذا كُسر 3,975 بإشارة رفع وPCE قوي."
+  ],
+  "levels": {
+    "gold": "R 4,075–4,110 · S 3,975 (3M low) · S 3,940–3,960 · S 3,890 / 3,800",
+    "indices": "SPX 7,677 (+0.7%) · Nasdaq Comp 26,169 (+0.8%) — close 26 Oct"
+  },
+  "sources": [
+    {
+      "name": "FinanceFeeds",
+      "url": "https://financefeeds.com/gold-price-today-4004-tuesday-three-month-low-fomc-day-one-pce-thursday-bull-4110-bear-3890/"
+    },
+    {
+      "name": "Invezz",
+      "url": "https://invezz.com/uk/news/2026/10/27/gold-prices-fall-ahead-of-fed-meet-as-analyst-warns-trouble-below-this-level/"
+    },
+    {
+      "name": "HDFC Sky",
+      "url": "https://hdfcsky.com/news/nasdaq-jumps-0-82percent-as-anthropic-ipo-filing-revives-ai-trade-lifting-us-stocks-october-27-2026"
+    },
+    {
+      "name": "Seoul Economic Daily",
+      "url": "https://en.sedaily.com/international/2026/10/26/us-economists-see-fed-holding-rates-on-the-28th-hiking-in"
+    },
+    {
+      "name": "FX Empire",
+      "url": "https://www.fxempire.com/forecasts/article/u-s-dollar-gains-ground-as-traders-focus-on-middle-east-tensions-analysis-for-eur-usd-gbp-usd-usd-cad-usd-jpy-1640470"
+    },
+    {
+      "name": "Gotrade",
+      "url": "https://www.heygotrade.com/en/news/weekly-economic-outlook-2026-10-26/"
+    }
+  ]
+}

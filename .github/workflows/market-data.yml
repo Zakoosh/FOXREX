@@ -1,0 +1,48 @@
+# Keeps data/quotes.json fresh so the public ticker, the Markets page and the admin
+# session checklist always read recent, sourced snapshots. Only data/quotes.json is committed.
+name: Refresh market data
+
+on:
+  schedule:
+    # Every 15 minutes on weekdays (markets open), hourly at weekends (BTC and futures context).
+    - cron: "7,22,37,52 * * * 1-5"
+    - cron: "17 * * * 0,6"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: market-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Refresh quotes
+        run: python -m tools.market.refresh
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/quotes.json; then
+            echo "No change"; exit 0
+          fi
+          git config user.name "foxrex-market-bot"
+          git config user.email "foxrex-market-bot@users.noreply.github.com"
+          git add data/quotes.json
+          git commit -m "Refresh market quotes"
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" && git push && exit 0
+            sleep 5
+          done
+          exit 1

@@ -3,13 +3,25 @@ Gold API /price observations are provider fetch times, not executed-trade timest
 Yahoo FX timestamps retain their original market observation time. Failed sources keep
 last verified values and never refresh their observation timestamp.
 """
-import json,datetime,urllib.request,urllib.parse,concurrent.futures,math
+import json,datetime,urllib.request,urllib.parse,urllib.error,concurrent.futures,math,time
 from zoneinfo import ZoneInfo
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-def fetch(url):
- req=urllib.request.Request(url,headers={'User-Agent':'FOXREX/1.0 (educational market snapshots)'})
- with urllib.request.urlopen(req,timeout=20) as r:return json.load(r)
+def fetch(url,retries=2):
+ # One polite retry on rate limiting/temporary errors; Yahoo also serves the same API from query2.
+ urls=[url]+([url.replace('://query1.','://query2.')] if '://query1.' in url else [])
+ last=None
+ for attempt in range(retries):
+  for u in urls:
+   try:
+    req=urllib.request.Request(u,headers={'User-Agent':'FOXREX/1.0 (educational market snapshots)'})
+    with urllib.request.urlopen(req,timeout=20) as r:return json.load(r)
+   except urllib.error.HTTPError as e:
+    last=e
+    if e.code not in (429,500,502,503,504):raise
+   except urllib.error.URLError as e:last=e
+  time.sleep(3*(attempt+1))
+ raise last
 def iso(t):return datetime.datetime.fromtimestamp(t,datetime.timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z')
 def checked(q,now):
  assert type(q['price']) in (int,float) and math.isfinite(q['price']) and q['price']>0
@@ -58,14 +70,18 @@ def quote(pair,now):
  url='https://query1.finance.yahoo.com/v8/finance/chart/'+urllib.parse.quote(key,safe='')+'?interval=1d&range=5d'
  result=fetch(url)['chart']['result'][0];j=result['meta']
  assert j['symbol']==key and j['currency']==('JPY' if key=='JPY=X' else 'USD')
- index=key.startswith('^')
- if index:assert j.get('instrumentType')=='INDEX'
- q=checked(dict(symbol=symbol,price=j['regularMarketPrice'],asOf=iso(j['regularMarketTime']),source='Yahoo Finance',sourceUrl=url,timeBasis='market-observation',currency=j['currency'],unit='index points' if index else {'EURUSD':'USD per EUR','GBPUSD':'USD per GBP','USDJPY':'JPY per USD'}[symbol],fetchedAt=iso(datetime.datetime.now(datetime.timezone.utc).timestamp())),now)
+ if key.startswith('^'):assert j.get('instrumentType')=='INDEX'
+ q=checked(dict(symbol=symbol,price=j['regularMarketPrice'],asOf=iso(j['regularMarketTime']),source='Yahoo Finance',sourceUrl=url,timeBasis='market-observation',currency=j['currency'],unit=UNITS[symbol],fetchedAt=iso(datetime.datetime.now(datetime.timezone.utc).timestamp())),now)
  return yahoo_change(q,result)
+
+UNITS={'EURUSD':'USD per EUR','GBPUSD':'USD per GBP','USDJPY':'JPY per USD','SPX':'index points','NAS100':'index points','US30':'index points','DXY':'index points','VIX':'index points','US10Y':'percent yield','WTI':'USD per barrel','BRENT':'USD per barrel','ES':'futures index points','NQ':'futures index points'}
+# Core site quotes first (rendered on the public site), then session-desk context used by the admin checklist.
+PAIRS=[('XAUUSD','XAU'),('XAGUSD','XAG'),('EURUSD','EURUSD=X'),('GBPUSD','GBPUSD=X'),('USDJPY','JPY=X'),('BTCUSD','BTC'),('SPX','^GSPC'),('NAS100','^NDX'),('US30','^DJI'),
+ ('DXY','DX-Y.NYB'),('US10Y','^TNX'),('VIX','^VIX'),('WTI','CL=F'),('BRENT','BZ=F'),('ES','ES=F'),('NQ','NQ=F')]
 
 if __name__=='__main__':
  now=datetime.datetime.now(datetime.timezone.utc);p=ROOT/'data/quotes.json';old=json.loads(p.read_text()) if p.exists() else {'quotes':[]};qs={q['symbol']:q for q in old['quotes']};errors=[]
- pairs=[('XAUUSD','XAU'),('XAGUSD','XAG'),('EURUSD','EURUSD=X'),('GBPUSD','GBPUSD=X'),('USDJPY','JPY=X'),('BTCUSD','BTC'),('SPX','^GSPC'),('NAS100','^NDX'),('US30','^DJI')]
+ pairs=PAIRS
  with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
   future={pool.submit(quote,pair,now):pair[0] for pair in pairs}
   for f in concurrent.futures.as_completed(future):

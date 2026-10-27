@@ -18,6 +18,18 @@ class QuoteIntegrity(unittest.TestCase):
   meta=dict(symbol='JPY=X',currency='USD',regularMarketPrice=157,regularMarketTime=1792969200)
   with patch.object(refresh,'fetch',return_value={'chart':{'result':[{'meta':meta}]}}):
    with self.assertRaises(AssertionError):refresh.quote(('USDJPY','JPY=X'),self.now)
+class SessionDeskSymbols(unittest.TestCase):
+ def test_desk_symbols_have_units_and_keep_core_order(self):
+  self.assertEqual([s for s,_ in refresh.PAIRS[:9]],['XAUUSD','XAGUSD','EURUSD','GBPUSD','USDJPY','BTCUSD','SPX','NAS100','US30'])
+  for s,k in refresh.PAIRS:
+   if k not in ('XAU','XAG','BTC'):self.assertIn(s,refresh.UNITS)
+ def test_dxy_and_yield_quotes_map_without_inversion(self):
+  now=datetime.datetime(2026,10,27,12,tzinfo=datetime.timezone.utc)
+  for sym,key,price in (('DXY','DX-Y.NYB',101.9),('US10Y','^TNX',4.99)):
+   meta=dict(symbol=key,currency='USD',instrumentType='INDEX',regularMarketPrice=price,regularMarketTime=1793095200,regularMarketChangePercent=0.2)
+   with patch.object(refresh,'fetch',return_value={'chart':{'result':[{'meta':meta}]}}):
+    q=refresh.quote((sym,key),now)
+   self.assertEqual((q['symbol'],q['price'],q['dailyChangePct']),(sym,price,0.2))
 class DailyChangeIntegrity(unittest.TestCase):
  def test_provider_session_change_is_used_not_five_day_chart_reference(self):
   q=dict(price=110,sourceUrl='https://example.com')

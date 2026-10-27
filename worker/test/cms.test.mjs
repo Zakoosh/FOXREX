@@ -260,7 +260,7 @@ test('scheduling: future time required, not publishable early, executed only by 
 });
 
 test('no Git credentials or publishing internals ship to the browser', () => {
-  const shipped = ['studio/index.html', 'studio/cms-studio.js', 'studio/cms-model.js', 'scripts/public/content.js'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
+  const shipped = ['admin/index.html', 'studio/cms-studio.js', 'studio/cms-model.js', 'scripts/public/content.js'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n');
   assert.ok(!/ghp_|github_pat_|x-access-token|PUBLISH_REPO_DIR|git push|Authorization: token/i.test(shipped));
   assert.ok(!/api\.github\.com/.test(shipped), 'browser never calls GitHub directly');
 });
