@@ -313,7 +313,7 @@ function installTradingDesk(){
   <ol class="td-lv-ladder">${res.slice().reverse().map((z,i,a)=>row(z,'r',a.length-1-i)).join('')}
    <li class="td-lv-row now"><span class="td-lv-tag">السعر</span><b class="num td-lv-p">${num(price,inst.pdp)}</b><span></span><span class="td-lv-why">${inside?'داخل منطقة '+iso(esc(zp(inside))):''}</span><span></span></li>
    ${sup.map((z,i)=>row(z,'s',i)).join('')}</ol>
-  <p class="hint" style="margin:10px 0 0">متوسط المدى اليومي (ATR 14): <b class="num">${num(atr,0)}</b>${u} · المدى المعتاد اليوم: <b class="num">${num(pdc-atr,0)}–${num(pdc+atr,0)}</b> · المصدر: ${esc(gb.src)}${gb.basis?` · فرق الأساس <span class="num">${gb.basis>0?'+':'−'}${num(Math.abs(gb.basis),1)}</span> (${esc(gb.basisNote||'')})`:''}${gb.fresh?'':' · <span style="color:var(--pend)">البيانات اليومية ليست من أمس</span>'}.</p>`;
+  <p class="hint" style="margin:10px 0 0">متوسط المدى اليومي (ATR 14): <b class="num">${num(atr,0)}</b>${u} · المدى المعتاد اليوم: <b class="num">${num(pdc-atr,0)}–${num(pdc+atr,0)}</b> · المصدر: ${esc(gb.src)}${gb.basis?` · فرق الأساس <span class="num">${gb.basis>0?'+':'−'}${num(Math.abs(gb.basis),1)}</span> (${esc(gb.basisNote||'')})`:''}${gb.fresh?'':' · <span style="color:var(--pend)">البيانات اليومية ليست من أمس</span>'}.${inst.id==='us30'&&!gb.basis?' <span style="color:var(--pend)">قبل قياس فرق الكاش (يُقاس تلقائياً بعد افتتاح نيويورك 16:30) تُعرض المستويات بأسعار العقود YM، وقد يختلف سعر US30 CFD عند وسيطك بعشرات النقاط.</span>':''}</p>`;
  }
  function paintLevels(){ INSTR.forEach(inst=>{ const el=document.getElementById('td-lv-'+inst.id); if(el) el.innerHTML=levelsHtml(inst); }); }
  function factsHtml(){
