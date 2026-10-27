@@ -86,6 +86,8 @@
       "Prices move quickly; re-verify before publishing"
     ]
   },
-  "status": "PENDING_COMMIT_VERIFICATION",
-  "publishing": "none performed"
+  "status": "CONTENT_PLAN_READY",
+  "publishing": "none performed",
+  "verifiedCommit": "f29574147f7a0e93e4ba04fe199907ab341b6469",
+  "verification": "Fresh read of production-manifest.json from origin branch via GitHub API succeeded at commit f2957414 (content files unchanged since)."
 }
