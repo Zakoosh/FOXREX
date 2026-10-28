@@ -1,0 +1,85 @@
+{
+  "runId": "run-20261028-0640Z-fxr",
+  "date": "2026-10-28",
+  "retrievedAt": "2026-10-28T06:45:00Z",
+  "limitations": "Primary sources (federalreserve.gov, ecb.europa.eu) and publisher pages were unreachable (DNS not allowed in session). Figures come from search-result summaries of secondary publishers and are unverified against primary releases. Fed decision outcome NOT known at research time.",
+  "sources": [
+    {
+      "id": "src-fxs-gold-4050",
+      "publisher": "FXStreet",
+      "title": "Gold rises above $4,050 ahead of Fed rate decision",
+      "url": "https://www.fxstreet.com/news/gold-rises-above-4-050-ahead-of-fed-rate-decision-202610272318",
+      "sourceDateHint": "2026-10-27 23:18 (from URL slug)",
+      "tier": "secondary",
+      "fullTextRead": false,
+      "retrievedAt": "2026-10-28T06:45:00Z",
+      "via": "WebSearch result summary; page fetch blocked by session network policy"
+    },
+    {
+      "id": "src-vantage-gold",
+      "publisher": "Vantage Markets",
+      "title": "Gold Rebounds 1% as Brent Eases Toward $114 Before Fed Decision",
+      "url": "https://www.vantagemarkets.com/market-analysis/why-gold-rebounded-oil-eased-before-fed-xauusd-october-28-2026/",
+      "sourceDateHint": "2026-10-28 (from URL)",
+      "tier": "secondary",
+      "fullTextRead": false,
+      "retrievedAt": "2026-10-28T06:45:00Z",
+      "via": "WebSearch result summary; page fetch blocked by session network policy"
+    },
+    {
+      "id": "src-fxs-gold-4060",
+      "publisher": "FXStreet",
+      "title": "Gold reclaims $4,060 as Oil retreats ahead of crucial Fed decision",
+      "url": "https://www.fxstreet.com/news/gold-reclaims-4-060-as-oil-retreats-ahead-of-crucial-fed-decision-202610271740",
+      "sourceDateHint": "2026-10-27 17:40 (from URL slug)",
+      "tier": "secondary",
+      "fullTextRead": false,
+      "retrievedAt": "2026-10-28T06:45:00Z",
+      "via": "WebSearch result summary; page fetch blocked by session network policy"
+    },
+    {
+      "id": "src-fxcom-fomc",
+      "publisher": "FOREX.com",
+      "title": "FOMC Meeting Preview: Is Warsh Even Capable of Delivering a Hawkish Hold?",
+      "url": "https://www.forex.com/en-us/news-and-analysis/fomc-meeting-preview-is-warsh-even-capable-of-delivering-a-hawkish-hold/",
+      "sourceDateHint": "undated in search result",
+      "tier": "secondary",
+      "fullTextRead": false,
+      "retrievedAt": "2026-10-28T06:45:00Z",
+      "via": "WebSearch result summary; page fetch blocked by session network policy"
+    },
+    {
+      "id": "src-fxcom-prefomc",
+      "publisher": "FOREX.com",
+      "title": "Pre-FOMC US Dollar Price Action Setups: EUR/USD, USD/JPY, GBP/USD, USD/CAD",
+      "url": "https://www.forex.com/en-us/news-and-analysis/pre-fomc-us-dollar-price-action-setups-eur-usd-usd-jpy-gbp-usd-usd-cad/",
+      "sourceDateHint": "undated in search result",
+      "tier": "secondary",
+      "fullTextRead": false,
+      "retrievedAt": "2026-10-28T06:45:00Z",
+      "via": "WebSearch result summary; page fetch blocked by session network policy"
+    },
+    {
+      "id": "src-fxs-eurusd",
+      "publisher": "FXStreet",
+      "title": "Morning briefing: EUR/USD weakens ahead of the ECB policy meeting",
+      "url": "https://www.fxstreet.com/analysis/morning-briefing-eur-usd-weakens-ahead-of-the-ecb-policy-meetings-202610280347",
+      "sourceDateHint": "2026-10-28 03:47 (from URL slug)",
+      "tier": "secondary",
+      "fullTextRead": false,
+      "retrievedAt": "2026-10-28T06:45:00Z",
+      "via": "WebSearch result summary; page fetch blocked by session network policy"
+    },
+    {
+      "id": "src-repo-policy-week",
+      "publisher": "FOXREX repository",
+      "title": "content-ops/daily/2026-10-26/package.json (policy-week map)",
+      "url": "repo:content-ops/daily/2026-10-26/package.json",
+      "sourceDateHint": "2026-10-26",
+      "tier": "internal",
+      "fullTextRead": true,
+      "retrievedAt": "2026-10-28T06:45:00Z",
+      "via": "git"
+    }
+  ]
+}
