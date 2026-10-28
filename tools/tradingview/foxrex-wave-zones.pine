@@ -46,6 +46,17 @@ float  tp3Pts  = input.float(10.0, "Custom TP3", minval = 0.1, step = 0.5, group
 float  tp4Pts  = input.float(20.0, "TP4", minval = 0.1, step = 0.5, group = G0, inline = "t2", display = display.none)
 float  slMinC  = input.float(3.0, "Custom stop min", minval = 0.1, step = 0.5, group = G0, inline = "s", display = display.none)
 float  slMaxC  = input.float(10.0, "max", minval = 0.5, step = 0.5, group = G0, inline = "s", display = display.none)
+string GS      = "Stop per timeframe (points, auto profile)"
+float  sl1Mn   = input.float(1.5, "1m  · min", minval = 0.1, step = 0.5, group = GS, inline = "a", display = display.none)
+float  sl1Mx   = input.float(5.0, "max", minval = 0.1, step = 0.5, group = GS, inline = "a", display = display.none)
+float  sl5Mn   = input.float(3.0, "2–5m · min", minval = 0.1, step = 0.5, group = GS, inline = "b", display = display.none)
+float  sl5Mx   = input.float(10.0, "max", minval = 0.1, step = 0.5, group = GS, inline = "b", display = display.none)
+float  sl15Mn  = input.float(4.0, "6–59m · min", minval = 0.1, step = 0.5, group = GS, inline = "c", display = display.none)
+float  sl15Mx  = input.float(10.0, "max", minval = 0.1, step = 0.5, group = GS, inline = "c", display = display.none)
+float  slHMn   = input.float(5.0, "1H–4H · min", minval = 0.1, step = 0.5, group = GS, inline = "d", display = display.none)
+float  slHMx   = input.float(15.0, "max", minval = 0.1, step = 0.5, group = GS, inline = "d", display = display.none)
+float  slDMn   = input.float(10.0, "D / W / M · min", minval = 0.1, step = 0.5, group = GS, inline = "e", display = display.none)
+float  slDMx   = input.float(25.0, "max", minval = 0.1, step = 0.5, group = GS, inline = "e", display = display.none)
 float  lotVal  = input.float(0.0, "Simulation: $ per 1.0 move for 1 lot (0 = auto)", minval = 0.0, step = 1.0, group = G0, tooltip = "Auto: 100 for gold (1 lot = 100 oz), otherwise the symbol's point value. Every trade is simulated with 1 lot and no spread.", display = display.none)
 float  comm    = input.float(6.0, "Simulation: commission per lot ($)", minval = 0.0, step = 0.5, group = G0, display = display.none)
 float  slBuf   = input.float(0.1, "Stop buffer beyond the zone (× ATR)", minval = 0.0, step = 0.05, group = G0, display = display.none)
@@ -213,7 +224,7 @@ pTp(int s, int i) =>
     r
 
 pSlMin(int s) =>
-    profile == "Custom" ? slMinC : s <= 60 ? 1.5 : s <= 300 ? 3.0 : s <= 1800 ? 4.0 : s < 86400 ? 5.0 : 10.0
+    profile == "Custom" ? slMinC : s <= 60 ? sl1Mn : s <= 300 ? sl5Mn : s < 3600 ? sl15Mn : s < 86400 ? slHMn : slDMn
 
 // Maximum zone height by timeframe (points): 1m 2 · 5m 4 · 15m 6 · 1H 8 · 4H 10 · D+ 15.
 pZoneMax(int s) =>
@@ -228,7 +239,7 @@ capZ(float a, float b, int s) =>
     [m + (a - m) * k, m + (b - m) * k]
 
 pSlMax(int s) =>
-    profile == "Custom" ? slMaxC : s <= 60 ? 5.0 : s < 3600 ? 10.0 : s < 86400 ? 15.0 : 25.0
+    profile == "Custom" ? slMaxC : s <= 60 ? sl1Mx : s <= 300 ? sl5Mx : s < 3600 ? sl15Mx : s < 86400 ? slHMx : slDMx
 
 // Stop distance: structure, clamped to the timeframe's range (important = major / daily zone trade).
 clampSl(float d, int s, bool imp) =>
