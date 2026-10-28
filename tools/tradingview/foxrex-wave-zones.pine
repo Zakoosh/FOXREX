@@ -8,9 +8,11 @@
 //                    coloured fill, solid border, "H1 BUY ZONE · MAJOR". A local zone that sits inside a
 //                    major zone of the same side is not drawn twice.
 //   • Daily zones  — today's daily support (buy) / resistance (sell): light band with the name at the right edge.
-// Zones: break of structure → retracement of the impulse leg between 50% and 61.8%. Fib 0% = the first stall
-// after the break when the wave is clean, otherwise the swing before the break. At most two live zones per side
-// per timeframe; finished zones are removed (option to keep them).
+// The strategy (fixed): a wave runs from its start to the first price stall. Its retracement gives the trade —
+// buy after an up wave that made a higher high, sell after a down wave that made a lower low.
+// Zone = 38.2%–61.8% of the wave, entry at the middle (50%) or on a rejection candle inside the zone, stop beyond
+// 78.6% (capped by timeframe). At most two live zones per side per timeframe; finished zones are removed.
+// Trend lines are drawn through the last two swing highs and the last two swing lows.
 // Trades come only from these zones:
 //   • local zone: limit at the middle of the zone or a rejection candle in it, whichever comes first;
 //   • major zone: same rule on the major zone, seen on the chart timeframe;
@@ -49,14 +51,13 @@ float  comm    = input.float(6.0, "Simulation: commission per lot ($)", minval =
 float  slBuf   = input.float(0.1, "Stop buffer beyond the zone (× ATR)", minval = 0.0, step = 0.05, group = G0, display = display.none)
 int    noProg  = input.int(15, "No-progress exit (bars without TP1, 0 = off)", minval = 0, group = G0, tooltip = "1m: 15 minutes · 5m: 75 minutes · 15m: under 4 hours", display = display.none)
 int    maxBars = input.int(60, "Maximum trade life (bars)", minval = 5, group = G0, display = display.none)
-string protect = input.string("Step: entry after TP1, then previous target", "Profit protection", options = ["Step: entry after TP1, then previous target", "Entry after TP1 only", "Off (keep the original stop)"], group = G0, display = display.none)
+string protect = input.string("After TP2: stop to entry, after TP3: to TP1", "Profit protection", options = ["After TP2: stop to entry, after TP3: to TP1", "Step: entry after TP1, then previous target", "Entry after TP1 only", "Off (keep the original stop)"], group = G0, tooltip = "Default leaves room after TP1 so the trade can run: the stop stays at its place until TP2, then moves to the entry; after TP3 it moves to TP1.", display = display.none)
 string acct    = input.string("Highest target reached", "Result points", options = ["Highest target reached", "25% closed at each target"], group = G0, display = display.none)
 
 string G1      = "Structure & local zones"
-int    swLen   = input.int(5, "Swing length (bars each side)", minval = 1, maxval = 50, group = G1, display = display.none)
-bool   useWick = input.bool(false, "Break on wick (off = candle close)", group = G1, display = display.none)
-string anchor  = input.string("First stall after the break", "Leg start (fib 0%)", options = ["First stall after the break", "Swing before the break"], group = G1, display = display.none)
-float  fEntry  = input.float(0.5, "Zone start (retracement)", minval = 0.236, maxval = 0.886, step = 0.01, group = G1, display = display.none)
+int    stL     = input.int(3, "Stall: bars before the turn", minval = 1, maxval = 20, group = G1, display = display.none)
+int    stR     = input.int(2, "Stall: bars without a new high / low", minval = 1, maxval = 10, group = G1, tooltip = "A price stall = a high (low) not exceeded for this many bars. A wave runs from its start to the first stall; a buy wave must make a higher high than the previous stall high (a sell wave a lower low).", display = display.none)
+float  fEntry  = input.float(0.382, "Zone start (retracement)", minval = 0.236, maxval = 0.886, step = 0.01, group = G1, display = display.none)
 float  fZone   = input.float(0.618, "Zone end (retracement)", minval = 0.236, maxval = 0.95, step = 0.01, group = G1, display = display.none)
 float  fInv    = input.float(0.786, "Invalidation (retracement)", minval = 0.5, maxval = 1.0, step = 0.01, group = G1, display = display.none)
 float  minLeg  = input.float(1.5, "Minimum leg size (× ATR)", minval = 0.0, step = 0.1, group = G1, display = display.none)
@@ -64,7 +65,7 @@ int    maxWait = input.int(300, "Zone life (bars after the leg end)", minval = 5
 string trig    = input.string("Middle limit or rejection", "Entry", options = ["Middle limit or rejection", "Limit at zone middle", "Rejection candle"], group = G1, display = display.none)
 int    maxEnt  = input.int(2, "Max entries per zone", minval = 1, maxval = 10, group = G1, display = display.none)
 int    reCool  = input.int(3, "Bars between entries in the same zone", minval = 1, group = G1, display = display.none)
-bool   withTr  = input.bool(true, "Local zones: only with the local structure (last BOS)", group = G1, display = display.none)
+bool   withTr  = input.bool(true, "Only with the latest wave (buy after a higher high, sell after a lower low)", group = G1, display = display.none)
 
 string G6      = "Major timeframe (direction)"
 bool   showMaj = input.bool(true, "Use a major timeframe", group = G6, display = display.none)
@@ -92,10 +93,11 @@ float  spkK    = input.float(2.5, "Abnormal = range above (× ATR)", minval = 1.
 int    spkLook = input.int(3, "Look back (bars)", minval = 1, maxval = 20, group = G5, display = display.none)
 
 string G4      = "Display"
-bool   showOld = input.bool(false, "Keep previous days (always on for D/W/M)", group = G4, display = display.none)
+bool   showOld = input.bool(false, "Keep all previous days (15m and above keep yesterday; D/W/M keep all)", group = G4, display = display.none)
 bool   showFin = input.bool(false, "Keep finished zones (faded)", group = G4, display = display.none)
 bool   showLeg = input.bool(false, "Show the leg (fib 0% → 100%)", group = G4, display = display.none)
-bool   showBos = input.bool(false, "Show BOS lines", group = G4, display = display.none)
+bool   showTl  = input.bool(true, "Trend lines through the last two swing highs / lows", group = G4, display = display.none)
+int    swLen   = input.int(5, "Trend-line swing length (bars each side)", minval = 2, maxval = 50, group = G4, display = display.none)
 int    keepN   = input.int(40, "Finished trade labels kept", minval = 1, maxval = 200, group = G4, display = display.none)
 bool   showTb  = input.bool(true, "Dashboard", group = G4, display = display.none)
 string tbPos   = input.string("Top right", "Dashboard position", options = ["Top right", "Top left", "Bottom right", "Bottom left"], group = G4, display = display.none)
@@ -213,8 +215,9 @@ tpArr(float ep, int dir, int s, bool imp) =>
 protSl(int dir, float en, float sl, int hits, array<float> tps) =>
     float r = sl
     if protect != "Off (keep the original stop)" and hits >= 1
-        float ns = protect == "Step: entry after TP1, then previous target" and hits >= 2 ? tps.get(hits - 2) : en
-        if dir * (ns - r) > 0
+        bool  late = protect == "After TP2: stop to entry, after TP3: to TP1"
+        float ns   = late ? (hits >= 3 ? tps.get(hits - 3) : hits >= 2 ? en : na) : protect == "Step: entry after TP1, then previous target" and hits >= 2 ? tps.get(hits - 2) : en
+        if not na(ns) and dir * (ns - r) > 0
             r := ns
     r
 
@@ -225,45 +228,71 @@ isRej(int dir) =>
 lvl(Zone z, float r) =>
     z.p1 + r * (z.p0 - z.p1)
 
-// Highest high (dir = -1) or lowest low (dir = +1) since bar fromB: the swing that started the move.
-legStart(int dir, int fromB) =>
-    int   n     = na(fromB) ? 50 : math.min(math.max(bar_index - fromB, 1), 450)
-    float best  = dir < 0 ? high : low
-    int   bestB = bar_index
-    for i = 0 to n
-        float v = dir < 0 ? high[i] : low[i]
-        if (dir < 0 and v > best) or (dir > 0 and v < best)
-            best  := v
-            bestB := bar_index - i
-    [best, bestB]
+// Wave legs between price stalls. A stall high = a high not exceeded for sR bars. An up wave runs from the lowest
+// low since the previous stall high to the new stall high, and counts only if it makes a higher high than that
+// previous stall high (a break). Down waves mirror this. Returns the new legs found on this bar and the direction.
+legEngine(int sL, int sR) =>
+    float sh = ta.pivothigh(high, sL, sR)
+    float sl = ta.pivotlow(low, sL, sR)
+    var float lH  = na
+    var int   lHB = na
+    var float lL  = na
+    var int   lLB = na
+    var int   tr  = 0
+    bool  uN  = false
+    float uP0 = na
+    int   uB0 = na
+    float uP1 = na
+    int   uB1 = na
+    int   uT1 = na
+    bool  dN  = false
+    float dP0 = na
+    int   dB0 = na
+    float dP1 = na
+    int   dB1 = na
+    int   dT1 = na
+    if not na(sh)
+        int   hb  = bar_index - sR
+        int   n   = na(lHB) ? 60 : math.min(math.max(hb - lHB, 1), 300)
+        float lo  = low[sR]
+        int   lob = hb
+        for i = sR to sR + n
+            if low[i] < lo
+                lo  := low[i]
+                lob := bar_index - i
+        if na(lH) or sh > lH
+            uN  := true
+            uP0 := lo
+            uB0 := lob
+            uP1 := sh
+            uB1 := hb
+            uT1 := time[sR]
+            tr  := 1
+        lH  := sh
+        lHB := hb
+    if not na(sl)
+        int   lb  = bar_index - sR
+        int   n   = na(lLB) ? 60 : math.min(math.max(lb - lLB, 1), 300)
+        float hi  = high[sR]
+        int   hib = lb
+        for i = sR to sR + n
+            if high[i] > hi
+                hi  := high[i]
+                hib := bar_index - i
+        if na(lL) or sl < lL
+            dN  := true
+            dP0 := hi
+            dB0 := hib
+            dP1 := sl
+            dB1 := lb
+            dT1 := time[sR]
+            tr  := -1
+        lL  := sl
+        lLB := lb
+    [uN, uP0, uB0, uP1, uB1, uT1, dN, dP0, dB0, dP1, dB1, dT1, tr]
 
-newZone(int dir, float p0, int b0, int k) =>
-    Zone.new(dir, p0, b0, dir < 0 ? low : high, bar_index, 0, false, 0, na, k, na, na, na, bar_index, anchor == "Swing before the break" ? 3 : 0, na, na, na, true, time, time)
-
-// Leg update while the zone is forming: first stall after the break → fib 0%, new extremes → fib 100%.
-legUpdate(Zone z) =>
-    if z.state == 0 and z.sSt < 2 and barstate.isconfirmed and bar_index > z.bB
-        bool ext = z.dir > 0 ? high > z.p1 : low < z.p1
-        if z.sSt == 0
-            if not ext
-                z.sSt  := 1
-                z.sHi  := z.p1
-                z.sLo  := z.dir > 0 ? low : high
-                z.sLoB := bar_index
-        else
-            if z.dir > 0 ? low < z.sLo : high > z.sLo
-                z.sLo  := z.dir > 0 ? low : high
-                z.sLoB := bar_index
-            if z.dir > 0 ? close > z.sHi : close < z.sHi
-                if z.dir > 0 ? z.sLo > z.p0 : z.sLo < z.p0
-                    z.p0 := z.sLo
-                    z.b0 := z.sLoB
-                z.sSt := 2
-    if z.state == 0 and bar_index > z.b1 and (z.dir < 0 ? low < z.p1 : high > z.p1)
-        z.p1 := z.dir < 0 ? low : high
-        z.b1 := bar_index
-        z.t1 := time
-    true
+newZone(int dir, float p0, int b0, float p1, int b1, int t1, int k) =>
+    Zone.new(dir, p0, b0, p1, b1, 0, false, 0, na, k, na, na, na, bar_index, 3, na, na, na, true, t1, time)
 
 // Zone touch / invalidation / entry decision on a closed bar.
 // Returns [fire, entry, stop, stop points, stopped on the fill candle].
@@ -310,15 +339,6 @@ zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked, int s) =>
 majorEngine() =>
     int   s  = timeframe.in_seconds()
     float a  = ta.atr(14)
-    float hh = ta.pivothigh(high, swLen, swLen)
-    float ll = ta.pivotlow(low, swLen, swLen)
-    var float hP   = na
-    var int   hB   = na
-    var bool  hU   = true
-    var float lP   = na
-    var int   lB   = na
-    var bool  lU   = true
-    var int   tr   = 0
     var Zone  zS   = na
     var Zone  zBy  = na
     var int   tDir = 0
@@ -328,32 +348,15 @@ majorEngine() =>
     var int   tEB  = na
     var int   tT   = na
     var Zone  tZ   = na
-    var array<float> tTp = array.new<float>(5, 0.0)
-    if not na(hh)
-        hP := hh
-        hB := bar_index - swLen
-        hU := false
-    if not na(ll)
-        lP := ll
-        lB := bar_index - swLen
-        lU := false
-    bool  dn   = barstate.isconfirmed and not lU and not na(lP) and (useWick ? low : close) < lP
-    bool  up   = barstate.isconfirmed and not hU and not na(hP) and (useWick ? high : close) > hP
+    var array<float> tTp = array.new<float>(4, 0.0)
+    [uN, uP0, uB0, uP1, uB1, uT1, dN, dP0, dB0, dP1, dB1, dT1, tr] = legEngine(stL, stR)
     float aP   = nz(a[1], a)
     int   sAgo = ta.barssince((high - low) > spkK * aP)
     bool  sBlk = useSpk and not na(sAgo) and sAgo < spkLook
-    if dn
-        lU := true
-        tr := -1
-        if na(zS) or zS.state != 0
-            [p0, b0] = legStart(-1, hB)
-            zS := newZone(-1, p0, b0, 0)
-    if up
-        hU := true
-        tr := 1
-        if na(zBy) or zBy.state != 0
-            [p0, b0] = legStart(1, lB)
-            zBy := newZone(1, p0, b0, 0)
+    if dN and math.abs(dP0 - dP1) >= minLeg * a
+        zS := newZone(-1, dP0, dB0, dP1, dB1, dT1, 0)
+    if uN and math.abs(uP0 - uP1) >= minLeg * a
+        zBy := newZone(1, uP0, uB0, uP1, uB1, uT1, 0)
     // open major trade → outcome
     if tDir != 0 and barstate.isconfirmed and bar_index > tEB
         if tDir < 0 ? high >= tSl : low <= tSl
@@ -370,7 +373,6 @@ majorEngine() =>
                 tDir     := 0
     // zones → entries
     if not na(zS)
-        legUpdate(zS)
         [f, ep, sl, d, sb] = zoneEval(zS, a, sBlk, tr, tDir != 0, s)
         if f and not sb
             tDir := -1
@@ -385,7 +387,6 @@ majorEngine() =>
             zS.entries := maxEnt
             zS.armed   := false
     if not na(zBy)
-        legUpdate(zBy)
         [f, ep, sl, d, sb] = zoneEval(zBy, a, sBlk, tr, tDir != 0, s)
         if f and not sb
             tDir := 1
@@ -511,26 +512,37 @@ float atr = ta.atr(14)
 float ph  = ta.pivothigh(high, swLen, swLen)
 float pl  = ta.pivotlow(low, swLen, swLen)
 
-var float shP     = na
-var int   shB     = na
-var bool  shUsed  = true
-var float slP     = na
-var int   slB     = na
-var bool  slUsed  = true
-var int   trend   = 0
-var float lastBos = na
+var int trend = 0
+[luN, luP0, luB0, luP1, luB1, luT1, ldN, ldP0, ldB0, ldP1, ldB1, ldT1, ltr] = legEngine(stL, stR)
+trend := ltr
 
+// trend lines through the last two swing highs and the last two swing lows
+var float tlH1 = na
+var int   tlHB1 = na
+var float tlH2 = na
+var int   tlHB2 = na
+var float tlL1 = na
+var int   tlLB1 = na
+var float tlL2 = na
+var int   tlLB2 = na
+var line  tlHi = na
+var line  tlLo = na
 if not na(ph)
-    shP    := ph
-    shB    := bar_index - swLen
-    shUsed := false
+    tlH2  := tlH1
+    tlHB2 := tlHB1
+    tlH1  := ph
+    tlHB1 := bar_index - swLen
+    if showTl and not na(tlH2)
+        line.delete(tlHi)
+        tlHi := line.new(tlHB2, tlH2, tlHB1, tlH1, extend = extend.right, color = color.new(cSell, 35), width = 1)
 if not na(pl)
-    slP    := pl
-    slB    := bar_index - swLen
-    slUsed := false
-
-bool bosDn = barstate.isconfirmed and not slUsed and not na(slP) and (useWick ? low : close) < slP
-bool bosUp = barstate.isconfirmed and not shUsed and not na(shP) and (useWick ? high : close) > shP
+    tlL2  := tlL1
+    tlLB2 := tlLB1
+    tlL1  := pl
+    tlLB1 := bar_index - swLen
+    if showTl and not na(tlL2)
+        line.delete(tlLo)
+        tlLo := line.new(tlLB2, tlL2, tlLB1, tlL1, extend = extend.right, color = color.new(cBuy, 35), width = 1)
 
 float atrPrev  = nz(atr[1], atr)
 int   spkAgo   = ta.barssince((high - low) > spkK * atrPrev)
@@ -538,6 +550,7 @@ bool  spkBlock = useSpk and not na(spkAgo) and spkAgo < spkLook
 
 int  dKey    = year(time_tradingday) * 10000 + month(time_tradingday) * 100 + dayofmonth(time_tradingday)
 bool keepAll = showOld or timeframe.isdwm
+bool keep2   = tfSecs >= 900
 var int dToday = na
 var int dYest  = na
 var array<float> stT = array.new<float>(5, 0.0)
@@ -548,7 +561,6 @@ var array<Zone>  zLive  = array.new<Zone>()
 var array<Zone>  zArch  = array.new<Zone>()
 var array<Trade> tLive  = array.new<Trade>()
 var array<Trade> tArch  = array.new<Trade>()
-var array<line>  bosLn  = array.new<line>()
 
 // today's daily zones (fixed at the first bar of the day) and how many times each was traded per side
 var array<float>  dZLo = array.new<float>()
@@ -573,18 +585,20 @@ if newDay
     dZB  := array.new<int>(a.size(), 0)
     dZS  := array.new<int>(a.size(), 0)
     if not keepAll
-        for z in zArch
-            box.delete(z.bx)
-            line.delete(z.mid)
-            line.delete(z.lg)
-        zArch.clear()
-        for t in tArch
-            label.delete(t.lb)
-            line.delete(t.tl)
-        tArch.clear()
-        for l in bosLn
-            l.delete()
-        bosLn.clear()
+        // intraday: keep today (and yesterday on 15m and above)
+        if zArch.size() > 0
+            for k = zArch.size() - 1 to 0
+                Zone z = zArch.get(k)
+                if not (keep2 and z.dKey == dYest)
+                    box.delete(z.bx)
+                    zArch.remove(k)
+        if tArch.size() > 0
+            for k = tArch.size() - 1 to 0
+                Trade t = tArch.get(k)
+                if not (keep2 and t.dKey == dYest)
+                    label.delete(t.lb)
+                    line.delete(t.tl)
+                    tArch.remove(k)
 
 bump(array<float> a, int i, float v) =>
     a.set(i, a.get(i) + v)
@@ -734,47 +748,23 @@ else if not na(mTid)
     label.delete(mTlb)
     mTid := na
 
-// ───────────────────────────── Local structure → zones (at most two live zones per side)
-addZone(int dir, float p0, int b0) =>
+// ───────────────────────────── Local waves → zones (at most two live zones per side)
+addZone(int dir, float p0, int b0, float p1, int b1, int t1) =>
     int n = 0
     for z in zLive
         if z.dir == dir and z.state <= 1
             n += 1
-    if n >= 2
-        for z in zLive
-            if z.dir == dir and z.state <= 1 and n >= 2
-                z.state := 15
-                n -= 1
-    zLive.push(newZone(dir, p0, b0, dKey))
+    for z in zLive
+        if z.dir == dir and z.state <= 1 and n >= 2
+            z.state := 15
+            n -= 1
+    zLive.push(newZone(dir, p0, b0, p1, b1, t1, dKey))
     true
 
-if bosDn
-    slUsed  := true
-    trend   := -1
-    lastBos := slP
-    if showBos
-        bosLn.push(line.new(slB, slP, bar_index, slP, color = color.new(cSell, 60), style = line.style_dotted))
-    bool forming = false
-    for z in zLive
-        if z.dir < 0 and z.state == 0
-            forming := true
-    if not forming
-        [p0, b0] = legStart(-1, shB)
-        addZone(-1, p0, b0)
-
-if bosUp
-    shUsed  := true
-    trend   := 1
-    lastBos := shP
-    if showBos
-        bosLn.push(line.new(shB, shP, bar_index, shP, color = color.new(cBuy, 60), style = line.style_dotted))
-    bool forming = false
-    for z in zLive
-        if z.dir > 0 and z.state == 0
-            forming := true
-    if not forming
-        [p0, b0] = legStart(1, slB)
-        addZone(1, p0, b0)
+if ldN and math.abs(ldP0 - ldP1) >= minLeg * atr
+    addZone(-1, ldP0, ldB0, ldP1, ldB1, ldT1)
+if luN and math.abs(luP0 - luP1) >= minLeg * atr
+    addZone(1, luP0, luB0, luP1, luB1, luT1)
 
 var string lastTrade    = "—"
 var int    lastTradeDir = 0
@@ -926,7 +916,6 @@ if not busy and tradeDL and not spkBlock and barstate.isconfirmed and dZLo.size(
 // ───────────────────────────── Entries 3 · local zones (drawn here too)
 for z in zLive
     if z.state <= 1
-        legUpdate(z)
         float zA    = lvl(z, fEntry)
         float zB    = lvl(z, fZone)
         float zM    = (zA + zB) / 2
@@ -1012,8 +1001,6 @@ while tArch.size() > keepN
     Trade ot = tArch.shift()
     label.delete(ot.lb)
     line.delete(ot.tl)
-while bosLn.size() > 30
-    line.delete(bosLn.shift())
 
 // ───────────────────────────── Daily zones drawing (last bar; nearest zones per side)
 var array<box>   dlB = array.new<box>()
@@ -1102,7 +1089,7 @@ if barstate.islast and showTb
     table.cell(tb, 1, 5, (na(dR1lo) ? "—" : fmtP((dR1lo + dR1hi) / 2)) + " / " + (na(dS1lo) ? "—" : fmtP((dS1lo + dS1hi) / 2)), text_color = cTxt, text_size = size.small, text_halign = text.align_right)
 
 // ───────────────────────────── Daily scorecard (this timeframe only)
-var table st = table.new(stPos == "Top left" ? position.top_left : stPos == "Top right" ? position.top_right : stPos == "Bottom left" ? position.bottom_left : position.bottom_right, 7, 4, bgcolor = color.new(#0B1320, 10), frame_color = color.new(#A7B6C4, 70), frame_width = 1)
+var table st = table.new(stPos == "Top left" ? position.top_left : stPos == "Top right" ? position.top_right : stPos == "Bottom left" ? position.bottom_left : position.bottom_right, 7, 2, bgcolor = color.new(#0B1320, 10), frame_color = color.new(#A7B6C4, 70), frame_width = 1)
 
 stRow(table t, int r, string name, array<float> a) =>
     float n  = a.get(0)
@@ -1131,5 +1118,4 @@ if barstate.islast and showSt
     table.cell(st, 5, 0, "Net pts", text_color = cH, text_size = size.small)
     table.cell(st, 6, 0, "1 lot $", text_color = cH, text_size = size.small)
     stRow(st, 1, "Today", stT)
-    stRow(st, 2, "Yesterday", stY)
-    stRow(st, 3, "All on chart", stA)
+
