@@ -15,7 +15,8 @@
 // 6b. Daily scorecard: trades, wins (TP1 reached), losses, win rate and net points for today,
 //    yesterday and the whole chart (50% closed at TP1, 50% at TP2 / entry / stop).
 // 6. Each new BOS in the same direction starts the next zone, so zones form a sequence with the trend.
-//    A BOS the other way cancels waiting zones. A close beyond the invalidation level fails the zone.
+//    Zones stay on the chart until price closes beyond the invalidation level (then they fade).
+//    When a trade finishes, its zone is hidden and the label keeps the side, the result and the points.
 // Nothing repaints: swings confirm after the right-side bars, every decision uses closed bars.
 // Educational tool, not investment advice.
 
@@ -34,7 +35,7 @@ float  fEntry  = input.float(0.5, "Zone start (retracement)", minval = 0.236, ma
 float  fZone   = input.float(0.618, "Zone end (retracement)", minval = 0.236, maxval = 0.95, step = 0.01, group = G2)
 float  fInv    = input.float(0.786, "Invalidation (retracement)", minval = 0.5, maxval = 1.0, step = 0.01, group = G2, tooltip = "A candle close beyond this level cancels the zone. 1.0 = the start of the leg")
 float  minLeg  = input.float(1.5, "Minimum leg size (× ATR)", minval = 0.0, step = 0.1, group = G2)
-int    maxWait = input.int(60, "Max bars waiting for the zone", minval = 5, group = G2)
+int    maxWait = input.int(300, "Max bars waiting for the zone", minval = 5, group = G2)
 string trig    = input.string("Rejection candle", "Entry trigger", options = ["Rejection candle", "Touch"], group = G2, tooltip = "Rejection candle: price reaches the zone and the candle closes back in the trend direction without closing beyond the zone end")
 
 string G3      = "Trade"
@@ -56,8 +57,8 @@ int    spkLook = input.int(3, "Look back (bars)", minval = 1, maxval = 20, group
 
 string G4      = "Display"
 bool   showTr  = input.bool(true, "Trade boxes (risk / reward)", group = G4)
-bool   keepBad = input.bool(false, "Keep cancelled / failed zones", group = G4)
-int    keepN   = input.int(8, "Finished trades kept on chart", minval = 1, maxval = 80, group = G4)
+bool   keepBad = input.bool(true, "Keep invalidated zones (faded)", group = G4)
+int    keepN   = input.int(40, "Finished trades / zones kept on chart", minval = 1, maxval = 150, group = G4)
 bool   showTb  = input.bool(true, "Dashboard", group = G4)
 string tbPos   = input.string("Top right", "Dashboard position", options = ["Top right", "Top left", "Bottom right", "Bottom left"], group = G4)
 bool   showSt  = input.bool(true, "Daily scorecard", group = G4)
@@ -176,7 +177,7 @@ var int dYest  = na
 var array<float> stT = array.new<float>(4, 0.0)
 var array<float> stY = array.new<float>(4, 0.0)
 var array<float> stA = array.new<float>(4, 0.0)
-if dKey != dToday
+if na(dToday) or dKey != dToday
     if not na(dToday)
         stY   := stT.copy()
         dYest := dToday
@@ -207,9 +208,6 @@ if bosDn
         label.new(bar_index, slP, "BOS", style = label.style_label_upper_left, color = color.new(color.black, 100), textcolor = color.new(cSell, 20), size = size.tiny)
     bool extending = false
     for s in live
-        if s.state == 0 and s.dir > 0
-            s.state := 13
-            fade(s)
         if s.state == 0 and s.dir < 0
             extending := true
     if not extending
@@ -225,9 +223,6 @@ if bosUp
         label.new(bar_index, shP, "BOS", style = label.style_label_lower_left, color = color.new(color.black, 100), textcolor = color.new(cBuy, 20), size = size.tiny)
     bool extending = false
     for s in live
-        if s.state == 0 and s.dir < 0
-            s.state := 13
-            fade(s)
         if s.state == 0 and s.dir > 0
             extending := true
     if not extending
@@ -323,14 +318,14 @@ for s in live
                     s.state := 12
                     s.net   := -s.risk0
                     score(s.dKey, 2, 1)
-                    res := "  ✗ SL"
+                    res := "✗ SL"
                 else if hitTp1
                     s.tp1Hit := true
                     score(s.dKey, 1, 1)
                     if hitTp2
                         s.state := 10
                         s.net   := 0.5 * math.abs(s.tp1 - s.entry) + 0.5 * math.abs(s.tp2 - s.entry)
-                        res := "  ✓ TP2"
+                        res := "✓ TP2"
                     else
                         s.state := 2
                         if beAfter
@@ -343,23 +338,29 @@ for s in live
                 if hitSl
                     s.state := 11
                     s.net   := 0.5 * math.abs(s.tp1 - s.entry) - 0.5 * math.abs(s.sl - s.entry)
-                    res := s.sl == s.entry ? " · BE" : " · SL"
+                    res := s.sl == s.entry ? "✓ TP1 · BE" : "✓ TP1 · SL"
                 else if hitTp2
                     s.state := 10
                     s.net   := 0.5 * math.abs(s.tp1 - s.entry) + 0.5 * math.abs(s.tp2 - s.entry)
-                    res := " · TP2"
+                    res := "✓ TP2"
             if s.state < 10 and bar_index - s.eB >= maxBars
                 float mtm = s.dir * (close - s.entry)
                 s.net   := s.state == 2 ? 0.5 * math.abs(s.tp1 - s.entry) + 0.5 * mtm : mtm
+                res     := s.state == 2 ? "✓ TP1 · ⌛" : "⌛ closed"
                 s.state := 14
-                res := "  ⌛"
             if s.state >= 10
                 score(s.dKey, 3, s.net)
-                s.lb.set_text(s.lb.get_text() + res)
-                if showTr
-                    s.win.set_right(bar_index)
-                    s.rbox.set_right(bar_index)
-                    s.tpl.set_x2(bar_index)
+                // finished: hide the zone and trade boxes, keep one label with side, result and points
+                box.delete(s.zone)
+                line.delete(s.mid)
+                box.delete(s.win)
+                box.delete(s.rbox)
+                line.delete(s.tpl)
+                bool won = s.net > 0
+                s.lb.set_text((s.dir < 0 ? "SELL " : "BUY ") + res + "  " + (s.net > 0 ? "+" : "") + str.tostring(s.net, "#.##") + " pts")
+                s.lb.set_size(won ? size.small : size.tiny)
+                s.lb.set_color(won ? (s.dir < 0 ? #E0475F : #00A884) : color.new(cGray, 20))
+                s.lb.set_textcolor(won ? color.white : color.new(color.white, 25))
                 lastTrade := (s.dir < 0 ? "SELL " : "BUY ") + fmtP(s.entry) + " → " + (s.net >= 0 ? "+" : "") + str.tostring(s.net, "#.##") + " pts"
 
 // move finished setups out of the live list and keep only the last keepN on the chart
