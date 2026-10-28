@@ -436,13 +436,13 @@ function installTradingDesk(){
   if(!D.loaded&&!D.loading) setTimeout(load,0);
   const r=research(), g=lvStr(r&&r.levels&&r.levels.goldLevels), u=lvStr(r&&r.levels&&r.levels.us30Levels);
   const lines=TV.code?TV.code.split('\n').length:0;
-  return `<div class="head"><div><p class="fx-kicker">FOXREX · TRADINGVIEW</p><h1>مؤشر FOXREX على TradingView</h1><p>نفس مستويات الدعم والمقاومة اليومية، مع تقاطع EMA قابل للتعديل وإشارات سكالبينج، ووحدتي LuxAlgo وسكالب SMA.</p></div>
+  return `<div class="head"><div><p class="fx-kicker">FOXREX · TRADINGVIEW</p><h1>مؤشر FOXREX على TradingView</h1><p>نفس مستويات الدعم والمقاومة اليومية، مع تقاطع EMA قابل للتعديل وإشارات سكالبينج. وحدتا LuxAlgo وسكالب SMA مطفأتان افتراضياً.</p></div>
    <div class="row"><button class="btn pri" data-act="tv-copy"${TV.code?'':' disabled'}>نسخ كود المؤشر</button><a class="btn" href="../tools/tradingview/foxrex-levels-scalper.pine" download>تنزيل الملف</a></div></div>
   ${TV.error?`<div class="warnbox" style="margin:0 0 16px">${esc(TV.error)}</div>`:''}
   <div class="grid2" style="margin-bottom:16px">
    <section class="panel"><h2>طريقة الإضافة</h2><ol style="margin:0;padding-inline-start:20px;display:grid;gap:6px;font-size:14px">
     <li>اضغط «نسخ كود المؤشر».</li><li>في TradingView افتح الشارت، ثم <b>Pine Editor</b> أسفل الشاشة.</li>
-    <li>امسح الكود الموجود والصق الكود، ثم <b>Save</b> باسم FOXREX.</li><li>اضغط <b>Add to chart</b>.</li>
+    <li>اضغط <b>Ctrl+A</b> ثم <b>Delete</b> لتفريغ المحرر تماماً، ثم الصق الكود واحفظه <b>Save</b> باسم FOXREX.</li><li>اضغط <b>Add to chart</b>.</li><li>إذا ظهرت الخطوط بعيدة عن الشموع: كليك يمين على اسم المؤشر ← <b>Pin to scale</b> ← <b>Pin to right scale</b> (نفس مقياس السعر).</li>
     <li>من إعدادات المؤشر (⚙) تظهر وتخفي كل وحدة، وتعدّل أطوال EMA والفلاتر.</li>
     <li>للتنبيهات: Alert ← Condition: FOXREX ← اختر «Any alert() function call» لتصلك الإشارة مع الوقف والأهداف.</li></ol></section>
    <section class="panel"><h2>مستويات المحللين اليوم</h2><p class="hint">الصقها في إعداد «مستويات المحللين» داخل المؤشر. تتحدث كل صباح مع ملف البحث${r?'':' (لا يوجد بحث لليوم بعد)'}.</p>

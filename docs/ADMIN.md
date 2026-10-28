@@ -57,6 +57,7 @@ Shows each data file with its last update and age, every stored quote with its s
 
 `/admin/#tvscript` shows `tools/tradingview/foxrex-levels-scalper.pine` (Pine Script v6) with a copy button, install steps and today's analyst levels (from the research file) ready to paste into the indicator settings.
 
+- English-only labels; LuxAlgo and SMA-scalp modules are off by default. Levels are drawn time-anchored from the start of today's session; prior-day high/low/pivot are plotted through history on intraday charts.
 - Modules, each can be shown or hidden in the indicator settings: daily S/R zones (same engine as the desk), adjustable MA cross (EMA/SMA/WMA/HMA/RMA) with trend EMA, scalping BUY/SELL (cross) and B+/S+ (pullback) signals confirmed on bar close with trend/RSI/higher-timeframe/room/session filters and ATR SL/TP, dashboard with the rules-based recommendation, LuxAlgo S&R Signals MTF (breakouts, tests, retests, rejections, manipulation zones), and SMA scalp B/S with RSI reversal (!).
 - Alerts: `alertcondition` entries for each signal type, plus `alert()` messages with SL/TP (choose "Any alert() function call").
 - Licence: includes code adapted from LuxAlgo (CC BY-NC-SA 4.0) and nicks1008 (MPL 2.0). Non-commercial use with attribution; do not sell or publish it as a closed FOXREX product.
