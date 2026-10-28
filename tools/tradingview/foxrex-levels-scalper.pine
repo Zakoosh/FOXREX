@@ -1,0 +1,727 @@
+// © FOXREX — foxrex.co
+// Includes code adapted from:
+//   • "Support and Resistance Signals MTF [LuxAlgo]" © LuxAlgo — CC BY-NC-SA 4.0 https://creativecommons.org/licenses/by-nc-sa/4.0/
+//   • "CRUDE OIL BUY/SELL" © nicks1008 — Mozilla Public License 2.0 https://mozilla.org/MPL/2.0/
+// Because of the LuxAlgo part, this combined script is for non-commercial use, keeps these attributions,
+// and is shared under CC BY-NC-SA 4.0.
+//
+// FOXREX · Daily Levels + EMA Cross Scalper
+// • Daily support/resistance zones, the same engine as the FOXREX admin desk: previous session
+//   high/low/close, daily pivots (P, R1, R2, S1, S2), previous week high/low, 20-day high/low,
+//   daily swing highs/lows, 20/50-day EMAs, round numbers and optional analyst levels.
+//   Nearby levels merge into one zone; strength (●) = weighted count of levels in the zone.
+// • Adjustable moving-average cross (type, lengths, source) with optional trend EMA.
+// • Scalping BUY/SELL signals on any timeframe, confirmed on bar close (no repaint):
+//   cross or pullback-to-fast-MA entries, filtered by trend EMA, RSI, higher-timeframe cross,
+//   room to the next daily level and an optional session; ATR stop and R-multiple targets.
+// • Optional modules (each can be shown or hidden): LuxAlgo S&R zones with breakout / test /
+//   retest / rejection signals and manipulation zones; SMA scalp signals (B/S) with RSI reversal (!).
+// • Rules-based summary ("AI view"): daily trend + MA cross + higher timeframe → avoid buys,
+//   avoid sells, or wait for a break, with the zones to watch.
+// Educational tool, not investment advice. Confirm with price action and manage risk.
+
+//@version=6
+indicator("FOXREX · Daily Levels + EMA Cross Scalper", shorttitle = "FOXREX", overlay = true, max_boxes_count = 500, max_labels_count = 500, max_lines_count = 500)
+
+// ───────────────────────────── Display
+string GD     = "عرض · Display"
+string lang   = input.string("العربية", "اللغة · Language", options = ["العربية", "English"], group = GD)
+bool   showTb = input.bool(true, "لوحة الملخص · Dashboard", group = GD)
+string tbPos  = input.string("أعلى يمين · Top right", "مكان اللوحة · Dashboard position", options = ["أعلى يمين · Top right", "أعلى يسار · Top left", "أسفل يمين · Bottom right", "أسفل يسار · Bottom left"], group = GD)
+bool   AR     = lang == "العربية"
+
+tx(string en, string ar) =>
+    AR ? ar : en
+
+// ───────────────────────────── Daily levels
+string GL       = "المستويات اليومية · Daily levels"
+bool   showLv   = input.bool(true, "إظهار مناطق الدعم والمقاومة · Show zones", group = GL)
+int    nZones   = input.int(4, "عدد المناطق لكل جهة · Zones per side", minval = 1, maxval = 6, group = GL)
+float  rangeAtr = input.float(4.0, "نطاق البحث (× ATR يومي) · Search range (× daily ATR)", minval = 1.0, step = 0.5, group = GL)
+float  mergeK   = input.float(0.12, "مسافة الدمج (× ATR يومي) · Merge distance (× daily ATR)", minval = 0.02, step = 0.02, group = GL)
+bool   useSwing = input.bool(true, "قمم وقيعان يومية · Daily swing highs/lows", group = GL)
+float  rStep    = input.float(0.0, "خطوة الأرقام النفسية (0 = تلقائي) · Round-number step (0 = auto)", minval = 0.0, group = GL)
+string analyst  = input.string("", "مستويات المحللين (مفصولة بفواصل) · Analyst levels (comma separated)", group = GL)
+int    zoneBack = input.int(40, "عرض المنطقة للخلف (شموع) · Zone width (bars back)", minval = 5, maxval = 400, group = GL)
+color  cRes     = input.color(color.new(#FF5C7A, 82), "مقاومة · Resistance", group = GL, inline = "zc")
+color  cSup     = input.color(color.new(#00D4A7, 82), "دعم · Support", group = GL, inline = "zc")
+
+// ───────────────────────────── MA cross
+string GE       = "تقاطع المتوسطات · MA cross"
+bool   showMa   = input.bool(true, "إظهار المتوسطات · Show MAs", group = GE)
+string maType   = input.string("EMA", "النوع · Type", options = ["EMA", "SMA", "WMA", "HMA", "RMA"], group = GE)
+int    fastLen  = input.int(9, "السريع · Fast length", minval = 1, group = GE)
+int    slowLen  = input.int(21, "البطيء · Slow length", minval = 2, group = GE)
+float  maSrc    = input.source(close, "المصدر · Source", group = GE)
+int    trendLen = input.int(200, "EMA الاتجاه (0 = إيقاف) · Trend EMA (0 = off)", minval = 0, group = GE)
+bool   showFill = input.bool(true, "تلوين بين المتوسطين · Fill between MAs", group = GE)
+
+// ───────────────────────────── Scalping signals
+string GS      = "إشارات السكالبينج · Scalping signals"
+bool   showSig = input.bool(true, "إظهار الإشارات · Show signals", group = GS)
+string sigMode = input.string("Cross + Pullback", "نوع الإشارة · Signal type", options = ["Cross only", "Cross + Pullback"], group = GS)
+bool   useTrnd = input.bool(true, "مع اتجاه EMA الاتجاه فقط · Only with trend EMA", group = GS)
+bool   useRsi  = input.bool(true, "فلتر RSI · RSI filter", group = GS)
+int    rsiLen  = input.int(14, "طول RSI · RSI length", minval = 2, group = GS)
+float  rsiBuyX = input.float(70.0, "الشراء: RSI أقل من · Buy: RSI below", group = GS)
+float  rsiSelX = input.float(30.0, "البيع: RSI أعلى من · Sell: RSI above", group = GS)
+bool   useHtf  = input.bool(true, "فلتر الفريم الأعلى · Higher-timeframe filter", group = GS)
+string htf     = input.timeframe("60", "الفريم الأعلى · Higher timeframe", group = GS)
+bool   useRoom = input.bool(true, "مساحة كافية حتى المستوى اليومي التالي · Room to next daily level", group = GS)
+float  roomK   = input.float(0.8, "أقل مساحة (× ATR) · Min room (× ATR)", minval = 0.0, step = 0.1, group = GS)
+int    coolBar = input.int(5, "شموع بين الإشارات · Bars between signals", minval = 0, group = GS)
+bool   useSess = input.bool(false, "فلتر الجلسة · Session filter", group = GS)
+string sess    = input.session("1000-0100", "الجلسة (توقيت إسطنبول) · Session (Istanbul time)", group = GS)
+int    atrLen  = input.int(14, "طول ATR · ATR length", minval = 1, group = GS)
+float  slK     = input.float(1.2, "الوقف (× ATR) · Stop (× ATR)", minval = 0.1, step = 0.1, group = GS)
+float  tp1R    = input.float(1.0, "الهدف 1 (R) · TP1 (R multiple)", minval = 0.1, step = 0.25, group = GS)
+float  tp2R    = input.float(2.0, "الهدف 2 (R) · TP2 (R multiple)", minval = 0.1, step = 0.25, group = GS)
+bool   showTp  = input.bool(true, "رسم الوقف والأهداف لآخر إشارة · Draw SL/TP of last signal", group = GS)
+
+// ───────────────────────────── Module: S&R Signals MTF (adapted from LuxAlgo, CC BY-NC-SA 4.0)
+string GX    = "وحدة مناطق S&R وإشارات الاختراق (LuxAlgo) · S&R Signals MTF"
+bool   luxOn = input.bool(true, "تفعيل الوحدة · Enable module", group = GX)
+string srTF  = input.string("Chart", "فريم الاكتشاف · Detection timeframe", options = ["Chart", "15 Minutes", "1 Hour", "4 Hours", "1 Day", "1 Week"], group = GX, tooltip = "In ranging markets a higher timeframe or a longer detection length reduces noise")
+int    srLN0 = input.int(15, "طول الاكتشاف · Detection length", minval = 2, group = GX)
+float  srMR  = input.float(2.0, "هامش المنطقة · Zone margin", minval = 0.1, maxval = 10, step = 0.1, group = GX)
+bool   srHST = input.bool(true, "فحص المنطقة السابقة · Check previous zone", group = GX)
+bool   srFBO = input.bool(true, "تجنب الاختراقات الكاذبة · Avoid false breakouts", group = GX)
+bool   mnSH  = input.bool(true, "مناطق التلاعب · Manipulation zones", group = GX)
+float  mnMR  = input.float(1.3, "هامش التلاعب · Manipulation margin", minval = 0.1, maxval = 10, step = 0.1, group = GX)
+string srBS  = input.string("Tiny", "اختراقات · Breakouts", options = ["Auto", "Tiny", "Small", "Normal", "None"], group = GX, inline = "s1")
+string srTS  = input.string("Tiny", "اختبارات · Tests", options = ["Auto", "Tiny", "Small", "Normal", "None"], group = GX, inline = "s1")
+string srRS  = input.string("Tiny", "إعادة اختبار · Retests", options = ["Auto", "Tiny", "Small", "Normal", "None"], group = GX, inline = "s2")
+string srPS  = input.string("Tiny", "رفض السعر · Rejections", options = ["Auto", "Tiny", "Small", "Normal", "None"], group = GX, inline = "s2")
+color  srSLC = input.color(color.new(#089981, 53), "دعم · Support", group = GX, inline = "c1")
+color  srSZC = input.color(color.new(#089981, 83), "", group = GX, inline = "c1")
+color  srRLC = input.color(color.new(#f23645, 53), "مقاومة · Resistance", group = GX, inline = "c2")
+color  srRZC = input.color(color.new(#f23645, 83), "", group = GX, inline = "c2")
+color  mnSZC = input.color(color.new(#2962ff, 73), "تلاعب: دعم · Manip. support", group = GX, inline = "c3")
+color  mnRZC = input.color(color.new(#ff9800, 73), "مقاومة · resistance", group = GX, inline = "c3")
+
+// ───────────────────────────── Module: SMA scalp + RSI reversal (adapted from nicks1008, MPL 2.0)
+string GC     = "وحدة سكالب SMA وانعكاس RSI · SMA scalp + RSI reversal"
+bool   scOn   = input.bool(true, "إشارات B/S · B/S signals", group = GC)
+bool   scRev  = input.bool(true, "إشارات الانعكاس (!) · Reversal signals (!)", group = GC)
+bool   scSma  = input.bool(true, "إظهار خط SMA · Show SMA line", group = GC)
+bool   scBar  = input.bool(false, "تلوين الشموع · Color bars", group = GC)
+bool   scConf = input.bool(true, "التأكيد عند إغلاق الشمعة · Confirm on bar close", group = GC)
+int    scLen  = input.int(70, "طول SMA · SMA length", minval = 2, group = GC)
+int    scRsiL = input.int(14, "طول RSI · RSI length", minval = 2, group = GC)
+int    scHi   = input.int(80, "RSI الأعلى · RSI upper", group = GC)
+int    scLo   = input.int(20, "RSI الأدنى · RSI lower", group = GC)
+
+// ───────────────────────────── Helpers
+ma(float src, int len, string t) =>
+    float vSma = ta.sma(src, len)
+    float vWma = ta.wma(src, len)
+    float vHma = ta.hma(src, len)
+    float vRma = ta.rma(src, len)
+    float vEma = ta.ema(src, len)
+    t == "SMA" ? vSma : t == "WMA" ? vWma : t == "HMA" ? vHma : t == "RMA" ? vRma : vEma
+
+fmtP(float v) =>
+    close >= 1000 ? str.tostring(math.round(v), "#,##0") : str.tostring(v, format.mintick)
+
+rngTxt(float lo, float hi) =>
+    na(lo) ? "—" : hi - lo < syminfo.mintick ? fmtP(hi) : fmtP(lo) + "–" + fmtP(hi)
+
+dots(float w) =>
+    w >= 6 ? "●●●●" : w >= 4 ? "●●●○" : w >= 2.5 ? "●●○○" : "●○○○"
+
+addLv(array<float> lp, array<float> lw, array<string> ln, float p, float w, string n, float px, float lim) =>
+    bool ok = not na(p) and not na(lim) and math.abs(p - px) <= lim
+    if ok
+        lp.push(p)
+        lw.push(w)
+        ln.push(n)
+    ok
+
+drawZone(array<box> zb, array<label> zl, float lo, float hi, float w, string names, string tag, color c, float tol, int back) =>
+    float pad = hi - lo < tol * 0.3 ? tol * 0.25 : 0.0
+    zb.push(box.new(bar_index - back, hi + pad, bar_index + 8, lo - pad, border_color = color.new(c, 45), bgcolor = c, border_width = 1))
+    string rng = hi - lo < tol * 0.05 ? fmtP(hi) : fmtP(lo) + "–" + fmtP(hi)
+    zl.push(label.new(bar_index + 8, (lo + hi) / 2, tag + "  " + rng + "  " + dots(w) + "\n" + names, style = label.style_label_left, color = color.new(color.black, 100), textcolor = color.new(c, 0), size = size.small))
+    true
+
+// ───────────────────────────── Daily & weekly data (previous completed sessions → no repaint)
+dailyPack() =>
+    float ph = ta.pivothigh(high, 2, 2)
+    float pl = ta.pivotlow(low, 2, 2)
+    bool hasPh = not na(ph)
+    bool hasPl = not na(pl)
+    [high[1], low[1], close[1], ta.highest(high, 20)[1], ta.lowest(low, 20)[1], ta.ema(close, 20)[1], ta.ema(close, 50)[1], ta.atr(14)[1], ta.valuewhen(hasPh, ph, 0)[1], ta.valuewhen(hasPh, ph, 1)[1], ta.valuewhen(hasPh, ph, 2)[1], ta.valuewhen(hasPh, ph, 3)[1], ta.valuewhen(hasPl, pl, 0)[1], ta.valuewhen(hasPl, pl, 1)[1], ta.valuewhen(hasPl, pl, 2)[1], ta.valuewhen(hasPl, pl, 3)[1]]
+
+[dH, dL, dC, d20H, d20L, dE20, dE50, dAtr, sh0, sh1, sh2, sh3, sl0, sl1, sl2, sl3] = request.security(syminfo.tickerid, "D", dailyPack(), lookahead = barmerge.lookahead_on)
+[wH, wL] = request.security(syminfo.tickerid, "W", [high[1], low[1]], lookahead = barmerge.lookahead_on)
+
+float pvP  = (dH + dL + dC) / 3
+float pvR1 = 2 * pvP - dL
+float pvS1 = 2 * pvP - dH
+float pvR2 = pvP + (dH - dL)
+float pvS2 = pvP - (dH - dL)
+int   dTrend = dC > dE20 and dE20 > dE50 ? 1 : dC < dE20 and dE20 < dE50 ? -1 : 0
+
+// Nearest key daily level above / below the close (used by the room filter on every bar)
+float nRes = na
+float nSup = na
+for v in array.from(dH, dL, dC, pvR1, pvS1, pvR2, pvS2, wH, wL, d20H, d20L)
+    if not na(v)
+        if v > close and (na(nRes) or v < nRes)
+            nRes := v
+        if v < close and (na(nSup) or v > nSup)
+            nSup := v
+
+// ───────────────────────────── MA cross & signals
+float fMa  = ma(maSrc, fastLen, maType)
+float sMa  = ma(maSrc, slowLen, maType)
+float tEma = trendLen > 0 ? ta.ema(close, trendLen) : na
+float rsi  = ta.rsi(close, rsiLen)
+float atr  = ta.atr(atrLen)
+
+[hF, hS] = request.security(syminfo.tickerid, htf, [ma(maSrc, fastLen, maType)[1], ma(maSrc, slowLen, maType)[1]], lookahead = barmerge.lookahead_on)
+bool htfValid = htf != "" and timeframe.in_seconds(htf) > timeframe.in_seconds(timeframe.period) and not na(hF) and not na(hS)
+int  hTrend   = htfValid ? (hF > hS ? 1 : -1) : 0
+
+bool crossUp = ta.crossover(fMa, sMa)
+bool crossDn = ta.crossunder(fMa, sMa)
+bool pbOn    = sigMode == "Cross + Pullback"
+bool pbUp    = pbOn and fMa > sMa and sMa > sMa[1] and low <= fMa and close > fMa and close > open
+bool pbDn    = pbOn and fMa < sMa and sMa < sMa[1] and high >= fMa and close < fMa and close < open
+
+bool inSess = not useSess or not na(time(timeframe.period, sess, "Europe/Istanbul"))
+var int lastSigBar = na
+var int lastSigDir = 0
+var float lastSigPx = na
+bool cdOk = na(lastSigBar) or bar_index - lastSigBar > coolBar
+
+bool trOkB  = not useTrnd or na(tEma) or close > tEma
+bool trOkS  = not useTrnd or na(tEma) or close < tEma
+bool rsiOkB = not useRsi or (rsi > 50 and rsi < rsiBuyX)
+bool rsiOkS = not useRsi or (rsi < 50 and rsi > rsiSelX)
+bool htfOkB = not useHtf or not htfValid or hF > hS
+bool htfOkS = not useHtf or not htfValid or hF < hS
+bool roomB  = not useRoom or na(nRes) or na(atr) or nRes - close >= roomK * atr
+bool roomS  = not useRoom or na(nSup) or na(atr) or close - nSup >= roomK * atr
+
+bool buySig  = showSig and barstate.isconfirmed and inSess and cdOk and (crossUp or pbUp) and trOkB and rsiOkB and htfOkB and roomB
+bool sellSig = showSig and barstate.isconfirmed and inSess and cdOk and (crossDn or pbDn) and trOkS and rsiOkS and htfOkS and roomS and not buySig
+
+float slDist = slK * atr
+float bSl  = close - slDist
+float bTp1 = close + tp1R * slDist
+float bTp2 = close + tp2R * slDist
+float sSl  = close + slDist
+float sTp1 = close - tp1R * slDist
+float sTp2 = close - tp2R * slDist
+
+var line  eLn  = na
+var line  sLn  = na
+var line  t1Ln = na
+var line  t2Ln = na
+var label sLb  = na
+var label t1Lb = na
+var label t2Lb = na
+
+if buySig or sellSig
+    lastSigBar := bar_index
+    lastSigDir := buySig ? 1 : -1
+    lastSigPx  := close
+    if showTp
+        line.delete(eLn)
+        line.delete(sLn)
+        line.delete(t1Ln)
+        line.delete(t2Ln)
+        label.delete(sLb)
+        label.delete(t1Lb)
+        label.delete(t2Lb)
+        float sl = buySig ? bSl : sSl
+        float t1 = buySig ? bTp1 : sTp1
+        float t2 = buySig ? bTp2 : sTp2
+        eLn  := line.new(bar_index, close, bar_index + 15, close, color = color.new(#E5E7EB, 30), style = line.style_dotted)
+        sLn  := line.new(bar_index, sl, bar_index + 15, sl, color = #FF5C7A, style = line.style_dashed)
+        t1Ln := line.new(bar_index, t1, bar_index + 15, t1, color = #00D4A7, style = line.style_dashed)
+        t2Ln := line.new(bar_index, t2, bar_index + 15, t2, color = #00D4A7, style = line.style_dotted)
+        sLb  := label.new(bar_index + 15, sl, "SL " + fmtP(sl), style = label.style_label_left, color = color.new(color.black, 100), textcolor = #FF5C7A, size = size.tiny)
+        t1Lb := label.new(bar_index + 15, t1, "TP1 " + fmtP(t1), style = label.style_label_left, color = color.new(color.black, 100), textcolor = #00D4A7, size = size.tiny)
+        t2Lb := label.new(bar_index + 15, t2, "TP2 " + fmtP(t2), style = label.style_label_left, color = color.new(color.black, 100), textcolor = #00D4A7, size = size.tiny)
+
+if buySig
+    alert("FOXREX BUY " + syminfo.ticker + " " + timeframe.period + " @ " + fmtP(close) + " | SL " + fmtP(bSl) + " | TP1 " + fmtP(bTp1) + " | TP2 " + fmtP(bTp2), alert.freq_once_per_bar_close)
+if sellSig
+    alert("FOXREX SELL " + syminfo.ticker + " " + timeframe.period + " @ " + fmtP(close) + " | SL " + fmtP(sSl) + " | TP1 " + fmtP(sTp1) + " | TP2 " + fmtP(sTp2), alert.freq_once_per_bar_close)
+
+alertcondition(buySig, "FOXREX Buy", "FOXREX BUY {{ticker}} {{interval}} @ {{close}}")
+alertcondition(sellSig, "FOXREX Sell", "FOXREX SELL {{ticker}} {{interval}} @ {{close}}")
+
+// ───────────────────────────── S&R Signals MTF engine
+type SnR
+    box   bx
+    box   lq
+    line  ln
+    bool  b
+    bool  t
+    bool  r
+    bool  l
+    float m
+
+type PivotPt
+    int   x
+    int   x1
+    float h
+    float h1
+    float l
+    float l1
+    bool  hx
+    bool  lx
+
+int chM  = timeframe.isintraday ? timeframe.multiplier : timeframe.isdaily ? 1440 : timeframe.isweekly ? 10080 : 10080 * 30
+int tfM  = switch srTF
+    "15 Minutes" => 15
+    "1 Hour"     => 60
+    "4 Hours"    => 240
+    "1 Day"      => 1440
+    "1 Week"     => 10080
+    => chM
+int srLN = math.max(2, int(math.round(srLN0 * tfM / float(chM))))
+
+float pHST  = ta.highest(high, srLN)
+float pLST  = ta.lowest(low, srLN)
+float srAtr = ta.atr(17)
+bool  isLLS = math.abs(low - math.min(open, close)) >= 1.618 * srAtr
+bool  isLUS = math.abs(high - math.max(open, close)) >= 1.618 * srAtr
+float vSMA  = ta.sma(nz(volume), 17)
+bool  isHV  = nz(volume) >= 1.618 * vSMA
+bool  isLV  = nz(volume) <= 0.618 * vSMA
+string vST  = isHV ? "\n *High trading activity" : isLV ? "\n *Low trading activity" : "\n *Average trading activity"
+string vST1  = vST[1]
+bool  isLLS1 = isLLS[1]
+bool  isLUS1 = isLUS[1]
+bool  isHV1  = isHV[1]
+float pO1 = open[1]
+float pH1 = high[1]
+float pL1 = low[1]
+float pC1 = close[1]
+float srPh = ta.pivothigh(srLN, srLN)
+float srPl = ta.pivotlow(srLN, srLN)
+
+var PivotPt pp = PivotPt.new()
+var array<SnR> R = array.new<SnR>(1, SnR.new(box(na), box(na), line(na), false, false, false, false, na))
+var array<SnR> S = array.new<SnR>(1, SnR.new(box(na), box(na), line(na), false, false, false, false, na))
+var SnR lR  = SnR.new(box(na), box(na), line(na), false, false, false, false, na)
+var SnR lS  = SnR.new(box(na), box(na), line(na), false, false, false, false, na)
+var SnR lRt = SnR.new(box(na), box(na), line(na), false, false, false, false, na)
+var SnR lSt = SnR.new(box(na), box(na), line(na), false, false, false, false, na)
+
+srSize(string sz) =>
+    switch sz
+        "Tiny"   => size.tiny
+        "Small"  => size.small
+        "Normal" => size.normal
+        => size.auto
+
+srLbl(float y, string txt, color c, string st, string sz, string tip) =>
+    if sz != "None"
+        label.new(bar_index - 1, y, txt, color = c, style = st, textcolor = color.white, size = srSize(sz), tooltip = tip)
+    true
+
+newSnR(box bx, line ln, float m) =>
+    SnR.new(bx, box.new(na, na, na, na, bgcolor = color(na), border_color = color(na)), ln, false, false, false, false, m)
+
+resZone(int x, float h, float zf) =>
+    newSnR(box.new(x, h, bar_index, h * (1 - zf * .17 * srMR), border_color = color(na), bgcolor = srRZC), line.new(x, h, bar_index, h, color = srRLC, width = srMR <= .5 ? 2 : 3), zf)
+
+supZone(int x, float l, float zf) =>
+    newSnR(box.new(x, l * (1 + zf * .17 * srMR), bar_index, l, border_color = color(na), bgcolor = srSZC), line.new(x, l, bar_index, l, color = srSLC, width = srMR <= .5 ? 2 : 3), zf)
+
+flipToSup(SnR z) =>
+    newSnR(box.new(bar_index - 1, z.bx.get_top(), bar_index + 1, z.bx.get_bottom(), border_color = color(na), bgcolor = srSZC), line.new(bar_index - 1, z.bx.get_bottom(), bar_index + 1, z.bx.get_bottom(), color = srSLC, width = srMR <= .5 ? 2 : 3), z.m)
+
+flipToRes(SnR z) =>
+    newSnR(box.new(bar_index - 1, z.bx.get_top(), bar_index + 1, z.bx.get_bottom(), border_color = color(na), bgcolor = srRZC), line.new(bar_index - 1, z.bx.get_top(), bar_index + 1, z.bx.get_top(), color = srRLC, width = srMR <= .5 ? 2 : 3), z.m)
+
+srAlert(string what) =>
+    alert(what + " detected\n" + syminfo.ticker + " price (" + str.tostring(close, format.mintick) + "), timeframe " + timeframe.period, alert.freq_once_per_bar_close)
+    true
+
+// Signals and extensions for one resistance zone. opp = the matching support zone.
+procRes(SnR z, SnR opp, bool main) =>
+    float top = z.bx.get_top()
+    float bot = z.bx.get_bottom()
+    if not z.b and ((srFBO and pC1 > top * (1 + z.m * .17)) or (not srFBO and pC1 > top))
+        z.bx.set_right(bar_index - 1)
+        z.ln.set_x2(bar_index - 1)
+        z.b := true
+        z.r := false
+        srLbl(pL1 * (1 - z.m * .017), "▲\n\nB", color.new(#089981, 33), label.style_label_up, srBS, "Bullish breakout" + vST1)
+        S.unshift(flipToSup(z))
+        if srBS != "None"
+            srAlert("Bullish breakout")
+    else if opp.b and pO1 < top and pH1 > bot and pC1 < bot and not z.r and bar_index - 1 != z.bx.get_left()
+        srLbl(pH1 * (1 + z.m * .017), "R", color.new(#f23645, 33), label.style_label_down, srRS, "Re-test of resistance zone" + vST1)
+        z.r := true
+        z.bx.set_right(bar_index)
+        z.ln.set_x2(bar_index)
+        if srRS != "None"
+            srAlert("Re-test of resistance zone")
+    else if pH1 > bot and pC1 < top and close < top and not z.t and not z.r and not z.b and not opp.b and bar_index - 1 != z.bx.get_left()
+        srLbl(pH1 * (1 + z.m * .017), "T", color.new(#e040fb, 33), label.style_label_down, srTS, "Test of resistance zone" + vST1)
+        z.t := true
+        z.bx.set_right(bar_index)
+        z.ln.set_x2(bar_index)
+        if srTS != "None"
+            srAlert("Test of resistance zone")
+    else if high > bot * (1 - z.m * .17) and not z.b
+        if high > bot
+            z.bx.set_right(bar_index)
+        z.ln.set_x2(bar_index)
+    if main and isLLS1 and isHV1 and srPS != "None"
+        srLbl(pL1 * (1 - z.m * .017), "", color.new(#089981, 33), label.style_label_up, srPS, "Rejection of lower prices" + vST1)
+        srAlert("Rejection of lower prices")
+    if mnSH
+        float mTop = top * (1 + z.m * .17 * mnMR)
+        if high > top and close <= mTop and not z.l and bar_index == z.bx.get_right()
+            if z.lq.get_right() + srLN > bar_index
+                z.lq.set_right(bar_index + 1)
+                z.lq.set_top(math.min(math.max(high, z.lq.get_top()), mTop))
+            else
+                z.lq.set_lefttop(bar_index - 1, math.min(high, mTop))
+                z.lq.set_rightbottom(bar_index + 1, top)
+                z.lq.set_bgcolor(mnRZC)
+            z.l := true
+        else if high > top and close <= mTop and z.l and bar_index == z.bx.get_right()
+            z.lq.set_right(bar_index + 1)
+            z.lq.set_top(math.min(math.max(high, z.lq.get_top()), mTop))
+        else if z.l and (close >= mTop or close < bot)
+            z.l := false
+    true
+
+// Signals and extensions for one support zone. opp = the matching resistance zone.
+procSup(SnR z, SnR opp, bool main) =>
+    float top = z.bx.get_top()
+    float bot = z.bx.get_bottom()
+    if not z.b and ((srFBO and pC1 < bot * (1 - z.m * .17)) or (not srFBO and pC1 < bot))
+        z.bx.set_right(bar_index - 1)
+        z.ln.set_x2(bar_index - 1)
+        z.b := true
+        z.r := false
+        srLbl(pH1 * (1 + z.m * .017), "B\n\n▼", color.new(#f23645, 33), label.style_label_down, srBS, "Bearish breakout" + vST1)
+        R.unshift(flipToRes(z))
+        if srBS != "None"
+            srAlert("Bearish breakout")
+    else if opp.b and pO1 > bot and pL1 < top and pC1 > top and not z.r and bar_index - 1 != z.bx.get_left()
+        srLbl(pL1 * (1 - z.m * .017), "R", color.new(#089981, 33), label.style_label_up, srRS, "Re-test of support zone" + vST1)
+        z.r := true
+        z.bx.set_right(bar_index)
+        z.ln.set_x2(bar_index)
+        if srRS != "None"
+            srAlert("Re-test of support zone")
+    else if pL1 < top and pC1 > bot and close > bot and not z.t and not z.r and not z.b and not opp.b and bar_index - 1 != z.bx.get_left()
+        srLbl(pL1 * (1 - z.m * .017), "T", color.new(#2962ff, 33), label.style_label_up, srTS, "Test of support zone" + vST1)
+        z.t := true
+        z.bx.set_right(bar_index)
+        z.ln.set_x2(bar_index)
+        if srTS != "None"
+            srAlert("Test of support zone")
+    else if low < top * (1 + z.m * .17) and not z.b
+        if low < top
+            z.bx.set_right(bar_index)
+        z.ln.set_x2(bar_index)
+    if main and isLUS1 and isHV1 and srPS != "None"
+        srLbl(pH1 * (1 + z.m * .017), "", color.new(#f23645, 33), label.style_label_down, srPS, "Rejection of higher prices" + vST1)
+        srAlert("Rejection of higher prices")
+    if mnSH
+        float mBot = bot * (1 - z.m * .17 * mnMR)
+        if low < bot and close >= mBot and not z.l and bar_index == z.bx.get_right()
+            if z.lq.get_right() + srLN > bar_index
+                z.lq.set_right(bar_index + 1)
+                z.lq.set_bottom(math.max(math.min(low, z.lq.get_bottom()), mBot))
+            else
+                z.lq.set_lefttop(bar_index - 1, bot)
+                z.lq.set_rightbottom(bar_index + 1, math.max(low, mBot))
+                z.lq.set_bgcolor(mnSZC)
+            z.l := true
+        else if low < bot and close >= mBot and z.l and bar_index == z.bx.get_right()
+            z.lq.set_right(bar_index + 1)
+            z.lq.set_bottom(math.max(math.min(low, z.lq.get_bottom()), mBot))
+        else if z.l and (close <= mBot or close > top)
+            z.l := false
+    true
+
+if luxOn
+    float zf = (pHST - pLST) / pHST
+    if nz(volume) > vSMA * 4.669
+        alert("High trading activity (volume spike) detected\n" + syminfo.ticker + " price (" + str.tostring(close, format.mintick) + "), timeframe " + timeframe.period)
+    // new pivot high → resistance zone
+    if not na(srPh)
+        pp.h1 := pp.h
+        pp.h  := srPh
+        pp.x1 := pp.x
+        pp.x  := bar_index - srLN
+        pp.hx := false
+        if R.size() > 1
+            lR  := R.get(0)
+            lRt := R.get(1)
+            if srPh < lR.bx.get_bottom() * (1 - lR.m * .17 * srMR) or srPh > lR.bx.get_top() * (1 + lR.m * .17 * srMR)
+                if not (pp.x < lR.bx.get_left() and pp.x + srLN > lR.bx.get_left() and close < lR.bx.get_bottom())
+                    if srPh < lRt.bx.get_bottom() * (1 - lRt.m * .17 * srMR) or srPh > lRt.bx.get_top() * (1 + lRt.m * .17 * srMR)
+                        R.unshift(resZone(pp.x, srPh, zf))
+                        lS.t := false
+                    else
+                        lRt.bx.set_right(bar_index)
+                        lRt.ln.set_x2(bar_index)
+            else if lR.bx.get_top() != lS.bx.get_top()
+                lR.bx.set_right(bar_index)
+                lR.ln.set_x2(bar_index)
+        else
+            R.unshift(resZone(pp.x, srPh, zf))
+            lS.t := false
+    if pC1 > pp.h and close > pp.h and not pp.hx
+        pp.hx := true
+    // new pivot low → support zone
+    if not na(srPl)
+        pp.l1 := pp.l
+        pp.l  := srPl
+        pp.x1 := pp.x
+        pp.x  := bar_index - srLN
+        pp.lx := false
+        if S.size() > 2
+            lS  := S.get(0)
+            lSt := S.get(1)
+            if srPl < lS.bx.get_bottom() * (1 - lS.m * .17 * srMR) or srPl > lS.bx.get_top() * (1 + lS.m * .17 * srMR)
+                if not (pp.x < lS.bx.get_left() and pp.x + srLN > lS.bx.get_left() and close > lS.bx.get_top())
+                    if srPl < lSt.bx.get_bottom() * (1 - lSt.m * .17 * srMR) or srPl > lSt.bx.get_top() * (1 + lSt.m * .17 * srMR)
+                        S.unshift(supZone(pp.x, srPl, zf))
+                        lR.t := false
+                    else
+                        lSt.bx.set_right(bar_index)
+                        lSt.ln.set_x2(bar_index)
+            else if lS.bx.get_bottom() != lR.bx.get_bottom()
+                lS.bx.set_right(bar_index)
+                lS.ln.set_x2(bar_index)
+        else
+            S.unshift(supZone(pp.x, srPl, zf))
+            lR.t := false
+    if pC1 < pp.l and close < pp.l and not pp.lx
+        pp.lx := true
+    // signals on the active and previous zones
+    if R.size() > 0
+        lR := R.get(0)
+        procRes(lR, lS, true)
+    if R.size() > 1 and srHST
+        lRt := R.get(1)
+        if lR.bx.get_top() != lRt.bx.get_top()
+            procRes(lRt, lSt, false)
+    if S.size() > 1
+        lS := S.get(0)
+        procSup(lS, lR, true)
+    if S.size() > 2 and srHST
+        lSt := S.get(1)
+        if lS.bx.get_bottom() != lSt.bx.get_bottom()
+            procSup(lSt, lRt, false)
+
+// ───────────────────────────── SMA scalp + RSI reversal engine
+float scRs   = ta.rsi(close, scRsiL)
+float scSmaV = ta.sma(close, scLen)
+bool  scXup  = ta.crossover(close[1], scSmaV)
+bool  scXdn  = ta.crossunder(low[1], scSmaV)
+bool  scRxDn = ta.crossunder(scRs, scHi)
+bool  scRxUp = ta.crossover(scRs, scLo)
+bool  scOk   = not scConf or barstate.isconfirmed
+color scCol  = scRs >= scHi or scRs <= scLo ? color.new(color.yellow, 30) : low > scSmaV ? color.new(color.lime, 30) : high < scSmaV ? color.new(color.red, 30) : color.new(color.yellow, 30)
+bool  scBuy  = scOn and scOk and scXup and close[1] > open[1] and high > high[1] and close > open
+bool  scSell = scOn and scOk and scXdn and close[1] < open[1] and low < low[1] and close < open
+bool  scRevS = scRev and scOk and scRxDn
+bool  scRevB = scRev and scOk and scRxUp and close > open
+
+alertcondition(scBuy, "SMA scalp Buy", "FOXREX SMA scalp BUY {{ticker}} {{interval}} @ {{close}}")
+alertcondition(scSell, "SMA scalp Sell", "FOXREX SMA scalp SELL {{ticker}} {{interval}} @ {{close}}")
+alertcondition(scRevS or scRevB, "RSI reversal", "FOXREX RSI reversal {{ticker}} {{interval}} @ {{close}}")
+
+// ───────────────────────────── Plots
+pF = plot(showMa ? fMa : na, "MA سريع · Fast MA", color = fMa > sMa ? #00D4A7 : #FF5C7A, linewidth = 2)
+pS = plot(showMa ? sMa : na, "MA بطيء · Slow MA", color = #F5B942, linewidth = 1)
+fill(pF, pS, color = showMa and showFill ? (fMa > sMa ? color.new(#00D4A7, 86) : color.new(#FF5C7A, 86)) : na, title = "Fill")
+plot(showMa and trendLen > 0 ? tEma : na, "EMA الاتجاه · Trend EMA", color = color.new(#A7B6C4, 25), linewidth = 1)
+
+plotshape(buySig and crossUp, "BUY · cross", shape.labelup, location.belowbar, #00A884, text = "BUY", textcolor = color.white, size = size.small)
+plotshape(buySig and not crossUp, "BUY · pullback", shape.triangleup, location.belowbar, #00D4A7, text = "B+", textcolor = #00D4A7, size = size.tiny)
+plotshape(sellSig and crossDn, "SELL · cross", shape.labeldown, location.abovebar, #E0475F, text = "SELL", textcolor = color.white, size = size.small)
+plotshape(sellSig and not crossDn, "SELL · pullback", shape.triangledown, location.abovebar, #FF5C7A, text = "S+", textcolor = #FF5C7A, size = size.tiny)
+
+plot(scSma ? scSmaV : na, "SMA سكالب · Scalp SMA", color = scCol, linewidth = 1)
+plotshape(scBuy, "Scalp B", shape.labelup, location.belowbar, color.new(color.aqua, 30), text = "B", textcolor = color.new(color.black, 30), size = size.small)
+plotshape(scSell, "Scalp S", shape.labeldown, location.abovebar, color.new(color.red, 30), text = "S", textcolor = color.new(color.black, 30), size = size.small)
+plotshape(scRevB, "Reversal up (!)", shape.labelup, location.belowbar, color.new(color.yellow, 20), text = "!", textcolor = color.new(color.black, 20), size = size.small)
+plotshape(scRevS, "Reversal down (!)", shape.labeldown, location.abovebar, color.new(color.yellow, 20), text = "!", textcolor = color.new(color.black, 20), size = size.small)
+barcolor(scBar ? (scBuy ? color.green : scSell ? color.new(color.maroon, 30) : scRevS or scRevB ? color.yellow : na) : na)
+
+// ───────────────────────────── Zones (built on the last bar) + dashboard
+var array<box>   zb = array.new<box>()
+var array<label> zl = array.new<label>()
+var table tb = table.new(tbPos == "أعلى يسار · Top left" ? position.top_left : tbPos == "أسفل يمين · Bottom right" ? position.bottom_right : tbPos == "أسفل يسار · Bottom left" ? position.bottom_left : position.top_right, 2, 10, bgcolor = color.new(#0B1320, 8), frame_color = color.new(#F5B942, 60), frame_width = 1, border_width = 0)
+
+float zR1lo = na
+float zR1hi = na
+float zR2lo = na
+float zR2hi = na
+float zS1lo = na
+float zS1hi = na
+float zS2lo = na
+float zS2hi = na
+string zR1n = ""
+string zS1n = ""
+string zIn  = ""
+
+if barstate.islast
+    for b in zb
+        b.delete()
+    zb.clear()
+    for l in zl
+        l.delete()
+    zl.clear()
+    if not na(dAtr) and not na(dH)
+        float px  = close
+        float lim = rangeAtr * dAtr
+        array<float>  lp = array.new<float>()
+        array<float>  lw = array.new<float>()
+        array<string> ln = array.new<string>()
+        addLv(lp, lw, ln, dH, 3.0, tx("PDH", "أعلى أمس"), px, lim)
+        addLv(lp, lw, ln, dL, 3.0, tx("PDL", "أدنى أمس"), px, lim)
+        addLv(lp, lw, ln, dC, 1.0, tx("PDC", "إغلاق أمس"), px, lim)
+        addLv(lp, lw, ln, pvP, 1.5, tx("Pivot", "المحور"), px, lim)
+        addLv(lp, lw, ln, pvR1, 1.5, "R1", px, lim)
+        addLv(lp, lw, ln, pvS1, 1.5, "S1", px, lim)
+        addLv(lp, lw, ln, pvR2, 1.0, "R2", px, lim)
+        addLv(lp, lw, ln, pvS2, 1.0, "S2", px, lim)
+        addLv(lp, lw, ln, wH, 2.5, tx("PWH", "أعلى الأسبوع الماضي"), px, lim)
+        addLv(lp, lw, ln, wL, 2.5, tx("PWL", "أدنى الأسبوع الماضي"), px, lim)
+        addLv(lp, lw, ln, d20H, 2.0, tx("20D high", "أعلى 20 يوماً"), px, lim)
+        addLv(lp, lw, ln, d20L, 2.0, tx("20D low", "أدنى 20 يوماً"), px, lim)
+        addLv(lp, lw, ln, dE20, 1.0, "EMA20D", px, lim)
+        addLv(lp, lw, ln, dE50, 1.0, "EMA50D", px, lim)
+        if useSwing
+            for v in array.from(sh0, sh1, sh2, sh3)
+                addLv(lp, lw, ln, v, 1.5, tx("Swing high", "قمة"), px, lim)
+            for v in array.from(sl0, sl1, sl2, sl3)
+                addLv(lp, lw, ln, v, 1.5, tx("Swing low", "قاع"), px, lim)
+        float step  = rStep > 0 ? rStep : math.pow(10, math.floor(math.log10(px))) / 20
+        float lo1   = math.floor(px / step) * step
+        float step2 = step * 2
+        float lo2   = math.floor(px / step2) * step2
+        addLv(lp, lw, ln, lo1, 0.5, tx("Round", "رقم نفسي"), px, lim)
+        addLv(lp, lw, ln, lo1 + step, 0.5, tx("Round", "رقم نفسي"), px, lim)
+        addLv(lp, lw, ln, lo2, 1.0, tx("Round", "رقم نفسي"), px, lim)
+        addLv(lp, lw, ln, lo2 + step2, 1.0, tx("Round", "رقم نفسي"), px, lim)
+        if str.length(analyst) > 0
+            for s in str.split(analyst, ",")
+                addLv(lp, lw, ln, str.tonumber(str.replace_all(s, " ", "")), 2.5, tx("Analyst", "محلل"), px, lim)
+
+        // merge sorted levels into zones
+        float tol = math.max(dAtr * mergeK, px * 0.0012)
+        array<float>  zLo = array.new<float>()
+        array<float>  zHi = array.new<float>()
+        array<float>  zW  = array.new<float>()
+        array<string> zN  = array.new<string>()
+        if lp.size() > 0
+            array<int> ord = lp.sort_indices(order.ascending)
+            for i in ord
+                float  p = lp.get(i)
+                float  w = lw.get(i)
+                string n = ln.get(i)
+                int    k = zLo.size()
+                if k > 0 and p - zHi.get(k - 1) <= tol
+                    zHi.set(k - 1, p)
+                    zW.set(k - 1, zW.get(k - 1) + w)
+                    if not str.contains(zN.get(k - 1), n)
+                        zN.set(k - 1, zN.get(k - 1) + " · " + n)
+                else
+                    zLo.push(p)
+                    zHi.push(p)
+                    zW.push(w)
+                    zN.push(n)
+
+        int zc = zLo.size()
+        if zc > 0
+            int nR = 0
+            for j = 0 to zc - 1
+                float lo = zLo.get(j)
+                float hi = zHi.get(j)
+                if lo <= px and hi >= px
+                    zIn := hi - lo < tol * 0.05 ? fmtP(hi) : fmtP(lo) + "–" + fmtP(hi)
+                if lo > px and nR < nZones
+                    nR += 1
+                    if nR == 1
+                        zR1lo := lo
+                        zR1hi := hi
+                        zR1n  := zN.get(j)
+                    if nR == 2
+                        zR2lo := lo
+                        zR2hi := hi
+                    if showLv
+                        drawZone(zb, zl, lo, hi, zW.get(j), zN.get(j), "R" + str.tostring(nR), cRes, tol, zoneBack)
+            int nS = 0
+            for j = zc - 1 to 0
+                float lo = zLo.get(j)
+                float hi = zHi.get(j)
+                if hi < px and nS < nZones
+                    nS += 1
+                    if nS == 1
+                        zS1lo := lo
+                        zS1hi := hi
+                        zS1n  := zN.get(j)
+                    if nS == 2
+                        zS2lo := lo
+                        zS2hi := hi
+                    if showLv
+                        drawZone(zb, zl, lo, hi, zW.get(j), zN.get(j), "S" + str.tostring(nS), cSup, tol, zoneBack)
+
+    // ── dashboard
+    if showTb
+        color cTxt = #E5E7EB
+        color cMut = #A7B6C4
+        color cUp  = #00D4A7
+        color cDn  = #FF5C7A
+        color cW   = #F5B942
+        int   cT   = fMa > sMa ? 1 : fMa < sMa ? -1 : 0
+        int   score = dTrend + cT + hTrend
+        string upT = tx("Up", "صاعد")
+        string dnT = tx("Down", "هابط")
+        string flT = tx("Range", "عرضي")
+        table.cell(tb, 0, 0, "FOXREX", text_color = cW, text_size = size.small)
+        table.cell(tb, 1, 0, syminfo.ticker + " · " + timeframe.period, text_color = cTxt, text_size = size.small)
+        table.cell(tb, 0, 1, tx("Daily trend", "الاتجاه اليومي"), text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 1, dTrend > 0 ? upT : dTrend < 0 ? dnT : flT, text_color = dTrend > 0 ? cUp : dTrend < 0 ? cDn : cMut, text_size = size.small)
+        table.cell(tb, 0, 2, maType + " " + str.tostring(fastLen) + "/" + str.tostring(slowLen), text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 2, cT > 0 ? upT : cT < 0 ? dnT : flT, text_color = cT > 0 ? cUp : cT < 0 ? cDn : cMut, text_size = size.small)
+        table.cell(tb, 0, 3, tx("Higher TF ", "الفريم الأعلى ") + htf, text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 3, hTrend > 0 ? upT : hTrend < 0 ? dnT : "—", text_color = hTrend > 0 ? cUp : hTrend < 0 ? cDn : cMut, text_size = size.small)
+        table.cell(tb, 0, 4, "RSI " + str.tostring(rsiLen), text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 4, str.tostring(rsi, "#.0"), text_color = rsi > 70 ? cDn : rsi < 30 ? cUp : cTxt, text_size = size.small)
+        table.cell(tb, 0, 5, tx("Resistance R1", "المقاومة R1"), text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 5, rngTxt(zR1lo, zR1hi) + (na(zR1lo) ? "" : "  (+" + fmtP(zR1lo - close) + ")"), text_color = cDn, text_size = size.small)
+        table.cell(tb, 0, 6, tx("Support S1", "الدعم S1"), text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 6, rngTxt(zS1lo, zS1hi) + (na(zS1hi) ? "" : "  (−" + fmtP(close - zS1hi) + ")"), text_color = cUp, text_size = size.small)
+        string sigTxt = na(lastSigBar) ? "—" : (lastSigDir > 0 ? "BUY" : "SELL") + " @ " + fmtP(lastSigPx) + " · " + str.tostring(bar_index - lastSigBar) + tx(" bars ago", " شمعة")
+        table.cell(tb, 0, 7, tx("Last signal", "آخر إشارة"), text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 7, sigTxt, text_color = lastSigDir > 0 ? cUp : lastSigDir < 0 ? cDn : cMut, text_size = size.small)
+
+        // rules-based recommendation
+        float buf = na(dAtr) ? 0.0 : dAtr * 0.25
+        string verdict = score >= 2 ? tx("Bullish · avoid sells", "صاعد · تجنّب البيع") : score <= -2 ? tx("Bearish · avoid buys", "هابط · تجنّب الشراء") : tx("No clear trend · wait for a break", "لا اتجاه واضح · انتظر الاختراق")
+        color  vCol = score >= 2 ? cUp : score <= -2 ? cDn : cW
+        string act = ""
+        if score <= -2
+            act := na(zR1lo) ? tx("Sell rallies; no resistance zone in range", "بيع الارتدادات؛ لا مقاومة قريبة") : tx("Sell rallies into ", "بيع عند الارتداد إلى ") + rngTxt(zR1lo, zR1hi) + tx(" · stop above ", " · وقف فوق ") + fmtP(zR1hi + buf) + (na(zS1hi) ? "" : tx(" · target ", " · هدف ") + rngTxt(zS1lo, zS1hi))
+            if not na(zS1hi) and not na(dAtr) and close - zS1hi < dAtr * 0.3
+                act := tx("Near support ", "قريب من الدعم ") + rngTxt(zS1lo, zS1hi) + tx(": don't sell here, wait for a rally or a break", ": لا تبع هنا، انتظر ارتداداً أو كسراً")
+        else if score >= 2
+            act := na(zS1hi) ? tx("Buy dips; no support zone in range", "شراء التراجعات؛ لا دعم قريب") : tx("Buy dips into ", "شراء عند التراجع إلى ") + rngTxt(zS1lo, zS1hi) + tx(" · stop below ", " · وقف تحت ") + fmtP(zS1lo - buf) + (na(zR1lo) ? "" : tx(" · target ", " · هدف ") + rngTxt(zR1lo, zR1hi))
+            if not na(zR1lo) and not na(dAtr) and zR1lo - close < dAtr * 0.3
+                act := tx("Near resistance ", "قريب من المقاومة ") + rngTxt(zR1lo, zR1hi) + tx(": don't buy here, wait for a dip or a break", ": لا تشترِ هنا، انتظر تراجعاً أو اختراقاً")
+        else
+            act := (na(zR1hi) ? "" : tx("Buy above ", "شراء فوق ") + fmtP(zR1hi)) + (na(zR1hi) or na(zS1lo) ? "" : " · ") + (na(zS1lo) ? "" : tx("Sell below ", "بيع تحت ") + fmtP(zS1lo))
+        table.cell(tb, 0, 8, tx("AI view", "توصية الذكاء الاصطناعي"), text_color = cMut, text_size = size.small)
+        table.cell(tb, 1, 8, verdict, text_color = vCol, text_size = size.small)
+        table.cell(tb, 0, 9, act, text_color = cTxt, text_size = size.small)
+        table.merge_cells(tb, 0, 9, 1, 9)

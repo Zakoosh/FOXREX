@@ -426,11 +426,38 @@ function installTradingDesk(){
    </tbody></table></div><p class="hint" style="margin:10px 0 0">أوقات Yahoo هي وقت آخر ملاحظة في السوق (قد تكون قديمة خارج ساعات التداول)، وأوقات Gold API وقت جلب المزوّد. لا تُعرض أي أسعار تقديرية.</p></section>`;
  };
 
+
+ /* ---------- view: TradingView indicator (copy the Pine script + today's analyst levels) ---------- */
+ const TV={code:null,loading:false,error:''};
+ function loadTv(){ if(TV.loading) return; TV.loading=true; fetch('../tools/tradingview/foxrex-levels-scalper.pine?v='+Math.floor(Date.now()/60000),{cache:'no-store'}).then(r=>{ if(!r.ok) throw Error('HTTP '+r.status); return r.text(); }).then(t=>{ TV.code=t; }).catch(e=>{ TV.error='تعذّر تحميل ملف المؤشر ('+e.message+')'; }).finally(()=>{ TV.loading=false; if(S.view==='tvscript') render(); }); }
+ const lvStr=a=>(a||[]).map(x=>+x.p).filter(x=>isFinite(x)).join(', ');
+ VIEWS.tvscript=()=>{
+  if(!TV.code&&!TV.loading&&!TV.error) setTimeout(loadTv,0);
+  if(!D.loaded&&!D.loading) setTimeout(load,0);
+  const r=research(), g=lvStr(r&&r.levels&&r.levels.goldLevels), u=lvStr(r&&r.levels&&r.levels.us30Levels);
+  const lines=TV.code?TV.code.split('\n').length:0;
+  return `<div class="head"><div><p class="fx-kicker">FOXREX · TRADINGVIEW</p><h1>مؤشر FOXREX على TradingView</h1><p>نفس مستويات الدعم والمقاومة اليومية، مع تقاطع EMA قابل للتعديل وإشارات سكالبينج، ووحدتي LuxAlgo وسكالب SMA.</p></div>
+   <div class="row"><button class="btn pri" data-act="tv-copy"${TV.code?'':' disabled'}>نسخ كود المؤشر</button><a class="btn" href="../tools/tradingview/foxrex-levels-scalper.pine" download>تنزيل الملف</a></div></div>
+  ${TV.error?`<div class="warnbox" style="margin:0 0 16px">${esc(TV.error)}</div>`:''}
+  <div class="grid2" style="margin-bottom:16px">
+   <section class="panel"><h2>طريقة الإضافة</h2><ol style="margin:0;padding-inline-start:20px;display:grid;gap:6px;font-size:14px">
+    <li>اضغط «نسخ كود المؤشر».</li><li>في TradingView افتح الشارت، ثم <b>Pine Editor</b> أسفل الشاشة.</li>
+    <li>امسح الكود الموجود والصق الكود، ثم <b>Save</b> باسم FOXREX.</li><li>اضغط <b>Add to chart</b>.</li>
+    <li>من إعدادات المؤشر (⚙) تظهر وتخفي كل وحدة، وتعدّل أطوال EMA والفلاتر.</li>
+    <li>للتنبيهات: Alert ← Condition: FOXREX ← اختر «Any alert() function call» لتصلك الإشارة مع الوقف والأهداف.</li></ol></section>
+   <section class="panel"><h2>مستويات المحللين اليوم</h2><p class="hint">الصقها في إعداد «مستويات المحللين» داخل المؤشر. تتحدث كل صباح مع ملف البحث${r?'':' (لا يوجد بحث لليوم بعد)'}.</p>
+    <dl class="kv"><dt>الذهب XAU/USD</dt><dd><span class="num ltr">${esc(g||'—')}</span> ${g?`<button class="btn" data-act="tv-copy-lv" data-v="${esc(g)}">نسخ</button>`:''}</dd>
+    <dt>US30</dt><dd><span class="num ltr">${esc(u||'—')}</span> ${u?`<button class="btn" data-act="tv-copy-lv" data-v="${esc(u)}">نسخ</button>`:''}</dd></dl></section></div>
+  <section class="panel"><h2>الكود <span class="hint num" style="margin:0">${lines?lines+' سطر · Pine Script v6':''}</span></h2><pre class="scroll" dir="ltr" style="margin:0;max-height:420px;overflow:auto;background:var(--ink);border:1px solid var(--faint);border-radius:var(--r1);padding:12px;font-size:12px;line-height:1.5;text-align:left"><code>${TV.code?esc(TV.code):(TV.loading?'جارٍ التحميل…':'')}</code></pre>
+   <p class="hint" style="margin:10px 0 0">يتضمن كوداً مقتبساً من LuxAlgo (CC BY-NC-SA 4.0) وnicks1008 (MPL 2.0): للاستخدام غير التجاري مع إبقاء الإسناد. أداة تعليمية وليست نصيحة استثمارية.</p></section>`;
+ };
+ ACT['tv-copy']=()=>{ if(TV.code) copy(TV.code,'تم نسخ كود المؤشر'); };
+ ACT['tv-copy-lv']=a=>copy(a.dataset.v,'تم نسخ المستويات');
  /* ---------- actions & navigation ---------- */
  ACT['td-set']=a=>{ const id=a.dataset.id,k=+a.dataset.k; if(st.f[id]===k) delete st.f[id]; else if(st.f[id]===undefined&&resolve()[id].k===k) return; else st.f[id]=k; saveState(); paint(); };
  ACT['td-reset']=()=>{ st={d:today(),f:{},r:{},ng:null,ni:null}; saveState(); render(); toast('عادت القراءات التلقائية وقراءات البحث'); };
  ACT['td-refresh']=()=>{ load().then(()=>toast('تم تحديث البيانات')); };
- NAV.splice(1,0,['trading','التداول','Trading',['checklist','marketdata']]);
- VIEW_LABEL.checklist='تشيك ليست الجلسة'; VIEW_LABEL.marketdata='صحة بيانات الأسواق';
+ NAV.splice(1,0,['trading','التداول','Trading',['checklist','tvscript','marketdata']]);
+ VIEW_LABEL.checklist='تشيك ليست الجلسة'; VIEW_LABEL.tvscript='مؤشر TradingView'; VIEW_LABEL.marketdata='صحة بيانات الأسواق';
  setInterval(()=>{ if(['checklist','marketdata'].includes(S.view)&&document.visibilityState==='visible') load(); },2*60000);
 }

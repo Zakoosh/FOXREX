@@ -52,3 +52,11 @@ Shows each data file with its last update and age, every stored quote with its s
 - `.github/workflows/market-data.yml` runs `tools/market/refresh.py` every 15 minutes on weekdays and hourly at weekends, and commits `data/quotes.json` only when it changes. Run it by hand from GitHub → Actions → "Refresh market data" → Run workflow.
 - Symbols: XAUUSD, XAGUSD, BTCUSD (Gold API); EURUSD, GBPUSD, USDJPY, SPX, NAS100, US30, DXY, US10Y, VIX, WTI, BRENT, ESFUT, NQFUT, GCFUT (Yahoo Finance chart API), plus completed GC daily sessions in `data/market/gold-daily.json`. A failed source keeps its last verified value and timestamp and is listed in `errors`.
 - The public ticker (`scripts/public/market.js`) reads the snapshot every minute and Gold API every 20 seconds. A price older than 30 minutes is dimmed. A live change is shown only against the previous trading day's close.
+
+## Trading desk → TradingView indicator
+
+`/admin/#tvscript` shows `tools/tradingview/foxrex-levels-scalper.pine` (Pine Script v6) with a copy button, install steps and today's analyst levels (from the research file) ready to paste into the indicator settings.
+
+- Modules, each can be shown or hidden in the indicator settings: daily S/R zones (same engine as the desk), adjustable MA cross (EMA/SMA/WMA/HMA/RMA) with trend EMA, scalping BUY/SELL (cross) and B+/S+ (pullback) signals confirmed on bar close with trend/RSI/higher-timeframe/room/session filters and ATR SL/TP, dashboard with the rules-based recommendation, LuxAlgo S&R Signals MTF (breakouts, tests, retests, rejections, manipulation zones), and SMA scalp B/S with RSI reversal (!).
+- Alerts: `alertcondition` entries for each signal type, plus `alert()` messages with SL/TP (choose "Any alert() function call").
+- Licence: includes code adapted from LuxAlgo (CC BY-NC-SA 4.0) and nicks1008 (MPL 2.0). Non-commercial use with attribution; do not sell or publish it as a closed FOXREX product.
