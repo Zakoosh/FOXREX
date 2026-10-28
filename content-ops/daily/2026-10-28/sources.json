@@ -1,0 +1,111 @@
+{
+  "runId": "run-20261028-0930-foxrex-daily",
+  "date": "2026-10-28",
+  "generatedAt": "2026-10-28T09:30:00Z",
+  "sources": [
+    {
+      "id": "S1",
+      "name": "FOXREX market quotes snapshot (repo data/quotes.json)",
+      "url": "data/quotes.json",
+      "type": "internal-feed",
+      "asOf": "2026-10-28T09:01:37Z",
+      "retrievedAt": "2026-10-28T09:30:00Z",
+      "tier": "repo",
+      "supports": [
+        "XAUUSD 4052.70",
+        "EURUSD 1.1127",
+        "USDJPY 157.689",
+        "DXY 102.399",
+        "US10Y 4.993",
+        "WTI 101.54",
+        "BRENT 110.96"
+      ],
+      "note": "Gold API / Yahoo Finance via tools/market/refresh.py; provider-fetch times, indicative only"
+    },
+    {
+      "id": "S2",
+      "name": "FOXREX economic calendar (repo data/calendar.json)",
+      "url": "data/calendar.json",
+      "type": "internal-feed",
+      "asOf": "2026-10-26T10:00:23Z",
+      "retrievedAt": "2026-10-28T09:30:00Z",
+      "tier": "repo",
+      "supports": [
+        "FOMC 18:00Z and press conference 18:30Z on 2026-10-28",
+        "US GDP Q3 advance and PCE 12:30Z on 2026-10-29",
+        "ECB decision 13:15Z on 2026-10-29",
+        "Employment Cost Index 12:30Z on 2026-10-30"
+      ],
+      "note": "Event times were sourced to official calendars by the 26 Oct pipeline; could not be re-fetched today (federalreserve.gov not reachable from this session)"
+    },
+    {
+      "id": "S3",
+      "name": "Federal Reserve — October 2026 calendar",
+      "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+      "type": "official",
+      "retrievedAt": null,
+      "tier": "official",
+      "status": "NOT_REACHABLE_THIS_RUN",
+      "note": "Host not resolvable from the session; relied on S2 which cites it"
+    },
+    {
+      "id": "S4",
+      "name": "FinanceFeeds — Gold Price Today: $4,038 on Fed Decision Day With PCE Due Thursday",
+      "url": "https://financefeeds.com/gold-price-today-4038-wednesday-fed-decision-day-pce-thursday-bull-4125-bear-3940/",
+      "type": "secondary-media",
+      "retrievedAt": "2026-10-28T09:30:00Z",
+      "tier": "secondary",
+      "supports": [
+        "Spot gold about 4,038 on decision day, down about 0.6%",
+        "Fed widely expected to hold",
+        "PCE due Thursday"
+      ],
+      "note": "Search snippet only; page not opened"
+    },
+    {
+      "id": "S5",
+      "name": "FXStreet — Gold rises above $4,050 ahead of Fed rate decision",
+      "url": "https://www.fxstreet.com/news/gold-rises-above-4-050-ahead-of-fed-rate-decision-202610272318",
+      "type": "secondary-media",
+      "retrievedAt": "2026-10-28T09:30:00Z",
+      "tier": "secondary",
+      "supports": [
+        "Gold above 4,050 into the Fed decision"
+      ],
+      "note": "Search snippet only; page not opened"
+    },
+    {
+      "id": "S6",
+      "name": "FXEmpire — Gold & Silver Forecast: Fed Decision Looms, Can Gold Hold $3,975?",
+      "url": "https://www.fxempire.com/forecasts/article/gold-xauusd-silver-price-forecast-fed-decision-looms-can-gold-hold-3975-1640584",
+      "type": "secondary-media",
+      "retrievedAt": "2026-10-28T09:30:00Z",
+      "tier": "secondary",
+      "supports": [
+        "Analysts cite 3,975 as support (recent lowest level since July)"
+      ],
+      "note": "Search snippet only; analyst levels are opinion, not fact"
+    },
+    {
+      "id": "S7",
+      "name": "RoboForex — XAUUSD falls to its lowest levels since June",
+      "url": "https://roboforex.com/ph/beginners/analytics/forex-forecast/gold/xau-usd-gold-forecast-2026-10-23/",
+      "type": "secondary-media",
+      "retrievedAt": "2026-10-28T09:30:00Z",
+      "tier": "secondary",
+      "supports": [
+        "Gold about 4,022 on 23 Oct after leaving a range"
+      ],
+      "note": "Single-outlet; conflicts with S4 on 'lowest since' month — not used in public copy"
+    }
+  ],
+  "conflicts": [
+    "Fed funds target level reported as 3.75–4.00% (secondary) vs 'raised to 4.00%' (S7): not used in public copy.",
+    "December hike probability reported ~82% (28 Oct outlet) vs ~91% (22 Oct outlet): not quoted in public copy; verify on CME FedWatch before use.",
+    "'Lowest since June' (S7) vs 'lowest since July' (S6): not used."
+  ],
+  "unverified": [
+    "Fed chair name appears in one secondary snippet only; not used.",
+    "Today's official Fed/ECB/BEA pages were not fetched this run."
+  ]
+}
