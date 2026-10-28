@@ -58,7 +58,7 @@ string acct    = input.string("Highest target reached", "Result points", options
 
 string G1      = "Structure & local zones"
 int    stL     = input.int(3, "Stall: bars before the turn", minval = 1, maxval = 20, group = G1, display = display.none)
-int    stR     = input.int(1, "Stall: bars without a new high / low", options = [1, 2, 3], group = G1, tooltip = "A price stall = a high (low) not exceeded for this many bars. A wave runs from its start to the first stall; a buy wave must make a higher high than the previous stall high (a sell wave a lower low).", display = display.none)
+int    stR     = input.int(2, "Stall: bars without a new high / low", options = [1, 2, 3], group = G1, tooltip = "A price stall = a high (low) not exceeded for this many bars. A wave runs from its start to the first stall; a buy wave must make a higher high than the previous stall high (a sell wave a lower low).", display = display.none)
 float  fEntry  = input.float(0.382, "Zone start (retracement)", minval = 0.236, maxval = 0.886, step = 0.01, group = G1, display = display.none)
 float  fZone   = input.float(0.618, "Zone end (retracement)", minval = 0.236, maxval = 0.95, step = 0.01, group = G1, display = display.none)
 float  fInv    = input.float(0.786, "Invalidation (retracement)", minval = 0.5, maxval = 1.0, step = 0.01, group = G1, display = display.none)
@@ -68,6 +68,11 @@ string trig    = input.string("Middle limit or rejection", "Entry", options = ["
 int    maxEnt  = input.int(2, "Max entries per zone", minval = 1, maxval = 10, group = G1, display = display.none)
 int    reCool  = input.int(3, "Bars between entries in the same zone", minval = 1, group = G1, display = display.none)
 bool   withTr  = input.bool(true, "Trend filter: buy only in an uptrend, sell only in a downtrend, nothing in a range", group = G1, tooltip = "Trend from the swings: higher highs + higher lows = up, lower highs + lower lows = down, anything else = range (no wave trades). Strong daily / major zones still trade in a range: buys at support, sells at resistance, never against the trend.", display = display.none)
+bool   useRsi  = input.bool(true, "RSI filter: no sell below 30, no buy above 70", group = G1, display = display.none)
+int    rsiLen  = input.int(14, "RSI length", minval = 2, group = G1, inline = "rsi", display = display.none)
+float  rsiOS   = input.float(30, "below", group = G1, inline = "rsi", display = display.none)
+float  rsiOB   = input.float(70, "above", group = G1, inline = "rsi", display = display.none)
+bool   useRoom = input.bool(true, "Room filter: no sell just above support, no buy just under resistance", group = G1, tooltip = "Blocks a sell when a daily support zone is closer than TP2 below price or price is reacting in a major BUY zone, and the reverse for buys.", display = display.none)
 int    swLen   = input.int(5, "Structure swing length (bars each side)", minval = 2, maxval = 50, group = G1, display = display.none)
 int    rngBars = input.int(0, "Range: no break of a swing high / low for (bars, 0 = auto)", minval = 0, group = G1, tooltip = "Trend = direction of the last close beyond a swing high (up) or swing low (down). If neither side breaks for this long the market is a range. Auto: 1m 30 bars (30 min) · 5m 12 bars (1 hour) · 15m 8 bars (2 hours) · higher 6 bars.", display = display.none)
 
@@ -203,6 +208,18 @@ pTp(int s, int i) =>
 
 pSlMin(int s) =>
     profile == "Custom" ? slMinC : s <= 60 ? 1.5 : s <= 300 ? 3.0 : s <= 1800 ? 4.0 : s < 86400 ? 5.0 : 10.0
+
+// Maximum zone height by timeframe (points): 1m 3 · 5m 6 · 15m 10 · up to 4H 15 · D+ 40.
+pZoneMax(int s) =>
+    s <= 60 ? 3.0 : s <= 300 ? 6.0 : s <= 900 ? 10.0 : s < 86400 ? 15.0 : 40.0
+
+// Zone edges a (start) and b (end), narrowed around their middle when taller than the timeframe's maximum.
+capZ(float a, float b, int s) =>
+    float m  = (a + b) / 2
+    float h  = math.abs(a - b)
+    float c  = pZoneMax(s)
+    float k  = h > c and h > 0 ? c / h : 1.0
+    [m + (a - m) * k, m + (b - m) * k]
 
 pSlMax(int s) =>
     profile == "Custom" ? slMaxC : s <= 60 ? 5.0 : s < 3600 ? 10.0 : s < 86400 ? 15.0 : 25.0
@@ -340,8 +357,7 @@ zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked, int s) =>
     float sl   = na
     float dist = na
     if z.state <= 1
-        float zA    = lvl(z, fEntry)
-        float zB    = lvl(z, fZone)
+        [zA, zB]    = capZ(lvl(z, fEntry), lvl(z, fZone), s)
         float zI    = lvl(z, fInv)
         float zM    = (zA + zB) / 2
         bool  valid = math.abs(z.p0 - z.p1) >= minLeg * a
@@ -388,6 +404,7 @@ majorEngine() =>
     var array<float> tTp = array.new<float>(7, 0.0)
     [uN, uP0, uB0, uP1, uB1, uT1, dN, dP0, dB0, dP1, dB1, dT1, wtr] = legEngine(stL, stR)
     int tr = structTrend(swLen)
+    float mr = ta.rsi(close, rsiLen)
     float aP   = nz(a[1], a)
     int   sAgo = ta.barssince((high - low) > spkK * aP)
     bool  sBlk = useSpk and not na(sAgo) and sAgo < spkLook
@@ -411,7 +428,7 @@ majorEngine() =>
                 tDir     := 0
     // zones → entries
     if not na(zS)
-        [f, ep, sl, d, sb] = zoneEval(zS, a, sBlk, tr, tDir != 0, s)
+        [f, ep, sl, d, sb] = zoneEval(zS, a, sBlk, tr, tDir != 0 or (useRsi and mr < rsiOS), s)
         if f and not sb
             tDir := -1
             tEn  := ep
@@ -425,7 +442,7 @@ majorEngine() =>
             zS.entries := maxEnt
             zS.armed   := false
     if not na(zBy)
-        [f, ep, sl, d, sb] = zoneEval(zBy, a, sBlk, tr, tDir != 0, s)
+        [f, ep, sl, d, sb] = zoneEval(zBy, a, sBlk, tr, tDir != 0 or (useRsi and mr > rsiOB), s)
         if f and not sb
             tDir := 1
             tEn  := ep
@@ -478,7 +495,7 @@ addLv(array<float> lp, array<float> lw, array<string> ln, float p, float w, stri
     ok
 
 // Today's daily zones around price px: [low, high, strength, names], sorted from low to high.
-buildDaily(float px, float ca) =>
+buildDaily(float px, float ca, float zcap) =>
     array<float>  zLo = array.new<float>()
     array<float>  zHi = array.new<float>()
     array<float>  zW  = array.new<float>()
@@ -527,7 +544,7 @@ buildDaily(float px, float ca) =>
                 float  w = lw.get(i)
                 string n = ln.get(i)
                 int    k = zLo.size()
-                if k > 0 and p - zHi.get(k - 1) <= tol
+                if k > 0 and p - zHi.get(k - 1) <= tol and p - zLo.get(k - 1) <= zcap
                     zHi.set(k - 1, p)
                     zW.set(k - 1, zW.get(k - 1) + w)
                     if not str.contains(zN.get(k - 1), n)
@@ -605,7 +622,7 @@ if newDay
         dYest := dToday
     stT    := array.new<float>(5, 0.0)
     dToday := dKey
-    [a, b, c, d] = buildDaily(open, atr)
+    [a, b, c, d] = buildDaily(open, atr, pZoneMax(tfSecs) * 0.6)
     dZLo := a
     dZHi := b
     dZW  := c
@@ -715,8 +732,7 @@ var MajView mvB = MajView.new(na, na, na, false, 0, na, true)
 mzDraw(MajView v, int dir, float p0, float p1, int t1, int st, int id) =>
     bool live = majOn and not na(id) and st >= 0 and st <= 1
     if live
-        float zA  = p1 + fEntry * (p0 - p1)
-        float zB  = p1 + fZone * (p0 - p1)
+        [zA, zB]  = capZ(p1 + fEntry * (p0 - p1), p1 + fZone * (p0 - p1), tfSecs)
         float zM  = (zA + zB) / 2
         float top = math.max(zA, zB)
         float bot = math.min(zA, zB)
@@ -752,8 +768,24 @@ bool mBLive = mzDraw(mvB, 1, mBP0, mBP1, mBT1, mBSt, mBId)
 bool majSellAct = mSLive and (mSSt == 1 or mvS.tch) and close < mSP1 + fInv * (mSP0 - mSP1) and close > mSP1
 bool majBuyAct  = mBLive and (mBSt == 1 or mvB.tch) and close > mBP1 + fInv * (mBP0 - mBP1) and close < mBP1
 bool strF       = majFlt == "Major structure + active zone" and majOn and mTr != 0
-bool okBuy      = not (majFlt != "Off" and majSellAct) and not (strF and mTr < 0)
-bool okSell     = not (majFlt != "Off" and majBuyAct) and not (strF and mTr > 0)
+// RSI and room filters
+float rsiV   = ta.rsi(close, rsiLen)
+float supHi  = na
+float resLo  = na
+for j = 0 to dZLo.size() - 1
+    if dZLo.size() > 0
+        if dZHi.get(j) < close and (na(supHi) or dZHi.get(j) > supHi)
+            supHi := dZHi.get(j)
+        if dZLo.get(j) > close and (na(resLo) or dZLo.get(j) < resLo)
+            resLo := dZLo.get(j)
+float roomNeed = pTp(tfSecs, 1)
+bool  roomBuy  = not useRoom or ((na(resLo) or resLo - close >= roomNeed) and not majSellAct)
+bool  roomSell = not useRoom or ((na(supHi) or close - supHi >= roomNeed) and not majBuyAct)
+bool  rsiBuy   = not useRsi or rsiV <= rsiOB
+bool  rsiSell  = not useRsi or rsiV >= rsiOS
+
+bool okBuy      = not (majFlt != "Off" and majSellAct) and not (strF and mTr < 0) and rsiBuy and roomBuy
+bool okSell     = not (majFlt != "Off" and majBuyAct) and not (strF and mTr > 0) and rsiSell and roomSell
 // strong zones (major / daily): buys at support and sells at resistance, also in a range, never against the trend
 bool okBuyZ     = okBuy and (not withTr or trend >= 0)
 bool okSellZ    = okSell and (not withTr or trend <= 0)
@@ -884,8 +916,7 @@ majEntry(MajView v, int dir, float p0, float p1, bool live) =>
     float dist = na
     bool  sbSl = false
     if live and tradeMj and barstate.isconfirmed and v.entries < maxEnt
-        float zA = p1 + fEntry * (p0 - p1)
-        float zB = p1 + fZone * (p0 - p1)
+        [zA, zB] = capZ(p1 + fEntry * (p0 - p1), p1 + fZone * (p0 - p1), tfSecs)
         float zI = p1 + fInv * (p0 - p1)
         float zM = (zA + zB) / 2
         if not v.armed and (dir < 0 ? low <= zM - pTp(math.max(tfSecs, 300), 0) : high >= zM + pTp(math.max(tfSecs, 300), 0))
@@ -965,8 +996,7 @@ if not (busyB and busyS) and tradeDL and not spkBlock and barstate.isconfirmed a
 // ───────────────────────────── Entries 3 · local zones (drawn here too)
 for z in zLive
     if z.state <= 1
-        float zA    = lvl(z, fEntry)
-        float zB    = lvl(z, fZone)
+        [zA, zB]    = capZ(lvl(z, fEntry), lvl(z, fZone), tfSecs)
         float zM    = (zA + zB) / 2
         float top   = math.max(zA, zB)
         float bot   = math.min(zA, zB)
