@@ -69,7 +69,10 @@ string acct    = input.string("Highest target reached", "Result points", options
 
 string G1      = "Structure & local zones"
 int    stL     = input.int(3, "Stall: bars before the turn", minval = 1, maxval = 20, group = G1, display = display.none)
-int    stR     = input.int(1, "Minimum stall candles (stars) to trade", options = [1, 2, 3], group = G1, tooltip = "A stall is found after one candle without a new high (low). Every further candle that holds near the top (within 23.6% of the wave) adds a star, up to 3: one, two or three stall candles. A fourth star is added when RSI was oversold (buy) or overbought (sell) in the last 10 bars. More stars = more confidence (25% per star).", display = display.none)
+int    ms1     = input.int(1, "Minimum stars to trade · 1m", options = [1, 2, 3], group = G1, inline = "ms", tooltip = "A stall is found after one candle without a new high (low). Every further candle that holds near the top (within 23.6% of the wave) adds a star, up to 3. A fourth star is added when RSI was oversold (buy) or overbought (sell) in the last 10 bars. 1 = the signal fires from a single stall candle.", display = display.none)
+int    ms5     = input.int(1, "2–5m", options = [1, 2, 3], group = G1, inline = "ms", display = display.none)
+int    ms15    = input.int(1, "6–30m", options = [1, 2, 3], group = G1, inline = "ms", display = display.none)
+int    msH     = input.int(1, "above", options = [1, 2, 3], group = G1, inline = "ms", display = display.none)
 bool   lotStar = input.bool(true, "Simulation size by confidence (1 / 1.5 / 2 / 2.5 lots for 1 to 4 stars)", group = G0, display = display.none)
 float  fEntry  = input.float(0.382, "Zone start (retracement)", minval = 0.236, maxval = 0.886, step = 0.01, group = G1, display = display.none)
 float  fZone   = input.float(0.618, "Zone end (retracement)", minval = 0.236, maxval = 0.95, step = 0.01, group = G1, display = display.none)
@@ -86,7 +89,7 @@ float  rsiOS   = input.float(30, "below", group = G1, inline = "rsi", display = 
 float  rsiOB   = input.float(70, "above", group = G1, inline = "rsi", display = display.none)
 bool   useRoom = input.bool(true, "Room filter: no sell just above support, no buy just under resistance", group = G1, tooltip = "Blocks a sell when a daily support zone is closer than TP2 below price or price is reacting in a major BUY zone, and the reverse for buys.", display = display.none)
 int    swLen   = input.int(5, "Structure swing length (bars each side)", minval = 2, maxval = 50, group = G1, display = display.none)
-int    rngBars = input.int(0, "Range: no break of a swing high / low for (bars, 0 = auto)", minval = 0, group = G1, tooltip = "Trend = direction of the last close beyond a swing high (up) or swing low (down). If neither side breaks for this long the market is a range. Auto: 1m 30 bars (30 min) · 5m 12 bars (1 hour) · 15m 8 bars (2 hours) · higher 6 bars.", display = display.none)
+int    rngBars = input.int(0, "Range: no break of a swing high / low for (bars, 0 = auto)", minval = 0, group = G1, tooltip = "Trend = direction of the last close beyond a swing high (up) or swing low (down). If neither side breaks for this long the market is a range. Auto: 1m 30 min · 2–5m 30 min · 6–15m 1 hour · higher 6 bars. A zone made by a fresh break can still trade in a range while it is younger than this.", display = display.none)
 
 string G6      = "Major timeframe (direction)"
 bool   showMaj = input.bool(true, "Use a major timeframe", group = G6, display = display.none)
@@ -270,6 +273,14 @@ isRej(int dir) =>
 lvl(Zone z, float r) =>
     z.p1 + r * (z.p0 - z.p1)
 
+// Range length in bars for a timeframe.
+rbAuto(int s) =>
+    rngBars > 0 ? rngBars : s <= 60 ? 30 : s <= 300 ? math.max(int(math.round(1800 / s)), 2) : s <= 900 ? math.max(int(math.round(3600 / s)), 2) : 6
+
+// Minimum stars to trade for a timeframe.
+minStars(int s) =>
+    s <= 60 ? ms1 : s <= 300 ? ms5 : s <= 1800 ? ms15 : msH
+
 // Market structure: direction of the last close beyond a swing high (up) or swing low (down).
 // If neither side has broken for rngBars bars, the market is a range (0).
 structTrend(int len) =>
@@ -296,7 +307,7 @@ structTrend(int len) =>
         t  := -1
         bk := bar_index
     int s  = timeframe.in_seconds()
-    int rb = rngBars > 0 ? rngBars : s <= 60 ? 30 : s <= 300 ? 12 : s <= 900 ? 8 : 6
+    int rb = rbAuto(s)
     na(bk) or bar_index - bk > rb ? 0 : t
 
 // Wave legs between price stalls. A stall high = a high not exceeded for sR bars. An up wave runs from the lowest
@@ -402,7 +413,7 @@ zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked, int s) =>
                 z.state   := 1
             bool byLim = trig != "Rejection candle" and hitMid
             bool byRej = not byLim and trig != "Limit at zone middle" and inZone and rej and not invalid
-            if (byLim or byRej) and z.armed and z.sSt >= stR and not blocked and not sBlk and (not withTr or z.dir == tr) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
+            if (byLim or byRej) and z.armed and z.sSt >= minStars(s) and not blocked and not sBlk and (not withTr or z.dir == tr or (tr == 0 and bar_index - z.bB <= rbAuto(s))) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
                 fire := true
                 ep   := byLim ? (z.dir < 0 ? math.max(zM, open) : math.min(zM, open)) : close
                 float zSl = z.dir < 0 ? (byLim ? zI : math.max(zI, high)) + slBuf * a : (byLim ? zI : math.min(zI, low)) - slBuf * a
@@ -813,7 +824,7 @@ for j = 0 to dZLo.size() - 1
             supHi := dZHi.get(j)
         if dZLo.get(j) > close and (na(resLo) or dZLo.get(j) < resLo)
             resLo := dZLo.get(j)
-float roomNeed = pTp(tfSecs, 1)
+float roomNeed = pTp(tfSecs, tfSecs <= 60 ? 1 : 0)
 bool  roomBuy  = not useRoom or ((na(resLo) or resLo - close >= roomNeed) and not majSellAct)
 bool  roomSell = not useRoom or ((na(supHi) or close - supHi >= roomNeed) and not majBuyAct)
 bool  rsiBuy   = not useRsi or rsiV <= rsiOB
