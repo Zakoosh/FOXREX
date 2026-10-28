@@ -122,6 +122,9 @@ bool   showFin = input.bool(false, "Keep finished zones (faded)", group = G4, di
 bool   showLeg = input.bool(false, "Show the leg (fib 0% → 100%)", group = G4, display = display.none)
 bool   showTl  = input.bool(true, "Trend lines through the last two swing highs / lows", group = G4, display = display.none)
 int    keepN   = input.int(40, "Finished trade labels kept", minval = 1, maxval = 200, group = G4, display = display.none)
+bool   showLow = input.bool(true, "Show long-running 1m / 5m trades on higher timeframes", group = G4, tooltip = "A winning trade from the 1m (and the 5m on 15m charts and above) is drawn on this chart when it lasted at least the minutes below or made at least the points below. Trades come from the wave zones of that timeframe.", display = display.none)
+int    lowMin  = input.int(15, "…lasted at least (minutes)", minval = 1, group = G4, inline = "lw", display = display.none)
+float  lowPts  = input.float(10, "or made (points)", minval = 0.5, step = 0.5, group = G4, inline = "lw", display = display.none)
 bool   showTb  = input.bool(true, "Dashboard", group = G4, display = display.none)
 string tbPos   = input.string("Top right", "Dashboard position", options = ["Top right", "Top left", "Bottom right", "Bottom left"], group = G4, display = display.none)
 bool   showSt  = input.bool(true, "Daily scorecard", group = G4, display = display.none)
@@ -442,6 +445,14 @@ majorEngine() =>
     var int   tT   = na
     var Zone  tZ   = na
     var array<float> tTp = array.new<float>(7, 0.0)
+    // last closed trade: entry time, exit time, side, entry, exit, points, targets reached
+    var int   cT0 = na
+    var int   cT1 = na
+    var int   cDr = 0
+    var float cEn = na
+    var float cEx = na
+    var float cPt = na
+    var int   cHt = 0
     [uN, uP0, uB0, uP1, uB1, uT1, dN, dP0, dB0, dP1, dB1, dT1, wtr] = legEngine(stL, 1)
     int tr = structTrend(swLen)
     float mr = ta.rsi(close, rsiLen)
@@ -458,6 +469,13 @@ majorEngine() =>
             if tHit == 0
                 tZ.entries := maxEnt
             tZ.armed := false
+            cT0 := tT
+            cT1 := time
+            cDr := tDir
+            cEn := tEn
+            cEx := tSl
+            cPt := tHit > 0 ? math.abs(tTp.get(tHit - 1) - tEn) : tDir * (tSl - tEn)
+            cHt := tHit
             tDir     := 0
         else
             while tHit < 7 and (tDir < 0 ? low <= tTp.get(tHit) : high >= tTp.get(tHit))
@@ -465,6 +483,13 @@ majorEngine() =>
             tSl := protSl(tDir, tEn, tSl, tHit, tTp)
             if tHit == 7 or (tHit < 2 and bar_index - tEB >= maxBars) or (noProg > 0 and tHit == 0 and bar_index - tEB >= noProg)
                 tZ.armed := false
+                cT0 := tT
+                cT1 := time
+                cDr := tDir
+                cEn := tEn
+                cEx := tHit > 0 ? tTp.get(tHit - 1) : close
+                cPt := tHit > 0 ? math.abs(tTp.get(tHit - 1) - tEn) : tDir * (close - tEn)
+                cHt := tHit
                 tDir     := 0
     // zones → entries
     if not na(zS)
@@ -499,12 +524,17 @@ majorEngine() =>
             zBy.armed   := false
     bool sV = not na(zS) and math.abs(zS.p0 - zS.p1) >= minLeg * a
     bool bV = not na(zBy) and math.abs(zBy.p0 - zBy.p1) >= minLeg * a
-    [sV ? zS.p0 : na, sV ? zS.p1 : na, sV ? zS.t1 : na, sV ? zS.state : -1, sV ? zS.tB : na, bV ? zBy.p0 : na, bV ? zBy.p1 : na, bV ? zBy.t1 : na, bV ? zBy.state : -1, bV ? zBy.tB : na, tr, tDir, tEn, tSl, tHit, tT, tTp.get(0), tTp.get(3)]
+    [sV ? zS.p0 : na, sV ? zS.p1 : na, sV ? zS.t1 : na, sV ? zS.state : -1, sV ? zS.tB : na, bV ? zBy.p0 : na, bV ? zBy.p1 : na, bV ? zBy.t1 : na, bV ? zBy.state : -1, bV ? zBy.tB : na, tr, tDir, tEn, tSl, tHit, tT, tTp.get(0), tTp.get(3), cT0, cT1, cDr, cEn, cEx, cPt, cHt]
 
 // Values of the last closed major bar (no repainting).
 majorPack() =>
-    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7] = majorEngine()
+    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7, e1, e2, e3, e4, e5, e6, e7] = majorEngine()
     [a1[1], a2[1], a3[1], a4[1], a5[1], b1[1], b2[1], b3[1], b4[1], b5[1], c1[1], d1[1], d2[1], d3[1], d4[1], d5[1], d6[1], d7[1]]
+
+// Lower timeframe: its last closed trade and its open trade.
+lowerPack() =>
+    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7, e1, e2, e3, e4, e5, e6, e7] = majorEngine()
+    [e1, e2, e3, e4, e5, e6, e7, d1, d2, d4, d5]
 
 string majAutoTf = tfSecs <= 60 ? "15" : tfSecs <= 300 ? "60" : tfSecs <= 900 ? "240" : tfSecs <= 3600 ? "D" : "W"
 string majTf     = majAuto ? majAutoTf : majTfIn
@@ -513,6 +543,11 @@ string mTf       = majOn ? majTf : timeframe.period
 [mSP0, mSP1, mST1, mSSt, mSId, mBP0, mBP1, mBT1, mBSt, mBId, mTr, mTDir, mTEn, mTSl, mTHit, mTT, mTTp1, mTTp4] = request.security(syminfo.tickerid, mTf, majorPack(), lookahead = barmerge.lookahead_on)
 string mLbl = tfLabel(timeframe.in_seconds(majTf))
 string cLbl = tfLabel(tfSecs)
+
+bool   low1On = showLow and tfSecs > 60
+bool   low5On = showLow and tfSecs > 300
+[l1T0, l1T1, l1Dr, l1En, l1Ex, l1Pt, l1Ht, l1ODr, l1OEn, l1OHt, l1OT] = request.security(syminfo.tickerid, low1On ? "1" : timeframe.period, lowerPack())
+[l5T0, l5T1, l5Dr, l5En, l5Ex, l5Pt, l5Ht, l5ODr, l5OEn, l5OHt, l5OT] = request.security(syminfo.tickerid, low5On ? "5" : timeframe.period, lowerPack())
 
 // ───────────────────────────── Daily data (previous completed sessions → no repaint)
 dailyPack() =>
@@ -1104,6 +1139,44 @@ if evBuy or evSell
     for t in tLive
         if t.state == 1 and t.eB == bar_index
             alert(fmtAlert("FOXREX " + syminfo.ticker + " " + cLbl + " " + (t.dir < 0 ? "SELL" : "BUY") + " @ " + fmtP(t.entry) + " | SL " + fmtP(t.sl) + " | TP1 " + fmtP(t.tps.get(0)) + " | TP2 " + fmtP(t.tps.get(1)) + " | TP3 " + fmtP(t.tps.get(2)) + " | TP4 " + fmtP(t.tps.get(3)) + " | " + t.src), alert.freq_once_per_bar_close)
+
+// ───────────────────────────── Long-running lower-timeframe trades on this chart
+var array<label> lwLb = array.new<label>()
+var array<line>  lwLn = array.new<line>()
+var int   lw1Id = na
+var int   lw5Id = na
+var label lw1Op = na
+var label lw5Op = na
+
+lowShow(bool on, string tag, int lastId, int t0, int t1, int dr, float en, float ex, float pt, int ht) =>
+    int id = lastId
+    if on and not na(t1) and dr != 0 and (na(lastId) or t1 != lastId)
+        id := t1
+        float mins = (t1 - t0) / 60000.0
+        if ht > 0 and (mins >= lowMin or pt >= lowPts)
+            color c = dr < 0 ? #E0475F : #00A884
+            lwLn.push(line.new(t0, en, t1, ex, xloc = xloc.bar_time, color = color.new(c, 30), style = line.style_dotted, width = 2))
+            lwLb.push(label.new(t0, en, tag + (dr < 0 ? " SELL TP" : " BUY TP") + str.tostring(ht) + " " + sgnPts(pt) + " · " + str.tostring(math.round(mins)) + "m", xloc = xloc.bar_time, style = dr < 0 ? label.style_label_down : label.style_label_up, color = color.new(c, 45), textcolor = color.white, size = size.tiny, tooltip = tag + " trade shown on " + cLbl + "\nEntry " + fmtP(en) + " · exit " + fmtP(ex) + "\nResult TP" + str.tostring(ht) + " · " + sgnPts(pt) + " pts · " + str.tostring(math.round(mins)) + " min\n1 lot: " + usd(pt * lotV - comm)))
+            while lwLb.size() > 40
+                label.delete(lwLb.shift())
+                line.delete(lwLn.shift())
+    id
+
+lw1Id := lowShow(low1On, "M1", lw1Id, l1T0, l1T1, l1Dr, l1En, l1Ex, l1Pt, l1Ht)
+lw5Id := lowShow(low5On, "M5", lw5Id, l5T0, l5T1, l5Dr, l5En, l5Ex, l5Pt, l5Ht)
+
+// open lower-timeframe trade that has been running longer than the minimum: one label at the right edge
+lowOpen(label lb, bool on, string tag, int dr, float en, int ht, int t0) =>
+    label.delete(lb)
+    label r = na
+    if barstate.islast and on and dr != 0 and not na(t0) and (timenow - t0) / 60000.0 >= lowMin
+        color c = dr < 0 ? #E0475F : #00A884
+        r := label.new(bar_index + 3, en, tag + (dr < 0 ? " SELL " : " BUY ") + fmtP(en) + (ht > 0 ? " ✓TP" + str.tostring(ht) : "") + " · open " + str.tostring(math.round((timenow - t0) / 60000.0)) + "m", style = label.style_label_left, color = color.new(c, 55), textcolor = color.white, size = size.tiny)
+    r
+
+if barstate.islast
+    lw1Op := lowOpen(lw1Op, low1On, "M1", l1ODr, l1OEn, l1OHt, l1OT)
+    lw5Op := lowOpen(lw5Op, low5On, "M5", l5ODr, l5OEn, l5OHt, l5OT)
 
 // ───────────────────────────── Housekeeping
 if zLive.size() > 0
