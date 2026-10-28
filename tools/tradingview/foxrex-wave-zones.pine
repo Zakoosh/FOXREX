@@ -15,17 +15,19 @@
 //   • local zone: limit at the middle of the zone or a rejection candle in it, whichever comes first;
 //   • major zone: same rule on the major zone, seen on the chart timeframe;
 //   • daily zone: a candle that dips into the zone and closes back out of it (rejection).
-// Direction: by default trades must agree with the major timeframe's structure, and nothing is taken against
-// a major zone that price is reacting in. One trade at a time per timeframe; a new signal never closes it.
-// Targets and stops follow the timeframe (auto profile) — the stop sits beyond the zone, inside a range:
-//   1m  TP 1 / 2 / 3 / 5      stop 1.5–4      (quick scalps)
-//   5m  TP 2.5 / 5 / 10 / 15  stop 3–8
-//   15m TP 2.5 / 5 / 10 / 20  stop 4–10
-//   1H+ TP 5 / 10 / 20 / 40   stop 5–10       D/W/M: TP 10 / 20 / 40 / 80, stop up to 50
-//   Trades from major and daily zones use at least the 5m targets and a stop of up to 10 points.
+// Every timeframe trades its own setups: a short-term move against the bigger wave is allowed (the direction
+// filter is off by default). One trade at a time per timeframe; a new signal never closes it.
+// Targets and stops follow the timeframe (auto profile) — the stop sits beyond the zone, capped:
+//   1m  TP 1 / 2 / 3 / 5      stop up to 5    (quick scalps)
+//   5m  TP 2.5 / 5 / 10 / 15  stop up to 10
+//   15m TP 2.5 / 5 / 10 / 20  stop up to 10
+//   1H / 4H TP 5 / 10 / 20 / 40  stop up to 15    D/W/M: TP 10 / 20 / 40 / 80, stop up to 25
+//   Trades from major and daily zones use at least the 5m targets.
+// Simulation: every trade = 1 lot, no spread, commission per lot (default $6); P&L in $ on the label and scorecard.
 // A trade that has not reached TP1 within "No-progress exit" bars is closed at market (time exit), and every
 // trade is closed after "Maximum trade life" bars. Profit protection: stop to entry after TP1, to TP1 after
-// TP2, to TP2 after TP3. A trade that touched a target is a win and is never shown as a stop loss.
+// TP2, to TP2 after TP3. A trade that touched a target is a win and is recorded as that target (a short line
+// marks the target level reached); it is never shown as a stop loss.
 // Daily scorecard per timeframe at the bottom. Nothing repaints: decisions use closed bars, higher timeframes
 // are read from their last closed bar.
 // Educational tool, not investment advice.
@@ -35,15 +37,15 @@ indicator("FOXREX · Wave Retracement Zones", shorttitle = "FOXREX Waves", overl
 
 // ───────────────────────────── Inputs
 string G0      = "Targets & stops"
-string profile = input.string("Auto by timeframe", "Profile", options = ["Auto by timeframe", "Custom"], group = G0, tooltip = "Auto: 1m TP 1/2/3/5 stop 1.5–4 · 5m TP 2.5/5/10/15 stop 3–8 · 15m TP 2.5/5/10/20 stop 4–10 · 1H+ TP 5/10/20/40 stop 5–10 · D+ TP 10/20/40/80 stop up to 50. Custom: the values below on every timeframe.", display = display.none)
+string profile = input.string("Auto by timeframe", "Profile", options = ["Auto by timeframe", "Custom"], group = G0, tooltip = "Auto: 1m TP 1/2/3/5 stop ≤5 · 5m TP 2.5/5/10/15 stop ≤10 · 15m TP 2.5/5/10/20 stop ≤10 · 1H/4H TP 5/10/20/40 stop ≤15 · D+ TP 10/20/40/80 stop ≤25. Custom: the values below on every timeframe.", display = display.none)
 float  tp1Pts  = input.float(2.5, "Custom TP1", minval = 0.1, step = 0.5, group = G0, inline = "t1", display = display.none)
 float  tp2Pts  = input.float(5.0, "TP2", minval = 0.1, step = 0.5, group = G0, inline = "t1", display = display.none)
 float  tp3Pts  = input.float(10.0, "Custom TP3", minval = 0.1, step = 0.5, group = G0, inline = "t2", display = display.none)
 float  tp4Pts  = input.float(20.0, "TP4", minval = 0.1, step = 0.5, group = G0, inline = "t2", display = display.none)
 float  slMinC  = input.float(3.0, "Custom stop min", minval = 0.1, step = 0.5, group = G0, inline = "s", display = display.none)
 float  slMaxC  = input.float(10.0, "max", minval = 0.5, step = 0.5, group = G0, inline = "s", display = display.none)
-float  slImp   = input.float(10.0, "Max stop · major / daily zone trades", minval = 1.0, step = 0.5, group = G0, display = display.none)
-float  slMaxD  = input.float(50.0, "Max stop on D / W / M charts", minval = 1.0, step = 1.0, group = G0, display = display.none)
+float  lotVal  = input.float(0.0, "Simulation: $ per 1.0 move for 1 lot (0 = auto)", minval = 0.0, step = 1.0, group = G0, tooltip = "Auto: 100 for gold (1 lot = 100 oz), otherwise the symbol's point value. Every trade is simulated with 1 lot and no spread.", display = display.none)
+float  comm    = input.float(6.0, "Simulation: commission per lot ($)", minval = 0.0, step = 0.5, group = G0, display = display.none)
 float  slBuf   = input.float(0.1, "Stop buffer beyond the zone (× ATR)", minval = 0.0, step = 0.05, group = G0, display = display.none)
 int    noProg  = input.int(15, "No-progress exit (bars without TP1, 0 = off)", minval = 0, group = G0, tooltip = "1m: 15 minutes · 5m: 75 minutes · 15m: under 4 hours", display = display.none)
 int    maxBars = input.int(60, "Maximum trade life (bars)", minval = 5, group = G0, display = display.none)
@@ -68,7 +70,7 @@ string G6      = "Major timeframe (direction)"
 bool   showMaj = input.bool(true, "Use a major timeframe", group = G6, display = display.none)
 bool   majAuto = input.bool(true, "Auto (1m→15m, 5m→1H, 15m→4H, 1H→D)", group = G6, display = display.none)
 string majTfIn = input.timeframe("15", "Major timeframe when not auto", group = G6, display = display.none)
-string majFlt  = input.string("Major structure + active zone", "Direction filter", options = ["Major structure + active zone", "Active major zone only", "Off"], group = G6, tooltip = "Major structure: trades only in the direction of the major timeframe's last break of structure. Active zone: nothing against a major zone that price is reacting in.", display = display.none)
+string majFlt  = input.string("Off", "Direction filter", options = ["Major structure + active zone", "Active major zone only", "Off"], group = G6, tooltip = "Major structure: trades only in the direction of the major timeframe's last break of structure. Active zone: nothing against a major zone that price is reacting in.", display = display.none)
 bool   tradeMj = input.bool(true, "Take trades at major zones", group = G6, display = display.none)
 bool   showMjT = input.bool(true, "Show the major timeframe's open trade", group = G6, display = display.none)
 
@@ -153,15 +155,23 @@ type Trade
     array<label> rl
     Zone         zn
     MajView      mv
+    box          sb
+    box          pb
+    line         tl
 
 // ───────────────────────────── Helpers
 int tfSecs = timeframe.in_seconds()
+string tkU = str.upper(syminfo.ticker)
+float lotV = lotVal > 0 ? lotVal : (str.contains(tkU, "XAU") or str.contains(tkU, "GOLD")) ? 100.0 : nz(syminfo.pointvalue, 1.0)
 
 fmtP(float v) =>
     v >= 10000 ? str.tostring(v, "#,##0") : v >= 100 ? str.tostring(v, "#,##0.00") : str.tostring(v, format.mintick)
 
 sgnPts(float v) =>
     (v > 0 ? "+" : v < 0 ? "−" : "") + str.tostring(math.abs(v), "#.##")
+
+usd(float v) =>
+    (v > 0 ? "+$" : v < 0 ? "−$" : "$") + str.tostring(math.abs(v), "#,##0")
 
 tfLabel(int s) =>
     s < 60 ? str.tostring(s) + "s" : s < 3600 ? "M" + str.tostring(math.round(s / 60)) : s < 86400 ? "H" + str.tostring(math.round(s / 3600)) : s < 604800 ? "D" + str.tostring(math.round(s / 86400)) : "W"
@@ -187,12 +197,12 @@ pSlMin(int s) =>
     profile == "Custom" ? slMinC : s <= 60 ? 1.5 : s <= 300 ? 3.0 : s <= 1800 ? 4.0 : s < 86400 ? 5.0 : 10.0
 
 pSlMax(int s) =>
-    profile == "Custom" ? slMaxC : s <= 60 ? 4.0 : s <= 300 ? 8.0 : s < 86400 ? 10.0 : slMaxD
+    profile == "Custom" ? slMaxC : s <= 60 ? 5.0 : s < 3600 ? 10.0 : s < 86400 ? 15.0 : 25.0
 
 // Stop distance: structure, clamped to the timeframe's range (important = major / daily zone trade).
 clampSl(float d, int s, bool imp) =>
     float lo = pSlMin(imp ? math.max(s, 300) : s)
-    float hi = imp ? (s >= 86400 ? slMaxD : math.max(slImp, pSlMax(s))) : pSlMax(s)
+    float hi = pSlMax(s)
     math.min(math.max(d, lo), hi)
 
 tpArr(float ep, int dir, int s, bool imp) =>
@@ -318,7 +328,7 @@ majorEngine() =>
     var int   tEB  = na
     var int   tT   = na
     var Zone  tZ   = na
-    var array<float> tTp = array.new<float>(4, 0.0)
+    var array<float> tTp = array.new<float>(5, 0.0)
     if not na(hh)
         hP := hh
         hB := bar_index - swLen
@@ -530,9 +540,9 @@ int  dKey    = year(time_tradingday) * 10000 + month(time_tradingday) * 100 + da
 bool keepAll = showOld or timeframe.isdwm
 var int dToday = na
 var int dYest  = na
-var array<float> stT = array.new<float>(4, 0.0)
-var array<float> stY = array.new<float>(4, 0.0)
-var array<float> stA = array.new<float>(4, 0.0)
+var array<float> stT = array.new<float>(5, 0.0)
+var array<float> stY = array.new<float>(5, 0.0)
+var array<float> stA = array.new<float>(5, 0.0)
 
 var array<Zone>  zLive  = array.new<Zone>()
 var array<Zone>  zArch  = array.new<Zone>()
@@ -553,7 +563,7 @@ if newDay
     if not na(dToday)
         stY   := stT.copy()
         dYest := dToday
-    stT    := array.new<float>(4, 0.0)
+    stT    := array.new<float>(5, 0.0)
     dToday := dKey
     [a, b, c, d] = buildDaily(open)
     dZLo := a
@@ -570,6 +580,7 @@ if newDay
         zArch.clear()
         for t in tArch
             label.delete(t.lb)
+            line.delete(t.tl)
         tArch.clear()
         for l in bosLn
             l.delete()
@@ -607,20 +618,28 @@ closeTrade(Trade t, string res) =>
     t.state := 10
     if acct == "Highest target reached"
         t.net := t.hits > 0 ? math.abs(t.tps.get(t.hits - 1) - t.entry) : t.net
+    float pnl = t.net * lotV - comm
     score(t.dKey, 3, t.net)
+    score(t.dKey, 4, pnl)
     for l in t.ln
         l.delete()
     t.ln.clear()
     for l in t.rl
         l.delete()
     t.rl.clear()
+    box.delete(t.sb)
+    box.delete(t.pb)
     bool won = t.hits > 0
     string side = t.dir < 0 ? "SELL" : "BUY"
-    t.lb.set_text(side + " " + sgnPts(t.net))
+    color  cw   = t.dir < 0 ? #E0475F : #00A884
+    if won
+        float tp = t.tps.get(t.hits - 1)
+        t.tl := line.new(t.eB, tp, math.max(bar_index, t.eB + 3), tp, color = cw, width = 2)
+    t.lb.set_text(side + " " + res + " " + sgnPts(t.net))
     t.lb.set_size(size.tiny)
-    t.lb.set_color(won ? color.new(t.dir < 0 ? #E0475F : #00A884, 15) : color.new(#6B7280, 30))
+    t.lb.set_color(won ? color.new(cw, 15) : color.new(#6B7280, 30))
     t.lb.set_textcolor(won ? color.white : color.new(color.white, 20))
-    t.lb.set_tooltip(cLbl + " " + side + " · " + t.src + "\nEntry " + fmtP(t.entry) + "\nResult " + res + " · " + sgnPts(t.net) + " pts")
+    t.lb.set_tooltip(cLbl + " " + side + " · " + t.src + "\nEntry " + fmtP(t.entry) + "\nResult " + res + " · " + sgnPts(t.net) + " pts\n1 lot: " + usd(pnl) + " (commission $" + str.tostring(comm, "#.##") + ")")
     if not na(t.zn)
         t.zn.armed := false
     if not na(t.mv)
@@ -642,7 +661,9 @@ openTrade(int dir, float ep, float sl, float dist, bool imp, string src, Zone zn
         rl.push(label.new(bar_index + 6, p, "TP" + str.tostring(i + 1) + " " + fmtP(p), style = label.style_label_left, color = color.new(color.black, 100), textcolor = color.new(cBuy, 20), size = size.tiny))
     ln.push(line.new(bar_index, ep, bar_index + 6, ep, color = color.new(color.white, 20), width = 2))
     rl.push(label.new(bar_index + 6, ep, "▶ " + cLbl + " " + side + " " + fmtP(ep) + " · open", style = label.style_label_left, color = color.new(dir < 0 ? #E0475F : #00A884, 10), textcolor = color.white, size = size.small))
-    Trade.new(dir, ep, sl, tps, 0, bar_index, dKey, 0.0, 1.0, 1, src, lb, ln, rl, zn, mv)
+    box sb = box.new(bar_index, math.max(ep, sl), bar_index + 6, math.min(ep, sl), border_color = color.new(cSell, 100), bgcolor = color.new(cSell, 82))
+    box pb = box.new(bar_index, math.max(ep, tps.get(3)), bar_index + 6, math.min(ep, tps.get(3)), border_color = color.new(cBuy, 100), bgcolor = color.new(cBuy, 86))
+    Trade.new(dir, ep, sl, tps, 0, bar_index, dKey, 0.0, 1.0, 1, src, lb, ln, rl, zn, mv, sb, pb, na)
 
 // ───────────────────────────── Major zones on this chart (only live ones, one per side)
 var MajView mvS = MajView.new(na, na, na, false, 0, na, true)
@@ -765,6 +786,8 @@ for t in tLive
             l.set_x2(bar_index + 6)
         for l in t.rl
             l.set_x(bar_index + 6)
+        t.sb.set_right(bar_index + 6)
+        t.pb.set_right(bar_index + 6)
         if barstate.isconfirmed and bar_index > t.eB
             bool   done = false
             string res  = ""
@@ -773,7 +796,7 @@ for t in tLive
                 t.net += t.rem * t.dir * (t.sl - t.entry)
                 t.rem := 0.0
                 done  := true
-                res   := t.hits == 0 ? "stop loss" : "TP" + str.tostring(t.hits) + (t.sl == t.entry ? " then break-even" : " then locked profit")
+                res   := t.hits == 0 ? "SL" : "TP" + str.tostring(t.hits)
                 if t.hits == 0
                     score(t.dKey, 2, 1)
                     if not na(t.zn)
@@ -794,6 +817,8 @@ for t in tLive
                     t.ln.get(0).set_y2(t.sl)
                     t.rl.get(0).set_y(t.sl)
                     t.rl.get(0).set_text("SL " + fmtP(t.sl))
+                    t.sb.set_top(math.max(t.entry, t.sl))
+                    t.sb.set_bottom(math.min(t.entry, t.sl))
                     t.rl.get(5).set_text("▶ " + cLbl + (t.dir < 0 ? " SELL " : " BUY ") + fmtP(t.entry) + " · ✓TP" + str.tostring(t.hits))
                 bool stale = noProg > 0 and t.hits == 0 and bar_index - t.eB >= noProg
                 if t.hits == 4
@@ -803,12 +828,12 @@ for t in tLive
                     t.net += t.rem * t.dir * (close - t.entry)
                     t.rem := 0.0
                     done  := true
-                    res   := (t.hits > 0 ? "TP" + str.tostring(t.hits) + ", " : "") + "time exit"
+                    res   := t.hits > 0 ? "TP" + str.tostring(t.hits) : "⌛"
                     if t.hits == 0 and t.net < 0
                         score(t.dKey, 2, 1)
             if done
                 closeTrade(t, res)
-                lastTrade    := (t.dir < 0 ? "SELL " : "BUY ") + fmtP(t.entry) + " → " + sgnPts(t.net)
+                lastTrade    := (t.dir < 0 ? "SELL " : "BUY ") + fmtP(t.entry) + " → " + res + " " + sgnPts(t.net) + " · " + usd(t.net * lotV - comm)
                 lastTradeDir := t.dir
 
 bool busy = false
@@ -871,7 +896,7 @@ if not busy and not spkBlock
                     nt.rem := 0.0
                     score(dKey, 2, 1)
                     v.entries := maxEnt
-                    closeTrade(nt, "stop loss on the fill candle")
+                    closeTrade(nt, "SL")
                     busy := false
 
 // ───────────────────────────── Entries 2 · daily zones (rejection out of the zone)
@@ -955,7 +980,7 @@ for z in zLive
                 nt.rem := 0.0
                 score(dKey, 2, 1)
                 z.entries := maxEnt
-                closeTrade(nt, "stop loss on the fill candle")
+                closeTrade(nt, "SL")
                 busy := false
     if z.state >= 10
         zoneGone(z)
@@ -984,7 +1009,9 @@ if tLive.size() > 0
             tLive.remove(i)
             tArch.push(t)
 while tArch.size() > keepN
-    label.delete(tArch.shift().lb)
+    Trade ot = tArch.shift()
+    label.delete(ot.lb)
+    line.delete(ot.tl)
 while bosLn.size() > 30
     line.delete(bosLn.shift())
 
@@ -1075,7 +1102,7 @@ if barstate.islast and showTb
     table.cell(tb, 1, 5, (na(dR1lo) ? "—" : fmtP((dR1lo + dR1hi) / 2)) + " / " + (na(dS1lo) ? "—" : fmtP((dS1lo + dS1hi) / 2)), text_color = cTxt, text_size = size.small, text_halign = text.align_right)
 
 // ───────────────────────────── Daily scorecard (this timeframe only)
-var table st = table.new(stPos == "Top left" ? position.top_left : stPos == "Top right" ? position.top_right : stPos == "Bottom left" ? position.bottom_left : position.bottom_right, 6, 4, bgcolor = color.new(#0B1320, 10), frame_color = color.new(#A7B6C4, 70), frame_width = 1)
+var table st = table.new(stPos == "Top left" ? position.top_left : stPos == "Top right" ? position.top_right : stPos == "Bottom left" ? position.bottom_left : position.bottom_right, 7, 4, bgcolor = color.new(#0B1320, 10), frame_color = color.new(#A7B6C4, 70), frame_width = 1)
 
 stRow(table t, int r, string name, array<float> a) =>
     float n  = a.get(0)
@@ -1090,6 +1117,8 @@ stRow(table t, int r, string name, array<float> a) =>
     table.cell(t, 3, r, str.tostring(l, "#"), text_color = #FF5C7A, text_size = size.small)
     table.cell(t, 4, r, na(wr) ? "—" : str.tostring(wr, "#") + "%", text_color = na(wr) ? #8A97A8 : wr >= 50 ? #00D4A7 : #FF5C7A, text_size = size.small)
     table.cell(t, 5, r, sgnPts(pt), text_color = pt > 0 ? #00D4A7 : pt < 0 ? #FF5C7A : cT, text_size = size.small)
+    float us = a.get(4)
+    table.cell(t, 6, r, usd(us), text_color = us > 0 ? #00D4A7 : us < 0 ? #FF5C7A : cT, text_size = size.small)
     true
 
 if barstate.islast and showSt
@@ -1100,6 +1129,7 @@ if barstate.islast and showSt
     table.cell(st, 3, 0, "Loss", text_color = cH, text_size = size.small)
     table.cell(st, 4, 0, "Win %", text_color = cH, text_size = size.small)
     table.cell(st, 5, 0, "Net pts", text_color = cH, text_size = size.small)
+    table.cell(st, 6, 0, "1 lot $", text_color = cH, text_size = size.small)
     stRow(st, 1, "Today", stT)
     stRow(st, 2, "Yesterday", stY)
     stRow(st, 3, "All on chart", stA)
