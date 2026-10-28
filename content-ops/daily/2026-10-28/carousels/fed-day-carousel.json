@@ -1,0 +1,54 @@
+{
+  "carouselId": "fxr-20261028-carousel-01",
+  "title": {
+    "en": "Fed Day: 3 things to watch",
+    "ar": "يوم الفيدرالي: ٣ أشياء نراقبها"
+  },
+  "aspect": "4:5 1080x1350",
+  "slides": [
+    {
+      "n": 1,
+      "en": "Fed Day. The decision isn't the whole story.",
+      "ar": "يوم الفيدرالي. القرار ليس القصة كلها.",
+      "visual": "REX folded arms, navy bg, emerald rim light; no numbers"
+    },
+    {
+      "n": 2,
+      "en": "1 · The statement (18:00 UTC). Hold is widely reported as expected.",
+      "ar": "١ · البيان (18:00 غرينتش). التثبيت متوقع على نطاق واسع بحسب التقارير.",
+      "visual": "clock icon, minimal"
+    },
+    {
+      "n": 3,
+      "en": "2 · The press conference (18:30 UTC). Tone can differ from the statement.",
+      "ar": "٢ · المؤتمر الصحفي (18:30 غرينتش). النبرة قد تختلف عن البيان.",
+      "visual": "podium icon"
+    },
+    {
+      "n": 4,
+      "en": "3 · The reaction. Gold and the dollar respond to guidance vs. expectations.",
+      "ar": "٣ · ردّ الفعل. الذهب والدولار يتفاعلان مع التوجيه مقابل التوقعات.",
+      "visual": "two-arrow abstract, no chart values"
+    },
+    {
+      "n": 5,
+      "en": "Tomorrow: ECB decision + US GDP data. We explain, we don't predict.",
+      "ar": "غدًا: قرار المركزي الأوروبي + بيانات الناتج الأمريكي. نشرح ولا نتوقع.",
+      "visual": "calendar card"
+    },
+    {
+      "n": 6,
+      "en": "Learn with REX at foxrex.co/learn · Educational, not advice.",
+      "ar": "تعلّم مع REX في foxrex.co/ar/learn · تعليمي وليس توصية.",
+      "visual": "logo lockup assets/brand/foxrex-lockup.jpg"
+    }
+  ],
+  "altText": {
+    "en": "Six-slide educational carousel about what to watch on Fed decision day.",
+    "ar": "كاروسيل تعليمي من ست شرائح حول ما نراقبه في يوم قرار الفيدرالي."
+  },
+  "sourceIds": [
+    "src-fxcom-fomc",
+    "src-repo-policy-week"
+  ]
+}
