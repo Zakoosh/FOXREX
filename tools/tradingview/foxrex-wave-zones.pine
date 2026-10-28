@@ -19,7 +19,9 @@
 //    after TP1, trailing after TP2, or 25%-per-target accounting.
 //    Entries only in the direction of the current structure (last BOS), and a zone stops giving
 //    entries after one of its trades is stopped out before TP1.
-// 6b. One trade at a time: a new signal closes the open trade at its close ("⇄ new signal").
+// 6b. Only the newest trade's lines are drawn; earlier trades keep running in the background and their
+//     targets are recorded the moment price touches them, even if price turns afterwards.
+//     Entry price = close of the signal candle (marked with a short white line).
 // 7. Abnormal-candle filter: no entries after a candle larger than k × ATR or a point limit.
 // 8. Daily scorecard: trades, wins (TP1 reached), losses, win rate and net points.
 // Nothing repaints: swings confirm after the right-side bars, every decision uses closed bars.
@@ -54,6 +56,7 @@ string slMode  = input.string("Zone invalidation", "Stop", options = ["Zone inva
 float  slPts   = input.float(8.0, "Stop (points, fixed mode)", minval = 0.0, step = 0.5, group = G3)
 float  slMax   = input.float(10.0, "Maximum stop (points, 0 = no cap)", minval = 0.0, step = 0.5, group = G3)
 float  slMaxD  = input.float(50.0, "Maximum stop on D / W / M charts (points)", minval = 0.0, step = 1.0, group = G3)
+float  slMin   = input.float(3.0, "Minimum stop (points)", minval = 0.0, step = 0.5, group = G3, tooltip = "Stops tighter than this sit inside normal noise (spread + one-minute wicks) and get hit before the idea can work")
 float  slBuf   = input.float(0.1, "Stop buffer (× ATR, zone mode)", minval = 0.0, step = 0.05, group = G3)
 bool   beAfter = input.bool(false, "Move stop to entry after TP1 (break-even)", group = G3)
 bool   trail   = input.bool(false, "Trail stop to the previous target after TP2", group = G3)
@@ -325,18 +328,17 @@ for z in zLive
             if invalid
                 zoneEnd(z, 13)
             else if (inZone or (z.entries == 0 and z.touched)) and (trig == "Touch" or rej) and not spkBlock and (not withTr or z.dir == trend) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
-                // one trade at a time: a new signal closes the open trade at this close
+                // only the newest trade is drawn: earlier open trades keep running in the background
                 for t0 in tLive
                     if t0.state == 1
-                        t0.net += t0.rem * t0.dir * (close - t0.entry)
-                        t0.rem := 0.0
-                        if t0.hits == 0 and t0.net < 0
-                            score(t0.dKey, 2, 1)
-                        closeTrade(t0, (t0.hits > 0 ? "✓ TP" + str.tostring(t0.hits) + " · " : "") + "⇄ new signal")
+                        for l in t0.ln
+                            l.delete()
+                        t0.ln.clear()
                 // open a trade
                 bool  add  = z.entries > 0
                 float zSl  = z.dir < 0 ? math.max(zI, high) + slBuf * atr : math.min(zI, low) - slBuf * atr
                 float dist = slMode == "Fixed points" ? slPts : math.abs(close - zSl)
+                dist := math.max(dist, slMin)
                 float cap  = timeframe.isdwm ? slMaxD : slMax
                 if cap > 0
                     dist := math.min(dist, cap)
@@ -350,6 +352,7 @@ for z in zLive
                     ln.push(line.new(bar_index, sl, bar_index + 1, sl, color = color.new(cSell, 20), style = line.style_dashed))
                     for p in tps
                         ln.push(line.new(bar_index, p, bar_index + 1, p, color = color.new(cBuy, 45), style = line.style_dotted))
+                    ln.push(line.new(bar_index, close, bar_index + 1, close, color = color.new(color.white, 30), style = line.style_solid))
                 tLive.push(Trade.new(z.dir, close, sl, dist, tps, 0, bar_index, dKey, 0.0, 1.0, 1, add, lb, ln, z))
                 z.entries += 1
                 z.lastE   := bar_index
