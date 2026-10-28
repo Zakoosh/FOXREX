@@ -1,118 +1,188 @@
 {
   "schemaVersion": 1,
-  "date": "2026-10-27",
-  "checkedAt": "2026-10-27T09:15:00Z",
+  "date": "2026-10-28",
+  "checkedAt": "2026-10-28T06:32:25Z",
   "note": "Read by the admin session checklist (studio/trading-desk.js). Update once per trading day before the London open. Values: 0 = first option (rising / hawkish / escalation / yes), 1 = middle, 2 = third option. Judgement factors live here. Market factors (DXY, 10Y, VIX, oil, futures, gold trend, calendar) are computed automatically from data/quotes.json, data/market/ai-technical.json and data/calendar.json; the values here are only a fallback when that data is missing or stale. levels.goldLevels: analyst spot levels from today's sources ({p: price, l: Arabic label}); the desk merges them with computed levels.",
   "values": {
     "dxy": 0,
     "y10": 1,
     "vix": 2,
-    "oil": 2,
-    "gTr": 2,
+    "oil": 0,
+    "gTr": 1,
     "fed": 0,
-    "real": 1,
-    "geo": 1,
+    "geo": 0,
     "flows": 1,
     "earn": 1,
-    "spk": 2,
+    "spk": 0,
     "ah": 0
   },
   "why": {
-    "dxy": "قرب أعلى أسبوعين؛ مقاومة 102.35–102.50 ودعم 101.50 (احتياطي إلى أن تصل لقطة DXY الحية).",
-    "y10": "حول 5.00% وتراجع أقل من نقطة أساس أمس.",
-    "vix": "18.27 بانخفاض 6% أمس بعد أن تجاوز 20 الأسبوع الماضي.",
-    "oil": "برنت ~115$ وتراجع 1.8% أمس بعد أن كان قرب أعلى 6 أشهر.",
-    "gTr": "أدنى 3 أشهر عند 3,975 يوم الجمعة، وأسوأ أسبوع منذ 4 أشهر.",
-    "fed": "تثبيت الفائدة غداً مسعّر بنحو 90%، واحتمال رفع ديسمبر 76–82% (CME FedWatch). بنك أوف أمريكا يتوقع رفعاً هذا الأسبوع.",
-    "real": "لا توجد قراءة موثقة لعوائد TIPS اليوم؛ العائد الاسمي لعشر سنوات قرب 5.00% بعد قمة فوق 5.3% مطلع أكتوبر.",
-    "geo": "وزير الدفاع السعودي في طهران لمحادثات تهدئة، والسوق يشكك في نجاحها؛ برنت قرب 115$.",
-    "flows": "لا بيانات موثقة عن تدفقات صناديق الذهب أو مشتريات البنوك المركزية في مصادر اليوم.",
-    "earn": "لا نتائج لشركات التكنولوجيا الكبرى اليوم. مايكروسوفت وألفابت بعد إغلاق 28 أكتوبر، وأمازون 29 أكتوبر.",
-    "spk": "فترة الصمت الإعلامي للفيدرالي قبل قرار 28 أكتوبر.",
-    "ah": "فيزا وروبنهود بعد إغلاق اليوم."
+    "dxy": "مؤشر الدولار ارتفع 0.44% أمس إلى 102.41 (احتياطي إلى أن تصل لقطة DXY الحية).",
+    "y10": "عائد السندات لعشر سنوات حول 5.00% دون تغير يُذكر أمس.",
+    "vix": "VIX عند 17.52 بانخفاض 4.7% أمس مع صعود أسهم التكنولوجيا.",
+    "oil": "برنت عاد فوق 115$ (+1.3%) صباح اليوم بعد إعلان الحوثيين ضرب أكبر مصفاة سعودية.",
+    "gTr": "الذهب ارتد نحو 1% أمس من قرب أدنى 3 أشهر ثم تراجع 0.3% إلى 4,045 صباح اليوم؛ لا اتجاه واضح قبل القرار.",
+    "fed": "التثبيت عند 3.75–4.00% مرجّح اليوم، لكن CME FedWatch يسعّر نحو 84% لرفع في ديسمبر.",
+    "geo": "الحوثيون أعلنوا ضرب مصفاة سعودية بطاقة 550 ألف برميل يومياً (لم تؤكده الرياض)، رغم محادثات التهدئة في طهران.",
+    "flows": "لا بيانات تدفقات ETF موثقة اليوم؛ مشتريات البنوك المركزية في النصف الأول 345 طناً، الأدنى منذ 2022 (مجلس الذهب العالمي).",
+    "earn": "لا نتائج لشركات عملاقة قبل الافتتاح (ADP وGE Vernova وBoston Scientific فقط)؛ مايكروسوفت وألفابت بعد الإغلاق.",
+    "spk": "المؤتمر الصحفي للرئيس وارش بعد القرار اليوم (21:30 إسطنبول تقريباً).",
+    "ah": "مايكروسوفت وألفابت وServiceNow وKLA وFord بعد إغلاق اليوم."
   },
   "facts": [
     {
-      "k": "الذهب الفوري",
-      "v": "4,003",
-      "d": "−0.3% · قرب أدنى 3 أشهر"
-    },
-    {
       "k": "فائدة الفيدرالي",
       "v": "3.75–4.00%",
-      "d": "القرار 28 أكتوبر 21:00 إسطنبول"
+      "d": "القرار اليوم 21:00 إسطنبول · تثبيت متوقع"
     },
     {
       "k": "احتمال رفع ديسمبر",
-      "v": "76–82%",
-      "d": "التثبيت هذا الأسبوع ~90%"
+      "v": "~84%",
+      "d": "CME FedWatch (رويترز)"
     },
     {
       "k": "برنت",
-      "v": "~115$",
-      "d": "يتراجع مع محادثات طهران"
+      "v": "فوق 115$",
+      "d": "هجوم الحوثيين على مصفاة سعودية"
+    },
+    {
+      "k": "نتائج بعد الإغلاق",
+      "v": "MSFT · GOOGL",
+      "d": "وأمازون غداً مع بيانات PCE"
+    },
+    {
+      "k": "توقع رويترز للذهب 2026",
+      "v": "4,495$",
+      "d": "خُفض للربع الثاني على التوالي"
     }
   ],
   "brief": [
-    "الذهب يتداول على توقعات الفيدرالي أكثر من الخليج: أسوأ أسبوع منذ 4 أشهر، والدولار قرب أعلى أسبوعين يحدّ من الارتدادات.",
-    "المؤشرات الأمريكية أغلقت مرتفعة في 26 أكتوبر بدعم موجة الذكاء الاصطناعي بعد إعلان اكتتاب Anthropic، وتراجع النفط خفّف ضغط التضخم.",
-    "السؤال يوم 28 أكتوبر هو لغة الرئيس وارش بشأن ديسمبر، وليس قرار هذا الأسبوع.",
-    "سيناريو الذهب: صعود لـ4,110 إذا بقي باب ديسمبر مفتوحاً وجاء PCE ضعيفاً، وهبوط لـ3,890 إذا كُسر 3,975 بإشارة رفع وPCE قوي."
+    "اليوم يوم الفيدرالي: التثبيت شبه محسوم، والسوق يقرأ لغة وارش حول رفع ديسمبر المسعّر بنحو 84%.",
+    "عودة برنت فوق 115$ بعد هجوم الحوثيين ترفع مخاوف التضخم وتدعم الدولار والعوائد، ما يضغط على الذهب رغم عامل الملاذ.",
+    "المؤشرات الأمريكية: ناسداك +1.18% وS&P +0.60% أمس بقيادة التكنولوجيا، بينما الداو شبه ثابت عند 52,378 بعد هبوط بوينغ ~10%.",
+    "نتائج مايكروسوفت وألفابت بعد الإغلاق قد تحرك عقود ناسداك والداو بعد القرار؛ توقّع تقلص الحركة قبل الإعلان.",
+    "سيناريو الذهب: الثبات فوق 4,070 يفتح 4,088 ثم 4,108، والكسر دون 4,050 يفتح 4,032–4,013 ثم دعم 4,000 (مستويات المحللين، للتعليم فقط)."
   ],
   "levels": {
-    "gold": "R 4,075–4,110 · S 3,975 (3M low) · S 3,940–3,960 · S 3,890 / 3,800",
-    "indices": "SPX 7,677 (+0.7%) · Nasdaq Comp 26,169 (+0.8%) — close 26 Oct",
+    "gold": "R 4,088 / 4,108 · pivot 4,050–4,070 · S 4,032 / 4,013 / 4,000 / 3,975 (3M low)",
+    "indices": "Dow 52,378 (+0.03%) · SPX 7,723 (+0.60%) · Nasdaq 26,478 (+1.18%) — close 27 Oct · US30 R 52,800/52,935 · S 51,860",
     "goldLevels": [
       {
-        "p": 4110,
-        "l": "هدف سيناريو الصعود (FinanceFeeds)"
+        "p": 4108,
+        "l": "هدف صعودي ممتد – دعم يومي سابق (Dominion Markets)"
       },
       {
-        "p": 4075,
-        "l": "بداية منطقة الارتداد 4,075–4,110 (Shvedov)"
+        "p": 4088,
+        "l": "مقاومة 4 ساعات (Dominion Markets)"
+      },
+      {
+        "p": 4070,
+        "l": "مستوى تفعيل الصعود (Dominion Markets)"
+      },
+      {
+        "p": 4050,
+        "l": "مستوى تفعيل الهبوط (Dominion Markets)"
+      },
+      {
+        "p": 4032,
+        "l": "هدف هبوطي أول (Dominion Markets)"
+      },
+      {
+        "p": 4013,
+        "l": "هدف هبوطي ثانٍ (Dominion Markets)"
+      },
+      {
+        "p": 4000,
+        "l": "دعم 4,000 محور التركيز مع قرار الفيدرالي (BabyPips)"
       },
       {
         "p": 3975.23,
-        "l": "أدنى 3 أشهر (الجمعة 23 أكتوبر)"
+        "l": "أدنى 3 أشهر – 23 أكتوبر (FinanceFeeds)"
+      }
+    ],
+    "us30Levels": [
+      {
+        "p": 53700,
+        "l": "مقاومة 3 – هدف بعد الاختراق (Orbex)"
       },
       {
-        "p": 3950,
-        "l": "منطقة قيعان يونيو 3,940–3,960"
+        "p": 53350,
+        "l": "مقاومة 2 (Orbex)"
       },
       {
-        "p": 3890,
-        "l": "هدف سيناريو الهبوط"
+        "p": 52935,
+        "l": "مستوى الاختراق / قمة الأسبوع 52,933 (Orbex · CapitalStreetFX)"
       },
       {
-        "p": 3800,
-        "l": "تحذير Tastylive: كسر 3,900 يفتح 3,800"
+        "p": 52800,
+        "l": "مقاومة 1 (Orbex)"
+      },
+      {
+        "p": 52401,
+        "l": "مقاومة المتوسط (CapitalStreetFX)"
+      },
+      {
+        "p": 51860,
+        "l": "دعم 1 – قاع الأسبوع 51,869 (Orbex · CapitalStreetFX)"
+      },
+      {
+        "p": 51000,
+        "l": "دعم 2 (Orbex)"
+      },
+      {
+        "p": 50520,
+        "l": "دعم 3 (Orbex)"
       }
     ]
   },
   "sources": [
     {
+      "name": "Business Recorder (Reuters) – Gold",
+      "url": "https://www.brecorder.com/news/40446276/gold-slips-on-oil-fuelled-inflation-fears-ahead-of-fed-meeting"
+    },
+    {
+      "name": "Business Recorder (Reuters) – Oil",
+      "url": "https://www.brecorder.com/news/40446270/oil-prices-rise-after-attack-on-saudi-arabian-refinery-reignites-supply-concerns"
+    },
+    {
+      "name": "Discovery Alert",
+      "url": "https://discoveryalert.com/news/gold-price-oil-spike-fed-hike-fears-october-2026/"
+    },
+    {
+      "name": "Dominion Markets",
+      "url": "https://www.dominionmarkets.com/marketanalysis/2026/10/27/xauusd-technical-analysis-28th-october-2026-1h-chart/"
+    },
+    {
+      "name": "BabyPips",
+      "url": "https://www.babypips.com/analysis/premium-strategy-2026-10-28-gold-xauusd"
+    },
+    {
       "name": "FinanceFeeds",
       "url": "https://financefeeds.com/gold-price-today-4004-tuesday-three-month-low-fomc-day-one-pce-thursday-bull-4110-bear-3890/"
     },
     {
-      "name": "Invezz",
-      "url": "https://invezz.com/uk/news/2026/10/27/gold-prices-fall-ahead-of-fed-meet-as-analyst-warns-trouble-below-this-level/"
+      "name": "Orbex",
+      "url": "https://www.orbex.com/blog/en/2026/10/dow-jones-27-10-2026"
     },
     {
-      "name": "HDFC Sky",
-      "url": "https://hdfcsky.com/news/nasdaq-jumps-0-82percent-as-anthropic-ipo-filing-revives-ai-trade-lifting-us-stocks-october-27-2026"
+      "name": "Capital Street FX",
+      "url": "https://www.capitalstreetfx.com/market-analysis/indices-this-week-26-30-october-2026/"
     },
     {
-      "name": "Seoul Economic Daily",
-      "url": "https://en.sedaily.com/international/2026/10/26/us-economists-see-fed-holding-rates-on-the-28th-hiking-in"
+      "name": "TheStreet",
+      "url": "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-oct-27-2026"
     },
     {
-      "name": "FX Empire",
-      "url": "https://www.fxempire.com/forecasts/article/u-s-dollar-gains-ground-as-traders-focus-on-middle-east-tensions-analysis-for-eur-usd-gbp-usd-usd-cad-usd-jpy-1640470"
+      "name": "The Rio Times",
+      "url": "https://www.riotimesonline.com/global-economy-briefing-october-28-2026/"
     },
     {
-      "name": "Gotrade",
-      "url": "https://www.heygotrade.com/en/news/weekly-economic-outlook-2026-10-26/"
+      "name": "Investing.com – Earnings",
+      "url": "https://investing.com/news/stock-market-news/microsoft-google-ford-and-more-set-to-report-earnings-wednesday-93CH-4976592"
+    },
+    {
+      "name": "Tech Insider",
+      "url": "https://tech-insider.org/futures-mixed-fed-microsoft-alphabet-earnings-oct-28-2026/"
     }
   ]
 }
