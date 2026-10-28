@@ -12,9 +12,13 @@
 //    level (default 78.6%). On intraday charts, finished zones from previous days are hidden.
 // 5. Entry when price is in the zone and stalls (rejection candle, or touch), on bar close. Each later
 //    stall in the same zone gives a reinforcement entry ("+"), up to a maximum per zone.
-// 6. Four targets in points (default 2.5 / 5 / 10 / 20), 25% closed at each. Stop at the zone
-//    invalidation or fixed points, capped at a maximum (default 10 points). Stop moves to entry after
-//    TP1 and trails to the previous target after TP2 (optional).
+// 6. Four targets in points (default 2.5 / 5 / 10 / 20). The trade stays open until the stop or TP4.
+//    Stop at the zone invalidation or fixed points, capped at 10 points (50 on D/W/M charts).
+//    A trade that reached any target counts as a win, even if the stop is hit later. Result points =
+//    the highest target reached (or the stop loss if no target was reached). Optional: stop to entry
+//    after TP1, trailing after TP2, or 25%-per-target accounting.
+//    Entries only in the direction of the current structure (last BOS), and a zone stops giving
+//    entries after one of its trades is stopped out before TP1.
 // 7. Abnormal-candle filter: no entries after a candle larger than k × ATR or a point limit.
 // 8. Daily scorecard: trades, wins (TP1 reached), losses, win rate and net points.
 // Nothing repaints: swings confirm after the right-side bars, every decision uses closed bars.
@@ -38,6 +42,7 @@ int    maxWait = input.int(300, "Zone life (bars after the leg end)", minval = 5
 string trig    = input.string("Rejection candle", "Entry trigger", options = ["Rejection candle", "Touch"], group = G2, tooltip = "Rejection candle: price is in the zone and the candle closes in the trend direction without closing beyond the zone end")
 int    maxEnt  = input.int(3, "Max entries per zone (1 = no reinforcement)", minval = 1, maxval = 10, group = G2)
 int    reCool  = input.int(3, "Bars between entries in the same zone", minval = 1, group = G2)
+bool   withTr  = input.bool(true, "Only trade with the current structure (last BOS)", group = G2, tooltip = "Sell zones give entries only while the last break was bearish, buy zones only while it was bullish")
 
 string G3      = "Trade"
 float  tp1Pts  = input.float(2.5, "TP1 (points)", minval = 0.0, step = 0.5, group = G3, inline = "t1")
@@ -47,10 +52,12 @@ float  tp4Pts  = input.float(20.0, "TP4", minval = 0.0, step = 0.5, group = G3, 
 string slMode  = input.string("Zone invalidation", "Stop", options = ["Zone invalidation", "Fixed points"], group = G3)
 float  slPts   = input.float(8.0, "Stop (points, fixed mode)", minval = 0.0, step = 0.5, group = G3)
 float  slMax   = input.float(10.0, "Maximum stop (points, 0 = no cap)", minval = 0.0, step = 0.5, group = G3)
+float  slMaxD  = input.float(50.0, "Maximum stop on D / W / M charts (points)", minval = 0.0, step = 1.0, group = G3)
 float  slBuf   = input.float(0.1, "Stop buffer (× ATR, zone mode)", minval = 0.0, step = 0.05, group = G3)
-bool   beAfter = input.bool(true, "Stop to entry after TP1", group = G3)
-bool   trail   = input.bool(true, "Trail stop to the previous target after TP2", group = G3)
-int    maxBars = input.int(60, "Close trade after (bars)", minval = 5, group = G3)
+bool   beAfter = input.bool(false, "Move stop to entry after TP1 (break-even)", group = G3)
+bool   trail   = input.bool(false, "Trail stop to the previous target after TP2", group = G3)
+string acct    = input.string("Highest target reached", "Result points", options = ["Highest target reached", "25% closed at each target"], group = G3)
+int    maxBars = input.int(200, "Close trade after (bars)", minval = 5, group = G3)
 
 string G5      = "Abnormal candle filter"
 bool   useSpk  = input.bool(true, "Skip signals after an abnormal candle", group = G5)
@@ -101,6 +108,7 @@ type Trade
     bool         add
     label        lb
     array<line>  ln
+    Zone         zn
 
 // Retracement level r of the leg (0 = leg end, 1 = leg start) — works for both directions.
 lvl(Zone z, float r) =>
@@ -299,13 +307,14 @@ for z in zLive
                     evBuyZone := true
             if invalid
                 zoneEnd(z, 13)
-            else if (inZone or (z.entries == 0 and z.touched)) and (trig == "Touch" or rej) and not spkBlock and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
+            else if (inZone or (z.entries == 0 and z.touched)) and (trig == "Touch" or rej) and not spkBlock and (not withTr or z.dir == trend) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
                 // open a trade
                 bool  add  = z.entries > 0
                 float zSl  = z.dir < 0 ? math.max(zI, high) + slBuf * atr : math.min(zI, low) - slBuf * atr
                 float dist = slMode == "Fixed points" ? slPts : math.abs(close - zSl)
-                if slMax > 0
-                    dist := math.min(dist, slMax)
+                float cap  = timeframe.isdwm ? slMaxD : slMax
+                if cap > 0
+                    dist := math.min(dist, cap)
                 float sl   = close - z.dir * dist
                 array<float> tps = array.from(close + z.dir * tp1Pts, close + z.dir * tp2Pts, close + z.dir * tp3Pts, close + z.dir * tp4Pts)
                 string side = z.dir < 0 ? "SELL" : "BUY"
@@ -316,7 +325,7 @@ for z in zLive
                     ln.push(line.new(bar_index, sl, bar_index + 1, sl, color = color.new(cSell, 20), style = line.style_dashed))
                     for p in tps
                         ln.push(line.new(bar_index, p, bar_index + 1, p, color = color.new(cBuy, 45), style = line.style_dotted))
-                tLive.push(Trade.new(z.dir, close, sl, dist, tps, 0, bar_index, dKey, 0.0, 1.0, 1, add, lb, ln))
+                tLive.push(Trade.new(z.dir, close, sl, dist, tps, 0, bar_index, dKey, 0.0, 1.0, 1, add, lb, ln, z))
                 z.entries += 1
                 z.lastE   := bar_index
                 score(dKey, 0, 1)
@@ -346,6 +355,7 @@ for t in tLive
                 res   := t.hits == 0 ? "✗ SL" : t.sl == t.entry ? "✓ TP" + str.tostring(t.hits) + " · BE" : "✓ TP" + str.tostring(t.hits) + " · stop"
                 if t.hits == 0
                     score(t.dKey, 2, 1)
+                    t.zn.entries := maxEnt
             else
                 int before = t.hits
                 while t.hits < 4 and (t.dir < 0 ? low <= t.tps.get(t.hits) : high >= t.tps.get(t.hits))
@@ -362,7 +372,7 @@ for t in tLive
                     if t.ln.size() > 0
                         t.ln.get(0).set_y1(t.sl)
                         t.ln.get(0).set_y2(t.sl)
-                    t.lb.set_text((t.dir < 0 ? "SELL" : "BUY") + (t.add ? " +" : "") + " ✓TP" + str.tostring(t.hits))
+                    t.lb.set_text((t.dir < 0 ? "SELL" : "BUY") + (t.add ? " +" : "") + " ✓TP" + str.tostring(t.hits) + " · open")
                 if t.hits == 4
                     done := true
                     res  := "✓ TP4"
@@ -373,11 +383,13 @@ for t in tLive
                     res   := (t.hits > 0 ? "✓ TP" + str.tostring(t.hits) + " · " : "") + "⌛"
             if done
                 t.state := 10
+                if acct == "Highest target reached"
+                    t.net := t.hits > 0 ? math.abs(t.tps.get(t.hits - 1) - t.entry) : t.net
                 score(t.dKey, 3, t.net)
                 for l in t.ln
                     l.delete()
                 t.ln.clear()
-                bool won = t.net > 0
+                bool won = t.hits > 0 or t.net > 0
                 t.lb.set_text((t.dir < 0 ? "SELL" : "BUY") + (t.add ? " + " : " ") + res + "  " + sgnPts(t.net))
                 t.lb.set_size(won ? (t.add ? size.tiny : size.small) : size.tiny)
                 t.lb.set_color(won ? (t.dir < 0 ? #E0475F : #00A884) : color.new(#6B7280, 20))
