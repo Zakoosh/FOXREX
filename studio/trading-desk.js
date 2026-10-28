@@ -63,7 +63,7 @@ function installTradingDesk(){
   D.loaded=true; D.loading=false;
   if(st.d!==today()) st=loadState();
   if(!first&&S.view==='checklist'&&document.getElementById('td-facts')&&D._mounted){ document.getElementById('td-facts').innerHTML=factsHtml(); paint(); }
-  else if(['checklist','marketdata'].includes(S.view)) render();
+  else if(['checklist','marketdata','tvscript'].includes(S.view)) render();
  }
  const quote=sym=>(D.quotes&&D.quotes.quotes||[]).find(x=>x.symbol===sym);
  const ageMin=iso=>iso?(Date.now()-Date.parse(iso))/60000:Infinity;
