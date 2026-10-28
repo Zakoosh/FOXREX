@@ -19,6 +19,7 @@
 //    after TP1, trailing after TP2, or 25%-per-target accounting.
 //    Entries only in the direction of the current structure (last BOS), and a zone stops giving
 //    entries after one of its trades is stopped out before TP1.
+// 6b. One trade at a time: a new signal closes the open trade at its close ("⇄ new signal").
 // 7. Abnormal-candle filter: no entries after a candle larger than k × ATR or a point limit.
 // 8. Daily scorecard: trades, wins (TP1 reached), losses, win rate and net points.
 // Nothing repaints: swings confirm after the right-side bars, every decision uses closed bars.
@@ -231,6 +232,22 @@ score(int key, int i, float v) =>
         bump(stY, i, v)
     true
 
+// Close a trade: result points, scorecard, remove its lines, keep one label with side, result, points.
+closeTrade(Trade t, string res) =>
+    t.state := 10
+    if acct == "Highest target reached"
+        t.net := t.hits > 0 ? math.abs(t.tps.get(t.hits - 1) - t.entry) : t.net
+    score(t.dKey, 3, t.net)
+    for l in t.ln
+        l.delete()
+    t.ln.clear()
+    bool won = t.hits > 0 or t.net > 0
+    t.lb.set_text((t.dir < 0 ? "SELL" : "BUY") + (t.add ? " + " : " ") + res + "  " + sgnPts(t.net))
+    t.lb.set_size(won ? (t.add ? size.tiny : size.small) : size.tiny)
+    t.lb.set_color(won ? (t.dir < 0 ? #E0475F : #00A884) : color.new(#6B7280, 20))
+    t.lb.set_textcolor(won ? color.white : color.new(color.white, 25))
+    true
+
 newZone(int dir, float p0, int b0) =>
     Zone.new(dir, p0, b0, dir < 0 ? low : high, bar_index, 0, false, 0, na, dKey, na, na)
 
@@ -308,6 +325,14 @@ for z in zLive
             if invalid
                 zoneEnd(z, 13)
             else if (inZone or (z.entries == 0 and z.touched)) and (trig == "Touch" or rej) and not spkBlock and (not withTr or z.dir == trend) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
+                // one trade at a time: a new signal closes the open trade at this close
+                for t0 in tLive
+                    if t0.state == 1
+                        t0.net += t0.rem * t0.dir * (close - t0.entry)
+                        t0.rem := 0.0
+                        if t0.hits == 0 and t0.net < 0
+                            score(t0.dKey, 2, 1)
+                        closeTrade(t0, (t0.hits > 0 ? "✓ TP" + str.tostring(t0.hits) + " · " : "") + "⇄ new signal")
                 // open a trade
                 bool  add  = z.entries > 0
                 float zSl  = z.dir < 0 ? math.max(zI, high) + slBuf * atr : math.min(zI, low) - slBuf * atr
@@ -381,19 +406,10 @@ for t in tLive
                     t.rem := 0.0
                     done  := true
                     res   := (t.hits > 0 ? "✓ TP" + str.tostring(t.hits) + " · " : "") + "⌛"
+                    if t.hits == 0 and t.net < 0
+                        score(t.dKey, 2, 1)
             if done
-                t.state := 10
-                if acct == "Highest target reached"
-                    t.net := t.hits > 0 ? math.abs(t.tps.get(t.hits - 1) - t.entry) : t.net
-                score(t.dKey, 3, t.net)
-                for l in t.ln
-                    l.delete()
-                t.ln.clear()
-                bool won = t.hits > 0 or t.net > 0
-                t.lb.set_text((t.dir < 0 ? "SELL" : "BUY") + (t.add ? " + " : " ") + res + "  " + sgnPts(t.net))
-                t.lb.set_size(won ? (t.add ? size.tiny : size.small) : size.tiny)
-                t.lb.set_color(won ? (t.dir < 0 ? #E0475F : #00A884) : color.new(#6B7280, 20))
-                t.lb.set_textcolor(won ? color.white : color.new(color.white, 25))
+                closeTrade(t, res)
                 lastTrade    := (t.dir < 0 ? "SELL " : "BUY ") + fmtP(t.entry) + " → " + sgnPts(t.net)
                 lastTradeDir := t.dir
 
