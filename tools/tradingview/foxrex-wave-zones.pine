@@ -1,104 +1,100 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX — foxrex.co
 //
-// FOXREX · Wave Retracement Zones
-// Sequential buy / sell zones from wave retracements.
-// Local zones: the chart's own timeframe (grey fill, dashed border in the side colour, labelled with the timeframe).
-// Major zones: a higher timeframe (default 15 minutes), drawn on every lower timeframe with a solid coloured
-// border and the timeframe in the label, e.g. "M15 BUY ZONE · MAJOR".
-// 1. Swings are confirmed pivots (swing length bars on each side).
-// 2. Break of structure (BOS): a candle closes beyond the last swing high (bullish) or swing low (bearish).
-// 3. Leg start (fib 0%): by default the first price stall after the break. When the wave is clean and
-//    pauses shortly after the break, the low of that pause (high for sells) becomes the new start of the
-//    leg once price closes beyond the pause and continues. Otherwise the swing that started the move.
-//    The leg end (fib 100%) follows new extremes until price first comes back to the zone.
-// 4. Zone = retracement between "Zone start" (default 50%) and "Zone end" (default 61.8%) of the leg.
-//    Zones stay until price closes beyond the invalidation level (default 78.6%). On intraday charts,
-//    finished zones and trades from previous days are hidden.
-// 5. Entry (default): limit at the middle of the zone, or a rejection candle in the zone (bullish / bearish
-//    close or a pin bar), whichever comes first. One trade at a time on each timeframe: no new entry while
-//    a trade is open, and a new signal never closes the open trade. After a trade closes, the zone can give
-//    a reinforcement entry ("+") once price has moved away and comes back.
-// 6. Major filter (default): while price is reacting inside an active major zone (touched, not invalidated,
-//    leg extreme not yet broken), local entries against that zone are blocked.
-//    Trades from other timeframes are not mixed in: the chart shows its own trades, plus the major
-//    timeframe's trade only while that trade is open.
-// 7. Four targets in points (default 2.5 / 5 / 10 / 20), recorded the moment price touches them.
-//    Stop at the zone invalidation or fixed points, between 3 and 10 points (up to 50 on D/W/M charts).
-//    Profit protection (default "Step"): after TP1 the stop moves to entry, after TP2 to TP1, after TP3 to TP2.
-//    A trade that reached a target is a win and is never shown as a stop loss: it ends as "BE" or "locked".
-//    Result points = the highest target reached (or the stop loss when no target was reached).
-// 7b. Daily buy / sell zones (support / resistance from the daily engine of FOXREX Levels) are drawn on
-//     every timeframe from the start of today's session, in a light fill with labels on the right edge.
-// 8. Abnormal-candle filter and daily scorecard (trades, wins = TP1 reached, losses, win rate, net points).
-// Nothing repaints: swings confirm after the right-side bars, every decision uses closed bars, and the
-// major timeframe is read from its last closed bar.
+// FOXREX · Wave Retracement Zones (v8)
+// Three kinds of buy / sell zones, each with its own look so nothing overlaps:
+//   • Local zones  — the chart's timeframe: grey fill, dashed border in the side colour, "M5 BUY ZONE".
+//   • Major zones  — a higher timeframe that sets the direction (auto: 1m→15m, 5m→1H, 15m→4H, 1H→D):
+//                    coloured fill, solid border, "H1 BUY ZONE · MAJOR". A local zone that sits inside a
+//                    major zone of the same side is not drawn twice.
+//   • Daily zones  — today's daily support (buy) / resistance (sell): light band with the name at the right edge.
+// Zones: break of structure → retracement of the impulse leg between 50% and 61.8%. Fib 0% = the first stall
+// after the break when the wave is clean, otherwise the swing before the break. At most two live zones per side
+// per timeframe; finished zones are removed (option to keep them).
+// Trades come only from these zones:
+//   • local zone: limit at the middle of the zone or a rejection candle in it, whichever comes first;
+//   • major zone: same rule on the major zone, seen on the chart timeframe;
+//   • daily zone: a candle that dips into the zone and closes back out of it (rejection).
+// Direction: by default trades must agree with the major timeframe's structure, and nothing is taken against
+// a major zone that price is reacting in. One trade at a time per timeframe; a new signal never closes it.
+// Targets and stops follow the timeframe (auto profile) — the stop sits beyond the zone, inside a range:
+//   1m  TP 1 / 2 / 3 / 5      stop 1.5–4      (quick scalps)
+//   5m  TP 2.5 / 5 / 10 / 15  stop 3–8
+//   15m TP 2.5 / 5 / 10 / 20  stop 4–10
+//   1H+ TP 5 / 10 / 20 / 40   stop 5–10       D/W/M: TP 10 / 20 / 40 / 80, stop up to 50
+//   Trades from major and daily zones use at least the 5m targets and a stop of up to 10 points.
+// A trade that has not reached TP1 within "No-progress exit" bars is closed at market (time exit), and every
+// trade is closed after "Maximum trade life" bars. Profit protection: stop to entry after TP1, to TP1 after
+// TP2, to TP2 after TP3. A trade that touched a target is a win and is never shown as a stop loss.
+// Daily scorecard per timeframe at the bottom. Nothing repaints: decisions use closed bars, higher timeframes
+// are read from their last closed bar.
 // Educational tool, not investment advice.
 
 //@version=6
 indicator("FOXREX · Wave Retracement Zones", shorttitle = "FOXREX Waves", overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500, max_bars_back = 500)
 
 // ───────────────────────────── Inputs
-string G1      = "Structure"
+string G0      = "Targets & stops"
+string profile = input.string("Auto by timeframe", "Profile", options = ["Auto by timeframe", "Custom"], group = G0, tooltip = "Auto: 1m TP 1/2/3/5 stop 1.5–4 · 5m TP 2.5/5/10/15 stop 3–8 · 15m TP 2.5/5/10/20 stop 4–10 · 1H+ TP 5/10/20/40 stop 5–10 · D+ TP 10/20/40/80 stop up to 50. Custom: the values below on every timeframe.", display = display.none)
+float  tp1Pts  = input.float(2.5, "Custom TP1", minval = 0.1, step = 0.5, group = G0, inline = "t1", display = display.none)
+float  tp2Pts  = input.float(5.0, "TP2", minval = 0.1, step = 0.5, group = G0, inline = "t1", display = display.none)
+float  tp3Pts  = input.float(10.0, "Custom TP3", minval = 0.1, step = 0.5, group = G0, inline = "t2", display = display.none)
+float  tp4Pts  = input.float(20.0, "TP4", minval = 0.1, step = 0.5, group = G0, inline = "t2", display = display.none)
+float  slMinC  = input.float(3.0, "Custom stop min", minval = 0.1, step = 0.5, group = G0, inline = "s", display = display.none)
+float  slMaxC  = input.float(10.0, "max", minval = 0.5, step = 0.5, group = G0, inline = "s", display = display.none)
+float  slImp   = input.float(10.0, "Max stop · major / daily zone trades", minval = 1.0, step = 0.5, group = G0, display = display.none)
+float  slMaxD  = input.float(50.0, "Max stop on D / W / M charts", minval = 1.0, step = 1.0, group = G0, display = display.none)
+float  slBuf   = input.float(0.1, "Stop buffer beyond the zone (× ATR)", minval = 0.0, step = 0.05, group = G0, display = display.none)
+int    noProg  = input.int(15, "No-progress exit (bars without TP1, 0 = off)", minval = 0, group = G0, tooltip = "1m: 15 minutes · 5m: 75 minutes · 15m: under 4 hours", display = display.none)
+int    maxBars = input.int(60, "Maximum trade life (bars)", minval = 5, group = G0, display = display.none)
+string protect = input.string("Step: entry after TP1, then previous target", "Profit protection", options = ["Step: entry after TP1, then previous target", "Entry after TP1 only", "Off (keep the original stop)"], group = G0, display = display.none)
+string acct    = input.string("Highest target reached", "Result points", options = ["Highest target reached", "25% closed at each target"], group = G0, display = display.none)
+
+string G1      = "Structure & local zones"
 int    swLen   = input.int(5, "Swing length (bars each side)", minval = 1, maxval = 50, group = G1, display = display.none)
 bool   useWick = input.bool(false, "Break on wick (off = candle close)", group = G1, display = display.none)
-bool   showBos = input.bool(true, "Show BOS lines", group = G1, display = display.none)
-string anchor  = input.string("First stall after the break", "Leg start (fib 0%)", options = ["First stall after the break", "Swing before the break"], group = G1, tooltip = "First stall after the break: when price pauses after breaking the high (low) and then closes beyond the pause, the pause low (high) becomes fib 0%. If the pause retraces into the zone first, the swing before the break stays the start.", display = display.none)
+string anchor  = input.string("First stall after the break", "Leg start (fib 0%)", options = ["First stall after the break", "Swing before the break"], group = G1, display = display.none)
+float  fEntry  = input.float(0.5, "Zone start (retracement)", minval = 0.236, maxval = 0.886, step = 0.01, group = G1, display = display.none)
+float  fZone   = input.float(0.618, "Zone end (retracement)", minval = 0.236, maxval = 0.95, step = 0.01, group = G1, display = display.none)
+float  fInv    = input.float(0.786, "Invalidation (retracement)", minval = 0.5, maxval = 1.0, step = 0.01, group = G1, display = display.none)
+float  minLeg  = input.float(1.5, "Minimum leg size (× ATR)", minval = 0.0, step = 0.1, group = G1, display = display.none)
+int    maxWait = input.int(300, "Zone life (bars after the leg end)", minval = 5, group = G1, display = display.none)
+string trig    = input.string("Middle limit or rejection", "Entry", options = ["Middle limit or rejection", "Limit at zone middle", "Rejection candle"], group = G1, display = display.none)
+int    maxEnt  = input.int(2, "Max entries per zone", minval = 1, maxval = 10, group = G1, display = display.none)
+int    reCool  = input.int(3, "Bars between entries in the same zone", minval = 1, group = G1, display = display.none)
+bool   withTr  = input.bool(true, "Local zones: only with the local structure (last BOS)", group = G1, display = display.none)
 
-string G2      = "Retracement zone"
-float  fEntry  = input.float(0.5, "Zone start (retracement)", minval = 0.236, maxval = 0.886, step = 0.01, group = G2, display = display.none)
-float  fZone   = input.float(0.618, "Zone end (retracement)", minval = 0.236, maxval = 0.95, step = 0.01, group = G2, display = display.none)
-float  fInv    = input.float(0.786, "Invalidation (retracement)", minval = 0.5, maxval = 1.0, step = 0.01, group = G2, tooltip = "A candle close beyond this level ends the zone. 1.0 = the start of the leg", display = display.none)
-float  minLeg  = input.float(1.5, "Minimum leg size (× ATR)", minval = 0.0, step = 0.1, group = G2, display = display.none)
-int    maxWait = input.int(300, "Zone life (bars after the leg end)", minval = 5, group = G2, display = display.none)
-string trig    = input.string("Middle limit or rejection", "Entry", options = ["Middle limit or rejection", "Limit at zone middle", "Rejection candle", "Touch"], group = G2, tooltip = "Middle limit or rejection: whichever comes first, a fill at the middle of the box (entry = that price) or a candle that dips into the zone and closes back in the trend direction or as a pin bar (entry = candle close).", display = display.none)
-int    maxEnt  = input.int(3, "Max entries per zone (1 = no reinforcement)", minval = 1, maxval = 10, group = G2, display = display.none)
-int    reCool  = input.int(3, "Bars between entries in the same zone", minval = 1, group = G2, display = display.none)
-bool   withTr  = input.bool(true, "Only trade with the current structure (last BOS)", group = G2, tooltip = "Sell zones give entries only while the last break was bearish, buy zones only while it was bullish", display = display.none)
+string G6      = "Major timeframe (direction)"
+bool   showMaj = input.bool(true, "Use a major timeframe", group = G6, display = display.none)
+bool   majAuto = input.bool(true, "Auto (1m→15m, 5m→1H, 15m→4H, 1H→D)", group = G6, display = display.none)
+string majTfIn = input.timeframe("15", "Major timeframe when not auto", group = G6, display = display.none)
+string majFlt  = input.string("Major structure + active zone", "Direction filter", options = ["Major structure + active zone", "Active major zone only", "Off"], group = G6, tooltip = "Major structure: trades only in the direction of the major timeframe's last break of structure. Active zone: nothing against a major zone that price is reacting in.", display = display.none)
+bool   tradeMj = input.bool(true, "Take trades at major zones", group = G6, display = display.none)
+bool   showMjT = input.bool(true, "Show the major timeframe's open trade", group = G6, display = display.none)
 
-string G6      = "Major timeframe"
-bool   showMaj = input.bool(true, "Show major zones from a higher timeframe", group = G6, display = display.none)
-string majTf   = input.timeframe("15", "Major timeframe", group = G6, tooltip = "Major zones and the major open trade are drawn on every chart timeframe lower than this one", display = display.none)
-string majBlk  = input.string("Active major zone", "Block local entries against", options = ["Active major zone", "Major structure (last BOS)", "Off"], group = G6, tooltip = "Active major zone: while price is reacting inside a major buy zone (touched, not invalidated, leg high not yet broken), local sells are blocked, and the reverse for a major sell zone.", display = display.none)
-bool   showMjT = input.bool(true, "Show the major timeframe's trade while it is open", group = G6, display = display.none)
-
-string G3      = "Trade"
-float  tp1Pts  = input.float(2.5, "TP1 (points)", minval = 0.0, step = 0.5, group = G3, inline = "t1", display = display.none)
-float  tp2Pts  = input.float(5.0, "TP2", minval = 0.0, step = 0.5, group = G3, inline = "t1", display = display.none)
-float  tp3Pts  = input.float(10.0, "TP3 (points)", minval = 0.0, step = 0.5, group = G3, inline = "t2", display = display.none)
-float  tp4Pts  = input.float(20.0, "TP4", minval = 0.0, step = 0.5, group = G3, inline = "t2", display = display.none)
-string slMode  = input.string("Zone invalidation", "Stop", options = ["Zone invalidation", "Fixed points"], group = G3, display = display.none)
-float  slPts   = input.float(8.0, "Stop (points, fixed mode)", minval = 0.0, step = 0.5, group = G3, display = display.none)
-float  slMax   = input.float(10.0, "Maximum stop (points, 0 = no cap)", minval = 0.0, step = 0.5, group = G3, display = display.none)
-float  slMaxD  = input.float(50.0, "Maximum stop on D / W / M charts (points)", minval = 0.0, step = 1.0, group = G3, display = display.none)
-float  slMin   = input.float(3.0, "Minimum stop (points)", minval = 0.0, step = 0.5, group = G3, tooltip = "Stops tighter than this sit inside normal noise (spread + one-minute wicks) and get hit before the idea can work", display = display.none)
-float  slBuf   = input.float(0.1, "Stop buffer (× ATR, zone mode)", minval = 0.0, step = 0.05, group = G3, display = display.none)
-string protect = input.string("Step: entry after TP1, then previous target", "Profit protection", options = ["Step: entry after TP1, then previous target", "Entry after TP1 only", "Off (keep the original stop)"], group = G3, tooltip = "Step: after TP1 the stop moves to the entry (break-even), after TP2 to TP1, after TP3 to TP2. A trade that touched a target can no longer turn into a loss.", display = display.none)
-string acct    = input.string("Highest target reached", "Result points", options = ["Highest target reached", "25% closed at each target"], group = G3, display = display.none)
-int    maxBars = input.int(200, "Close trade after (bars)", minval = 5, group = G3, display = display.none)
+string G7      = "Daily zones (all timeframes)"
+bool   showDL  = input.bool(true, "Show daily buy / sell zones", group = G7, display = display.none)
+bool   tradeDL = input.bool(true, "Take trades at daily zones (rejection)", group = G7, display = display.none)
+int    dlN     = input.int(2, "Zones per side", minval = 1, maxval = 6, group = G7, display = display.none)
+float  dlRange = input.float(3.0, "Search range (× daily ATR)", minval = 1.0, step = 0.5, group = G7, display = display.none)
+float  dlMerge = input.float(0.12, "Merge distance (× daily ATR)", minval = 0.02, step = 0.02, group = G7, display = display.none)
+float  dlMinW  = input.float(2.5, "Minimum strength to trade a daily zone", minval = 0.0, step = 0.5, group = G7, display = display.none)
+bool   dlSwing = input.bool(true, "Include daily swing highs / lows", group = G7, display = display.none)
+float  dlStep  = input.float(0.0, "Round-number step (0 = auto)", minval = 0.0, group = G7, display = display.none)
+string dlAn    = input.string("", "Analyst levels (comma separated)", group = G7, display = display.none)
+int    dlExt   = input.int(12, "Extend right (bars)", minval = 0, maxval = 200, group = G7, display = display.none)
 
 string G5      = "Abnormal candle filter"
 bool   useSpk  = input.bool(true, "Skip signals after an abnormal candle", group = G5, display = display.none)
 float  spkK    = input.float(2.5, "Abnormal = range above (× ATR)", minval = 1.0, step = 0.1, group = G5, display = display.none)
-float  spkPts  = input.float(0.0, "…or range above (points, 0 = off)", minval = 0.0, step = 0.5, group = G5, display = display.none)
 int    spkLook = input.int(3, "Look back (bars)", minval = 1, maxval = 20, group = G5, display = display.none)
 
-string G7      = "Daily levels (all timeframes)"
-bool   showDL   = input.bool(true, "Show daily buy / sell zones", group = G7, tooltip = "Today's daily support (buy) and resistance (sell) zones, same engine as FOXREX Levels: prior day high/low/close, daily pivots, prior week high/low, 20-day range, daily swings, 20/50-day EMAs, round numbers and analyst levels. Drawn from the start of today's session on every timeframe.", display = display.none)
-int    dlN      = input.int(3, "Zones per side", minval = 1, maxval = 6, group = G7, display = display.none)
-float  dlRange  = input.float(3.0, "Search range (× daily ATR)", minval = 1.0, step = 0.5, group = G7, display = display.none)
-float  dlMerge  = input.float(0.12, "Merge distance (× daily ATR)", minval = 0.02, step = 0.02, group = G7, display = display.none)
-bool   dlSwing  = input.bool(true, "Include daily swing highs / lows", group = G7, display = display.none)
-float  dlStep   = input.float(0.0, "Round-number step (0 = auto)", minval = 0.0, group = G7, display = display.none)
-string dlAn     = input.string("", "Analyst levels (comma separated)", group = G7, tooltip = "Paste today's levels from FOXREX Admin → Trading → TradingView indicator", display = display.none)
-int    dlExt    = input.int(15, "Extend right (bars)", minval = 0, maxval = 200, group = G7, display = display.none)
-
 string G4      = "Display"
-bool   showOld = input.bool(false, "Show zones and trades from previous days (always on for D/W/M)", group = G4, display = display.none)
-bool   showLn  = input.bool(true, "Show entry / SL / TP lines of the open trade", group = G4, display = display.none)
-bool   showLeg = input.bool(true, "Show the leg (fib 0% → 100%)", group = G4, display = display.none)
-int    keepN   = input.int(60, "Finished trade labels kept", minval = 1, maxval = 200, group = G4, display = display.none)
-int    keepZ   = input.int(30, "Finished zones kept", minval = 1, maxval = 150, group = G4, display = display.none)
+bool   showOld = input.bool(false, "Keep previous days (always on for D/W/M)", group = G4, display = display.none)
+bool   showFin = input.bool(false, "Keep finished zones (faded)", group = G4, display = display.none)
+bool   showLeg = input.bool(false, "Show the leg (fib 0% → 100%)", group = G4, display = display.none)
+bool   showBos = input.bool(false, "Show BOS lines", group = G4, display = display.none)
+int    keepN   = input.int(40, "Finished trade labels kept", minval = 1, maxval = 200, group = G4, display = display.none)
 bool   showTb  = input.bool(true, "Dashboard", group = G4, display = display.none)
 string tbPos   = input.string("Top right", "Dashboard position", options = ["Top right", "Top left", "Bottom right", "Bottom left"], group = G4, display = display.none)
 bool   showSt  = input.bool(true, "Daily scorecard", group = G4, display = display.none)
@@ -107,7 +103,7 @@ color  cSell   = input.color(#FF5C7A, "Sell", group = G4, inline = "c", display 
 color  cBuy    = input.color(#00D4A7, "Buy", group = G4, inline = "c", display = display.none)
 color  cZone   = input.color(#9CA3AF, "Zones", group = G4, inline = "c", display = display.none)
 
-// ───────────────────────────── Types & helpers
+// ───────────────────────────── Types
 type Zone
     int   dir
     float p0
@@ -131,11 +127,19 @@ type Zone
     int   t1
     int   tB
 
+type MajView
+    box   bx
+    line  mid
+    int   id
+    bool  tch
+    int   entries
+    int   lastE
+    bool  armed
+
 type Trade
     int          dir
     float        entry
     float        sl
-    float        risk0
     array<float> tps
     int          hits
     int          eB
@@ -143,45 +147,73 @@ type Trade
     float        net
     float        rem
     int          state
-    bool         add
+    string       src
     label        lb
     array<line>  ln
+    array<label> rl
     Zone         zn
+    MajView      mv
 
-type MajView
-    box   bx
-    line  mid
-    int   id
-    bool  tch
-
-// Retracement level r of the leg (0 = leg end, 1 = leg start) — works for both directions.
-lvl(Zone z, float r) =>
-    z.p1 + r * (z.p0 - z.p1)
+// ───────────────────────────── Helpers
+int tfSecs = timeframe.in_seconds()
 
 fmtP(float v) =>
     v >= 10000 ? str.tostring(v, "#,##0") : v >= 100 ? str.tostring(v, "#,##0.00") : str.tostring(v, format.mintick)
 
-pct(float r) =>
-    str.tostring(r * 100, "#.#") + "%"
-
 sgnPts(float v) =>
-    (v > 0 ? "+" : "") + str.tostring(v, "#.##") + " pts"
+    (v > 0 ? "+" : v < 0 ? "−" : "") + str.tostring(math.abs(v), "#.##")
 
-tfLabel(string tf) =>
-    int s = timeframe.in_seconds(tf)
-    s < 60 ? str.tostring(s) + "s" : s < 3600 ? "M" + str.tostring(math.round(s / 60)) : s < 86400 ? "H" + str.tostring(math.round(s / 3600)) : s < 604800 ? "D" + str.tostring(math.round(s / 86400)) : tf
+tfLabel(int s) =>
+    s < 60 ? str.tostring(s) + "s" : s < 3600 ? "M" + str.tostring(math.round(s / 60)) : s < 86400 ? "H" + str.tostring(math.round(s / 3600)) : s < 604800 ? "D" + str.tostring(math.round(s / 86400)) : "W"
 
-tpAt(int i) =>
-    i == 0 ? tp1Pts : i == 1 ? tp2Pts : i == 2 ? tp3Pts : tp4Pts
+// Targets / stop range for a timeframe (seconds).
+pTp(int s, int i) =>
+    float r = na
+    if profile == "Custom"
+        r := i == 0 ? tp1Pts : i == 1 ? tp2Pts : i == 2 ? tp3Pts : tp4Pts
+    else if s <= 60
+        r := i == 0 ? 1.0 : i == 1 ? 2.0 : i == 2 ? 3.0 : 5.0
+    else if s <= 300
+        r := i == 0 ? 2.5 : i == 1 ? 5.0 : i == 2 ? 10.0 : 15.0
+    else if s <= 1800
+        r := i == 0 ? 2.5 : i == 1 ? 5.0 : i == 2 ? 10.0 : 20.0
+    else if s < 86400
+        r := i == 0 ? 5.0 : i == 1 ? 10.0 : i == 2 ? 20.0 : 40.0
+    else
+        r := i == 0 ? 10.0 : i == 1 ? 20.0 : i == 2 ? 40.0 : 80.0
+    r
+
+pSlMin(int s) =>
+    profile == "Custom" ? slMinC : s <= 60 ? 1.5 : s <= 300 ? 3.0 : s <= 1800 ? 4.0 : s < 86400 ? 5.0 : 10.0
+
+pSlMax(int s) =>
+    profile == "Custom" ? slMaxC : s <= 60 ? 4.0 : s <= 300 ? 8.0 : s < 86400 ? 10.0 : slMaxD
+
+// Stop distance: structure, clamped to the timeframe's range (important = major / daily zone trade).
+clampSl(float d, int s, bool imp) =>
+    float lo = pSlMin(imp ? math.max(s, 300) : s)
+    float hi = imp ? (s >= 86400 ? slMaxD : math.max(slImp, pSlMax(s))) : pSlMax(s)
+    math.min(math.max(d, lo), hi)
+
+tpArr(float ep, int dir, int s, bool imp) =>
+    int ps = imp ? math.max(s, 300) : s
+    array.from(ep + dir * pTp(ps, 0), ep + dir * pTp(ps, 1), ep + dir * pTp(ps, 2), ep + dir * pTp(ps, 3))
 
 // Stop after profit protection, for a trade that has reached `hits` targets.
-protSl(int dir, float en, float sl, int hits) =>
+protSl(int dir, float en, float sl, int hits, array<float> tps) =>
     float r = sl
     if protect != "Off (keep the original stop)" and hits >= 1
-        float ns = protect == "Step: entry after TP1, then previous target" and hits >= 2 ? en + dir * tpAt(hits - 2) : en
+        float ns = protect == "Step: entry after TP1, then previous target" and hits >= 2 ? tps.get(hits - 2) : en
         if dir * (ns - r) > 0
             r := ns
     r
+
+isRej(int dir) =>
+    float rg = high - low
+    dir > 0 ? (close > open or math.min(open, close) - low >= 0.4 * rg) : (close < open or high - math.max(open, close) >= 0.4 * rg)
+
+lvl(Zone z, float r) =>
+    z.p1 + r * (z.p0 - z.p1)
 
 // Highest high (dir = -1) or lowest low (dir = +1) since bar fromB: the swing that started the move.
 legStart(int dir, int fromB) =>
@@ -223,10 +255,10 @@ legUpdate(Zone z) =>
         z.t1 := time
     true
 
-// Zone touch / invalidation / entry decision on a closed bar. Returns [fire, entry, stop, stop points, touched now, stopped on the fill candle].
-zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked) =>
+// Zone touch / invalidation / entry decision on a closed bar.
+// Returns [fire, entry, stop, stop points, stopped on the fill candle].
+zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked, int s) =>
     bool  fire = false
-    bool  tNow = false
     bool  sbSl = false
     float ep   = na
     float sl   = na
@@ -238,32 +270,22 @@ zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked) =>
         float zM    = (zA + zB) / 2
         bool  valid = math.abs(z.p0 - z.p1) >= minLeg * a
         if valid and bar_index > z.b1 and barstate.isconfirmed
-            float rg      = high - low
-            bool  inZone  = z.dir < 0 ? high >= zA : low <= zA
-            bool  hitMid  = z.dir < 0 ? high >= zM : low <= zM
-            bool  invalid = z.dir < 0 ? close > zI : close < zI
-            bool  rej     = z.dir < 0 ? close < zB and (close < open or high - close >= 0.6 * rg) : close > zB and (close > open or close - low >= 0.6 * rg)
-            // re-arm for a reinforcement entry once price has moved TP1 away from the zone middle
-            if not z.armed and (z.dir < 0 ? low <= zM - tp1Pts : high >= zM + tp1Pts)
+            bool inZone  = z.dir < 0 ? high >= zA : low <= zA
+            bool hitMid  = z.dir < 0 ? high >= zM : low <= zM
+            bool invalid = z.dir < 0 ? close > zI : close < zI
+            bool rej     = (z.dir < 0 ? close < zB : close > zB) and isRej(z.dir)
+            if not z.armed and (z.dir < 0 ? low <= zM - pTp(s, 0) : high >= zM + pTp(s, 0))
                 z.armed := true
             if inZone and not z.touched
                 z.touched := true
                 z.state   := 1
-                tNow      := true
-            bool useLim = trig == "Middle limit or rejection" or trig == "Limit at zone middle"
-            bool useRej = trig == "Middle limit or rejection" or trig == "Rejection candle"
-            bool byLim  = useLim and hitMid
-            bool byRej  = not byLim and useRej and inZone and rej and not invalid
-            bool byTch  = trig == "Touch" and inZone and not invalid
-            if (byLim or byRej or byTch) and z.armed and not blocked and not sBlk and (not withTr or z.dir == tr) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
+            bool byLim = trig != "Rejection candle" and hitMid
+            bool byRej = not byLim and trig != "Limit at zone middle" and inZone and rej and not invalid
+            if (byLim or byRej) and z.armed and not blocked and not sBlk and (not withTr or z.dir == tr) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
                 fire := true
                 ep   := byLim ? (z.dir < 0 ? math.max(zM, open) : math.min(zM, open)) : close
                 float zSl = z.dir < 0 ? (byLim ? zI : math.max(zI, high)) + slBuf * a : (byLim ? zI : math.min(zI, low)) - slBuf * a
-                dist := slMode == "Fixed points" ? slPts : math.abs(ep - zSl)
-                dist := math.max(dist, slMin)
-                float cap = timeframe.isdwm ? slMaxD : slMax
-                if cap > 0
-                    dist := math.min(dist, cap)
+                dist := clampSl(math.abs(ep - zSl), s, false)
                 sl   := ep - z.dir * dist
                 sbSl := byLim and (z.dir < 0 ? high >= sl : low <= sl)
                 z.entries += 1
@@ -272,10 +294,11 @@ zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked) =>
                 z.state := 13
         if z.state <= 1 and bar_index - z.b1 > maxWait
             z.state := 14
-    [fire, ep, sl, dist, tNow, sbSl]
+    [fire, ep, sl, dist, sbSl]
 
 // ───────────────────────────── Major timeframe engine (evaluated on the major timeframe through request.security)
 majorEngine() =>
+    int   s  = timeframe.in_seconds()
     float a  = ta.atr(14)
     float hh = ta.pivothigh(high, swLen, swLen)
     float ll = ta.pivotlow(low, swLen, swLen)
@@ -286,7 +309,6 @@ majorEngine() =>
     var int   lB   = na
     var bool  lU   = true
     var int   tr   = 0
-    var float bos  = na
     var Zone  zS   = na
     var Zone  zBy  = na
     var int   tDir = 0
@@ -296,6 +318,7 @@ majorEngine() =>
     var int   tEB  = na
     var int   tT   = na
     var Zone  tZ   = na
+    var array<float> tTp = array.new<float>(4, 0.0)
     if not na(hh)
         hP := hh
         hB := bar_index - swLen
@@ -307,20 +330,17 @@ majorEngine() =>
     bool  dn   = barstate.isconfirmed and not lU and not na(lP) and (useWick ? low : close) < lP
     bool  up   = barstate.isconfirmed and not hU and not na(hP) and (useWick ? high : close) > hP
     float aP   = nz(a[1], a)
-    bool  spk  = (high - low) > spkK * aP or (spkPts > 0 and (high - low) > spkPts)
-    int   sAgo = ta.barssince(spk)
+    int   sAgo = ta.barssince((high - low) > spkK * aP)
     bool  sBlk = useSpk and not na(sAgo) and sAgo < spkLook
     if dn
-        lU  := true
-        tr  := -1
-        bos := lP
+        lU := true
+        tr := -1
         if na(zS) or zS.state != 0
             [p0, b0] = legStart(-1, hB)
             zS := newZone(-1, p0, b0, 0)
     if up
-        hU  := true
-        tr  := 1
-        bos := hP
+        hU := true
+        tr := 1
         if na(zBy) or zBy.state != 0
             [p0, b0] = legStart(1, lB)
             zBy := newZone(1, p0, b0, 0)
@@ -332,16 +352,16 @@ majorEngine() =>
             tZ.armed := false
             tDir     := 0
         else
-            while tHit < 4 and (tDir < 0 ? low <= tEn - tpAt(tHit) : high >= tEn + tpAt(tHit))
+            while tHit < 4 and (tDir < 0 ? low <= tTp.get(tHit) : high >= tTp.get(tHit))
                 tHit += 1
-            tSl := protSl(tDir, tEn, tSl, tHit)
-            if tHit == 4 or bar_index - tEB >= maxBars
+            tSl := protSl(tDir, tEn, tSl, tHit, tTp)
+            if tHit == 4 or bar_index - tEB >= maxBars or (noProg > 0 and tHit == 0 and bar_index - tEB >= noProg)
                 tZ.armed := false
                 tDir     := 0
     // zones → entries
     if not na(zS)
         legUpdate(zS)
-        [f, ep, sl, d, tn, sb] = zoneEval(zS, a, sBlk, tr, tDir != 0)
+        [f, ep, sl, d, sb] = zoneEval(zS, a, sBlk, tr, tDir != 0, s)
         if f and not sb
             tDir := -1
             tEn  := ep
@@ -350,12 +370,13 @@ majorEngine() =>
             tEB  := bar_index
             tT   := time
             tZ   := zS
+            tTp  := tpArr(ep, -1, s, false)
         else if f and sb
             zS.entries := maxEnt
             zS.armed   := false
     if not na(zBy)
         legUpdate(zBy)
-        [f, ep, sl, d, tn, sb] = zoneEval(zBy, a, sBlk, tr, tDir != 0)
+        [f, ep, sl, d, sb] = zoneEval(zBy, a, sBlk, tr, tDir != 0, s)
         if f and not sb
             tDir := 1
             tEn  := ep
@@ -364,226 +385,28 @@ majorEngine() =>
             tEB  := bar_index
             tT   := time
             tZ   := zBy
+            tTp  := tpArr(ep, 1, s, false)
         else if f and sb
             zBy.entries := maxEnt
             zBy.armed   := false
     bool sV = not na(zS) and math.abs(zS.p0 - zS.p1) >= minLeg * a
     bool bV = not na(zBy) and math.abs(zBy.p0 - zBy.p1) >= minLeg * a
-    [sV ? zS.p0 : na, sV ? zS.p1 : na, sV ? zS.t1 : na, sV ? zS.state : -1, sV ? zS.tB : na, bV ? zBy.p0 : na, bV ? zBy.p1 : na, bV ? zBy.t1 : na, bV ? zBy.state : -1, bV ? zBy.tB : na, tr, bos, tDir, tEn, tSl, tHit, tT]
+    [sV ? zS.p0 : na, sV ? zS.p1 : na, sV ? zS.t1 : na, sV ? zS.state : -1, sV ? zS.tB : na, bV ? zBy.p0 : na, bV ? zBy.p1 : na, bV ? zBy.t1 : na, bV ? zBy.state : -1, bV ? zBy.tB : na, tr, tDir, tEn, tSl, tHit, tT, tTp.get(0), tTp.get(3)]
 
 // Values of the last closed major bar (no repainting).
 majorPack() =>
-    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, c2, d1, d2, d3, d4, d5] = majorEngine()
-    [a1[1], a2[1], a3[1], a4[1], a5[1], b1[1], b2[1], b3[1], b4[1], b5[1], c1[1], c2[1], d1[1], d2[1], d3[1], d4[1], d5[1]]
+    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7] = majorEngine()
+    [a1[1], a2[1], a3[1], a4[1], a5[1], b1[1], b2[1], b3[1], b4[1], b5[1], c1[1], d1[1], d2[1], d3[1], d4[1], d5[1], d6[1], d7[1]]
 
-bool   majOn = showMaj and timeframe.in_seconds() < timeframe.in_seconds(majTf)
-string mTf   = majOn ? majTf : timeframe.period
-[mSP0, mSP1, mST1, mSSt, mSId, mBP0, mBP1, mBT1, mBSt, mBId, mTr, mBos, mTDir, mTEn, mTSl, mTHit, mTT] = request.security(syminfo.tickerid, mTf, majorPack(), lookahead = barmerge.lookahead_on)
-string mLbl  = tfLabel(majTf)
+string majAutoTf = tfSecs <= 60 ? "15" : tfSecs <= 300 ? "60" : tfSecs <= 900 ? "240" : tfSecs <= 3600 ? "D" : "W"
+string majTf     = majAuto ? majAutoTf : majTfIn
+bool   majOn     = showMaj and tfSecs < timeframe.in_seconds(majTf)
+string mTf       = majOn ? majTf : timeframe.period
+[mSP0, mSP1, mST1, mSSt, mSId, mBP0, mBP1, mBT1, mBSt, mBId, mTr, mTDir, mTEn, mTSl, mTHit, mTT, mTTp1, mTTp4] = request.security(syminfo.tickerid, mTf, majorPack(), lookahead = barmerge.lookahead_on)
+string mLbl = tfLabel(timeframe.in_seconds(majTf))
+string cLbl = tfLabel(tfSecs)
 
-zoneFade(Zone z) =>
-    if not na(z.bx)
-        z.bx.set_right(bar_index)
-        z.bx.set_bgcolor(color.new(cZone, 94))
-        z.bx.set_border_color(color.new(z.dir < 0 ? cSell : cBuy, 75))
-        z.bx.set_text_color(color.new(cZone, 40))
-    if not na(z.mid)
-        z.mid.set_x2(bar_index)
-        z.mid.set_color(color.new(cZone, 65))
-    if not na(z.lg)
-        z.lg.set_color(color.new(cZone, 75))
-    true
-
-zoneWipe(Zone z) =>
-    box.delete(z.bx)
-    line.delete(z.mid)
-    line.delete(z.lg)
-    true
-
-// ───────────────────────────── Swings, structure, filters, day keys
-float atr = ta.atr(14)
-float ph  = ta.pivothigh(high, swLen, swLen)
-float pl  = ta.pivotlow(low, swLen, swLen)
-
-var float shP     = na
-var int   shB     = na
-var bool  shUsed  = true
-var float slP     = na
-var int   slB     = na
-var bool  slUsed  = true
-var int   trend   = 0
-var float lastBos = na
-
-if not na(ph)
-    shP    := ph
-    shB    := bar_index - swLen
-    shUsed := false
-if not na(pl)
-    slP    := pl
-    slB    := bar_index - swLen
-    slUsed := false
-
-bool bosDn = barstate.isconfirmed and not slUsed and not na(slP) and (useWick ? low : close) < slP
-bool bosUp = barstate.isconfirmed and not shUsed and not na(shP) and (useWick ? high : close) > shP
-
-// abnormal candle filter (ATR of the previous bar, so the spike does not inflate its own benchmark)
-float atrPrev  = nz(atr[1], atr)
-bool  spike    = (high - low) > spkK * atrPrev or (spkPts > 0 and (high - low) > spkPts)
-int   spkAgo   = ta.barssince(spike)
-bool  spkBlock = useSpk and not na(spkAgo) and spkAgo < spkLook
-
-// trading-day key, scorecard buckets (0 trades, 1 wins, 2 losses, 3 net points)
-int  dKey    = year(time_tradingday) * 10000 + month(time_tradingday) * 100 + dayofmonth(time_tradingday)
-bool keepAll = showOld or timeframe.isdwm
-var int dToday = na
-var int dYest  = na
-var array<float> stT = array.new<float>(4, 0.0)
-var array<float> stY = array.new<float>(4, 0.0)
-var array<float> stA = array.new<float>(4, 0.0)
-
-var array<Zone>  zLive  = array.new<Zone>()
-var array<Zone>  zArch  = array.new<Zone>()
-var array<Trade> tLive  = array.new<Trade>()
-var array<Trade> tArch  = array.new<Trade>()
-var array<line>  bosLn  = array.new<line>()
-var array<label> bosLb  = array.new<label>()
-var array<box>   mOld   = array.new<box>()
-
-bool newDay = na(dToday) or dKey != dToday
-if newDay
-    if not na(dToday)
-        stY   := stT.copy()
-        dYest := dToday
-    stT    := array.new<float>(4, 0.0)
-    dToday := dKey
-    if not keepAll
-        // previous days: hide finished zones, finished trades and BOS marks
-        for z in zArch
-            zoneWipe(z)
-        zArch.clear()
-        for t in tArch
-            label.delete(t.lb)
-        tArch.clear()
-        for l in bosLn
-            l.delete()
-        bosLn.clear()
-        for l in bosLb
-            l.delete()
-        bosLb.clear()
-        for b in mOld
-            b.delete()
-        mOld.clear()
-
-bump(array<float> a, int i, float v) =>
-    a.set(i, a.get(i) + v)
-    true
-
-score(int key, int i, float v) =>
-    bump(stA, i, v)
-    if key == dToday
-        bump(stT, i, v)
-    else if key == dYest
-        bump(stY, i, v)
-    true
-
-// Close a trade: result points, scorecard, remove its lines, keep one label with side, result, points.
-closeTrade(Trade t, string res) =>
-    t.state := 10
-    if acct == "Highest target reached"
-        t.net := t.hits > 0 ? math.abs(t.tps.get(t.hits - 1) - t.entry) : t.net
-    score(t.dKey, 3, t.net)
-    for l in t.ln
-        l.delete()
-    t.ln.clear()
-    bool won = t.hits > 0 or t.net > 0
-    t.lb.set_text((t.dir < 0 ? "SELL" : "BUY") + (t.add ? " + " : " ") + res + "  " + sgnPts(t.net))
-    t.lb.set_size(won ? (t.add ? size.tiny : size.small) : size.tiny)
-    t.lb.set_color(won ? (t.dir < 0 ? #E0475F : #00A884) : color.new(#6B7280, 20))
-    t.lb.set_textcolor(won ? color.white : color.new(color.white, 25))
-    // the zone can give a reinforcement entry only after price has moved away and comes back
-    t.zn.armed := false
-    true
-
-// ───────────────────────────── Major zones on this chart
-var MajView mvS = MajView.new(na, na, na, false)
-var MajView mvB = MajView.new(na, na, na, false)
-
-mzDraw(MajView v, int dir, float p0, float p1, int t1, int st, int id) =>
-    if majOn and not na(id) and st >= 0
-        float zA  = p1 + fEntry * (p0 - p1)
-        float zB  = p1 + fZone * (p0 - p1)
-        float zM  = (zA + zB) / 2
-        float top = math.max(zA, zB)
-        float bot = math.min(zA, zB)
-        color c   = dir < 0 ? cSell : cBuy
-        int   rx  = time + 4 * timeframe.in_seconds() * 1000
-        if na(v.id) or v.id != id
-            if not na(v.bx)
-                v.bx.set_bgcolor(color.new(c, 94))
-                v.bx.set_border_color(color.new(c, 70))
-                mOld.push(v.bx)
-                line.delete(v.mid)
-            v.id  := id
-            v.tch := false
-            v.bx  := box.new(t1, top, rx, bot, xloc = xloc.bar_time, border_color = color.new(c, 10), border_width = 2, bgcolor = color.new(c, 85), text = mLbl + (dir < 0 ? " SELL ZONE · MAJOR" : " BUY ZONE · MAJOR"), text_size = size.small, text_color = c, text_halign = text.align_left, text_valign = dir < 0 ? text.align_top : text.align_bottom)
-            v.mid := line.new(t1, zM, rx, zM, xloc = xloc.bar_time, color = color.new(c, 40), style = line.style_dashed, width = 1)
-        if st <= 1
-            v.bx.set_lefttop(t1, top)
-            v.bx.set_rightbottom(rx, bot)
-            v.mid.set_xy1(t1, zM)
-            v.mid.set_xy2(rx, zM)
-            v.bx.set_text(mLbl + (dir < 0 ? " SELL ZONE · MAJOR · " : " BUY ZONE · MAJOR · ") + fmtP(bot) + "–" + fmtP(top))
-            if dir > 0 ? low <= zA : high >= zA
-                v.tch := true
-        else
-            v.bx.set_bgcolor(color.new(c, 94))
-            v.bx.set_border_color(color.new(c, 70))
-            v.mid.set_color(color.new(c, 80))
-    true
-
-mzDraw(mvS, -1, mSP0, mSP1, mST1, mSSt, mSId)
-mzDraw(mvB, 1, mBP0, mBP1, mBT1, mBSt, mBId)
-while mOld.size() > 10
-    box.delete(mOld.shift())
-
-// A major zone is "active" while price reacts inside it: touched, not invalidated, leg extreme not yet broken.
-bool majSellAct = majOn and mSSt >= 0 and mSSt <= 1 and (mSSt == 1 or mvS.tch) and close < mSP1 + fInv * (mSP0 - mSP1) and close > mSP1
-bool majBuyAct  = majOn and mBSt >= 0 and mBSt <= 1 and (mBSt == 1 or mvB.tch) and close > mBP1 + fInv * (mBP0 - mBP1) and close < mBP1
-bool blkBuy     = majBlk == "Active major zone" ? majSellAct : majBlk == "Major structure (last BOS)" ? majOn and mTr < 0 : false
-bool blkSell    = majBlk == "Active major zone" ? majBuyAct : majBlk == "Major structure (last BOS)" ? majOn and mTr > 0 : false
-
-// Major open trade (shown only while it is open)
-var array<line> mTl  = array.new<line>()
-var label       mTlb = na
-var int         mTid = na
-if majOn and showMjT and mTDir != 0 and not na(mTT)
-    color c = mTDir < 0 ? cSell : cBuy
-    if na(mTid) or mTid != mTT
-        for l in mTl
-            l.delete()
-        mTl.clear()
-        label.delete(mTlb)
-        mTid := mTT
-        mTl.push(line.new(mTT, mTSl, time, mTSl, xloc = xloc.bar_time, color = color.new(cSell, 10), style = line.style_dashed, width = 2))
-        for i = 0 to 3
-            float p = mTEn + mTDir * tpAt(i)
-            mTl.push(line.new(mTT, p, time, p, xloc = xloc.bar_time, color = color.new(cBuy, 30), style = line.style_dotted, width = 2))
-        mTl.push(line.new(mTT, mTEn, time, mTEn, xloc = xloc.bar_time, color = color.new(color.white, 10), width = 2))
-        mTlb := label.new(mTT, mTEn, "", xloc = xloc.bar_time, style = mTDir < 0 ? label.style_label_down : label.style_label_up, color = color.new(c, 10), textcolor = color.white, size = size.small)
-    for l in mTl
-        l.set_x2(time)
-    mTl.get(0).set_y1(mTSl)
-    mTl.get(0).set_y2(mTSl)
-    mTlb.set_text(mLbl + (mTDir < 0 ? " SELL" : " BUY") + " @ " + fmtP(mTEn) + (mTHit > 0 ? " ✓TP" + str.tostring(mTHit) : "") + " · open")
-    mTlb.set_tooltip("Major " + mLbl + " trade\nSL " + fmtP(mTSl) + "\nTP1 " + fmtP(mTEn + mTDir * tp1Pts) + " · TP2 " + fmtP(mTEn + mTDir * tp2Pts) + "\nTP3 " + fmtP(mTEn + mTDir * tp3Pts) + " · TP4 " + fmtP(mTEn + mTDir * tp4Pts))
-else if not na(mTid)
-    for l in mTl
-        l.delete()
-    mTl.clear()
-    label.delete(mTlb)
-    mTid := na
-
-// ───────────────────────────── Daily buy / sell zones (previous completed sessions → no repaint)
+// ───────────────────────────── Daily data (previous completed sessions → no repaint)
 dailyPack() =>
     float dph = ta.pivothigh(high, 2, 2)
     float dpl = ta.pivotlow(low, 2, 2)
@@ -605,27 +428,14 @@ addLv(array<float> lp, array<float> lw, array<string> ln, float p, float w, stri
         ln.push(n)
     ok
 
-var array<box>   dlB = array.new<box>()
-var array<line>  dlL = array.new<line>()
-var array<label> dlT = array.new<label>()
-float dR1lo = na
-float dR1hi = na
-float dS1lo = na
-float dS1hi = na
-
-if barstate.islast
-    for b in dlB
-        b.delete()
-    dlB.clear()
-    for l in dlL
-        l.delete()
-    dlL.clear()
-    for l in dlT
-        l.delete()
-    dlT.clear()
+// Today's daily zones around price px: [low, high, strength, names], sorted from low to high.
+buildDaily(float px) =>
+    array<float>  zLo = array.new<float>()
+    array<float>  zHi = array.new<float>()
+    array<float>  zW  = array.new<float>()
+    array<string> zN  = array.new<string>()
     if not na(dAtr) and not na(dH)
         float pvP = (dH + dL + dC) / 3
-        float px  = close
         float lim = dlRange * dAtr
         array<float>  lp = array.new<float>()
         array<float>  lw = array.new<float>()
@@ -660,12 +470,7 @@ if barstate.islast
         if str.length(dlAn) > 0
             for sx in str.split(dlAn, ",")
                 addLv(lp, lw, ln, str.tonumber(str.replace_all(sx, " ", "")), 2.5, "Analyst level", px, lim)
-        // merge nearby levels into zones
         float tol = math.max(dAtr * dlMerge, px * 0.0012)
-        array<float>  zLo = array.new<float>()
-        array<float>  zHi = array.new<float>()
-        array<float>  zW  = array.new<float>()
-        array<string> zN  = array.new<string>()
         if lp.size() > 0
             array<int> ord = lp.sort_indices(order.ascending)
             for i in ord
@@ -683,83 +488,283 @@ if barstate.islast
                     zHi.push(p)
                     zW.push(w)
                     zN.push(n)
-        int dStart = time("D")
-        int x1 = na(dStart) ? time - 50 * timeframe.in_seconds() * 1000 : dStart
-        int x2 = time + dlExt * timeframe.in_seconds() * 1000
-        int zc = zLo.size()
-        if zc > 0
-            float hpad = tol * 0.25
-            int nR = 0
-            for j = 0 to zc - 1
-                float lo = zLo.get(j)
-                float hi = zHi.get(j)
-                if lo > px and nR < dlN
-                    nR += 1
-                    if nR == 1
-                        dR1lo := lo
-                        dR1hi := hi
-                    if showDL
-                        float w  = zW.get(j)
-                        string tg = "D1 SELL ZONE R" + str.tostring(nR)
-                        dlB.push(box.new(x1, hi + hpad, x2, lo - hpad, xloc = xloc.bar_time, border_color = color.new(cSell, 100), bgcolor = color.new(cSell, w >= 4 ? 84 : 90)))
-                        dlL.push(line.new(x1, (lo + hi) / 2, x2, (lo + hi) / 2, xloc = xloc.bar_time, color = color.new(cSell, w >= 2.5 ? 20 : 50), width = w >= 6 ? 3 : w >= 4 ? 2 : 1))
-                        dlT.push(label.new(x2, (lo + hi) / 2, tg + "  " + rngTxt(lo, hi), xloc = xloc.bar_time, style = label.style_label_left, color = color.new(cSell, 100), textcolor = cSell, size = size.small, tooltip = tg + " · strength " + str.tostring(w, "#.#") + "\n" + zN.get(j)))
-            int nS = 0
-            for j = zc - 1 to 0
-                float lo = zLo.get(j)
-                float hi = zHi.get(j)
-                if hi < px and nS < dlN
-                    nS += 1
-                    if nS == 1
-                        dS1lo := lo
-                        dS1hi := hi
-                    if showDL
-                        float w  = zW.get(j)
-                        string tg = "D1 BUY ZONE S" + str.tostring(nS)
-                        dlB.push(box.new(x1, hi + hpad, x2, lo - hpad, xloc = xloc.bar_time, border_color = color.new(cBuy, 100), bgcolor = color.new(cBuy, w >= 4 ? 84 : 90)))
-                        dlL.push(line.new(x1, (lo + hi) / 2, x2, (lo + hi) / 2, xloc = xloc.bar_time, color = color.new(cBuy, w >= 2.5 ? 20 : 50), width = w >= 6 ? 3 : w >= 4 ? 2 : 1))
-                        dlT.push(label.new(x2, (lo + hi) / 2, tg + "  " + rngTxt(lo, hi), xloc = xloc.bar_time, style = label.style_label_left, color = color.new(cBuy, 100), textcolor = cBuy, size = size.small, tooltip = tg + " · strength " + str.tostring(w, "#.#") + "\n" + zN.get(j)))
+        // give single-price levels a small band
+        float pad = tol * 0.25
+        for i = 0 to zLo.size() - 1
+            if zLo.size() > 0
+                zLo.set(i, zLo.get(i) - pad)
+                zHi.set(i, zHi.get(i) + pad)
+    [zLo, zHi, zW, zN]
 
-// ───────────────────────────── Local structure → zones
+// ───────────────────────────── Swings, structure, filters, day keys
+float atr = ta.atr(14)
+float ph  = ta.pivothigh(high, swLen, swLen)
+float pl  = ta.pivotlow(low, swLen, swLen)
+
+var float shP     = na
+var int   shB     = na
+var bool  shUsed  = true
+var float slP     = na
+var int   slB     = na
+var bool  slUsed  = true
+var int   trend   = 0
+var float lastBos = na
+
+if not na(ph)
+    shP    := ph
+    shB    := bar_index - swLen
+    shUsed := false
+if not na(pl)
+    slP    := pl
+    slB    := bar_index - swLen
+    slUsed := false
+
+bool bosDn = barstate.isconfirmed and not slUsed and not na(slP) and (useWick ? low : close) < slP
+bool bosUp = barstate.isconfirmed and not shUsed and not na(shP) and (useWick ? high : close) > shP
+
+float atrPrev  = nz(atr[1], atr)
+int   spkAgo   = ta.barssince((high - low) > spkK * atrPrev)
+bool  spkBlock = useSpk and not na(spkAgo) and spkAgo < spkLook
+
+int  dKey    = year(time_tradingday) * 10000 + month(time_tradingday) * 100 + dayofmonth(time_tradingday)
+bool keepAll = showOld or timeframe.isdwm
+var int dToday = na
+var int dYest  = na
+var array<float> stT = array.new<float>(4, 0.0)
+var array<float> stY = array.new<float>(4, 0.0)
+var array<float> stA = array.new<float>(4, 0.0)
+
+var array<Zone>  zLive  = array.new<Zone>()
+var array<Zone>  zArch  = array.new<Zone>()
+var array<Trade> tLive  = array.new<Trade>()
+var array<Trade> tArch  = array.new<Trade>()
+var array<line>  bosLn  = array.new<line>()
+
+// today's daily zones (fixed at the first bar of the day) and how many times each was traded per side
+var array<float>  dZLo = array.new<float>()
+var array<float>  dZHi = array.new<float>()
+var array<float>  dZW  = array.new<float>()
+var array<string> dZN  = array.new<string>()
+var array<int>    dZB  = array.new<int>()
+var array<int>    dZS  = array.new<int>()
+
+bool newDay = na(dToday) or dKey != dToday
+if newDay
+    if not na(dToday)
+        stY   := stT.copy()
+        dYest := dToday
+    stT    := array.new<float>(4, 0.0)
+    dToday := dKey
+    [a, b, c, d] = buildDaily(open)
+    dZLo := a
+    dZHi := b
+    dZW  := c
+    dZN  := d
+    dZB  := array.new<int>(a.size(), 0)
+    dZS  := array.new<int>(a.size(), 0)
+    if not keepAll
+        for z in zArch
+            box.delete(z.bx)
+            line.delete(z.mid)
+            line.delete(z.lg)
+        zArch.clear()
+        for t in tArch
+            label.delete(t.lb)
+        tArch.clear()
+        for l in bosLn
+            l.delete()
+        bosLn.clear()
+
+bump(array<float> a, int i, float v) =>
+    a.set(i, a.get(i) + v)
+    true
+
+score(int key, int i, float v) =>
+    bump(stA, i, v)
+    if key == dToday
+        bump(stT, i, v)
+    else if key == dYest
+        bump(stY, i, v)
+    true
+
+zoneGone(Zone z) =>
+    if showFin and not na(z.bx)
+        z.bx.set_right(bar_index)
+        z.bx.set_bgcolor(color.new(cZone, 95))
+        z.bx.set_border_color(color.new(z.dir < 0 ? cSell : cBuy, 80))
+        z.bx.set_text("")
+        line.delete(z.mid)
+        line.delete(z.lg)
+    else
+        box.delete(z.bx)
+        line.delete(z.mid)
+        line.delete(z.lg)
+        z.bx := na
+    true
+
+// Close a trade: result points, scorecard, remove its lines, keep one small label with side and points.
+closeTrade(Trade t, string res) =>
+    t.state := 10
+    if acct == "Highest target reached"
+        t.net := t.hits > 0 ? math.abs(t.tps.get(t.hits - 1) - t.entry) : t.net
+    score(t.dKey, 3, t.net)
+    for l in t.ln
+        l.delete()
+    t.ln.clear()
+    for l in t.rl
+        l.delete()
+    t.rl.clear()
+    bool won = t.hits > 0
+    string side = t.dir < 0 ? "SELL" : "BUY"
+    t.lb.set_text(side + " " + sgnPts(t.net))
+    t.lb.set_size(size.tiny)
+    t.lb.set_color(won ? color.new(t.dir < 0 ? #E0475F : #00A884, 15) : color.new(#6B7280, 30))
+    t.lb.set_textcolor(won ? color.white : color.new(color.white, 20))
+    t.lb.set_tooltip(cLbl + " " + side + " · " + t.src + "\nEntry " + fmtP(t.entry) + "\nResult " + res + " · " + sgnPts(t.net) + " pts")
+    if not na(t.zn)
+        t.zn.armed := false
+    if not na(t.mv)
+        t.mv.armed := false
+    true
+
+// Open a trade on this chart (drawings on the right edge, so the open trade is always visible).
+openTrade(int dir, float ep, float sl, float dist, bool imp, string src, Zone zn, MajView mv) =>
+    array<float> tps = tpArr(ep, dir, tfSecs, imp)
+    string side = dir < 0 ? "SELL" : "BUY"
+    label lb = label.new(bar_index, dir < 0 ? high : low, side, style = dir < 0 ? label.style_label_down : label.style_label_up, color = dir < 0 ? #E0475F : #00A884, textcolor = color.white, size = size.small, tooltip = cLbl + " " + side + " · " + src + " @ " + fmtP(ep) + "\nSL " + fmtP(sl) + " (" + str.tostring(dist, "#.##") + " pts)\nTP " + fmtP(tps.get(0)) + " / " + fmtP(tps.get(1)) + " / " + fmtP(tps.get(2)) + " / " + fmtP(tps.get(3)))
+    array<line>  ln = array.new<line>()
+    array<label> rl = array.new<label>()
+    ln.push(line.new(bar_index, sl, bar_index + 6, sl, color = color.new(cSell, 10), style = line.style_dashed))
+    rl.push(label.new(bar_index + 6, sl, "SL " + fmtP(sl), style = label.style_label_left, color = color.new(color.black, 100), textcolor = cSell, size = size.tiny))
+    for i = 0 to 3
+        float p = tps.get(i)
+        ln.push(line.new(bar_index, p, bar_index + 6, p, color = color.new(cBuy, 40), style = line.style_dotted))
+        rl.push(label.new(bar_index + 6, p, "TP" + str.tostring(i + 1) + " " + fmtP(p), style = label.style_label_left, color = color.new(color.black, 100), textcolor = color.new(cBuy, 20), size = size.tiny))
+    ln.push(line.new(bar_index, ep, bar_index + 6, ep, color = color.new(color.white, 20), width = 2))
+    rl.push(label.new(bar_index + 6, ep, "▶ " + cLbl + " " + side + " " + fmtP(ep) + " · open", style = label.style_label_left, color = color.new(dir < 0 ? #E0475F : #00A884, 10), textcolor = color.white, size = size.small))
+    Trade.new(dir, ep, sl, tps, 0, bar_index, dKey, 0.0, 1.0, 1, src, lb, ln, rl, zn, mv)
+
+// ───────────────────────────── Major zones on this chart (only live ones, one per side)
+var MajView mvS = MajView.new(na, na, na, false, 0, na, true)
+var MajView mvB = MajView.new(na, na, na, false, 0, na, true)
+
+mzDraw(MajView v, int dir, float p0, float p1, int t1, int st, int id) =>
+    bool live = majOn and not na(id) and st >= 0 and st <= 1
+    if live
+        float zA  = p1 + fEntry * (p0 - p1)
+        float zB  = p1 + fZone * (p0 - p1)
+        float zM  = (zA + zB) / 2
+        float top = math.max(zA, zB)
+        float bot = math.min(zA, zB)
+        color c   = dir < 0 ? cSell : cBuy
+        int   rx  = time + 4 * tfSecs * 1000
+        if na(v.id) or v.id != id
+            box.delete(v.bx)
+            line.delete(v.mid)
+            v.id      := id
+            v.tch     := false
+            v.entries := 0
+            v.lastE   := na
+            v.armed   := true
+            v.bx  := box.new(t1, top, rx, bot, xloc = xloc.bar_time, border_color = color.new(c, 20), border_width = 1, bgcolor = color.new(c, 88), text = mLbl + (dir < 0 ? " SELL ZONE · MAJOR" : " BUY ZONE · MAJOR"), text_size = size.tiny, text_color = c, text_halign = text.align_left, text_valign = dir < 0 ? text.align_top : text.align_bottom)
+            v.mid := line.new(t1, zM, rx, zM, xloc = xloc.bar_time, color = color.new(c, 50), style = line.style_dotted)
+        v.bx.set_lefttop(t1, top)
+        v.bx.set_rightbottom(rx, bot)
+        v.mid.set_xy1(t1, zM)
+        v.mid.set_xy2(rx, zM)
+        if dir > 0 ? low <= zA : high >= zA
+            v.tch := true
+    else if not na(v.bx)
+        box.delete(v.bx)
+        line.delete(v.mid)
+        v.bx  := na
+        v.mid := na
+    live
+
+bool mSLive = mzDraw(mvS, -1, mSP0, mSP1, mST1, mSSt, mSId)
+bool mBLive = mzDraw(mvB, 1, mBP0, mBP1, mBT1, mBSt, mBId)
+
+// A major zone is "active" while price reacts inside it: touched, not invalidated, leg extreme not yet broken.
+bool majSellAct = mSLive and (mSSt == 1 or mvS.tch) and close < mSP1 + fInv * (mSP0 - mSP1) and close > mSP1
+bool majBuyAct  = mBLive and (mBSt == 1 or mvB.tch) and close > mBP1 + fInv * (mBP0 - mBP1) and close < mBP1
+bool strF       = majFlt == "Major structure + active zone" and majOn and mTr != 0
+bool okBuy      = not (majFlt != "Off" and majSellAct) and not (strF and mTr < 0)
+bool okSell     = not (majFlt != "Off" and majBuyAct) and not (strF and mTr > 0)
+
+// Major open trade: one entry line and one label on the right edge, only while it is open
+var line  mTln = na
+var label mTlb = na
+var int   mTid = na
+if majOn and showMjT and mTDir != 0 and not na(mTT)
+    color c = mTDir < 0 ? cSell : cBuy
+    if na(mTid) or mTid != mTT
+        line.delete(mTln)
+        label.delete(mTlb)
+        mTid := mTT
+        mTln := line.new(mTT, mTEn, time, mTEn, xloc = xloc.bar_time, color = color.new(c, 30), style = line.style_dashed, width = 1)
+        mTlb := label.new(time, mTEn, "", xloc = xloc.bar_time, style = label.style_label_left, color = color.new(c, 75), textcolor = color.white, size = size.tiny)
+    int rx = time + 10 * tfSecs * 1000
+    mTln.set_x2(rx)
+    mTlb.set_x(rx)
+    mTlb.set_text(mLbl + (mTDir < 0 ? " SELL " : " BUY ") + fmtP(mTEn) + (mTHit > 0 ? " ✓TP" + str.tostring(mTHit) : "") + " · open")
+    mTlb.set_tooltip("Major " + mLbl + " trade (shown while open)\nSL " + fmtP(mTSl) + "\nTP1 " + fmtP(mTTp1) + " … TP4 " + fmtP(mTTp4))
+else if not na(mTid)
+    line.delete(mTln)
+    label.delete(mTlb)
+    mTid := na
+
+// ───────────────────────────── Local structure → zones (at most two live zones per side)
+addZone(int dir, float p0, int b0) =>
+    int n = 0
+    for z in zLive
+        if z.dir == dir and z.state <= 1
+            n += 1
+    if n >= 2
+        for z in zLive
+            if z.dir == dir and z.state <= 1 and n >= 2
+                z.state := 15
+                n -= 1
+    zLive.push(newZone(dir, p0, b0, dKey))
+    true
+
 if bosDn
     slUsed  := true
     trend   := -1
     lastBos := slP
     if showBos
-        bosLn.push(line.new(slB, slP, bar_index, slP, color = color.new(cSell, 50), style = line.style_dotted))
-        bosLb.push(label.new(bar_index, slP, "BOS", style = label.style_label_upper_left, color = color.new(color.black, 100), textcolor = color.new(cSell, 30), size = size.tiny))
+        bosLn.push(line.new(slB, slP, bar_index, slP, color = color.new(cSell, 60), style = line.style_dotted))
     bool forming = false
     for z in zLive
         if z.dir < 0 and z.state == 0
             forming := true
     if not forming
         [p0, b0] = legStart(-1, shB)
-        zLive.push(newZone(-1, p0, b0, dKey))
+        addZone(-1, p0, b0)
 
 if bosUp
     shUsed  := true
     trend   := 1
     lastBos := shP
     if showBos
-        bosLn.push(line.new(shB, shP, bar_index, shP, color = color.new(cBuy, 50), style = line.style_dotted))
-        bosLb.push(label.new(bar_index, shP, "BOS", style = label.style_label_lower_left, color = color.new(color.black, 100), textcolor = color.new(cBuy, 30), size = size.tiny))
+        bosLn.push(line.new(shB, shP, bar_index, shP, color = color.new(cBuy, 60), style = line.style_dotted))
     bool forming = false
     for z in zLive
         if z.dir > 0 and z.state == 0
             forming := true
     if not forming
         [p0, b0] = legStart(1, slB)
-        zLive.push(newZone(1, p0, b0, dKey))
+        addZone(1, p0, b0)
 
 var string lastTrade    = "—"
 var int    lastTradeDir = 0
-string cLbl = tfLabel(timeframe.period)
 
 // ───────────────────────────── Open trade → outcome (before new entries, so a trade that closes on this bar frees the slot)
 for t in tLive
     if t.state == 1
         for l in t.ln
-            l.set_x2(bar_index)
+            l.set_x2(bar_index + 6)
+        for l in t.rl
+            l.set_x(bar_index + 6)
         if barstate.isconfirmed and bar_index > t.eB
             bool   done = false
             string res  = ""
@@ -768,10 +773,13 @@ for t in tLive
                 t.net += t.rem * t.dir * (t.sl - t.entry)
                 t.rem := 0.0
                 done  := true
-                res   := t.hits == 0 ? "✗ SL" : "✓ TP" + str.tostring(t.hits) + (t.sl == t.entry ? " · BE" : t.dir * (t.sl - t.entry) > 0 ? " · locked" : " · reversed")
+                res   := t.hits == 0 ? "stop loss" : "TP" + str.tostring(t.hits) + (t.sl == t.entry ? " then break-even" : " then locked profit")
                 if t.hits == 0
                     score(t.dKey, 2, 1)
-                    t.zn.entries := maxEnt
+                    if not na(t.zn)
+                        t.zn.entries := maxEnt
+                    if not na(t.mv)
+                        t.mv.entries := maxEnt
             else
                 int before = t.hits
                 while t.hits < 4 and (t.dir < 0 ? low <= t.tps.get(t.hits) : high >= t.tps.get(t.hits))
@@ -781,19 +789,21 @@ for t in tLive
                 if t.hits > before
                     if before == 0
                         score(t.dKey, 1, 1)
-                    t.sl := protSl(t.dir, t.entry, t.sl, t.hits)
-                    if t.ln.size() > 0
-                        t.ln.get(0).set_y1(t.sl)
-                        t.ln.get(0).set_y2(t.sl)
-                    t.lb.set_text((t.dir < 0 ? "SELL" : "BUY") + (t.add ? " +" : "") + " ✓TP" + str.tostring(t.hits) + " · open")
+                    t.sl := protSl(t.dir, t.entry, t.sl, t.hits, t.tps)
+                    t.ln.get(0).set_y1(t.sl)
+                    t.ln.get(0).set_y2(t.sl)
+                    t.rl.get(0).set_y(t.sl)
+                    t.rl.get(0).set_text("SL " + fmtP(t.sl))
+                    t.rl.get(5).set_text("▶ " + cLbl + (t.dir < 0 ? " SELL " : " BUY ") + fmtP(t.entry) + " · ✓TP" + str.tostring(t.hits))
+                bool stale = noProg > 0 and t.hits == 0 and bar_index - t.eB >= noProg
                 if t.hits == 4
                     done := true
-                    res  := "✓ TP4"
-                else if bar_index - t.eB >= maxBars
+                    res  := "TP4"
+                else if stale or bar_index - t.eB >= maxBars
                     t.net += t.rem * t.dir * (close - t.entry)
                     t.rem := 0.0
                     done  := true
-                    res   := (t.hits > 0 ? "✓ TP" + str.tostring(t.hits) + " · " : "") + "⌛"
+                    res   := (t.hits > 0 ? "TP" + str.tostring(t.hits) + ", " : "") + "time exit"
                     if t.hits == 0 and t.net < 0
                         score(t.dKey, 2, 1)
             if done
@@ -806,78 +816,154 @@ for t in tLive
     if t.state == 1
         busy := true
 
-// ───────────────────────────── Local zones → entries
-bool evSellZone  = false
-bool evBuyZone   = false
-bool evSellEntry = false
-bool evBuyEntry  = false
+bool evSell = false
+bool evBuy  = false
 
+// ───────────────────────────── Entries 1 · major zones (seen on this chart)
+majEntry(MajView v, int dir, float p0, float p1, bool live) =>
+    bool  fire = false
+    float ep   = na
+    float sl   = na
+    float dist = na
+    bool  sbSl = false
+    if live and tradeMj and barstate.isconfirmed and v.entries < maxEnt
+        float zA = p1 + fEntry * (p0 - p1)
+        float zB = p1 + fZone * (p0 - p1)
+        float zI = p1 + fInv * (p0 - p1)
+        float zM = (zA + zB) / 2
+        if not v.armed and (dir < 0 ? low <= zM - pTp(math.max(tfSecs, 300), 0) : high >= zM + pTp(math.max(tfSecs, 300), 0))
+            v.armed := true
+        bool inZone  = dir < 0 ? high >= zA : low <= zA
+        bool hitMid  = dir < 0 ? high >= zM : low <= zM
+        bool invalid = dir < 0 ? close > zI : close < zI
+        bool byLim   = trig != "Rejection candle" and hitMid
+        bool byRej   = not byLim and trig != "Limit at zone middle" and inZone and (dir < 0 ? close < zB : close > zB) and isRej(dir)
+        if invalid
+            v.entries := maxEnt
+        else if (byLim or byRej) and v.armed and (na(v.lastE) or bar_index - v.lastE >= reCool)
+            fire := true
+            ep   := byLim ? (dir < 0 ? math.max(zM, open) : math.min(zM, open)) : close
+            dist := clampSl(math.abs(ep - (zI - dir * slBuf * atr)), tfSecs, true)
+            sl   := ep - dir * dist
+            sbSl := byLim and (dir < 0 ? high >= sl : low <= sl)
+            v.entries += 1
+            v.lastE   := bar_index
+    [fire, ep, sl, dist, sbSl]
+
+if not busy and not spkBlock
+    for k = 0 to 1
+        int     dir = k == 0 ? 1 : -1
+        MajView v   = dir > 0 ? mvB : mvS
+        bool    ok  = dir > 0 ? okBuy : okSell
+        if not busy and ok
+            [f, ep, sl, dist, sb] = majEntry(v, dir, dir > 0 ? mBP0 : mSP0, dir > 0 ? mBP1 : mSP1, dir > 0 ? mBLive : mSLive)
+            if f
+                Trade nt = openTrade(dir, ep, sl, dist, true, mLbl + " major zone", na, v)
+                tLive.push(nt)
+                busy := true
+                score(dKey, 0, 1)
+                lastTrade    := (dir < 0 ? "SELL " : "BUY ") + fmtP(ep) + " · open"
+                lastTradeDir := dir
+                evSell := evSell or dir < 0
+                evBuy  := evBuy or dir > 0
+                if sb
+                    nt.net := -dist
+                    nt.rem := 0.0
+                    score(dKey, 2, 1)
+                    v.entries := maxEnt
+                    closeTrade(nt, "stop loss on the fill candle")
+                    busy := false
+
+// ───────────────────────────── Entries 2 · daily zones (rejection out of the zone)
+if not busy and tradeDL and not spkBlock and barstate.isconfirmed and dZLo.size() > 0
+    for j = 0 to dZLo.size() - 1
+        if not busy and dZW.get(j) >= dlMinW
+            float lo = dZLo.get(j)
+            float hi = dZHi.get(j)
+            bool  bR = okBuy and dZB.get(j) == 0 and close[1] > hi and low <= hi and close > hi and isRej(1)
+            bool  sR = okSell and dZS.get(j) == 0 and close[1] < lo and high >= lo and close < lo and isRej(-1)
+            if bR or sR
+                int   dir  = bR ? 1 : -1
+                float dist = clampSl(dir > 0 ? close - (math.min(lo, low) - slBuf * atr) : (math.max(hi, high) + slBuf * atr) - close, tfSecs, true)
+                if dir > 0
+                    dZB.set(j, 1)
+                else
+                    dZS.set(j, 1)
+                Trade nt = openTrade(dir, close, close - dir * dist, dist, true, "daily zone " + rngTxt(lo, hi), na, na)
+                tLive.push(nt)
+                busy := true
+                score(dKey, 0, 1)
+                lastTrade    := (dir < 0 ? "SELL " : "BUY ") + fmtP(close) + " · open"
+                lastTradeDir := dir
+                evSell := evSell or dir < 0
+                evBuy  := evBuy or dir > 0
+
+// ───────────────────────────── Entries 3 · local zones (drawn here too)
 for z in zLive
     if z.state <= 1
         legUpdate(z)
         float zA    = lvl(z, fEntry)
         float zB    = lvl(z, fZone)
         float zM    = (zA + zB) / 2
+        float top   = math.max(zA, zB)
+        float bot   = math.min(zA, zB)
         bool  valid = math.abs(z.p0 - z.p1) >= minLeg * atr
-        color cDir  = z.dir < 0 ? cSell : cBuy
-        if valid
-            float  top = math.max(zA, zB)
-            float  bot = math.min(zA, zB)
-            string tx  = cLbl + (z.dir < 0 ? " SELL ZONE " : " BUY ZONE ") + pct(fEntry) + "–" + pct(fZone) + (trig != "Rejection candle" and trig != "Touch" ? " · mid " + fmtP(zM) : "")
+        // not drawn when a live major zone of the same side already covers it
+        bool  dup   = false
+        if z.dir > 0 and mBLive
+            float mt = math.max(mBP1 + fEntry * (mBP0 - mBP1), mBP1 + fZone * (mBP0 - mBP1))
+            float mb = math.min(mBP1 + fEntry * (mBP0 - mBP1), mBP1 + fZone * (mBP0 - mBP1))
+            dup := math.min(top, mt) - math.max(bot, mb) >= 0.5 * (top - bot)
+        if z.dir < 0 and mSLive
+            float mt = math.max(mSP1 + fEntry * (mSP0 - mSP1), mSP1 + fZone * (mSP0 - mSP1))
+            float mb = math.min(mSP1 + fEntry * (mSP0 - mSP1), mSP1 + fZone * (mSP0 - mSP1))
+            dup := math.min(top, mt) - math.max(bot, mb) >= 0.5 * (top - bot)
+        color cDir = z.dir < 0 ? cSell : cBuy
+        if valid and not dup
             if na(z.bx)
-                z.bx  := box.new(z.b1, top, bar_index + 3, bot, border_color = color.new(cDir, 25), border_style = line.style_dashed, border_width = 1, bgcolor = color.new(cZone, 86), text = tx, text_size = size.tiny, text_color = cDir, text_halign = text.align_right, text_valign = z.dir < 0 ? text.align_top : text.align_bottom)
-                z.mid := line.new(z.b1, zM, bar_index + 3, zM, color = color.new(cZone, 30), style = line.style_dashed)
+                z.bx  := box.new(z.b1, top, bar_index + 3, bot, border_color = color.new(cDir, 35), border_style = line.style_dashed, border_width = 1, bgcolor = color.new(cZone, 88), text = cLbl + (z.dir < 0 ? " SELL ZONE" : " BUY ZONE"), text_size = size.tiny, text_color = color.new(cDir, 20), text_halign = text.align_right, text_valign = z.dir < 0 ? text.align_top : text.align_bottom)
+                z.mid := line.new(z.b1, zM, bar_index + 3, zM, color = color.new(cZone, 45), style = line.style_dotted)
                 if showLeg
-                    z.lg := line.new(z.b0, z.p0, z.b1, z.p1, color = color.new(cZone, 45), style = line.style_dashed)
+                    z.lg := line.new(z.b0, z.p0, z.b1, z.p1, color = color.new(cZone, 55), style = line.style_dashed)
             else
                 z.bx.set_lefttop(z.b1, top)
                 z.bx.set_rightbottom(bar_index + 3, bot)
-                z.bx.set_text(tx)
                 z.mid.set_xy1(z.b1, zM)
                 z.mid.set_xy2(bar_index + 3, zM)
                 if not na(z.lg)
                     z.lg.set_xy1(z.b0, z.p0)
                     z.lg.set_xy2(z.b1, z.p1)
-        [fire, ep, sl, dist, tNow, sbSl] = zoneEval(z, atr, spkBlock, trend, busy or (z.dir > 0 ? blkBuy : blkSell))
-        if tNow
-            if z.dir < 0
-                evSellZone := true
-            else
-                evBuyZone := true
+        else if not na(z.bx)
+            box.delete(z.bx)
+            line.delete(z.mid)
+            line.delete(z.lg)
+            z.bx  := na
+            z.mid := na
+            z.lg  := na
+        [fire, ep, sl, dist, sbSl] = zoneEval(z, atr, spkBlock, trend, busy or not (z.dir > 0 ? okBuy : okSell), tfSecs)
         if fire
-            bool  add = z.entries > 1
-            array<float> tps = array.from(ep + z.dir * tp1Pts, ep + z.dir * tp2Pts, ep + z.dir * tp3Pts, ep + z.dir * tp4Pts)
-            string side = z.dir < 0 ? "SELL" : "BUY"
-            string tip  = cLbl + " " + side + (add ? " (reinforcement)" : "") + " @ " + fmtP(ep) + "\nSL " + fmtP(sl) + " (" + str.tostring(dist, "#.##") + " pts)\nTP1 " + fmtP(tps.get(0)) + " · TP2 " + fmtP(tps.get(1)) + "\nTP3 " + fmtP(tps.get(2)) + " · TP4 " + fmtP(tps.get(3)) + "\nZone " + fmtP(math.min(zA, zB)) + " – " + fmtP(math.max(zA, zB)) + "\nLeg " + fmtP(z.p0) + " → " + fmtP(z.p1)
-            label lb = label.new(bar_index, z.dir < 0 ? high : low, side + (add ? " +" : ""), style = z.dir < 0 ? label.style_label_down : label.style_label_up, color = z.dir < 0 ? #E0475F : #00A884, textcolor = color.white, size = add ? size.tiny : size.small, tooltip = tip)
-            array<line> ln = array.new<line>()
-            if showLn
-                ln.push(line.new(bar_index, sl, bar_index + 1, sl, color = color.new(cSell, 20), style = line.style_dashed))
-                for p in tps
-                    ln.push(line.new(bar_index, p, bar_index + 1, p, color = color.new(cBuy, 45), style = line.style_dotted))
-                ln.push(line.new(bar_index, ep, bar_index + 1, ep, color = color.new(color.white, 30), style = line.style_solid))
-            Trade nt = Trade.new(z.dir, ep, sl, dist, tps, 0, bar_index, dKey, 0.0, 1.0, 1, add, lb, ln, z)
+            Trade nt = openTrade(z.dir, ep, sl, dist, false, cLbl + " zone" + (z.entries > 1 ? " (reinforcement)" : ""), z, na)
             tLive.push(nt)
             busy := true
             score(dKey, 0, 1)
-            lastTrade    := side + " " + fmtP(ep) + " · open"
+            lastTrade    := (z.dir < 0 ? "SELL " : "BUY ") + fmtP(ep) + " · open"
             lastTradeDir := z.dir
-            if z.dir < 0
-                evSellEntry := true
-            else
-                evBuyEntry := true
-            alert("FOXREX Waves " + cLbl + " " + side + (add ? " (add)" : "") + " " + syminfo.ticker + " @ " + fmtP(ep) + " | SL " + fmtP(sl) + " | TP1 " + fmtP(tps.get(0)) + " | TP2 " + fmtP(tps.get(1)) + " | TP3 " + fmtP(tps.get(2)) + " | TP4 " + fmtP(tps.get(3)), alert.freq_once_per_bar_close)
-            // limit fill: if the same candle also reached the stop, the trade is a loss (worst case)
+            evSell := evSell or z.dir < 0
+            evBuy  := evBuy or z.dir > 0
             if sbSl
                 nt.net := -dist
                 nt.rem := 0.0
                 score(dKey, 2, 1)
                 z.entries := maxEnt
-                closeTrade(nt, "✗ SL")
-                busy      := false
-                lastTrade := side + " " + fmtP(ep) + " → " + sgnPts(nt.net)
-        if z.state >= 10
-            zoneFade(z)
+                closeTrade(nt, "stop loss on the fill candle")
+                busy := false
+    if z.state >= 10
+        zoneGone(z)
+
+if evBuy or evSell
+    for t in tLive
+        if t.state == 1 and t.eB == bar_index
+            alert("FOXREX Waves " + cLbl + " " + (t.dir < 0 ? "SELL" : "BUY") + " " + syminfo.ticker + " @ " + fmtP(t.entry) + " | SL " + fmtP(t.sl) + " | TP1 " + fmtP(t.tps.get(0)) + " | TP2 " + fmtP(t.tps.get(1)) + " | TP3 " + fmtP(t.tps.get(2)) + " | TP4 " + fmtP(t.tps.get(3)) + " | " + t.src, alert.freq_once_per_bar_close)
 
 // ───────────────────────────── Housekeeping
 if zLive.size() > 0
@@ -885,9 +971,11 @@ if zLive.size() > 0
         Zone z = zLive.get(i)
         if z.state >= 10
             zLive.remove(i)
-            zArch.push(z)
-while zArch.size() > keepZ
-    zoneWipe(zArch.shift())
+            if showFin
+                zArch.push(z)
+while zArch.size() > 20
+    Zone z = zArch.shift()
+    box.delete(z.bx)
 
 if tLive.size() > 0
     for i = tLive.size() - 1 to 0
@@ -897,59 +985,96 @@ if tLive.size() > 0
             tArch.push(t)
 while tArch.size() > keepN
     label.delete(tArch.shift().lb)
-
-while bosLn.size() > 60
+while bosLn.size() > 30
     line.delete(bosLn.shift())
-while bosLb.size() > 60
-    label.delete(bosLb.shift())
+
+// ───────────────────────────── Daily zones drawing (last bar; nearest zones per side)
+var array<box>   dlB = array.new<box>()
+var array<line>  dlL = array.new<line>()
+var array<label> dlT = array.new<label>()
+float dR1lo = na
+float dR1hi = na
+float dS1lo = na
+float dS1hi = na
+
+if barstate.islast
+    for b in dlB
+        b.delete()
+    dlB.clear()
+    for l in dlL
+        l.delete()
+    dlL.clear()
+    for l in dlT
+        l.delete()
+    dlT.clear()
+    int zc = dZLo.size()
+    if zc > 0
+        int x1 = nz(time("D"), time - 50 * tfSecs * 1000)
+        int x2 = time + dlExt * tfSecs * 1000
+        int nR = 0
+        int nS = 0
+        for k = 0 to 1
+            for jj = 0 to zc - 1
+                int   j  = k == 0 ? jj : zc - 1 - jj
+                float lo = dZLo.get(j)
+                float hi = dZHi.get(j)
+                bool  isR = k == 0 and lo > close and nR < dlN
+                bool  isS = k == 1 and hi < close and nS < dlN
+                if isR or isS
+                    if isR
+                        nR += 1
+                        if nR == 1
+                            dR1lo := lo
+                            dR1hi := hi
+                    else
+                        nS += 1
+                        if nS == 1
+                            dS1lo := lo
+                            dS1hi := hi
+                    if showDL
+                        float  w  = dZW.get(j)
+                        color  c  = isR ? cSell : cBuy
+                        string tg = "D1 " + (isR ? "SELL R" + str.tostring(nR) : "BUY S" + str.tostring(nS))
+                        dlB.push(box.new(x1, hi, x2, lo, xloc = xloc.bar_time, border_color = color.new(c, 100), bgcolor = color.new(c, w >= 4 ? 88 : 93)))
+                        dlL.push(line.new(x1, (lo + hi) / 2, x2, (lo + hi) / 2, xloc = xloc.bar_time, color = color.new(c, w >= 2.5 ? 35 : 60), width = w >= 6 ? 2 : 1))
+                        dlT.push(label.new(x2, (lo + hi) / 2, tg + " " + fmtP((lo + hi) / 2), xloc = xloc.bar_time, style = label.style_label_left, color = color.new(c, 100), textcolor = color.new(c, 15), size = size.tiny, tooltip = tg + " · " + rngTxt(lo, hi) + " · strength " + str.tostring(w, "#.#") + "\n" + dZN.get(j)))
 
 // ───────────────────────────── Alerts
-alertcondition(evSellZone, "Sell zone reached", "FOXREX Waves: price reached a SELL zone on {{ticker}} {{interval}}")
-alertcondition(evBuyZone, "Buy zone reached", "FOXREX Waves: price reached a BUY zone on {{ticker}} {{interval}}")
-alertcondition(evSellEntry, "Sell entry", "FOXREX Waves: SELL entry on {{ticker}} {{interval}}")
-alertcondition(evBuyEntry, "Buy entry", "FOXREX Waves: BUY entry on {{ticker}} {{interval}}")
+alertcondition(evSell, "Sell entry", "FOXREX Waves: SELL entry on {{ticker}} {{interval}}")
+alertcondition(evBuy, "Buy entry", "FOXREX Waves: BUY entry on {{ticker}} {{interval}}")
 
 // ───────────────────────────── Dashboard
-var table tb = table.new(tbPos == "Top left" ? position.top_left : tbPos == "Bottom right" ? position.bottom_right : tbPos == "Bottom left" ? position.bottom_left : position.top_right, 2, 8, bgcolor = color.new(#0B1320, 10), frame_color = color.new(#A7B6C4, 70), frame_width = 1)
+var table tb = table.new(tbPos == "Top left" ? position.top_left : tbPos == "Bottom right" ? position.bottom_right : tbPos == "Bottom left" ? position.bottom_left : position.top_right, 2, 6, bgcolor = color.new(#0B1320, 10), frame_color = color.new(#A7B6C4, 70), frame_width = 1)
+
+trTxt(int t) =>
+    t > 0 ? "▲" : t < 0 ? "▼" : "–"
 
 if barstate.islast and showTb
-    string sellTxt = "—"
-    string buyTxt  = "—"
-    for z in zLive
-        if z.state <= 1 and not na(z.bx)
-            string st = spkBlock and z.touched ? "spike filter" : z.entries > 0 ? str.tostring(z.entries) + " entr" + (z.entries > 1 ? "ies" : "y") : z.touched ? "in zone" : "waiting"
-            string zt = fmtP(math.min(lvl(z, fEntry), lvl(z, fZone))) + " – " + fmtP(math.max(lvl(z, fEntry), lvl(z, fZone))) + " · " + st
-            if z.dir < 0
-                sellTxt := zt
-            else
-                buyTxt := zt
+    color  cTxt = #E5E7EB
+    color  cMut = #8A97A8
+    string dirTxt = cLbl + " " + trTxt(trend) + (majOn ? "   " + mLbl + " " + trTxt(mTr) : "") + (majBuyAct ? " · in major BUY" : majSellAct ? " · in major SELL" : "")
+    int    allow  = okBuy and not okSell ? 1 : okSell and not okBuy ? -1 : okBuy and okSell ? 0 : 9
+    string allowTxt = allow == 1 ? "BUY only" : allow == -1 ? "SELL only" : allow == 0 ? "both sides" : "none"
     string openTxt = "none"
     int    openDir = 0
     for t in tLive
         if t.state == 1
-            openTxt := (t.dir < 0 ? "SELL " : "BUY ") + fmtP(t.entry) + (t.hits > 0 ? " · ✓TP" + str.tostring(t.hits) : "") + " · SL " + fmtP(t.sl)
+            openTxt := (t.dir < 0 ? "SELL " : "BUY ") + fmtP(t.entry) + (t.hits > 0 ? " ✓TP" + str.tostring(t.hits) : "") + " · SL " + fmtP(t.sl)
             openDir := t.dir
-    string majTxt = not majOn ? "off" : (mTr < 0 ? "Bearish" : mTr > 0 ? "Bullish" : "—") + (majBuyAct ? " · in BUY zone" : majSellAct ? " · in SELL zone" : "") + (mTDir != 0 ? " · " + (mTDir < 0 ? "SELL" : "BUY") + " open" : "")
-    color cTxt = #E5E7EB
-    color cMut = #8A97A8
     table.cell(tb, 0, 0, "FOXREX Waves", text_color = #F5B942, text_size = size.small, text_halign = text.align_left)
     table.cell(tb, 1, 0, syminfo.ticker + " · " + cLbl, text_color = cTxt, text_size = size.small, text_halign = text.align_right)
-    table.cell(tb, 0, 1, "Structure " + cLbl, text_color = cMut, text_size = size.small, text_halign = text.align_left)
-    table.cell(tb, 1, 1, trend < 0 ? "Bearish · BOS " + fmtP(lastBos) : trend > 0 ? "Bullish · BOS " + fmtP(lastBos) : "—", text_color = trend < 0 ? cSell : trend > 0 ? cBuy : cMut, text_size = size.small, text_halign = text.align_right)
-    table.cell(tb, 0, 2, "Major " + mLbl, text_color = cMut, text_size = size.small, text_halign = text.align_left)
-    table.cell(tb, 1, 2, majTxt, text_color = majBuyAct ? cBuy : majSellAct ? cSell : mTr < 0 ? cSell : mTr > 0 ? cBuy : cMut, text_size = size.small, text_halign = text.align_right)
-    table.cell(tb, 0, 3, "Sell zone", text_color = cMut, text_size = size.small, text_halign = text.align_left)
-    table.cell(tb, 1, 3, sellTxt, text_color = cSell, text_size = size.small, text_halign = text.align_right)
-    table.cell(tb, 0, 4, "Buy zone", text_color = cMut, text_size = size.small, text_halign = text.align_left)
-    table.cell(tb, 1, 4, buyTxt, text_color = cBuy, text_size = size.small, text_halign = text.align_right)
-    table.cell(tb, 0, 5, "Open trade", text_color = cMut, text_size = size.small, text_halign = text.align_left)
-    table.cell(tb, 1, 5, openTxt, text_color = openDir < 0 ? cSell : openDir > 0 ? cBuy : cMut, text_size = size.small, text_halign = text.align_right)
-    table.cell(tb, 0, 6, "Last trade", text_color = cMut, text_size = size.small, text_halign = text.align_left)
-    table.cell(tb, 1, 6, lastTrade, text_color = lastTradeDir < 0 ? cSell : lastTradeDir > 0 ? cBuy : cMut, text_size = size.small, text_halign = text.align_right)
-    table.cell(tb, 0, 7, "Daily R1 / S1", text_color = cMut, text_size = size.small, text_halign = text.align_left)
-    table.cell(tb, 1, 7, (na(dR1lo) ? "—" : rngTxt(dR1lo, dR1hi)) + "  /  " + (na(dS1lo) ? "—" : rngTxt(dS1lo, dS1hi)), text_color = cTxt, text_size = size.small, text_halign = text.align_right)
+    table.cell(tb, 0, 1, "Direction", text_color = cMut, text_size = size.small, text_halign = text.align_left)
+    table.cell(tb, 1, 1, dirTxt, text_color = cTxt, text_size = size.small, text_halign = text.align_right)
+    table.cell(tb, 0, 2, "Trades allowed", text_color = cMut, text_size = size.small, text_halign = text.align_left)
+    table.cell(tb, 1, 2, allowTxt, text_color = allow == 1 ? cBuy : allow == -1 ? cSell : cTxt, text_size = size.small, text_halign = text.align_right)
+    table.cell(tb, 0, 3, "Open trade", text_color = cMut, text_size = size.small, text_halign = text.align_left)
+    table.cell(tb, 1, 3, openTxt, text_color = openDir < 0 ? cSell : openDir > 0 ? cBuy : cMut, text_size = size.small, text_halign = text.align_right)
+    table.cell(tb, 0, 4, "Last trade", text_color = cMut, text_size = size.small, text_halign = text.align_left)
+    table.cell(tb, 1, 4, lastTrade, text_color = lastTradeDir < 0 ? cSell : lastTradeDir > 0 ? cBuy : cMut, text_size = size.small, text_halign = text.align_right)
+    table.cell(tb, 0, 5, "Daily R1 / S1", text_color = cMut, text_size = size.small, text_halign = text.align_left)
+    table.cell(tb, 1, 5, (na(dR1lo) ? "—" : fmtP((dR1lo + dR1hi) / 2)) + " / " + (na(dS1lo) ? "—" : fmtP((dS1lo + dS1hi) / 2)), text_color = cTxt, text_size = size.small, text_halign = text.align_right)
 
-// ───────────────────────────── Daily scorecard
+// ───────────────────────────── Daily scorecard (this timeframe only)
 var table st = table.new(stPos == "Top left" ? position.top_left : stPos == "Top right" ? position.top_right : stPos == "Bottom left" ? position.bottom_left : position.bottom_right, 6, 4, bgcolor = color.new(#0B1320, 10), frame_color = color.new(#A7B6C4, 70), frame_width = 1)
 
 stRow(table t, int r, string name, array<float> a) =>
@@ -964,7 +1089,7 @@ stRow(table t, int r, string name, array<float> a) =>
     table.cell(t, 2, r, str.tostring(w, "#"), text_color = #00D4A7, text_size = size.small)
     table.cell(t, 3, r, str.tostring(l, "#"), text_color = #FF5C7A, text_size = size.small)
     table.cell(t, 4, r, na(wr) ? "—" : str.tostring(wr, "#") + "%", text_color = na(wr) ? #8A97A8 : wr >= 50 ? #00D4A7 : #FF5C7A, text_size = size.small)
-    table.cell(t, 5, r, (pt > 0 ? "+" : "") + str.tostring(pt, "#.##"), text_color = pt > 0 ? #00D4A7 : pt < 0 ? #FF5C7A : cT, text_size = size.small)
+    table.cell(t, 5, r, sgnPts(pt), text_color = pt > 0 ? #00D4A7 : pt < 0 ? #FF5C7A : cT, text_size = size.small)
     true
 
 if barstate.islast and showSt
