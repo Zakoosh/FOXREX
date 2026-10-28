@@ -2,8 +2,8 @@
   "runId": "run-20261028-0640Z-fxr",
   "date": "2026-10-28",
   "generatedAt": "2026-10-28T06:55:00Z",
-  "packageStatus": "PENDING_VERIFICATION",
-  "commitSha": null,
+  "packageStatus": "CONTENT_PLAN_READY",
+  "commitSha": "fcf56cfd49dcb3689c6d93f511f056888d488fa9",
   "branch": "claude/nifty-volta-jbnii8",
   "contentIds": [
     "fxr-20261028-ig-en",
