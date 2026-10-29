@@ -83,3 +83,8 @@ Shows each data file with its last update and age, every stored quote with its s
 - Indicator settings in 13 numbered groups; new options: Trade direction, Entry type / Entry level, ✕ skip markers, intraday results on D/W charts.
 - EA: position size by risk % of equity, max lot, direction / entry level options, Experts-tab journal of touches without a trade.
 - Defaults reproduce the 3.11 trades.
+
+### FOXREX Waves 3.13
+- Overlapping buy / sell zones keep only the stronger (indicator + EA, option on by default).
+- Scorecard: chosen period + 7 days + All (chart).
+- EA: timeframe in the position comment and magic (base + minutes), open FOXREX positions listed with their timeframe, TP1–TP4 lines, default 1.00 lot.

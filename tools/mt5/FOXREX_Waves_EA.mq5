@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.12.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.13.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.12"
-#property description "FOXREX Waves EA v3.12: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.13"
+#property description "FOXREX Waves EA v3.13: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -60,12 +60,13 @@ enum ENUM_FXW_MAJFLT  { MAJ_STRUCT_ZONE = 0,   // Major structure + active zone
 //--- inputs
 input group "Trading"
 input ENUM_FXW_LOT InpLotMode = LOT_FIXED; // Position size
-input double InpBaseLot     = 0.01;   // Base lot (1 star, fixed mode)
+input double InpBaseLot     = 1.0;    // Base lot (1 star, fixed mode) = the indicator simulation
 input double InpRiskPct     = 0.25;   // Risk per trade, % of equity (1 star, risk mode)
 input bool   InpLotByStars  = true;   // Size by confidence (1 / 1.5 / 2 / 2.5 ×)
 input double InpMaxLot      = 0;      // Max lot per trade (0 = broker max)
 input int    InpMaxOpen     = 0;      // Max open trades in the same direction (0 = no limit)
-input long   InpMagic       = 260929; // Magic number
+input long   InpMagic       = 260929; // Magic number (base)
+input bool   InpMagicByTf   = true;   // Add the timeframe in minutes to the magic (M1 260930, M15 260944 …)
 input int    InpMaxSpread   = 0;      // Max spread in points (0 = off)
 input bool   InpPush        = false;  // Push notification on entry / exit
 
@@ -105,6 +106,7 @@ input double InpFZone   = 0.618;  // Zone end (retracement)
 input double InpFInv    = 0.786;  // Invalidation (retracement)
 input double InpMinLeg  = 1.5;    // Minimum leg size (× ATR)
 input int    InpMaxWait = 300;    // Zone life (bars after the leg end)
+input bool   InpOverlap = true;   // Buy and sell zones overlapping: keep only the stronger
 input ENUM_FXW_ENTRY InpEntry = ENTRY_LIM_REJ; // Entry type
 input ENUM_FXW_ELVL InpELvl = ELVL_MID;        // Entry level (where the limit fills)
 input double InpECust   = 0.5;    // Custom retracement
@@ -147,7 +149,7 @@ input bool   InpLogSkip = true;   // Journal: why a touched zone gave no trade
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.12"
+#define FXW_VER   "3.13"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -294,6 +296,21 @@ public:
 
    void              AddZone(int dir, double p0, int b0, double p1, int b1)
      {
+      //--- a buy and a sell zone on the same prices: only the stronger stays (trend direction, then the bigger wave)
+      if(InpOverlap)
+        {
+         double na_, nb_; CapZ(p1 + InpFEntry * (p0 - p1), p1 + InpFZone * (p0 - p1), secs, na_, nb_);
+         for(int z = 0; z < ArraySize(zones); z++)
+           {
+            if(zones[z].dir == dir || zones[z].state > 1) continue;
+            double oa, ob; CapZ(Lvl(zones[z], InpFEntry), Lvl(zones[z], InpFZone), secs, oa, ob);
+            if(MathMin(MathMax(na_, nb_), MathMax(oa, ob)) < MathMax(MathMin(na_, nb_), MathMin(oa, ob))) continue;
+            bool nW = dir == trend, oW = zones[z].dir == trend;
+            bool newWins = nW != oW ? nW : MathAbs(p0 - p1) >= MathAbs(zones[z].p0 - zones[z].p1);
+            if(newWins) zones[z].state = 16;
+            else return;
+           }
+        }
       int live = 0;
       for(int z = 0; z < ArraySize(zones); z++) if(zones[z].dir == dir && zones[z].state <= 1) live++;
       for(int z = 0; z < ArraySize(zones) && live >= maxLive; z++)
@@ -368,6 +385,7 @@ struct SPos
    bool     alive;
   };
 SPos        pos[];
+long        gMagic = 0;
 
 //+------------------------------------------------------------------+
 //| Profile helpers                                                  |
@@ -554,8 +572,9 @@ bool ParseComment(string c, string &kind, int &zid, int &stars, bool &imp, doubl
    if(StringFind(c, "FXW ") != 0) return false;
    string p[]; int np = StringSplit(c, ' ', p);
    if(np < 5) return false;
-   kind = StringSubstr(p[1], 0, 1); zid = (int)StringToInteger(StringSubstr(p[1], 1));
-   stars = (int)StringToInteger(StringSubstr(p[2], 1)); imp = StringSubstr(p[3], 1) == "1"; a = StringToDouble(StringSubstr(p[4], 1));
+   int o = np >= 6 ? 2 : 1;   // 3.13+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
+   kind = StringSubstr(p[o], 0, 1); zid = (int)StringToInteger(StringSubstr(p[o], 1));
+   stars = (int)StringToInteger(StringSubstr(p[o + 1], 1)); imp = StringSubstr(p[o + 2], 1) == "1"; a = StringToDouble(StringSubstr(p[o + 3], 1));
    return true;
   }
 
@@ -580,7 +599,7 @@ void ManagePositions(void)
      {
       ulong t = PositionGetTicket(i);
       if(t == 0 || !PositionSelectByTicket(t)) continue;
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol || PositionGetInteger(POSITION_MAGIC) != InpMagic) continue;
+      if(PositionGetString(POSITION_SYMBOL) != _Symbol || PositionGetInteger(POSITION_MAGIC) != gMagic) continue;
       int pi = FindPos(t);
       if(pi < 0)
         {
@@ -642,7 +661,7 @@ void Busy(bool &busyB, bool &busyS)
      {
       ulong t = PositionGetTicket(i);
       if(t == 0 || !PositionSelectByTicket(t)) continue;
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol || PositionGetInteger(POSITION_MAGIC) != InpMagic) continue;
+      if(PositionGetString(POSITION_SYMBOL) != _Symbol || PositionGetInteger(POSITION_MAGIC) != gMagic) continue;
       int d = PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY ? 1 : -1;
       double en = PositionGetDouble(POSITION_PRICE_OPEN), sl = PositionGetDouble(POSITION_SL);
       openN++; openDir = d;
@@ -657,7 +676,7 @@ void DeletePendings(int dir)   // dir 0 = all
    for(int i = OrdersTotal() - 1; i >= 0; i--)
      {
       ulong t = OrderGetTicket(i);
-      if(t == 0 || OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != InpMagic) continue;
+      if(t == 0 || OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != gMagic) continue;
       long ot = OrderGetInteger(ORDER_TYPE);
       int d = (ot == ORDER_TYPE_BUY_LIMIT || ot == ORDER_TYPE_BUY_STOP) ? 1 : -1;
       if(dir == 0 || d == dir) trade.OrderDelete(t);
@@ -669,7 +688,7 @@ ulong FindPending(string cmt)
    for(int i = OrdersTotal() - 1; i >= 0; i--)
      {
       ulong t = OrderGetTicket(i);
-      if(t == 0 || OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != InpMagic) continue;
+      if(t == 0 || OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != gMagic) continue;
       if(StringFind(OrderGetString(ORDER_COMMENT), cmt) == 0) return t;
      }
    return 0;
@@ -701,7 +720,7 @@ bool SpreadOk(void)
 
 string Cmt(string kind, int zid, int stars, bool imp, double a)
   {
-   return "FXW " + kind + IntegerToString(zid) + " s" + IntegerToString(stars) + " i" + (imp ? "1" : "0") + " a" + DoubleToString(a, _Digits);
+   return "FXW " + TfLabel(tfSecs) + " " + kind + IntegerToString(zid) + " s" + IntegerToString(stars) + " i" + (imp ? "1" : "0") + " a" + DoubleToString(a, _Digits);
   }
 
 //--- market entry
@@ -724,7 +743,7 @@ bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp
 bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, string kind, int zid, bool imp)
   {
    string c = Cmt(kind, zid, stars, imp, eng.Atr());
-   string key = "FXW " + kind + IntegerToString(zid) + " ";
+   string key = "FXW " + TfLabel(tfSecs) + " " + kind + IntegerToString(zid) + " ";
    ulong t = FindPending(key);
    if(!want) { if(t > 0) trade.OrderDelete(t); return false; }
    double a = eng.Atr();
@@ -807,6 +826,20 @@ void Redraw(void)
          DrawLine(nm + "m", maj.T[maj.zones[z].b1], (zA + zB) / 2, tR, maj.zones[z].dir > 0 ? cBuy : cSell, 3, STYLE_SOLID);
          DrawText(nm + "t", tR, MathMax(zA, zB), TfLabel(maj.secs) + (maj.zones[z].dir > 0 ? " BUY ZONE · MAJOR" : " SELL ZONE · MAJOR"), maj.zones[z].dir > 0 ? cBuy : cSell);
         }
+   //--- open trades of this timeframe: entry and TP1–TP4 (the broker draws SL and the TP7 order)
+   for(int pi = 0; pi < ArraySize(pos); pi++)
+     {
+      if(!pos[pi].alive) continue;
+      string nm = FXW_PFX + "ZP" + IntegerToString((long)pos[pi].ticket);
+      color c = pos[pi].dir > 0 ? cBuy : cSell;
+      DrawLine(nm + "e", eng.T[MathMax(eng.n - 20, 0)], pos[pi].entry, tR, clrWhite, 2, STYLE_SOLID);
+      DrawText(nm + "et", tR, pos[pi].entry, TfLabel(tfSecs) + (pos[pi].dir > 0 ? " BUY " : " SELL ") + Stars(pos[pi].stars) + " " + DoubleToString(pos[pi].entry, _Digits) + (pos[pi].hits > 0 ? " ✓TP" + IntegerToString(pos[pi].hits) : "") + " · open", c);
+      for(int i = 0; i < 4; i++)
+        {
+         DrawLine(nm + "t" + IntegerToString(i), eng.T[MathMax(eng.n - 20, 0)], pos[pi].tps[i], tR, cBuy, 1, STYLE_DOT);
+         DrawText(nm + "tt" + IntegerToString(i), tR, pos[pi].tps[i], TfLabel(tfSecs) + " TP" + IntegerToString(i + 1) + (pos[pi].hits > i ? " ✓" : ""), cBuy);
+        }
+     }
    datetime t0 = iTime(_Symbol, PERIOD_D1, 0);
    double px = SymbolInfoDouble(_Symbol, SYMBOL_BID);
    for(int i = 0; i < ArraySize(dZLo); i++)
@@ -831,7 +864,7 @@ void TodayStats(int &trades, int &wins, double &profit)
    for(int i = 0; i < HistoryDealsTotal(); i++)
      {
       ulong d = HistoryDealGetTicket(i);
-      if(HistoryDealGetString(d, DEAL_SYMBOL) != _Symbol || HistoryDealGetInteger(d, DEAL_MAGIC) != InpMagic) continue;
+      if(HistoryDealGetString(d, DEAL_SYMBOL) != _Symbol || HistoryDealGetInteger(d, DEAL_MAGIC) != gMagic) continue;
       if(HistoryDealGetInteger(d, DEAL_ENTRY) != DEAL_ENTRY_OUT) continue;
       double pr = HistoryDealGetDouble(d, DEAL_PROFIT) + HistoryDealGetDouble(d, DEAL_COMMISSION) + HistoryDealGetDouble(d, DEAL_SWAP);
       trades++; if(pr > 0) wins++; profit += pr;
@@ -841,13 +874,21 @@ void TodayStats(int &trades, int &wins, double &profit)
 void Dashboard(bool okB, bool okS)
   {
    int tr, wn; double pr; TodayStats(tr, wn, pr);
-   double fl = 0; int op = 0;
+   double fl = 0; int op = 0; string lst = "";
    for(int i = PositionsTotal() - 1; i >= 0; i--)
      {
       ulong t = PositionGetTicket(i);
       if(t == 0 || !PositionSelectByTicket(t)) continue;
-      if(PositionGetString(POSITION_SYMBOL) != _Symbol || PositionGetInteger(POSITION_MAGIC) != InpMagic) continue;
-      fl += PositionGetDouble(POSITION_PROFIT); op++;
+      if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
+      string c = PositionGetString(POSITION_COMMENT);
+      if(StringFind(c, "FXW ") != 0) continue;
+      string p[]; int np = StringSplit(c, ' ', p);
+      string tf = np >= 6 ? p[1] : "?";
+      bool mine = PositionGetInteger(POSITION_MAGIC) == gMagic;
+      if(mine) { fl += PositionGetDouble(POSITION_PROFIT); op++; }
+      lst += "\n   " + (mine ? "▶ " : "   ") + tf + (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY ? " BUY " : " SELL ") +
+             DoubleToString(PositionGetDouble(POSITION_VOLUME), 2) + " @ " + DoubleToString(PositionGetDouble(POSITION_PRICE_OPEN), _Digits) +
+             "  SL " + DoubleToString(PositionGetDouble(POSITION_SL), _Digits) + "  " + DoubleToString(PositionGetDouble(POSITION_PROFIT), 2);
      }
    string tt = eng.trend > 0 ? "UP" : eng.trend < 0 ? "DOWN" : "RANGE";
    string mt = majOn ? (maj.trend > 0 ? "UP" : maj.trend < 0 ? "DOWN" : "RANGE") : "off";
@@ -855,7 +896,8 @@ void Dashboard(bool okB, bool okS)
    Comment("FOXREX Waves EA v" + FXW_VER + "  ·  " + _Symbol + " " + TfLabel(tfSecs) +
            "\nDirection: " + TfLabel(tfSecs) + " " + tt + "   major " + (majOn ? TfLabel(maj.secs) : "") + " " + mt +
            "\nTrades allowed: " + al +
-           "\nOpen: " + IntegerToString(op) + "   floating " + DoubleToString(fl, 2) +
+           "\nMagic " + IntegerToString(gMagic) + " · open on this timeframe: " + IntegerToString(op) + "   floating " + DoubleToString(fl, 2) +
+           "\nFOXREX positions on " + _Symbol + ":" + (lst == "" ? " none" : lst) +
            "\nToday: " + IntegerToString(tr) + " closed · " + IntegerToString(wn) + " won · " + DoubleToString(pr, 2));
   }
 
@@ -1045,7 +1087,7 @@ void OnNewBar(bool live)
    for(int i = OrdersTotal() - 1; i >= 0; i--)
      {
       ulong t = OrderGetTicket(i);
-      if(t == 0 || OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != InpMagic) continue;
+      if(t == 0 || OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != gMagic) continue;
       string kind; int zid, st; bool imp; double aa;
       if(!ParseComment(OrderGetString(ORDER_COMMENT), kind, zid, st, imp, aa)) continue;
       bool found = false;
@@ -1089,7 +1131,8 @@ void CheckDay(void)
 int OnInit()
   {
    if(InpSwLen < 2 || InpStL < 1) return INIT_PARAMETERS_INCORRECT;
-   trade.SetExpertMagicNumber((ulong)InpMagic);
+   gMagic = InpMagicByTf ? InpMagic + PeriodSeconds(_Period) / 60 : InpMagic;
+   trade.SetExpertMagicNumber((ulong)gMagic);
    trade.SetTypeFillingBySymbol(_Symbol);
    tfSecs = PeriodSeconds(_Period);
    eng.Init(_Period, 2);

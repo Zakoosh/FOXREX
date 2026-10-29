@@ -1,7 +1,7 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX — foxrex.co
 //
-// FOXREX · Wave Retracement Zones · version 3.12 (see tools/tradingview/CHANGELOG.md)
+// FOXREX · Wave Retracement Zones · version 3.13 (see tools/tradingview/CHANGELOG.md)
 // Three kinds of buy / sell zones, each with its own look so nothing overlaps:
 //   • Local zones  — the chart's timeframe: grey fill, dashed border in the side colour, "M5 BUY ZONE".
 //   • Major zones  — a higher timeframe that sets the direction (auto: 1m→15m, 5m→1H, 15m→4H, 1H→D):
@@ -36,7 +36,7 @@
 
 //@version=6
 indicator("FOXREX · Wave Retracement Zones", shorttitle = "FOXREX Waves", overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500, max_bars_back = 500)
-string VER = "3.12"
+string VER = "3.13"
 
 // ───────────────────────────── Inputs
 string G_TR   = "1 · Trading & simulation"
@@ -70,6 +70,7 @@ float  fZone   = input.float(0.618, "Zone end (retracement)", minval = 0.236, ma
 float  fInv    = input.float(0.786, "Invalidation (retracement)", minval = 0.5, maxval = 1.0, step = 0.01, group = G_WAV, display = display.none)
 float  minLeg  = input.float(1.5, "Minimum leg size (× ATR)", minval = 0.0, step = 0.1, group = G_WAV, display = display.none)
 int    maxWait = input.int(300, "Zone life (bars after the leg end)", minval = 5, group = G_WAV, display = display.none)
+bool   ovlOn   = input.bool(true, "Buy and sell zones overlapping: keep only the stronger", group = G_WAV, tooltip = "When a new buy zone overlaps a live sell zone (or the reverse), only one stays: the zone in the direction of the trend wins; in a range (or both with the trend) the bigger wave wins. Off = both zones stay, as in 3.12.", display = display.none)
 
 string G_ENT  = "4 · Entry"
 string trig    = input.string("Limit or rejection", "Entry type", options = ["Limit or rejection", "Limit only", "Rejection candle only"], group = G_ENT, tooltip = "Limit: filled the moment price reaches the entry level below. Rejection: a candle that touches the zone and closes back out of it, entered at its close (never more than one zone-height away from the zone). Limit or rejection: whichever comes first.", display = display.none)
@@ -425,6 +426,17 @@ legEngine(int sL, int sR) =>
 newZone(int dir, float p0, int b0, float p1, int b1, int t1, int k) =>
     Zone.new(dir, p0, b0, p1, b1, 0, false, 0, na, k, na, na, na, bar_index, 1, na, 1, na, true, t1, time)
 
+// Overlapping buy / sell zones: does the new zone beat the old one? (trend direction first, then the bigger wave)
+zOvl(Zone a, Zone b, int s) =>
+    [a1, a2] = capZ(lvl(a, fEntry), lvl(a, fZone), s)
+    [b1, b2] = capZ(lvl(b, fEntry), lvl(b, fZone), s)
+    math.min(math.max(a1, a2), math.max(b1, b2)) >= math.max(math.min(a1, a2), math.min(b1, b2))
+
+zWins(Zone nz, Zone oz, int tr) =>
+    bool nW = nz.dir == tr
+    bool oW = oz.dir == tr
+    nW != oW ? nW : math.abs(nz.p0 - nz.p1) >= math.abs(oz.p0 - oz.p1)
+
 // Stars: every confirmed candle after the stall that holds near the top (no new extreme, no drop beyond 23.6%)
 // adds a star, up to 3. The count stops at the first candle that does not hold.
 holdUpdate(Zone z) =>
@@ -510,11 +522,27 @@ majorEngine() =>
     int   sAgo = ta.barssince((high - low) > spkK * aP)
     bool  sBlk = useSpk and not na(sAgo) and sAgo < spkLook
     if dN and math.abs(dP0 - dP1) >= minLeg * a
-        zS := newZone(-1, dP0, dB0, dP1, dB1, dT1, 0)
-        zS.sHi := tr == -1 ? 1 : 0
+        Zone zN = newZone(-1, dP0, dB0, dP1, dB1, dT1, 0)
+        zN.sHi := tr == -1 ? 1 : 0
+        bool take = true
+        if ovlOn and not na(zBy) and zBy.state <= 1 and zOvl(zN, zBy, s)
+            if zWins(zN, zBy, tr)
+                zBy.state := 16
+            else
+                take := false
+        if take
+            zS := zN
     if uN and math.abs(uP0 - uP1) >= minLeg * a
-        zBy := newZone(1, uP0, uB0, uP1, uB1, uT1, 0)
-        zBy.sHi := tr == 1 ? 1 : 0
+        Zone zN = newZone(1, uP0, uB0, uP1, uB1, uT1, 0)
+        zN.sHi := tr == 1 ? 1 : 0
+        bool take = true
+        if ovlOn and not na(zS) and zS.state <= 1 and zOvl(zN, zS, s)
+            if zWins(zN, zS, tr)
+                zS.state := 16
+            else
+                take := false
+        if take
+            zBy := zN
     // open major trade → outcome
     if tDir != 0 and barstate.isconfirmed and bar_index > tEB
         if tDir < 0 ? high >= tSl : low <= tSl
@@ -899,6 +927,32 @@ openTrade(int dir, float ep, float sl, float dist, bool imp, string src, Zone zn
     box pb = box.new(bar_index, math.max(ep, tps.get(3)), bar_index + 6, math.min(ep, tps.get(3)), border_color = color.new(cBuy, 100), bgcolor = color.new(cBuy, 86))
     Trade.new(dir, ep, sl, tps, 0, bar_index, dKey, 0.0, 1.0, 1, src, lb, ln, rl, zn, mv, sb, pb, na, stc, lots, na)
 
+// Open trade drawings rebuilt on the last bar, so they are always the newest objects and never removed by the
+// drawing limit: stop area, target area, SL / TP1–TP4 / entry lines and their labels.
+redrawOpen(Trade t) =>
+    for l in t.ln
+        l.delete()
+    t.ln.clear()
+    for l in t.rl
+        l.delete()
+    t.rl.clear()
+    box.delete(t.sb)
+    box.delete(t.pb)
+    int x0 = t.eB
+    int x1 = bar_index + 6
+    string side = t.dir < 0 ? "SELL" : "BUY"
+    t.ln.push(line.new(x0, t.sl, x1, t.sl, color = color.new(cSell, 10), style = line.style_dashed))
+    t.rl.push(label.new(x1, t.sl, "SL " + fmtP(t.sl), style = label.style_label_left, color = color.new(color.black, 100), textcolor = cSell, size = size.tiny))
+    for i = 0 to 3
+        float p = t.tps.get(i)
+        t.ln.push(line.new(x0, p, x1, p, color = color.new(cBuy, t.hits > i ? 10 : 40), style = line.style_dotted))
+        t.rl.push(label.new(x1, p, "TP" + str.tostring(i + 1) + " " + fmtP(p) + (t.hits > i ? " ✓" : ""), style = label.style_label_left, color = color.new(color.black, 100), textcolor = color.new(cBuy, 20), size = size.tiny))
+    t.ln.push(line.new(x0, t.entry, x1, t.entry, color = color.new(color.white, 20), width = 2))
+    t.rl.push(label.new(x1, t.entry, "▶ " + cLbl + " " + side + " " + starStr(t.stars) + " " + fmtP(t.entry) + " · open", style = label.style_label_left, color = color.new(t.dir < 0 ? #E0475F : #00A884, 10), textcolor = color.white, size = size.small))
+    t.sb := box.new(x0, math.max(t.entry, t.sl), x1, math.min(t.entry, t.sl), border_color = color.new(cSell, 100), bgcolor = color.new(cSell, 82))
+    t.pb := box.new(x0, math.max(t.entry, t.tps.get(3)), x1, math.min(t.entry, t.tps.get(3)), border_color = color.new(cBuy, 100), bgcolor = color.new(cBuy, 86))
+    true
+
 // ───────────────────────────── Major zones on this chart (only live ones, one per side)
 var MajView mvS = MajView.new(na, na, na, false, 0, na, true, na)
 var MajView mvB = MajView.new(na, na, na, false, 0, na, true, na)
@@ -990,19 +1044,29 @@ else if not na(mTid)
 
 // ───────────────────────────── Local waves → zones (at most two live zones per side)
 addZone(int dir, float p0, int b0, float p1, int b1, int t1) =>
-    int n = 0
-    for z in zLive
-        if z.dir == dir and z.state <= 1
-            n += 1
-    for z in zLive
-        if z.dir == dir and z.state <= 1 and n >= 2
-            z.state := 15
-            n -= 1
     Zone nz = newZone(dir, p0, b0, p1, b1, t1, dKey)
     // made while the structure trend points the same way (a break zone): it keeps trading if the market turns to a range
     nz.sHi := trend == dir ? 1 : 0
-    zLive.push(nz)
-    true
+    // a buy and a sell zone on the same prices: only the stronger stays
+    bool take = true
+    if ovlOn
+        for z in zLive
+            if take and z.dir != dir and z.state <= 1 and zOvl(nz, z, tfSecs)
+                if zWins(nz, z, trend)
+                    z.state := 16
+                else
+                    take := false
+    if take
+        int n = 0
+        for z in zLive
+            if z.dir == dir and z.state <= 1
+                n += 1
+        for z in zLive
+            if z.dir == dir and z.state <= 1 and n >= 2
+                z.state := 15
+                n -= 1
+        zLive.push(nz)
+    take
 
 if ldN and math.abs(ldP0 - ldP1) >= minLeg * atr
     addZone(-1, ldP0, ldB0, ldP1, ldB1, ldT1)
@@ -1015,6 +1079,8 @@ var int    lastTradeDir = 0
 // ───────────────────────────── Open trade → outcome (before new entries, so a trade that closes on this bar frees the slot)
 for t in tLive
     if t.state == 1
+        if barstate.islast
+            redrawOpen(t)
         for l in t.ln
             l.set_x2(bar_index + 6)
         for l in t.rl
@@ -1244,7 +1310,7 @@ for k = 0 to 1
         float lv = entryLvl(ma, mb, p0, p1)
         float zI = p1 + fInv * (p0 - p1)
         if (dir < 0 ? high >= lv : low <= lv) and not (dir < 0 ? close > zI : close < zI)
-            bool nw = na(v.skB) or bar_index - v.skB > 1
+            bool nw = na(v.skB) or bar_index - v.skB > 10
             v.skB := bar_index
             if nw
                 skipMark(dir, mLbl + (dir < 0 ? " SELL" : " BUY") + " zone · MAJOR · entry level " + fmtP(lv) + " reached", skipWhy(dir, v.armed, 9, 0, dir > 0 ? busyB : busyS, trOn ? (dir > 0 ? trend >= 0 : trend <= 0) : (dir > 0 ? alB : alS), false, not na(v.lastE) and bar_index - v.lastE < reCool))
@@ -1323,7 +1389,7 @@ for z in zLive
             z.lg  := na
         [fire, ep, sl, dist, sbSl, tch] = zoneEval(z, atr, spkBlock, trend, (z.dir > 0 ? busyB : busyS) or not (z.dir > 0 ? okBuy : okSell), tfSecs)
         if tch and showSkp and valid and not dup
-            bool nw = na(z.skB) or bar_index - z.skB > 1
+            bool nw = na(z.skB) or bar_index - z.skB > 10
             z.skB := bar_index
             if nw
                 skipMark(z.dir, cLbl + (z.dir < 0 ? " SELL" : " BUY") + " zone · entry level " + fmtP(entryLvl(zA, zB, z.p0, z.p1)) + " reached", skipWhy(z.dir, z.armed, z.sSt, minStars(tfSecs), z.dir > 0 ? busyB : busyS, dirOk(z, trend, tfSecs), z.entries >= maxEnt, not na(z.lastE) and bar_index - z.lastE < reCool))
@@ -1661,6 +1727,20 @@ if barstate.islast and showSt
             if t.state == 1
                 r24.set(0, r24.get(0) + 1)
         stRow(st, 1, "24 hours", r24)
+    // last 7 days and everything since the chart's first bar, so higher timeframes always show their record
+    array<float> r7 = array.new<float>(5, 0.0)
+    int from7 = timenow - 7 * 86400000
+    if clT.size() > 0
+        for i = clT.size() - 1 to 0
+            if clT.get(i) < from7
+                break
+            r7.set(0, r7.get(0) + 1)
+            r7.set(1, r7.get(1) + (clR.get(i) == 1 ? 1 : 0))
+            r7.set(2, r7.get(2) + (clR.get(i) == -1 ? 1 : 0))
+            r7.set(3, r7.get(3) + clP.get(i))
+            r7.set(4, r7.get(4) + clU.get(i))
+    stRow(st, 2, "7 days", r7)
+    stRow(st, 3, "All (chart)", stA)
     if dayOn and dNm.size() > 0
         string pn = timeframe.isweekly ? " week" : " today"
         array<float> tot = array.new<float>(5, 0.0)
@@ -1669,6 +1749,6 @@ if barstate.islast and showSt
             for j = 0 to 4
                 r.push(dRes.get(i * 5 + j))
                 tot.set(j, tot.get(j) + dRes.get(i * 5 + j))
-            if i + 2 < 11
-                stRow(st, i + 2, dNm.get(i) + pn, r)
-        stRow(st, math.min(dNm.size() + 2, 11), "All" + pn, tot)
+            if i + 4 < 11
+                stRow(st, i + 4, dNm.get(i) + pn, r)
+        stRow(st, math.min(dNm.size() + 4, 11), "All TFs" + pn, tot)
