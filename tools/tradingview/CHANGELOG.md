@@ -15,3 +15,4 @@ The version is shown in the dashboard title ("FOXREX Waves v3.9"). Every release
 | 3.8 | wave-zones-2026-10-29-0330.pine | Reversal trades (REV), ATR profile, live P&L, grey zones with coloured midline |
 | 3.9 | wave-zones-v3.9.pine | Profit protection default: TP2 → entry, then the stop stays one target behind (TP3 → TP2, TP4 → TP3 …); version number |
 | 3.10 | wave-zones-v3.10.pine | Scorecard period: Today (default), Last 24 hours, Today + yesterday |
+| 3.11 | wave-zones-v3.11.pine | Entry option "Limit at zone start (first touch)"; a rejection entry is skipped when the candle closes more than one zone-height beyond the zone (no late entries) |
