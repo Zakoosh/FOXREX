@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.14.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.15.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.14"
-#property description "FOXREX Waves EA v3.14: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.15"
+#property description "FOXREX Waves EA v3.15: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -55,7 +55,7 @@ enum ENUM_FXW_RANGE   { RNG_HALF = 0,          // Wave trades both ways · half 
                         RNG_STRICT = 1 };      // No wave trades (strict)
 enum ENUM_FXW_PART    { PART_ALL = 0,          // All timeframes
                         PART_M1 = 1,           // 1m only
-                        PART_OFF = 2 };        // Off
+                        PART_OFF = 2 };        // Off (full size to the exit)
 enum ENUM_FXW_DIR     { DIR_TREND = 0,         // With the trend (buy up, sell down, none in a range)
                         DIR_BOTH = 1,          // Both directions
                         DIR_BUY = 2,           // Buy only
@@ -67,7 +67,7 @@ enum ENUM_FXW_MAJFLT  { MAJ_STRUCT_ZONE = 0,   // Major structure + active zone
                         MAJ_OFF = 2 };         // Off
 
 //--- inputs
-input group "Trading"
+input group "1 · Trading & simulation"
 input ENUM_FXW_LOT InpLotMode = LOT_FIXED; // Position size
 input double InpBaseLot     = 1.0;    // Base lot (1 star, fixed mode) = the indicator simulation
 input double InpRiskPct     = 0.25;   // Risk per trade, % of equity (1 star, risk mode)
@@ -79,34 +79,23 @@ input bool   InpMagicByTf   = true;   // Add the timeframe in minutes to the mag
 input int    InpMaxSpread   = 0;      // Max spread in points (0 = off)
 input bool   InpPush        = false;  // Push notification on entry / exit
 
-input group "Targets & stops"
-input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Profile
-input double InpTp1 = 2.5;   // Custom TP1
-input double InpTp2 = 5.0;   // Custom TP2
-input double InpTp3 = 10.0;  // Custom TP3
-input double InpTp4 = 20.0;  // Custom TP4
-input double InpSlMinC = 3.0;  // Custom stop min
-input double InpSlMaxC = 10.0; // Custom stop max
-input double InpSlBuf  = 0.1;  // Stop buffer beyond the zone (× ATR)
-input int    InpNoProg = 15;   // No-progress exit (bars without TP1, 0 = off)
-input int    InpMaxBars = 60;  // Maximum life before TP2 (bars)
-input ENUM_FXW_PROTECT InpProtect = PROT_STEP; // Profit protection (EA: stop to entry at TP1, then the previous target)
-input ENUM_FXW_PART InpPartMode = PART_ALL; // Partial close at each target
-input string InpPartPct = "25,25,25,10,5,5";  // % of the original size closed at TP1, TP2, TP3, TP4, TP5, TP6 (rest at TP7)
+input group "2 · Direction & filters"
+input ENUM_FXW_DIR InpDir = DIR_TREND; // Trade direction
+input ENUM_FXW_RANGE InpRange = RNG_HALF; // In a range (no confirmed break)
+input bool   InpBrkClose = true;  // Break confirmed by a close beyond the previous stall
+input bool   InpExh     = true;   // No trade at the end of an exhausted wave
+input bool   InpUseRsi  = true;   // RSI filter
+input int    InpRsiLen  = 14;     // RSI length
+input double InpRsiOS   = 30;     // No sell below
+input double InpRsiOB   = 70;     // No buy above
+input ENUM_FXW_ROOM InpRoomMode = ROOM_STRONG_BLOCK; // Room filter (support / resistance in the way)
+input int    InpSwLen   = 5;      // Structure swing length (bars each side)
+input int    InpRngBars = 0;      // Range: no break for (bars, 0 = auto)
+input bool   InpUseSpk  = true;   // Skip signals after an abnormal candle
+input double InpSpkK    = 2.5;    // Abnormal = range above (× ATR)
+input int    InpSpkLook = 3;      // Look back (bars)
 
-input group "Stop per timeframe (price units, auto profile)"
-input double InpSl1Mn  = 1.5;  // 1m · min
-input double InpSl1Mx  = 5.0;  // 1m · max
-input double InpSl5Mn  = 3.0;  // 2–5m · min
-input double InpSl5Mx  = 10.0; // 2–5m · max
-input double InpSl15Mn = 4.0;  // 6–59m · min
-input double InpSl15Mx = 10.0; // 6–59m · max
-input double InpSlHMn  = 5.0;  // 1H–4H · min
-input double InpSlHMx  = 15.0; // 1H–4H · max
-input double InpSlDMn  = 10.0; // D / W / M · min
-input double InpSlDMx  = 25.0; // D / W / M · max
-
-input group "Structure & zones"
+input group "3 · Waves & zones"
 input int    InpStL     = 3;      // Stall: bars before the turn
 input int    InpMs1     = 1;      // Minimum stars to trade · 1m
 input int    InpMs5     = 1;      // Minimum stars to trade · 2–5m
@@ -118,31 +107,51 @@ input double InpFInv    = 0.786;  // Invalidation (retracement)
 input double InpMinLeg  = 1.5;    // Minimum leg size (× ATR)
 input int    InpMaxWait = 300;    // Zone life (bars after the leg end)
 input bool   InpOverlap = true;   // Buy and sell zones overlapping: keep only the stronger
+
+input group "4 · Entry"
 input ENUM_FXW_ENTRY InpEntry = ENTRY_LIM_REJ; // Entry type
 input ENUM_FXW_ELVL InpELvl = ELVL_FIB;        // Entry level (where the limit fills)
 input double InpECust   = 0.559;  // Entry fib level
 input int    InpMaxEnt  = 2;      // Max entries per zone
 input int    InpReCool  = 3;      // Bars between entries in the same zone
-input ENUM_FXW_DIR InpDir = DIR_TREND; // Trade direction
-input ENUM_FXW_RANGE InpRange = RNG_HALF; // In a range (no confirmed break)
-input bool   InpBrkClose = true;  // Break confirmed by a close beyond the previous stall
-input bool   InpExh     = true;   // No trade at the end of an exhausted wave
-input bool   InpUseRsi  = true;   // RSI filter
-input int    InpRsiLen  = 14;     // RSI length
-input double InpRsiOS   = 30;     // No sell below
-input double InpRsiOB   = 70;     // No buy above
-input ENUM_FXW_ROOM InpRoomMode = ROOM_STRONG_HALF; // Room filter (support / resistance in the way)
-input int    InpSwLen   = 5;      // Structure swing length (bars each side)
-input int    InpRngBars = 0;      // Range: no break for (bars, 0 = auto)
 
-input group "Major timeframe"
+input group "5 · Targets"
+input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Profile
+input double InpTp1 = 2.5;   // Custom TP1
+input double InpTp2 = 5.0;   // Custom TP2
+input double InpTp3 = 10.0;  // Custom TP3
+input double InpTp4 = 20.0;  // Custom TP4
+input double InpSlMinC = 3.0;  // Custom stop min
+input double InpSlMaxC = 10.0; // Custom stop max
+input double InpSlBuf  = 0.1;  // Stop buffer beyond the zone (× ATR)
+
+input group "6 · Stop per timeframe (points, auto profile)"
+input double InpSl1Mn  = 1.5;  // 1m · min
+input double InpSl1Mx  = 5.0;  // 1m · max
+input double InpSl5Mn  = 3.0;  // 2–5m · min
+input double InpSl5Mx  = 10.0; // 2–5m · max
+input double InpSl15Mn = 4.0;  // 6–59m · min
+input double InpSl15Mx = 10.0; // 6–59m · max
+input double InpSlHMn  = 5.0;  // 1H–4H · min
+input double InpSlHMx  = 15.0; // 1H–4H · max
+input double InpSlDMn  = 10.0; // D / W / M · min
+input double InpSlDMx  = 25.0; // D / W / M · max
+
+input group "7 · Trade management"
+input ENUM_FXW_PROTECT InpProtect = PROT_STEP; // Profit protection
+input ENUM_FXW_PART InpPartMode = PART_ALL; // Partial closes at the targets
+input string InpPartPct = "25,25,25,10,5,5";  // % of the original size at TP1, TP2, TP3, TP4, TP5, TP6 (rest at TP7)
+input int    InpNoProg = 15;   // No-progress exit (bars without TP1, 0 = off)
+input int    InpMaxBars = 60;  // Maximum life before TP2 (bars)
+
+input group "8 · Major timeframe"
 input bool   InpUseMaj  = true;   // Use a major timeframe
 input bool   InpMajAuto = true;   // Auto (1m→15m, 5m→1H, 15m→4H, 1H→D)
 input ENUM_TIMEFRAMES InpMajTf = PERIOD_M15; // Major timeframe when not auto
 input ENUM_FXW_MAJFLT InpMajFlt = MAJ_OFF;   // Direction filter
 input bool   InpTradeMj = true;   // Take trades at major zones
 
-input group "Daily zones"
+input group "9 · Daily zones & reversals"
 input bool   InpTradeDL = true;   // Take trades at daily zones (rejection)
 input bool   InpUseRev  = true;   // Reversal trades at strong zones
 input bool   InpRevLight = true;  // Wave-end reversal trades (light: 1 star, half size)
@@ -153,18 +162,15 @@ input bool   InpDlSwing = true;   // Include daily swing highs / lows
 input double InpDlStep  = 0.0;    // Round-number step (0 = auto)
 input string InpDlAn    = "";     // Analyst levels (comma separated)
 
-input group "Abnormal candle filter"
-input bool   InpUseSpk  = true;   // Skip signals after an abnormal candle
-input double InpSpkK    = 2.5;    // Abnormal = range above (× ATR)
-input int    InpSpkLook = 3;      // Look back (bars)
-
-input group "Display"
+input group "11 · Display"
 input bool   InpDraw    = true;   // Draw zones and daily levels
 input bool   InpLogSkip = true;   // Journal: why a touched zone gave no trade
+
+input group "EA · start-up"
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.14"
+#define FXW_VER   "3.15"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -601,7 +607,7 @@ bool ParseComment(string c, string &kind, int &zid, int &stars, bool &imp, doubl
    if(StringFind(c, "FXW ") != 0) return false;
    string p[]; int np = StringSplit(c, ' ', p);
    if(np < 5) return false;
-   int o = np >= 6 ? 2 : 1;   // 3.14+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
+   int o = np >= 6 ? 2 : 1;   // 3.15+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
    kind = StringSubstr(p[o], 0, 1); zid = (int)StringToInteger(StringSubstr(p[o], 1));
    stars = (int)StringToInteger(StringSubstr(p[o + 1], 1)); imp = StringSubstr(p[o + 2], 1) == "1"; a = StringToDouble(StringSubstr(p[o + 3], 1));
    return true;
@@ -978,19 +984,23 @@ void OnNewBar(bool live)
       if(dZLo[j] > C0 && (resLo == 0 || dZLo[j] < resLo)) resLo = dZLo[j];
      }
    //--- major zones: live, touched on the chart, active
-   bool majBuyAct = false, majSellAct = false;
+   bool majBuyAct = false, majSellAct = false, inMajS = false, inMajB = false;
    if(majOn)
       for(int z = 0; z < ArraySize(maj.zones); z++)
         {
          if(maj.zones[z].state > 1) continue;
          double zA, zB; CapZ(maj.Lvl(maj.zones[z], InpFEntry), maj.Lvl(maj.zones[z], InpFZone), maj.secs, zA, zB);
          if(maj.zones[z].dir > 0 ? L0 <= zA : H0 >= zA) maj.zones[z].tchChart = true;
+         //--- a live major zone is support / resistance for the room filter
+         double mBot = MathMin(zA, zB), mTop = MathMax(zA, zB);
+         if(maj.zones[z].dir < 0) { if(C0 < mBot) { if(resLo == 0 || mBot < resLo) resLo = mBot; } else if(C0 <= mTop) inMajS = true; }
+         else                     { if(C0 > mTop) { if(supHi == 0 || mTop > supHi) supHi = mTop; } else if(C0 >= mBot) inMajB = true; }
          double zI = maj.Lvl(maj.zones[z], InpFInv);
          bool act = (maj.zones[z].state == 1 || maj.zones[z].tchChart) && (maj.zones[z].dir > 0 ? (C0 > zI && C0 < maj.zones[z].p1) : (C0 < zI && C0 > maj.zones[z].p1));
          if(act) { if(maj.zones[z].dir > 0) majBuyAct = true; else majSellAct = true; }
         }
-   double roomNeed = PTp(tfSecs, tfSecs <= 60 ? 1 : 0, a);
-   bool nearRes = (resLo != 0 && resLo - C0 < roomNeed) || majSellAct, nearSup = (supHi != 0 && C0 - supHi < roomNeed) || majBuyAct;
+   double roomNeed = PTp(tfSecs, 1, a);   // TP2 distance
+   bool nearRes = (resLo != 0 && resLo - C0 < roomNeed) || majSellAct || inMajS, nearSup = (supHi != 0 && C0 - supHi < roomNeed) || majBuyAct || inMajB;
    bool roomBuy  = InpRoomMode == ROOM_OFF || rmHalf || !nearRes;
    bool roomSell = InpRoomMode == ROOM_OFF || rmHalf || !nearSup;
    double kRB = rmHalf && nearRes ? 0.5 : 1.0, kRS = rmHalf && nearSup ? 0.5 : 1.0;
@@ -1113,10 +1123,10 @@ void OnNewBar(bool live)
          bool valid = MathAbs(zz.p0 - zz.p1) >= InpMinLeg * (pass == 0 ? a : maj.Atr());
          bool trendOk;
          if(!trOn)          trendOk = d > 0 ? alB : alS;
-         else if(pass == 1) trendOk = d > 0 ? trend >= 0 : trend <= 0;
+         else if(pass == 1) trendOk = d > 0 ? (trend >= 0 || maj.trend >= 0) : (trend <= 0 || maj.trend <= 0);   // major zone: chart or major trend not against it
          else               trendOk = d == trend || (trend == 0 && (rngBoth || zz.brk || k - zz.bB <= rb));
          double kf = (pass == 0 && trOn && trend == 0 && !(zz.brk || k - zz.bB <= rb) ? 0.5 : 1.0) * (d > 0 ? kRB : kRS);
-         bool filt = d > 0 ? (pass == 0 ? okBuy : okBuyZ) : (pass == 0 ? okSell : okSellZ);
+         bool filt = d > 0 ? okBuy : okSell;
          int st = pass == 0 ? zz.stars : 2;
          st = (int)MathMin(st + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
          bool can = zz.state <= 1 && valid && (pass == 1 || k > zz.b1) && zz.armed && (pass == 1 || zz.stars >= MinStars(tfSecs))

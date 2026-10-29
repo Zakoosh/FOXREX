@@ -93,3 +93,7 @@ Shows each data file with its last update and age, every stored quote with its s
 - Strategy defaults: zone 50–65.7%, entry 55.9%, break confirmed by a close, range = both ways at half size, exhaustion guard, light wave-end reversals.
 - Scorecard: closed trades only; won / lost / net in points and $ (net = after losses and commission).
 - EA: stop to entry at TP1 then previous target (default), partial closes 25/25/25/10/5/5% (editable, all TFs / 1m only / off), today stats per position with won / lost / net.
+
+### FOXREX Waves 3.15
+- One set of settings for indicator and EA (same groups, names, defaults): step protection from TP1, partial closes 25/25/25/10/5/5%, strong-zone room filter that blocks, major zones as S/R.
+- Scorecard results are what the trade paid (partials + exit), matching the EA.
