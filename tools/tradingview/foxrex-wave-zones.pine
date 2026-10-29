@@ -1,7 +1,7 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX — foxrex.co
 //
-// FOXREX · Wave Retracement Zones · version 3.16 (see tools/tradingview/CHANGELOG.md)
+// FOXREX · Wave Retracement Zones · version 3.17 (see tools/tradingview/CHANGELOG.md)
 // Three kinds of buy / sell zones, each with its own look so nothing overlaps:
 //   • Local zones  — the chart's timeframe: grey fill, dashed border in the side colour, "M5 BUY ZONE".
 //   • Major zones  — a higher timeframe that sets the direction (auto: 1m→15m, 5m→1H, 15m→4H, 1H→D):
@@ -36,7 +36,7 @@
 
 //@version=6
 indicator("FOXREX · Wave Retracement Zones", shorttitle = "FOXREX Waves", overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500, max_bars_back = 500)
-string VER = "3.16"
+string VER = "3.17"
 
 // ───────────────────────────── Inputs
 string G_TR   = "1 · Trading & simulation"
@@ -50,8 +50,8 @@ int    ms1     = input.int(1, "Minimum stars to trade · 1m", options = [1, 2, 3
 int    ms5     = input.int(1, "2–5m", options = [1, 2, 3], group = G_WAV, inline = "ms", display = display.none)
 int    ms15    = input.int(1, "6–30m", options = [1, 2, 3], group = G_WAV, inline = "ms", display = display.none)
 int    msH     = input.int(1, "above", options = [1, 2, 3], group = G_WAV, inline = "ms", display = display.none)
-float  fEntry  = input.float(0.50, "Zone start (fib)", minval = 0.236, maxval = 0.886, step = 0.001, group = G_WAV, display = display.none)
-float  fZone   = input.float(0.657, "Zone end (fib)", minval = 0.236, maxval = 0.95, step = 0.001, group = G_WAV, tooltip = "Default zone 50% – 65.7% with the 55.9% and 61.8% levels inside (4 fib levels); 3.13 used 38.2% – 61.8%.", display = display.none)
+float  fEntry  = input.float(0.382, "Zone start (fib)", minval = 0.236, maxval = 0.886, step = 0.001, group = G_WAV, display = display.none)
+float  fZone   = input.float(0.657, "Zone end (fib)", minval = 0.236, maxval = 0.95, step = 0.001, group = G_WAV, tooltip = "Default zone 38.2% – 65.7%: the four fib levels 38.2 · 50 · 61.8 · 65.7, entry at 55.9%. 3.13 used 38.2% – 61.8%, 3.14–3.16 50% – 65.7%.", display = display.none)
 float  fInv    = input.float(0.786, "Invalidation (retracement)", minval = 0.5, maxval = 1.0, step = 0.01, group = G_WAV, display = display.none)
 float  minLeg  = input.float(1.5, "Minimum leg size (× ATR)", minval = 0.0, step = 0.1, group = G_WAV, display = display.none)
 int    maxWait = input.int(300, "Zone life (bars after the leg end)", minval = 5, group = G_WAV, display = display.none)
@@ -106,14 +106,14 @@ int    rsiLen  = input.int(14, "RSI length", minval = 2, group = G_FLT, inline =
 float  rsiOS   = input.float(30, "below", group = G_FLT, inline = "rsi", display = display.none)
 float  rsiOB   = input.float(70, "above", group = G_FLT, inline = "rsi", display = display.none)
 string roomMode = input.string("Strong zones only · block", "Room filter (support / resistance in the way)", options = ["Strong zones only · block", "Strong zones only · half size", "All daily zones · block", "Off"], group = G_FLT, tooltip = "Support (for sells) or resistance (for buys) closer than TP1 (TP2 on 1m): strong daily zones (strength ≥ the trading minimum) and live major zones, including price sitting inside a major zone. Block = no trade until the level is broken with a close. Half size = trade at half size. Off = no check.", display = display.none)
-bool   exhOn   = input.bool(true, "No trade at the end of an exhausted wave", group = G_FLT, tooltip = "After a move of 4 × ATR or more in the last 30 bars with RSI oversold (overbought) in the last 10 bars, no sell (buy) while price is still in the last 38.2% of that move: it is the end of the wave, not the start.", display = display.none)
+bool   exhOn   = input.bool(false, "No trade at the end of an exhausted wave", group = G_FLT, tooltip = "After a move of 4 × ATR or more in the last 30 bars with RSI oversold (overbought) in the last 10 bars, no sell (buy) while price is still in the last 38.2% of that move: it is the end of the wave, not the start.", display = display.none)
 bool   useSpk  = input.bool(true, "Skip signals after an abnormal candle", group = G_FLT, display = display.none)
 float  spkK    = input.float(2.5, "Abnormal = range above (× ATR)", minval = 1.0, step = 0.1, group = G_FLT, display = display.none)
 int    spkLook = input.int(3, "Look back (bars)", minval = 1, maxval = 20, group = G_FLT, display = display.none)
 string majFlt  = input.string("Off", "Direction filter", options = ["Major structure + active zone", "Active major zone only", "Off"], group = G_FLT, tooltip = "Major structure: trades only in the direction of the major timeframe's last break of structure. Active zone: nothing against a major zone that price is reacting in.", display = display.none)
 
 string G_X    = "8 · Extra entries (optional, outside the wave rule)"
-bool   tradeDL = input.bool(true, "Take trades at daily zones (rejection, up to twice per zone per day)", group = G_X, display = display.none)
+bool   tradeDL = input.bool(false, "Take trades at daily zones (rejection, up to twice per zone per day)", group = G_X, display = display.none)
 bool   useRev  = input.bool(false, "Reversal trades at strong zones (sweep + rejection)", group = G_X, tooltip = "At a strong daily zone or a live major zone: a candle that sweeps the last 10 bars' low (high), touches the zone and closes back strong in the other direction opens a reversal trade (REV), also against the trend. One per zone and side per day. Catches the turn at the start of the new wave.", display = display.none)
 bool   revLt   = input.bool(false, "Wave-end reversal trades (light: 1 star, half size)", group = G_X, tooltip = "At the end of an exhausted wave (4 × ATR or more, RSI oversold / overbought in the last 10 bars, new 30-bar low / high in the last 3 bars) a strong candle back (close beyond the previous candle) opens a small trade the other way.", display = display.none)
 
@@ -189,6 +189,9 @@ type Zone
     int   t1
     int   tB
     int   skB
+    line  l50
+    line  l61
+    bool  opn
 
 type MajView
     box   bx
@@ -199,6 +202,7 @@ type MajView
     int   lastE
     bool  armed
     int   skB
+    bool  opn
 
 type Trade
     int          dir
@@ -910,10 +914,14 @@ zoneGone(Zone z) =>
         z.bx.set_text("")
         line.delete(z.mid)
         line.delete(z.lg)
+        line.delete(z.l50)
+        line.delete(z.l61)
     else
         box.delete(z.bx)
         line.delete(z.mid)
         line.delete(z.lg)
+        line.delete(z.l50)
+        line.delete(z.l61)
         z.bx := na
     true
 
@@ -972,8 +980,10 @@ closeTrade(Trade t, string res) =>
     t.lb.set_tooltip(cLbl + " " + side + " · " + t.src + "\nEntry " + fmtP(t.entry) + "\nResult " + res + " · " + sgnPts(t.net) + " pts\nConfidence " + str.tostring(t.stars * 25) + "% · " + str.tostring(t.lots, "#.#") + " lot: " + usd(pnl) + " (commission $" + str.tostring(comm, "#.##") + " per lot)")
     if not na(t.zn)
         t.zn.armed := false
+        t.zn.opn   := false
     if not na(t.mv)
         t.mv.armed := false
+        t.mv.opn   := false
     true
 
 // Open a trade on this chart (drawings on the right edge, so the open trade is always visible).
@@ -1024,8 +1034,8 @@ redrawOpen(Trade t) =>
     true
 
 // ───────────────────────────── Major zones on this chart (only live ones, one per side)
-var MajView mvS = MajView.new(na, na, na, false, 0, na, true, na)
-var MajView mvB = MajView.new(na, na, na, false, 0, na, true, na)
+var MajView mvS = MajView.new(na, na, na, false, 0, na, true, na, false)
+var MajView mvB = MajView.new(na, na, na, false, 0, na, true, na, false)
 
 mzDraw(MajView v, int dir, float p0, float p1, int t1, int st, int id) =>
     bool live = majOn and not na(id) and st >= 0 and st <= 1
@@ -1044,6 +1054,7 @@ mzDraw(MajView v, int dir, float p0, float p1, int t1, int st, int id) =>
             v.entries := 0
             v.lastE   := na
             v.armed   := true
+            v.opn     := false
             v.bx  := box.new(t1, top, rx, bot, xloc = xloc.bar_time, border_color = color.new(cZone, 20), border_width = 2, bgcolor = color.new(cZone, 82), text = mLbl + (dir < 0 ? " SELL ZONE · MAJOR" : " BUY ZONE · MAJOR"), text_size = size.tiny, text_color = c, text_halign = text.align_left, text_valign = dir < 0 ? text.align_top : text.align_bottom)
             v.mid := line.new(t1, zM, rx, zM, xloc = xloc.bar_time, color = color.new(c, 0), width = 2)
         v.bx.set_lefttop(t1, top)
@@ -1348,7 +1359,7 @@ skipWhy(int dir, bool armed, int stars, int minS, bool busy, bool dOk, bool used
     if (majFlt != "Off" and (dir > 0 ? majSellAct : majBuyAct)) or (strF and (dir > 0 ? mTr < 0 : mTr > 0))
         w += "\n• major direction filter"
     if busy
-        w += "\n• another trade is open (not protected yet, or the other side)"
+        w += "\n• another trade is open (not protected yet, the other side, or from this same zone)"
     if spkBlock
         w += "\n• abnormal candle in the last " + str.tostring(spkLook) + " bars"
     if stars < minS
@@ -1374,7 +1385,7 @@ majEntry(MajView v, int dir, float p0, float p1, bool live) =>
     float sl   = na
     float dist = na
     bool  sbSl = false
-    if live and tradeMj and barstate.isconfirmed and v.entries < maxEnt
+    if live and tradeMj and barstate.isconfirmed and v.entries < maxEnt and not v.opn
         [zA, zB] = capZ(p1 + fEntry * (p0 - p1), p1 + fZone * (p0 - p1), timeframe.in_seconds(majTf))
         float zI = p1 + fInv * (p0 - p1)
         float zM = (zA + zB) / 2
@@ -1407,6 +1418,7 @@ for k = 0 to 1
         fired := f
         if f
             Trade nt = openTrade(dir, ep, sl, dist, true, mLbl + " major zone", na, v, 2 + (dir > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), dir > 0 ? kRoomB : kRoomS)
+            v.opn := true
             tLive.push(nt)
             busyB := true
             busyS := true
@@ -1486,6 +1498,8 @@ for z in zLive
             if na(z.bx)
                 z.bx  := box.new(z.b1, top, bar_index + 3, bot, border_color = color.new(cZone, 45), border_style = line.style_dashed, border_width = 1, bgcolor = color.new(cZone, 88), text = cLbl + (z.dir < 0 ? " SELL ZONE" : " BUY ZONE"), text_size = size.tiny, text_color = color.new(cDir, 20), text_halign = text.align_right, text_valign = z.dir < 0 ? text.align_top : text.align_bottom)
                 z.mid := line.new(z.b1, zM, bar_index + 3, zM, color = color.new(cDir, 10), width = 2)
+                z.l50 := line.new(z.b1, lvl(z, 0.5), bar_index + 3, lvl(z, 0.5), color = color.new(cZone, 40), style = line.style_dotted)
+                z.l61 := line.new(z.b1, lvl(z, 0.618), bar_index + 3, lvl(z, 0.618), color = color.new(cZone, 40), style = line.style_dotted)
                 if showLeg
                     z.lg := line.new(z.b0, z.p0, z.b1, z.p1, color = color.new(cZone, 55), style = line.style_dashed)
             else
@@ -1493,6 +1507,8 @@ for z in zLive
                 z.bx.set_rightbottom(bar_index + 3, bot)
                 z.mid.set_xy1(z.b1, zM)
                 z.mid.set_xy2(bar_index + 3, zM)
+                z.l50.set_x2(bar_index + 3)
+                z.l61.set_x2(bar_index + 3)
                 if not na(z.lg)
                     z.lg.set_xy1(z.b0, z.p0)
                     z.lg.set_xy2(z.b1, z.p1)
@@ -1500,17 +1516,20 @@ for z in zLive
             box.delete(z.bx)
             line.delete(z.mid)
             line.delete(z.lg)
+            line.delete(z.l50)
+            line.delete(z.l61)
             z.bx  := na
             z.mid := na
             z.lg  := na
-        [fire, ep, sl, dist, sbSl, tch] = zoneEval(z, atr, spkBlock, trend, (z.dir > 0 ? busyB : busyS) or not (z.dir > 0 ? okBuy : okSell), tfSecs)
+        [fire, ep, sl, dist, sbSl, tch] = zoneEval(z, atr, spkBlock, trend, (z.dir > 0 ? busyB : busyS) or not (z.dir > 0 ? okBuy : okSell) or z.opn, tfSecs)
         if tch and showSkp and valid and not dup
             bool nw = na(z.skB) or bar_index - z.skB > 10
             z.skB := bar_index
             if nw
-                skipMark(z.dir, cLbl + (z.dir < 0 ? " SELL" : " BUY") + " zone · entry level " + fmtP(entryLvl(zA, zB, z.p0, z.p1)) + " reached", skipWhy(z.dir, z.armed, z.sSt, minStars(tfSecs), z.dir > 0 ? busyB : busyS, dirOk(z, trend, tfSecs), z.entries >= maxEnt, not na(z.lastE) and bar_index - z.lastE < reCool))
+                skipMark(z.dir, cLbl + (z.dir < 0 ? " SELL" : " BUY") + " zone · entry level " + fmtP(entryLvl(zA, zB, z.p0, z.p1)) + " reached", skipWhy(z.dir, z.armed, z.sSt, minStars(tfSecs), (z.dir > 0 ? busyB : busyS) or z.opn, dirOk(z, trend, tfSecs), z.entries >= maxEnt, not na(z.lastE) and bar_index - z.lastE < reCool))
         if fire
             Trade nt = openTrade(z.dir, ep, sl, dist, false, cLbl + " zone" + (z.entries > 1 ? " (reinforcement)" : ""), z, na, z.sSt + (z.dir > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), (rngHalf(z, trend, tfSecs) ? 0.5 : 1.0) * (z.dir > 0 ? kRoomB : kRoomS))
+            z.opn := true
             tLive.push(nt)
             busyB := true
             busyS := true

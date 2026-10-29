@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.15.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.17.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.15"
-#property description "FOXREX Waves EA v3.15: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.17"
+#property description "FOXREX Waves EA v3.17: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -81,9 +81,9 @@ input bool   InpPush        = false;  // Push notification on entry / exit
 
 input group "2 · Direction & filters"
 input ENUM_FXW_DIR InpDir = DIR_TREND; // Trade direction
-input ENUM_FXW_RANGE InpRange = RNG_HALF; // In a range (no confirmed break)
+input ENUM_FXW_RANGE InpRange = RNG_STRICT; // In a range (no confirmed break)
 input bool   InpBrkClose = true;  // Break confirmed by a close beyond the previous stall
-input bool   InpExh     = true;   // No trade at the end of an exhausted wave
+input bool   InpExh     = false;  // No trade at the end of an exhausted wave
 input bool   InpUseRsi  = true;   // RSI filter
 input int    InpRsiLen  = 14;     // RSI length
 input double InpRsiOS   = 30;     // No sell below
@@ -101,7 +101,7 @@ input int    InpMs1     = 1;      // Minimum stars to trade · 1m
 input int    InpMs5     = 1;      // Minimum stars to trade · 2–5m
 input int    InpMs15    = 1;      // Minimum stars to trade · 6–30m
 input int    InpMsH     = 1;      // Minimum stars to trade · above
-input double InpFEntry  = 0.50;   // Zone start (fib)
+input double InpFEntry  = 0.382;  // Zone start (fib)
 input double InpFZone   = 0.657;  // Zone end (fib)
 input double InpFInv    = 0.786;  // Invalidation (retracement)
 input double InpMinLeg  = 1.5;    // Minimum leg size (× ATR)
@@ -114,6 +114,7 @@ input ENUM_FXW_ELVL InpELvl = ELVL_FIB;        // Entry level (where the limit f
 input double InpECust   = 0.559;  // Entry fib level
 input int    InpMaxEnt  = 2;      // Max entries per zone
 input int    InpReCool  = 3;      // Bars between entries in the same zone
+input bool   InpReinf   = true;   // Reinforcement: add on the next zones of the same wave
 
 input group "5 · Targets"
 input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Profile
@@ -152,9 +153,9 @@ input ENUM_FXW_MAJFLT InpMajFlt = MAJ_OFF;   // Direction filter
 input bool   InpTradeMj = true;   // Take trades at major zones
 
 input group "9 · Daily zones & reversals"
-input bool   InpTradeDL = true;   // Take trades at daily zones (rejection)
-input bool   InpUseRev  = true;   // Reversal trades at strong zones
-input bool   InpRevLight = true;  // Wave-end reversal trades (light: 1 star, half size)
+input bool   InpTradeDL = false;  // Take trades at daily zones (rejection)
+input bool   InpUseRev  = false;  // Reversal trades at strong zones
+input bool   InpRevLight = false; // Wave-end reversal trades (light: 1 star, half size)
 input double InpDlRange = 3.0;    // Search range (× daily ATR)
 input double InpDlMerge = 0.8;    // Merge distance / zone height (× chart ATR)
 input double InpDlMinW  = 2.0;    // Minimum strength to trade a daily zone
@@ -170,7 +171,7 @@ input group "EA · start-up"
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.15"
+#define FXW_VER   "3.17"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -599,6 +600,9 @@ double OrigVolume(long posId, double fallback)
    return v > 0 ? v : fallback;
   }
 
+//--- a zone gives its next entry only after its previous trade closed
+bool ZoneOpen(string kind, int zid) { for(int i = 0; i < ArraySize(pos); i++) if(pos[i].kind == kind && pos[i].zid == zid) return true; return false; }
+
 int FindPos(ulong t) { for(int i = 0; i < ArraySize(pos); i++) if(pos[i].ticket == t) return i; return -1; }
 
 //--- comment format: "FXW <kind><zid> s<stars> i<imp> a<atr>"
@@ -607,7 +611,7 @@ bool ParseComment(string c, string &kind, int &zid, int &stars, bool &imp, doubl
    if(StringFind(c, "FXW ") != 0) return false;
    string p[]; int np = StringSplit(c, ' ', p);
    if(np < 5) return false;
-   int o = np >= 6 ? 2 : 1;   // 3.15+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
+   int o = np >= 6 ? 2 : 1;   // 3.17+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
    kind = StringSubstr(p[o], 0, 1); zid = (int)StringToInteger(StringSubstr(p[o], 1));
    stars = (int)StringToInteger(StringSubstr(p[o + 1], 1)); imp = StringSubstr(p[o + 2], 1) == "1"; a = StringToDouble(StringSubstr(p[o + 3], 1));
    return true;
@@ -712,8 +716,8 @@ void Busy(bool &busyB, bool &busyS)
       openN++; openDir = d;
       if(sl == 0 || d * (sl - en) < 0) unprot = true;
      }
-   busyB = unprot || (InpMaxOpen > 0 && openN >= InpMaxOpen) || (openN > 0 && openDir < 0);
-   busyS = unprot || (InpMaxOpen > 0 && openN >= InpMaxOpen) || (openN > 0 && openDir > 0);
+   busyB = unprot || (InpMaxOpen > 0 && openN >= InpMaxOpen) || (openN > 0 && (openDir < 0 || !InpReinf));
+   busyS = unprot || (InpMaxOpen > 0 && openN >= InpMaxOpen) || (openN > 0 && (openDir > 0 || !InpReinf));
   }
 
 void DeletePendings(int dir)   // dir 0 = all
@@ -999,7 +1003,7 @@ void OnNewBar(bool live)
          bool act = (maj.zones[z].state == 1 || maj.zones[z].tchChart) && (maj.zones[z].dir > 0 ? (C0 > zI && C0 < maj.zones[z].p1) : (C0 < zI && C0 > maj.zones[z].p1));
          if(act) { if(maj.zones[z].dir > 0) majBuyAct = true; else majSellAct = true; }
         }
-   double roomNeed = PTp(tfSecs, 1, a);   // TP2 distance
+   double roomNeed = PTp(tfSecs, tfSecs <= 60 ? 1 : 0, a);   // TP1 (TP2 on 1m), as the indicator
    bool nearRes = (resLo != 0 && resLo - C0 < roomNeed) || majSellAct || inMajS, nearSup = (supHi != 0 && C0 - supHi < roomNeed) || majBuyAct || inMajB;
    bool roomBuy  = InpRoomMode == ROOM_OFF || rmHalf || !nearRes;
    bool roomSell = InpRoomMode == ROOM_OFF || rmHalf || !nearSup;
@@ -1130,7 +1134,8 @@ void OnNewBar(bool live)
          int st = pass == 0 ? zz.stars : 2;
          st = (int)MathMin(st + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
          bool can = zz.state <= 1 && valid && (pass == 1 || k > zz.b1) && zz.armed && (pass == 1 || zz.stars >= MinStars(tfSecs))
-                    && zz.entries < InpMaxEnt && k - zz.lastE >= InpReCool && trendOk && filt && !spkBlock && !(d > 0 ? busyB : busyS);
+                    && zz.entries < InpMaxEnt && k - zz.lastE >= InpReCool && trendOk && filt && !spkBlock && !(d > 0 ? busyB : busyS)
+                    && !(live && ZoneOpen(pass == 0 ? "L" : "M", zz.id));
          //--- warm-up: simulate fills so old zones are not traded again
          if(!live)
            {
