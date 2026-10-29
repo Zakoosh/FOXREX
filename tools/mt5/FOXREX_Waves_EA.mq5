@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.19.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.20.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.19"
-#property description "FOXREX Waves EA v3.19: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.20"
+#property description "FOXREX Waves EA v3.20: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -92,6 +92,7 @@ input double InpRsiOS   = 30;     // No sell below
 input double InpRsiOB   = 70;     // No buy above
 input ENUM_FXW_ROOM InpRoomMode = ROOM_STRONG_BLOCK; // Room filter (support / resistance in the way)
 input bool   InpRoomMaj = false;  // Room filter: also the edges of live major zones
+input bool   InpSlSkip  = false;  // Skip a zone trade when its structural stop is wider than the max stop
 input int    InpSwLen   = 5;      // Structure swing length (bars each side)
 input int    InpRngBars = 0;      // Range: no break for (bars, 0 = auto)
 input bool   InpUseSpk  = true;   // Skip signals after an abnormal candle
@@ -175,7 +176,7 @@ input group "EA · start-up"
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.19"
+#define FXW_VER   "3.20"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -615,7 +616,7 @@ bool ParseComment(string c, string &kind, int &zid, int &stars, bool &imp, doubl
    if(StringFind(c, "FXW ") != 0) return false;
    string p[]; int np = StringSplit(c, ' ', p);
    if(np < 5) return false;
-   int o = np >= 6 ? 2 : 1;   // 3.19+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
+   int o = np >= 6 ? 2 : 1;   // 3.20+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
    kind = StringSubstr(p[o], 0, 1); zid = (int)StringToInteger(StringSubstr(p[o], 1));
    stars = (int)StringToInteger(StringSubstr(p[o + 1], 1)); imp = StringSubstr(p[o + 2], 1) == "1"; a = StringToDouble(StringSubstr(p[o + 3], 1));
    return true;
@@ -1143,6 +1144,7 @@ void OnNewBar(bool live)
          bool can = zz.state <= 1 && valid && (pass == 1 || k > zz.b1) && zz.armed && (pass == 1 || zz.stars >= MinStars(tfSecs))
                     && zz.entries < InpMaxEnt && k - zz.lastE >= InpReCool && trendOk && filt && !spkBlock && !(d > 0 ? busyB : busyS)
                     && !(live && ZoneOpen(pass == 0 ? "L" : "M", zz.id));
+         if(InpSlSkip && pass == 0 && MathAbs(level - (zI - d * InpSlBuf * a)) > PSlMax(tfSecs, a)) can = false;
          //--- warm-up: simulate fills so old zones are not traded again
          if(!live)
            {

@@ -1,7 +1,7 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX — foxrex.co
 //
-// FOXREX · Wave Retracement Zones · version 3.19 (see tools/tradingview/CHANGELOG.md)
+// FOXREX · Wave Retracement Zones · version 3.20 (see tools/tradingview/CHANGELOG.md)
 // Three kinds of buy / sell zones, each with its own look so nothing overlaps:
 //   • Local zones  — the chart's timeframe: grey fill, dashed border in the side colour, "M5 BUY ZONE".
 //   • Major zones  — a higher timeframe that sets the direction (auto: 1m→15m, 5m→1H, 15m→4H, 1H→D):
@@ -36,13 +36,14 @@
 
 //@version=6
 indicator("FOXREX · Wave Retracement Zones", shorttitle = "FOXREX Waves", overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500, max_bars_back = 500)
-string VER = "3.19"
+string VER = "3.20"
 
 // ───────────────────────────── Inputs
 string G_TR   = "1 · Trading & simulation"
 bool   lotStar = input.bool(true, "Simulation size by confidence (1 / 1.5 / 2 / 2.5 lots for 1 to 4 stars)", group = G_TR, display = display.none)
 float  lotVal  = input.float(0.0, "Simulation: $ per 1.0 move for 1 lot (0 = auto)", minval = 0.0, step = 1.0, group = G_TR, tooltip = "Auto: 100 for gold (1 lot = 100 oz), otherwise the symbol's point value. Every trade is simulated with 1 lot and no spread.", display = display.none)
 float  comm    = input.float(6.0, "Simulation: commission per lot ($)", minval = 0.0, step = 0.5, group = G_TR, display = display.none)
+float  sprd    = input.float(0.0, "Simulation: spread per trade (points)", minval = 0.0, step = 0.1, group = G_TR, tooltip = "Taken off every closed trade in the Real result (spread / slippage of your broker, e.g. 0.3 for gold). 0 = none.", display = display.none)
 
 string G_WAV  = "2 · Strategy: wave + stall + fib"
 int    stL     = input.int(3, "Stall: bars before the turn", minval = 1, maxval = 20, group = G_WAV, display = display.none)
@@ -108,6 +109,7 @@ float  rsiOS   = input.float(30, "below", group = G_FLT, inline = "rsi", display
 float  rsiOB   = input.float(70, "above", group = G_FLT, inline = "rsi", display = display.none)
 string roomMode = input.string("Strong zones only · block", "Room filter (support / resistance in the way)", options = ["Strong zones only · block", "Strong zones only · half size", "All daily zones · block", "Off"], group = G_FLT, tooltip = "Only TP1 of room is needed (short timeframes, small targets). Counts strong daily zones (strength ≥ the trading minimum) and a major zone while price is reacting in it. Block = no trade, half size = smaller trade.", display = display.none)
 bool   roomMaj = input.bool(false, "Room filter: also the edges of live major zones", group = G_FLT, tooltip = "On: the edge of a live major zone ahead counts as support / resistance and price inside a major zone blocks the other side (3.15–3.17, stricter).", display = display.none)
+bool   slSkip  = input.bool(false, "Skip a zone trade when its structural stop is wider than the max stop", group = G_FLT, tooltip = "Off (as 3.13): the stop is narrowed to the timeframe maximum, so it can sit inside the zone. On: no trade when the stop beyond the zone would be wider than the maximum.", display = display.none)
 bool   exhOn   = input.bool(false, "No trade at the end of an exhausted wave", group = G_FLT, tooltip = "After a move of 4 × ATR or more in the last 30 bars with RSI oversold (overbought) in the last 10 bars, no sell (buy) while price is still in the last 38.2% of that move: it is the end of the wave, not the start.", display = display.none)
 bool   useSpk  = input.bool(true, "Skip signals after an abnormal candle", group = G_FLT, display = display.none)
 float  spkK    = input.float(2.5, "Abnormal = range above (× ATR)", minval = 1.0, step = 0.1, group = G_FLT, display = display.none)
@@ -231,6 +233,12 @@ type Trade
     float        lots
     line         et
 
+// ───────────────────────────── Input checks
+if barstate.isfirst and not (fEntry < fZone and fZone < fInv)
+    runtime.error("FOXREX Waves: Zone start < Zone end < Invalidation is required (now " + str.tostring(fEntry) + " / " + str.tostring(fZone) + " / " + str.tostring(fInv) + ")")
+if barstate.isfirst and profile == "Custom" and not (tp1Pts < tp2Pts and tp2Pts < tp3Pts and tp3Pts < tp4Pts)
+    runtime.error("FOXREX Waves: custom targets must rise: TP1 < TP2 < TP3 < TP4")
+
 // ───────────────────────────── Helpers
 int tfSecs = timeframe.in_seconds()
 string tkU = str.upper(syminfo.ticker)
@@ -322,10 +330,13 @@ protSl(int dir, float en, float sl, int hits, array<float> tps) =>
 // Partial closes: fraction of the original size closed at target i (0 = TP1), the same ladder as the MT5 EA.
 parsePct(string txt) =>
     array<float> r = array.new<float>()
+    float tot = 0.0
     for x in str.split(txt, ",")
         float v = str.tonumber(str.trim(x))
-        if not na(v)
-            r.push(v / 100)
+        if not na(v) and tot < 100
+            float c = math.min(math.max(v, 0), 100 - tot)
+            r.push(c / 100)
+            tot += c
     r
 var array<float> gPart = parsePct(partPct)
 
@@ -345,7 +356,7 @@ tradePts(int dir, float en, array<float> tps, int hits, float exitPx, int s) =>
             float pp = math.min(partFrac(i, s), rem)
             pts += pp * math.abs(tps.get(i) - en)
             rem -= pp
-    na(res) ? pts + rem * dir * (exitPx - en) : res
+    na(res) ? pts + rem * dir * (exitPx - en) - sprd : res
 
 isRej(int dir) =>
     float rg = high - low
@@ -535,14 +546,18 @@ zoneEval(Zone z, float a, bool sBlk, int tr, bool blocked, int s) =>
             bool  byLim = trig != "Rejection candle only" and hitL
             bool  byRej = not byLim and trig != "Limit only" and inZone and rej and not invalid and (z.dir < 0 ? close >= zA - math.abs(zA - zB) : close <= zA + math.abs(zA - zB))
             if (byLim or byRej) and z.armed and z.sSt >= minStars(s) and not blocked and not sBlk and dirOk(z, tr, s) and z.entries < maxEnt and (na(z.lastE) or bar_index - z.lastE >= reCool)
-                fire := true
-                ep   := byLim ? (z.dir < 0 ? math.max(lvlE, open) : math.min(lvlE, open)) : close
+                float ep0 = byLim ? (z.dir < 0 ? math.max(lvlE, open) : math.min(lvlE, open)) : close
                 float zSl = z.dir < 0 ? (byLim ? zI : math.max(zI, high)) + slBuf * a : (byLim ? zI : math.min(zI, low)) - slBuf * a
-                dist := clampSl(math.abs(ep - zSl), s, false, a)
-                sl   := ep - z.dir * dist
-                sbSl := byLim and (z.dir < 0 ? high >= sl : low <= sl)
-                z.entries += 1
-                z.lastE   := bar_index
+                if slSkip and math.abs(ep0 - zSl) > pSlMax(s, a)
+                    tch := true
+                else
+                    fire := true
+                    ep   := ep0
+                    dist := clampSl(math.abs(ep - zSl), s, false, a)
+                    sl   := ep - z.dir * dist
+                    sbSl := byLim and (z.dir < 0 ? high >= sl : low <= sl)
+                    z.entries += 1
+                    z.lastE   := bar_index
             else if (byLim or byRej) and not invalid
                 tch := true
             if invalid
@@ -611,21 +626,22 @@ majorEngine() =>
             cT1 := time
             cDr := tDir
             cEn := tEn
-            cEx := tSl
-            cPt := tradePts(tDir, tEn, tTp, tHit, tSl, s)
+            cEx := tDir > 0 ? math.min(tSl, open) : math.max(tSl, open)   // a gap through the stop fills at the open
+            cPt := tradePts(tDir, tEn, tTp, tHit, cEx, s)
             cHt := tHit
             tDir     := 0
         else
             while tHit < 7 and (tDir < 0 ? low <= tTp.get(tHit) : high >= tTp.get(tHit))
                 tHit += 1
             tSl := protSl(tDir, tEn, tSl, tHit, tTp)
-            if tHit == 7 or (tHit < 2 and bar_index - tEB >= maxBars) or (noProg > 0 and tHit == 0 and bar_index - tEB >= noProg)
+            bool slBack = tHit > 0 and tHit < 7 and (tDir > 0 ? close <= tSl : close >= tSl)
+            if tHit == 7 or slBack or (tHit < 2 and bar_index - tEB >= maxBars) or (noProg > 0 and tHit == 0 and bar_index - tEB >= noProg)
                 tZ.armed := false
                 cT0 := tT
                 cT1 := time
                 cDr := tDir
                 cEn := tEn
-                cEx := tHit == 7 ? tTp.get(6) : close
+                cEx := tHit == 7 ? tTp.get(6) : slBack ? tSl : close
                 cPt := tradePts(tDir, tEn, tTp, tHit, cEx, s)
                 cHt := tHit
                 tDir     := 0
@@ -645,6 +661,14 @@ majorEngine() =>
         else if f and sb
             zS.entries := maxEnt
             zS.armed   := false
+            // stopped on the fill candle: recorded as a loss
+            cT0 := time
+            cT1 := time
+            cDr := -1
+            cEn := ep
+            cEx := sl
+            cPt := -d - sprd
+            cHt := 0
     if not na(zBy)
         holdUpdate(zBy)
         [f, ep, sl, d, sb, tc] = zoneEval(zBy, a, sBlk, tr, tDir != 0 or (useRsi and mr > rsiOB), s)
@@ -660,6 +684,14 @@ majorEngine() =>
         else if f and sb
             zBy.entries := maxEnt
             zBy.armed   := false
+            // stopped on the fill candle: recorded as a loss
+            cT0 := time
+            cT1 := time
+            cDr := 1
+            cEn := ep
+            cEx := sl
+            cPt := -d - sprd
+            cHt := 0
     bool sV = not na(zS) and math.abs(zS.p0 - zS.p1) >= minLeg * a
     bool bV = not na(zBy) and math.abs(zBy.p0 - zBy.p1) >= minLeg * a
     [sV ? zS.p0 : na, sV ? zS.p1 : na, sV ? zS.t1 : na, sV ? zS.state : -1, sV ? zS.tB : na, bV ? zBy.p0 : na, bV ? zBy.p1 : na, bV ? zBy.t1 : na, bV ? zBy.state : -1, bV ? zBy.tB : na, tr, tDir, tEn, tSl, tHit, tT, tTp.get(0), tTp.get(3), cT0, cT1, cDr, cEn, cEx, cPt, cHt]
@@ -701,8 +733,8 @@ dayPack() =>
     if not na(e2) and (na(lc) or e2 != lc)
         lc := e2
         n  += 1
-        w  += e7 > 0 ? 1 : 0
-        l  += e7 == 0 and e6 < 0 ? 1 : 0
+        w  += e6 > 0 ? 1 : 0
+        l  += e6 < 0 ? 1 : 0
         pt += e6
         float u1 = e6 * lotV - comm
         us += u1
@@ -944,9 +976,12 @@ closeTrade(Trade t, string res) =>
     t.state := 10
     if acctMd != "Real: partial closes + exit" and t.hits > 0
         t.net := math.abs(t.tps.get(t.hits - 1) - t.entry)
+    if acctMd == "Real: partial closes + exit"
+        t.net -= sprd
     float pnl = (t.net * lotV - comm) * t.lots
+    // win / loss by what the trade paid (a trade that touched TP1 and then lost is a loss)
     score(t.dKey, 0, 1)
-    if t.hits > 0
+    if t.net > 0
         score(t.dKey, 1, 1)
     else if t.net < 0
         score(t.dKey, 2, 1)
@@ -959,7 +994,7 @@ closeTrade(Trade t, string res) =>
     clT.push(time)
     clP.push(t.net)
     clU.push(pnl)
-    clR.push(t.hits > 0 ? 1 : t.net < 0 ? -1 : 0)
+    clR.push(t.net > 0 ? 1 : t.net < 0 ? -1 : 0)
     if clT.size() > 3000
         clT.shift()
         clP.shift()
@@ -973,19 +1008,19 @@ closeTrade(Trade t, string res) =>
     t.rl.clear()
     box.delete(t.sb)
     box.delete(t.pb)
-    bool won = t.hits > 0
+    bool won = t.net > 0
     string side = t.dir < 0 ? "SELL" : "BUY"
     color  cw   = t.dir < 0 ? #E0475F : #00A884
     // entry marker: where the trade was really entered (the label sits under / over the candle)
     t.et := line.new(t.eB - 1, t.entry, t.eB + 1, t.entry, color = color.new(color.white, 15), width = 2)
-    if won
+    if t.hits > 0
         float tp = t.tps.get(t.hits - 1)
         t.tl := line.new(t.eB, tp, math.max(bar_index, t.eB + 3), tp, color = cw, width = 2)
     t.lb.set_text(side + (str.startswith(t.src, "reversal") ? " REV " : " ") + starStr(t.stars) + (t.lots < (lotStar ? 1.0 + 0.5 * (t.stars - 1) : 1.0) - 0.01 ? " ½" : "") + " " + res + " " + sgnPts(t.net))
     t.lb.set_size(size.tiny)
     t.lb.set_color(won ? color.new(cw, 15) : color.new(#6B7280, 30))
     t.lb.set_textcolor(won ? color.white : color.new(color.white, 20))
-    t.lb.set_tooltip(cLbl + " " + side + " · " + t.src + "\nEntry " + fmtP(t.entry) + "\nResult " + res + " · " + sgnPts(t.net) + " pts\nConfidence " + str.tostring(t.stars * 25) + "% · " + str.tostring(t.lots, "#.#") + " lot: " + usd(pnl) + " (commission $" + str.tostring(comm, "#.##") + " per lot)")
+    t.lb.set_tooltip(cLbl + " " + side + " · " + t.src + "\nEntry " + fmtP(t.entry) + "\nResult " + res + " · " + sgnPts(t.net) + " pts\nSignal strength " + starStr(t.stars) + " (stall candles + RSI, not a win probability) · " + str.tostring(t.lots, "#.#") + " lot: " + usd(pnl) + " (commission $" + str.tostring(comm, "#.##") + " per lot)")
     if not na(t.zn)
         t.zn.armed := false
         t.zn.opn   := false
@@ -1000,7 +1035,7 @@ openTrade(int dir, float ep, float sl, float dist, bool imp, string src, Zone zn
     string side = dir < 0 ? "SELL" : "BUY"
     int    stc  = math.max(1, math.min(stars, 4))
     float  lots = (lotStar ? 1.0 + 0.5 * (stc - 1) : 1.0) * k
-    label lb = label.new(bar_index, dir < 0 ? high : low, side + (str.startswith(src, "reversal") ? " REV " : " ") + starStr(stc) + (k < 1 ? " ½" : ""), style = dir < 0 ? label.style_label_down : label.style_label_up, color = dir < 0 ? #E0475F : #00A884, textcolor = color.white, size = size.small, tooltip = cLbl + " " + side + " · " + src + " @ " + fmtP(ep) + "\nConfidence " + starStr(stc) + " " + str.tostring(stc * 25) + "% · " + str.tostring(lots, "#.#") + " lot\nSL " + fmtP(sl) + " (" + str.tostring(dist, "#.##") + " pts)\nTP " + fmtP(tps.get(0)) + " / " + fmtP(tps.get(1)) + " / " + fmtP(tps.get(2)) + " / " + fmtP(tps.get(3)))
+    label lb = label.new(bar_index, dir < 0 ? high : low, side + (str.startswith(src, "reversal") ? " REV " : " ") + starStr(stc) + (k < 1 ? " ½" : ""), style = dir < 0 ? label.style_label_down : label.style_label_up, color = dir < 0 ? #E0475F : #00A884, textcolor = color.white, size = size.small, tooltip = cLbl + " " + side + " · " + src + " @ " + fmtP(ep) + "\nSignal strength " + starStr(stc) + " · " + str.tostring(lots, "#.#") + " lot\nSL " + fmtP(sl) + " (" + str.tostring(dist, "#.##") + " pts)\nTP " + fmtP(tps.get(0)) + " / " + fmtP(tps.get(1)) + " / " + fmtP(tps.get(2)) + " / " + fmtP(tps.get(3)))
     array<line>  ln = array.new<line>()
     array<label> rl = array.new<label>()
     ln.push(line.new(bar_index, sl, bar_index + 6, sl, color = color.new(cSell, 10), style = line.style_dashed))
@@ -1202,7 +1237,7 @@ var int    lastTradeDir = 0
 // ───────────────────────────── Open trade → outcome (before new entries, so a trade that closes on this bar frees the slot)
 for t in tLive
     if t.state == 1
-        if barstate.islast
+        if barstate.islast and (barstate.isnew or barstate.islastconfirmedhistory)
             redrawOpen(t)
         for l in t.ln
             l.set_x2(bar_index + 6)
@@ -1211,14 +1246,15 @@ for t in tLive
         t.sb.set_right(bar_index + 6)
         t.pb.set_right(bar_index + 6)
         // live status: targets reached and running result (updates on every tick)
-        float livePts = t.hits > 0 ? math.max(math.abs(t.tps.get(t.hits - 1) - t.entry), t.dir * (close - t.entry)) : t.dir * (close - t.entry)
+        float livePts = t.net + t.rem * t.dir * (close - t.entry)
         t.rl.get(5).set_text("▶ " + cLbl + (t.dir < 0 ? " SELL " : " BUY ") + starStr(t.stars) + " " + fmtP(t.entry) + (t.hits > 0 ? " · ✓TP" + str.tostring(t.hits) : "") + " · " + sgnPts(livePts) + " · " + usd((livePts * lotV - comm) * t.lots))
         if barstate.isconfirmed and bar_index > t.eB
             bool   done = false
             string res  = ""
             bool   hitSl = t.dir < 0 ? high >= t.sl : low <= t.sl
             if hitSl
-                t.net += t.rem * t.dir * (t.sl - t.entry)
+                float exP = t.dir > 0 ? math.min(t.sl, open) : math.max(t.sl, open)   // a gap through the stop fills at the open
+                t.net += t.rem * t.dir * (exP - t.entry)
                 t.rem := 0.0
                 done  := true
                 res   := t.hits == 0 ? "SL" : "TP" + str.tostring(t.hits)
@@ -1244,7 +1280,14 @@ for t in tLive
                     t.sb.set_bottom(math.min(t.entry, t.sl))
                     t.lb.set_text((t.dir < 0 ? "SELL " : "BUY ") + starStr(t.stars) + " ✓TP" + str.tostring(t.hits))
                 bool stale = noProg > 0 and t.hits == 0 and bar_index - t.eB >= noProg
-                if t.hits == 7
+                // the bar reached a target, the stop moved, and the bar closed back beyond the new stop
+                bool slBack = t.hits > before and t.hits < 7 and (t.dir > 0 ? close <= t.sl : close >= t.sl)
+                if slBack
+                    t.net += t.rem * t.dir * (t.sl - t.entry)
+                    t.rem := 0.0
+                    done  := true
+                    res   := "TP" + str.tostring(t.hits)
+                else if t.hits == 7
                     t.net += t.rem * math.abs(t.tps.get(6) - t.entry)
                     t.rem := 0.0
                     done := true
@@ -1760,7 +1803,7 @@ if barstate.islast and showTb
     int    oDir = 0
     for t in tLive
         if t.state == 1
-            float lp = t.hits > 0 ? math.max(math.abs(t.tps.get(t.hits - 1) - t.entry), t.dir * (close - t.entry)) : t.dir * (close - t.entry)
+            float lp = t.net + t.rem * t.dir * (close - t.entry)
             openTxt := (t.dir < 0 ? "SELL " : "BUY ") + fmtP(t.entry) + (t.hits > 0 ? " ✓TP" + str.tostring(t.hits) : "") + " · " + sgnPts(lp) + " · SL " + fmtP(t.sl)
             oDir := t.dir
     table.cell(tb, 0, 0, "FOXREX Waves v" + VER, text_color = #F5B942, text_size = size.small, text_halign = text.align_left)
