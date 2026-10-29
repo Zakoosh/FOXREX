@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.21.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.23.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.21"
-#property description "FOXREX Waves EA v3.21: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.23"
+#property description "FOXREX Waves EA v3.23: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -61,6 +61,14 @@ enum ENUM_FXW_DIR     { DIR_FIRST = 0,         // Both sides · trend first
                         DIR_BOTH = 2,          // Both directions (full size)
                         DIR_BUY = 3,           // Buy only
                         DIR_SELL = 4 };        // Sell only
+enum ENUM_FXW_MODE    { MODE_STRICT = 0,       // Strict
+                        MODE_BAL = 1,          // Balanced
+                        MODE_OPEN = 2,         // Open
+                        MODE_CUSTOM = 3 };     // Custom (use the settings below)
+enum ENUM_FXW_TRM     { TRM_WAVE = 0,          // Waves: up while above the last higher low
+                        TRM_SWING = 1 };       // Swing breaks (3.13)
+enum ENUM_FXW_STOP    { STOP_ATR = 0,          // ATR: 1.5 – 2 × behind the zone
+                        STOP_POINTS = 1 };     // Points per timeframe (3.13)
 enum ENUM_FXW_LOT     { LOT_FIXED = 0,         // Fixed lot (base lot × stars)
                         LOT_RISK = 1 };        // Risk % of equity per trade (× stars)
 enum ENUM_FXW_MAJFLT  { MAJ_STRUCT_ZONE = 0,   // Major structure + active zone
@@ -74,6 +82,8 @@ input double InpBaseLot     = 1.0;    // Base lot (1 star, fixed mode) = the ind
 input double InpRiskPct     = 0.25;   // Risk per trade, % of equity (1 star, risk mode)
 input bool   InpLotByStars  = true;   // Size by confidence (1 / 1.5 / 2 / 2.5 ×)
 input double InpMaxLot      = 0;      // Max lot per trade (0 = broker max)
+input double InpLot1a       = 3.0;    // 1m lots · ★ (fixed mode)
+input double InpLot1b       = 5.0;    // 1m lots · ★★★★ (fixed mode)
 input int    InpMaxOpen     = 0;      // Max open trades in the same direction (0 = no limit)
 input long   InpMagic       = 260929; // Magic number (base)
 input bool   InpMagicByTf   = true;   // Add the timeframe in minutes to the magic (M1 260930, M15 260944 …)
@@ -81,11 +91,14 @@ input int    InpMaxSpread   = 0;      // Max spread in points (0 = off)
 input bool   InpPush        = false;  // Push notification on entry / exit
 
 input group "2 · Direction & filters"
-input ENUM_FXW_DIR InpDir = DIR_TREND; // Trade direction
-input bool   InpCtHalf  = false;  // …counter-trend trades at half size (trend first)
+input ENUM_FXW_MODE InpMode = MODE_STRICT; // Trading mode
+input ENUM_FXW_DIR InpDir = DIR_FIRST; // Trade direction (Custom mode)
+input bool   InpCtHalf  = true;   // …counter-trend trades at half size (Custom mode)
 input ENUM_FXW_RANGE InpRange = RNG_STRICT; // In a range (no confirmed break)
 input bool   InpBrkClose = false;  // Break confirmed by a close beyond the previous stall
 input bool   InpExh     = false;  // No trade at the end of an exhausted wave
+input ENUM_FXW_TRM InpTrMode = TRM_WAVE; // Trend
+input bool   InpSmOn    = true;   // No support / resistance trade against a strong move
 input bool   InpUseRsi  = true;   // RSI filter
 input int    InpRsiLen  = 14;     // RSI length
 input double InpRsiOS   = 30;     // No sell below
@@ -122,6 +135,9 @@ input bool   InpReinf   = true;   // Reinforcement: add on the next zones of the
 
 input group "5 · Targets"
 input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Profile
+input ENUM_FXW_STOP InpStopMd = STOP_ATR; // Stop distance
+input double InpSlAtrA  = 1.5;    // …ATR min
+input double InpSlAtrB  = 2.0;    // …ATR max
 input double InpTp1 = 2.5;   // Custom TP1
 input double InpTp2 = 5.0;   // Custom TP2
 input double InpTp3 = 10.0;  // Custom TP3
@@ -158,6 +174,7 @@ input bool   InpTradeMj = true;   // Take trades at major zones
 
 input group "9 · Daily zones & reversals"
 input bool   InpTradeDL = true;   // Take trades at daily zones (rejection)
+input bool   InpTlTrade = true;   // Trend-line touches as entries (with the trend)
 input int    InpDlOnce  = 1;      // …trades per strong zone per side per day
 input bool   InpUseRev  = false;  // Reversal trades at strong zones
 input bool   InpRevLight = false; // Wave-end reversal trades (light: 1 star, half size)
@@ -176,7 +193,7 @@ input group "EA · start-up"
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.21"
+#define FXW_VER   "3.23"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -210,7 +227,7 @@ public:
    int               secs;
    int               n;            // processed bars
    int               maxLive;      // live zones per side
-   double            O[], H[], L[], C[], ATR[], RSI[];
+   double            O[], H[], L[], C[], ATR[], RSI[], MH[];
    datetime          T[];
    //--- indicator state
    double            trSum, atrV, gainAvg, lossAvg;
@@ -221,6 +238,14 @@ public:
    double            sH1, sL1;
    bool              sHB, sLB;
    int               sTr, sBk, trend;
+   //--- MACD (12, 26, 9)
+   double            e12, e26, eSg;
+   //--- wave trend: up while above the last higher low
+   int               wT, turnUpK, turnDnK, lastTurn;
+   double            wHL, wLH, wTop, wBot, turnLvl;
+   //--- swing points for trend lines (last 12)
+   double            thP[], tlP[];
+   int               thB[], tlB[];
    //--- zones
    SZone             zones[];
    int               nextId;
@@ -229,7 +254,10 @@ public:
      {
       tf = t; secs = PeriodSeconds(t); n = 0; maxLive = live;
       ArrayResize(O, 0); ArrayResize(H, 0); ArrayResize(L, 0); ArrayResize(C, 0);
-      ArrayResize(ATR, 0); ArrayResize(RSI, 0); ArrayResize(T, 0);
+      ArrayResize(ATR, 0); ArrayResize(RSI, 0); ArrayResize(T, 0); ArrayResize(MH, 0);
+      e12 = 0; e26 = 0; eSg = 0;
+      wT = 0; turnUpK = -1; turnDnK = -1; lastTurn = 0; wHL = 0; wLH = 0; wTop = 0; wBot = 0; turnLvl = 0;
+      ArrayResize(thP, 0); ArrayResize(tlP, 0); ArrayResize(thB, 0); ArrayResize(tlB, 0);
       trSum = 0; atrV = 0; gainAvg = 0; lossAvg = 0;
       lH = 0; lL = 0; lHB = -1; lLB = -1;
       sH1 = 0; sL1 = 0; sHB = false; sLB = false; sTr = 0; sBk = -1; trend = 0;
@@ -269,7 +297,7 @@ public:
       int k = n;
       ArrayResize(O, k + 1, 4096); ArrayResize(H, k + 1, 4096); ArrayResize(L, k + 1, 4096);
       ArrayResize(C, k + 1, 4096); ArrayResize(T, k + 1, 4096);
-      ArrayResize(ATR, k + 1, 4096); ArrayResize(RSI, k + 1, 4096);
+      ArrayResize(ATR, k + 1, 4096); ArrayResize(RSI, k + 1, 4096); ArrayResize(MH, k + 1, 4096);
       O[k] = r.open; H[k] = r.high; L[k] = r.low; C[k] = r.close; T[k] = r.time;
       n = k + 1;
       //--- ATR (Wilder, 14)
@@ -284,23 +312,29 @@ public:
       if(k <= rl) { gainAvg = (gainAvg * k + g) / (k + 1); lossAvg = (lossAvg * k + ls) / (k + 1); }
       else { gainAvg = (gainAvg * (rl - 1) + g) / rl; lossAvg = (lossAvg * (rl - 1) + ls) / rl; }
       RSI[k] = lossAvg == 0 ? 100.0 : 100.0 - 100.0 / (1.0 + gainAvg / lossAvg);
+      //--- MACD histogram
+      if(k == 0) { e12 = C[k]; e26 = C[k]; eSg = 0; }
+      else { e12 += 2.0 / 13.0 * (C[k] - e12); e26 += 2.0 / 27.0 * (C[k] - e26); }
+      double mc = e12 - e26;
+      eSg = (k == 0) ? mc : eSg + 2.0 / 10.0 * (mc - eSg);
+      MH[k] = mc - eSg;
       //--- structure trend (swing pivots, last break, range timeout)
       int p = k - InpSwLen;
-      if(PivotHigh(p, InpSwLen, InpSwLen)) { sH1 = H[p]; sHB = false; }
-      if(PivotLow(p, InpSwLen, InpSwLen))  { sL1 = L[p]; sLB = false; }
+      if(PivotHigh(p, InpSwLen, InpSwLen)) { sH1 = H[p]; sHB = false; PushSwing(thP, thB, H[p], p); }
+      if(PivotLow(p, InpSwLen, InpSwLen))  { sL1 = L[p]; sLB = false; PushSwing(tlP, tlB, L[p], p); }
       if(sH1 > 0 && !sHB && C[k] > sH1) { sHB = true; sTr = 1;  sBk = k; }
       if(sL1 > 0 && !sLB && C[k] < sL1) { sLB = true; sTr = -1; sBk = k; }
-      trend = (sBk < 0 || k - sBk > RangeBars()) ? 0 : sTr;
+      int swTrend = (sBk < 0 || k - sBk > RangeBars()) ? 0 : sTr;
       //--- legs: stall after one candle
       int q = k - 1;
       double a = Atr();
+      bool uN = false, dN = false; double uP0 = 0, uP1 = 0, dP0 = 0, dP1 = 0; int uB0 = 0, uB1 = 0, dB0 = 0, dB1 = 0;
       if(PivotHigh(q, InpStL, 1))
         {
          int span = lHB < 0 ? 60 : (int)MathMin(MathMax(q - lHB, 1), 300);
          double lo = L[q]; int lob = q; double hc = C[q];
          for(int i = q; i >= MathMax(q - span, 0); i--) { if(L[i] < lo) { lo = L[i]; lob = i; } hc = MathMax(hc, C[i]); }
-         if(lHB < 0 || (H[q] > lH && (!InpBrkClose || hc > lH)))
-            if(MathAbs(H[q] - lo) >= InpMinLeg * a) AddZone(1, lo, lob, H[q], q);
+         if(lHB < 0 || (H[q] > lH && (!InpBrkClose || hc > lH))) { uN = true; uP0 = lo; uB0 = lob; uP1 = H[q]; uB1 = q; }
          lH = H[q]; lHB = q;
         }
       if(PivotLow(q, InpStL, 1))
@@ -308,10 +342,18 @@ public:
          int span = lLB < 0 ? 60 : (int)MathMin(MathMax(q - lLB, 1), 300);
          double hi = H[q]; int hib = q; double lc = C[q];
          for(int i = q; i >= MathMax(q - span, 0); i--) { if(H[i] > hi) { hi = H[i]; hib = i; } lc = MathMin(lc, C[i]); }
-         if(lLB < 0 || (L[q] < lL && (!InpBrkClose || lc < lL)))
-            if(MathAbs(hi - L[q]) >= InpMinLeg * a) AddZone(-1, hi, hib, L[q], q);
+         if(lLB < 0 || (L[q] < lL && (!InpBrkClose || lc < lL))) { dN = true; dP0 = hi; dB0 = hib; dP1 = L[q]; dB1 = q; }
          lL = L[q]; lLB = q;
         }
+      //--- wave trend
+      lastTurn = 0;
+      if(uN) { wTop = uP1; if(wT >= 0) { wT = 1; wHL = uP0; } }
+      if(dN) { wBot = dP1; if(wT <= 0) { wT = -1; wLH = dP0; } }
+      if(wT == 1 && wHL > 0 && C[k] < wHL)       { turnLvl = wHL; wT = -1; wLH = wTop > 0 ? wTop : H[k]; lastTurn = -1; turnDnK = k; }
+      else if(wT == -1 && wLH > 0 && C[k] > wLH) { turnLvl = wLH; wT = 1;  wHL = wBot > 0 ? wBot : L[k]; lastTurn = 1;  turnUpK = k; }
+      trend = InpTrMode == TRM_SWING ? swTrend : wT;
+      if(dN && MathAbs(dP0 - dP1) >= InpMinLeg * a) AddZone(-1, dP0, dB0, dP1, dB1);
+      if(uN && MathAbs(uP0 - uP1) >= InpMinLeg * a) AddZone(1, uP0, uB0, uP1, uB1);
       //--- zones: stars, touch, invalidation, arming, life
       for(int z = 0; z < ArraySize(zones); z++) Update(z, k);
       //--- drop finished zones
@@ -319,6 +361,25 @@ public:
       for(int z = 0; z < ArraySize(zones); z++)
          if(zones[z].state < 10) { if(keep != z) zones[keep] = zones[z]; keep++; }
       ArrayResize(zones, keep);
+     }
+
+   void              PushSwing(double &ps[], int &bs[], double p, int b)
+     {
+      int sz = ArraySize(ps);
+      if(sz >= 12) { for(int i = 1; i < sz; i++) { ps[i - 1] = ps[i]; bs[i - 1] = bs[i]; } sz--; ArrayResize(ps, sz); ArrayResize(bs, sz); }
+      ArrayResize(ps, sz + 1); ArrayResize(bs, sz + 1); ps[sz] = p; bs[sz] = b;
+     }
+
+   //--- a line through two swings that price has respected (closes) since the first one
+   bool              LineOk(int b1, double p1, int b2, double p2, bool isRes)
+     {
+      double m = (p2 - p1) / (b2 - b1), tol = 0.15 * Atr();
+      for(int i = n - 1; i > b1 && i >= n - 450; i--)
+        {
+         double v = p1 + m * (i - b1);
+         if(isRes ? C[i] > v + tol : C[i] < v - tol) return false;
+        }
+      return true;
      }
 
    void              AddZone(int dir, double p0, int b0, double p1, int b1)
@@ -413,6 +474,17 @@ struct SPos
   };
 SPos        pos[];
 long        gMagic = 0;
+//--- trading mode → effective settings (Strict / Balanced / Open; Custom uses the inputs)
+bool        mStrict = true, mBal = false, mOpen = false, mCust = false;
+ENUM_FXW_DIR  gDir  = DIR_TREND;
+ENUM_FXW_ELVL gELvl = ELVL_MID;
+ENUM_FXW_ROOM gRoom = ROOM_STRONG_BLOCK;
+bool        gCtHalf = true;
+//--- strong-move guard, recent breaks of strong daily zones, trend lines
+int         sDnK = -1, sUpK = -1, brkUpK = -1, brkDnK = -1, tlTK = -1000;
+double      tsB = -1, tsP = 0, tsM = 0, trB = -1, trP = 0, trM = 0;
+int         tsE = 0, trE = 0, lastTlB = -1, lastThB = -1;
+string ModeName(void) { return mStrict ? "Strict" : mBal ? "Balanced" : mOpen ? "Open" : "Custom"; }
 
 //+------------------------------------------------------------------+
 //| Profile helpers                                                  |
@@ -435,6 +507,7 @@ double PTp(int s, int i, double a)
 
 double PSlMin(int s, double a)
   {
+   if(InpStopMd == STOP_ATR) return InpSlAtrA * a;
    if(InpProfile == PROFILE_AUTO_ATR) return 1.0 * a;
    if(InpProfile == PROFILE_CUSTOM)   return InpSlMinC;
    if(s <= 60) return InpSl1Mn; if(s <= 300) return InpSl5Mn; if(s < 3600) return InpSl15Mn; if(s < 86400) return InpSlHMn;
@@ -443,6 +516,7 @@ double PSlMin(int s, double a)
 
 double PSlMax(int s, double a)
   {
+   if(InpStopMd == STOP_ATR) return InpSlAtrB * a;
    if(InpProfile == PROFILE_AUTO_ATR) return 3.5 * a;
    if(InpProfile == PROFILE_CUSTOM)   return InpSlMaxC;
    if(s <= 60) return InpSl1Mx; if(s <= 300) return InpSl5Mx; if(s < 3600) return InpSl15Mx; if(s < 86400) return InpSlHMx;
@@ -478,8 +552,8 @@ void CapZ(double a, double b, int s, double &oa, double &ob)
 
 int MinStars(int s)
   {
-   if(s <= 60) return InpMs1; if(s <= 300) return InpMs5; if(s <= 1800) return InpMs15;
-   return InpMsH;
+   int m = s <= 60 ? InpMs1 : s <= 300 ? InpMs5 : s <= 1800 ? InpMs15 : InpMsH;
+   return MathMax(m, mStrict ? 2 : 1);
   }
 
 double ProtSl(int dir, double en, double sl, int hits, const double &tps[])
@@ -754,6 +828,7 @@ double LotsFor(int stars, double dist, double kf)
    double f = InpLotByStars ? 1.0 + 0.5 * (sc - 1) : 1.0;
    f *= kf;
    double v = InpBaseLot * f;
+   if(tfSecs <= 60 && InpLotMode == LOT_FIXED) v = (InpLotByStars ? InpLot1a + (InpLot1b - InpLot1a) * (sc - 1) / 3.0 : InpLot1a) * kf;
    if(InpLotMode == LOT_RISK)
      {
       double tv = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE_LOSS), ts = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
@@ -779,7 +854,7 @@ string Cmt(string kind, int zid, int stars, bool imp, double a)
   }
 
 //--- market entry
-bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp, double kf = 1.0)
+bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp, double kf = 1.0, bool ct = false)
   {
    if(!SpreadOk()) return false;
    double a = eng.Atr();
@@ -787,7 +862,7 @@ bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp
    double stopsLvl = SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * _Point;
    dist = MathMax(dist, stopsLvl + _Point);
    double tps[7]; TpArr(px, dir, tfSecs, imp, a, tps);
-   double sl = NormalizeDouble(px - dir * dist, _Digits), tp = NormalizeDouble(tps[6], _Digits);
+   double sl = NormalizeDouble(px - dir * dist, _Digits), tp = NormalizeDouble(tps[ct ? 0 : 6], _Digits);
    double lots = LotsFor(stars, dist, kf);
    string c = Cmt(kind, zid, stars, imp, a);
    bool ok = dir > 0 ? trade.Buy(lots, _Symbol, 0, sl, tp, c) : trade.Sell(lots, _Symbol, 0, sl, tp, c);
@@ -795,7 +870,7 @@ bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp
   }
 
 //--- keep one pending limit per tradable zone (or enter at market if price is already beyond the level)
-bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, string kind, int zid, bool imp, double kf = 1.0)
+bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, string kind, int zid, bool imp, double kf = 1.0, bool ct = false)
   {
    string c = Cmt(kind, zid, stars, imp, eng.Atr());
    string key = "FXW " + TfLabel(tfSecs) + " " + kind + IntegerToString(zid) + " ";
@@ -809,15 +884,15 @@ bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, st
    if(beyond)
      {
       if(t > 0) trade.OrderDelete(t);
-      return MarketEntry(dir, dist, stars, kind, zid, imp, kf);
+      return MarketEntry(dir, dist, stars, kind, zid, imp, kf, ct);
      }
    if(dir > 0 ? ask - level < stopsLvl : level - bid < stopsLvl) return false;
    double tps[7]; TpArr(level, dir, tfSecs, imp, a, tps);
-   double price = NormalizeDouble(level, _Digits), sl = NormalizeDouble(level - dir * dist, _Digits), tp = NormalizeDouble(tps[6], _Digits);
+   double price = NormalizeDouble(level, _Digits), sl = NormalizeDouble(level - dir * dist, _Digits), tp = NormalizeDouble(tps[ct ? 0 : 6], _Digits);
    double lots = LotsFor(stars, dist, kf);
    if(t > 0)
      {
-      if(OrderSelect(t) && MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - price) < _Point && MathAbs(OrderGetDouble(ORDER_SL) - sl) < _Point) return false;
+      if(OrderSelect(t) && MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - price) < _Point && MathAbs(OrderGetDouble(ORDER_SL) - sl) < _Point && MathAbs(OrderGetDouble(ORDER_TP) - tp) < _Point) return false;
       trade.OrderDelete(t);
      }
    if(!SpreadOk()) return false;
@@ -958,13 +1033,32 @@ void Dashboard(bool okB, bool okS)
    string tt = eng.trend > 0 ? "UP" : eng.trend < 0 ? "DOWN" : "RANGE";
    string mt = majOn ? (maj.trend > 0 ? "UP" : maj.trend < 0 ? "DOWN" : "RANGE") : "off";
    string al = okB && !okS ? "BUY only" : okS && !okB ? "SELL only" : okB && okS ? "both" : "S/R zones only";
-   Comment("FOXREX Waves EA v" + FXW_VER + "  ·  " + _Symbol + " " + TfLabel(tfSecs) +
+   Comment("FOXREX Waves EA v" + FXW_VER + "  ·  " + ModeName() + "  ·  " + _Symbol + " " + TfLabel(tfSecs) +
            "\nDirection: " + TfLabel(tfSecs) + " " + tt + "   major " + (majOn ? TfLabel(maj.secs) : "") + " " + mt +
            "\nTrades allowed: " + al +
            "\nMagic " + IntegerToString(gMagic) + " · open on this timeframe: " + IntegerToString(op) + "   floating " + DoubleToString(fl, 2) +
            "\nFOXREX positions on " + _Symbol + ":" + (lst == "" ? " none" : lst) +
            "\nToday " + TfLabel(tfSecs) + ": " + IntegerToString(tr) + " closed · " + IntegerToString(wn) + " won · " + IntegerToString(tr - wn) + " lost · win " + (tr > 0 ? DoubleToString(100.0 * wn / tr, 0) + "%" : "–") +
            "\n   won +" + DoubleToString(wo, 2) + " · lost −" + DoubleToString(lo, 2) + " · net " + DoubleToString(pr, 2) + " (after losses, commission and swap)");
+  }
+
+//--- RSI stretched: allowed for ★★★ and up, after a strong break, or (not Strict) while MACD momentum builds
+bool RsiOk(int dir, int stars, bool rB, bool rS, bool mU, bool mD)
+  {
+   return (dir > 0 ? rB : rS) || stars >= 3 || (!mStrict && (dir > 0 ? mU : mD));
+  }
+
+//--- newest swing against up to 5 earlier ones: the first that makes a respected line
+void NewLine(const double &ps[], const int &bs[], bool isRes, double &lb, double &lp, double &lm, int &le)
+  {
+   int sz = ArraySize(ps); if(sz < 2) return;
+   int j = sz - 1;
+   for(int i = sz - 2; i >= MathMax(0, sz - 6); i--)
+     {
+      bool shape = isRes ? ps[i] > ps[j] : ps[i] < ps[j];
+      if(shape && eng.LineOk(bs[i], ps[i], bs[j], ps[j], isRes))
+        { lb = bs[i]; lp = ps[i]; lm = (ps[j] - ps[i]) / (bs[j] - bs[i]); le = bs[j]; return; }
+     }
   }
 
 //+------------------------------------------------------------------+
@@ -985,7 +1079,7 @@ void OnNewBar(bool live)
    double rLo = 100, rHi = 0; for(int i = 0; i < 10 && k - i >= 0; i++) { rLo = MathMin(rLo, eng.RSI[k - i]); rHi = MathMax(rHi, eng.RSI[k - i]); }
    bool osRecent = rLo <= InpRsiOS, obRecent = rHi >= InpRsiOB;
    double supHi = 0, resLo = 0;
-   bool rmStrong = InpRoomMode == ROOM_STRONG_HALF || InpRoomMode == ROOM_STRONG_BLOCK, rmHalf = InpRoomMode == ROOM_STRONG_HALF;
+   bool rmStrong = gRoom == ROOM_STRONG_HALF || gRoom == ROOM_STRONG_BLOCK, rmHalf = gRoom == ROOM_STRONG_HALF;
    for(int j = 0; j < ArraySize(dZLo); j++)
      {
       if(rmStrong && dZW[j] < InpDlMinW) continue;
@@ -1011,8 +1105,8 @@ void OnNewBar(bool live)
         }
    double roomNeed = PTp(tfSecs, 0, a);   // TP1: short timeframes, small targets
    bool nearRes = (resLo != 0 && resLo - C0 < roomNeed) || majSellAct || inMajS, nearSup = (supHi != 0 && C0 - supHi < roomNeed) || majBuyAct || inMajB;
-   bool roomBuy  = InpRoomMode == ROOM_OFF || rmHalf || !nearRes;
-   bool roomSell = InpRoomMode == ROOM_OFF || rmHalf || !nearSup;
+   bool roomBuy  = gRoom == ROOM_OFF || rmHalf || !nearRes;
+   bool roomSell = gRoom == ROOM_OFF || rmHalf || !nearSup;
    double kRB = rmHalf && nearRes ? 0.5 : 1.0, kRS = rmHalf && nearSup ? 0.5 : 1.0;
    //--- wave end: big move + RSI stretched → no trade in its direction near its extreme
    double hh30 = 0, ll30 = DBL_MAX, hh10 = 0, ll10 = DBL_MAX;
@@ -1021,16 +1115,34 @@ void OnNewBar(bool live)
    double mvDn = hh30 - ll10, mvUp = hh10 - ll30;
    bool exhDn = InpExh && osRecent && mvDn >= 4 * a && C0 - ll10 <= 0.382 * mvDn;
    bool exhUp = InpExh && obRecent && mvUp >= 4 * a && hh10 - C0 <= 0.382 * mvUp;
-   bool rsiBuy = !InpUseRsi || rsiV <= InpRsiOB, rsiSell = !InpUseRsi || rsiV >= InpRsiOS;
-   bool strF = InpMajFlt == MAJ_STRUCT_ZONE && majOn && maj.trend != 0;
-   bool okBuy  = !(InpMajFlt != MAJ_OFF && majSellAct) && !(strF && maj.trend < 0) && rsiBuy && roomBuy && !exhUp;
-   bool okSell = !(InpMajFlt != MAJ_OFF && majBuyAct) && !(strF && maj.trend > 0) && rsiSell && roomSell && !exhDn;
+   //--- a strong daily zone just broken with a close → overbought / oversold allowed for 10 bars
+   for(int j = 0; j < ArraySize(dZLo); j++)
+     {
+      if(dZW[j] < InpDlMinW) continue;
+      if(C0 > dZHi[j] && eng.C[k - 1] <= dZHi[j]) brkUpK = k;
+      if(C0 < dZLo[j] && eng.C[k - 1] >= dZLo[j]) brkDnK = k;
+     }
+   bool rsiBuy  = !InpUseRsi || rsiV <= InpRsiOB || (brkUpK >= 0 && k - brkUpK <= 10);
+   bool rsiSell = !InpUseRsi || rsiV >= InpRsiOS || (brkDnK >= 0 && k - brkDnK <= 10);
+   //--- MACD momentum
+   double mh = eng.MH[k], mh1 = eng.MH[k - 1];
+   bool momUp = mh > 0 && mh >= mh1, momDn = mh < 0 && mh <= mh1;
+   //--- strong move: no support buy after a strong fall (no resistance sell after a strong rise) until the trend turns
+   double hh20 = 0, ll20 = DBL_MAX; for(int i = 0; i < 20 && k - i >= 0; i++) { hh20 = MathMax(hh20, eng.H[k - i]); ll20 = MathMin(ll20, eng.L[k - i]); }
+   if(InpSmOn && hh20 - C0 >= 3 * a && mh < 0 && mh < mh1) sDnK = k;
+   if(InpSmOn && C0 - ll20 >= 3 * a && mh > 0 && mh > mh1) sUpK = k;
    int trend = eng.trend;
-   bool trFirst = InpDir == DIR_FIRST;
-   bool trOn = InpDir == DIR_TREND || trFirst, alB = InpDir != DIR_SELL, alS = InpDir != DIR_BUY;
+   bool noSupBuy  = sDnK >= 0 && (eng.turnUpK < 0 || sDnK > eng.turnUpK) && trend <= 0;
+   bool noResSell = sUpK >= 0 && (eng.turnDnK < 0 || sUpK > eng.turnDnK) && trend >= 0;
+   bool strF = InpMajFlt == MAJ_STRUCT_ZONE && majOn && maj.trend != 0;
+   bool okBuy  = !(InpMajFlt != MAJ_OFF && majSellAct) && !(strF && maj.trend < 0) && roomBuy && !exhUp;
+   bool okSell = !(InpMajFlt != MAJ_OFF && majBuyAct) && !(strF && maj.trend > 0) && roomSell && !exhDn;
+   bool trFirst = gDir == DIR_FIRST;
+   bool trOn = gDir == DIR_TREND || trFirst, alB = gDir != DIR_SELL, alS = gDir != DIR_BUY;
    bool okBuyZ = okBuy && (trOn ? trend >= 0 : alB), okSellZ = okSell && (trOn ? trend <= 0 : alS);
+   int mTr = majOn ? maj.trend : 0;
    bool rngBoth = InpRange == RNG_HALF;
-   if(live) Dashboard(okBuy && (trOn ? (trend > 0 || (trend == 0 && rngBoth) || (trFirst && trend < 0)) : alB), okSell && (trOn ? (trend < 0 || (trend == 0 && rngBoth) || (trFirst && trend > 0)) : alS));
+   if(live) Dashboard(okBuy && rsiBuy && (trOn ? (trend > 0 || (trend == 0 && rngBoth) || (trFirst && trend < 0)) : alB), okSell && rsiSell && (trOn ? (trend < 0 || (trend == 0 && rngBoth) || (trFirst && trend > 0)) : alS));
    bool busyB = true, busyS = true;
    if(live) Busy(busyB, busyS);
    int rb = eng.RangeBars();
@@ -1044,7 +1156,7 @@ void OnNewBar(bool live)
       if(rvBull || rvBear)
         {
          int d = rvBull ? 1 : -1;
-         bool okR = d > 0 ? (alB && !busyB && rsiBuy && roomBuy && !exhUp && !(InpMajFlt != MAJ_OFF && majSellAct)) : (alS && !busyS && rsiSell && roomSell && !exhDn && !(InpMajFlt != MAJ_OFF && majBuyAct));
+         bool okR = d > 0 ? (alB && !busyB && !noSupBuy && roomBuy && !exhUp && !(InpMajFlt != MAJ_OFF && majSellAct)) : (alS && !busyS && !noResSell && roomSell && !exhDn && !(InpMajFlt != MAJ_OFF && majBuyAct));
          int hitIx = -1, hitMz = -1;
          if(okR)
             for(int j = 0; j < ArraySize(dZLo) && hitIx < 0; j++)
@@ -1098,8 +1210,9 @@ void OnNewBar(bool live)
         {
          if(dZW[j] < InpDlMinW || k - dZT[j] < 10) continue;
          double lo = dZLo[j], hi = dZHi[j];
-         bool bR = !busyB && okBuyZ && dZB[j] < InpDlOnce && lo < C0 && hc12 > hi && lw3 <= hi && C0 > hi && C0 > O0;
-         bool sR = !busyS && okSellZ && dZS[j] < InpDlOnce && hi > C0 && lc12 < lo && hg3 >= lo && C0 < lo && C0 < O0;
+         int dSt = dZW[j] >= 4 ? 3 : 2;
+         bool bR = !busyB && okBuyZ && !noSupBuy && RsiOk(1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZB[j] < InpDlOnce && lo < C0 && hc12 > hi && lw3 <= hi && C0 > hi && C0 > O0;
+         bool sR = !busyS && okSellZ && !noResSell && RsiOk(-1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZS[j] < InpDlOnce && hi > C0 && lc12 < lo && hg3 >= lo && C0 < lo && C0 < O0;
          if(bR || sR)
            {
             int d = bR ? 1 : -1;
@@ -1129,18 +1242,22 @@ void OnNewBar(bool live)
          if(pass == 0) { CapZ(eng.Lvl(zz, InpFEntry), eng.Lvl(zz, InpFZone), capS, zA, zB); zI = eng.Lvl(zz, InpFInv); }
          else          { CapZ(maj.Lvl(zz, InpFEntry), maj.Lvl(zz, InpFZone), capS, zA, zB); zI = maj.Lvl(zz, InpFInv); }
          double zCu = pass == 0 ? eng.Lvl(zz, InpECust) : maj.Lvl(zz, InpECust);
-         double level = InpELvl == ELVL_START ? zA : InpELvl == ELVL_END ? zB : InpELvl == ELVL_MID ? (zA + zB) / 2 : zCu;
+         double level = gELvl == ELVL_START ? zA : gELvl == ELVL_END ? zB : gELvl == ELVL_MID ? (zA + zB) / 2 : zCu;
          int d = zz.dir;
          bool valid = MathAbs(zz.p0 - zz.p1) >= InpMinLeg * (pass == 0 ? a : maj.Atr());
          bool trendOk;
          if(!trOn)          trendOk = d > 0 ? alB : alS;
-         else if(pass == 1) trendOk = d > 0 ? trend >= 0 : trend <= 0;
+         else if(pass == 1) trendOk = mStrict ? (d > 0 ? trend >= 0 && mTr >= 0 : trend <= 0 && mTr <= 0) : (d > 0 ? trend >= 0 || mTr >= 0 : trend <= 0 || mTr <= 0);
          else               trendOk = d == trend || (trFirst && trend != 0) || (trend == 0 && (rngBoth || zz.brk || k - zz.bB <= rb));
-         bool ct = pass == 0 && trFirst && InpCtHalf && trend != 0 && d != trend;   // against the trend: half size
-         double kf = ((pass == 0 && trOn && trend == 0 && !(zz.brk || k - zz.bB <= rb)) || ct ? 0.5 : 1.0) * (d > 0 ? kRB : kRS);
-         bool filt = d > 0 ? okBuy : okSell;
+         //--- against the trend: Balanced never; Open ★★ and up; Custom ★★ with MACD on its side. Half size, closes at TP1
+         bool ctZ  = pass == 0 && trFirst && trend != 0 && d != trend;
+         bool ctNo = ctZ && (mBal || (mOpen && zz.stars < 2) || (mCust && (zz.stars < 2 || mh * d <= 0)));
+         bool ct   = ctZ && gCtHalf;
+         double kf = ((pass == 0 && trOn && trend == 0 && !(zz.brk || k - zz.bB <= rb)) || ct || (!ctZ && mh * d < 0) ? 0.5 : 1.0) * (d > 0 ? kRB : kRS);
          int st = pass == 0 ? zz.stars : 2;
          st = (int)MathMin(st + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
+         bool rOk = RsiOk(d, st, rsiBuy, rsiSell, momUp, momDn);
+         bool filt = (d > 0 ? okBuy : okSell) && rOk && !ctNo;
          bool can = zz.state <= 1 && valid && (pass == 1 || k > zz.b1) && zz.armed && (pass == 1 || zz.stars >= MinStars(tfSecs))
                     && zz.entries < InpMaxEnt && k - zz.lastE >= InpReCool && trendOk && filt && !spkBlock && !(d > 0 ? busyB : busyS)
                     && !(live && ZoneOpen(pass == 0 ? "L" : "M", zz.id));
@@ -1167,7 +1284,8 @@ void OnNewBar(bool live)
            {
             string w = "";
             if(!trendOk) w += trOn ? (trend == 0 ? " range;" : " against trend;") : " direction setting;";
-            if(!filt) w += (d > 0 ? !rsiBuy : !rsiSell) ? " RSI " + DoubleToString(rsiV, 1) + ";" : (d > 0 ? !roomBuy : !roomSell) ? " room;" : (d > 0 ? exhUp : exhDn) ? " end of wave;" : " major filter;";
+            if(ctNo) w += " against trend (" + ModeName() + ");";
+            if(!filt && !ctNo) w += !rOk ? " RSI " + DoubleToString(rsiV, 1) + ";" : (d > 0 ? !roomBuy : !roomSell) ? " room;" : (d > 0 ? exhUp : exhDn) ? " end of wave;" : " major filter;";
             if(d > 0 ? busyB : busyS) w += " other trade open;";
             if(spkBlock) w += " abnormal candle;";
             if(pass == 0 && zz.stars < MinStars(tfSecs)) w += " stars " + IntegerToString(zz.stars) + ";";
@@ -1180,11 +1298,35 @@ void OnNewBar(bool live)
          if(can && InpEntry != ENTRY_LIM && inZone && rej && near && !invalid && !(InpEntry == ENTRY_LIM_REJ && hitLvl))
            {
             double dist = ClampSl(MathAbs(C0 - ((d < 0 ? MathMax(zI, H0) : MathMin(zI, L0)) - d * InpSlBuf * a)), tfSecs, imp, a);
-            if(MarketEntry(d, dist, st, kind, zz.id, imp, kf)) { busyB = true; busyS = true; can = false; }
+            if(MarketEntry(d, dist, st, kind, zz.id, imp, kf, ctZ)) { busyB = true; busyS = true; can = false; }
            }
          //--- pending limit at 50% (or the zone start)
          bool wantPend = can && InpEntry != ENTRY_REJ;
-         if(SyncPending(wantPend, d, level, zI - d * InpSlBuf * a, st, kind, zz.id, imp, kf)) { busyB = true; busyS = true; }
+         if(SyncPending(wantPend, d, level, zI - d * InpSlBuf * a, st, kind, zz.id, imp, kf, ctZ)) { busyB = true; busyS = true; }
+        }
+     }
+
+   //--- 4 · trend lines: a touch and rejection with the trend (Strict: 15m and up; half size below 15m)
+   if(InpTlTrade)
+     {
+      int nl = ArraySize(eng.tlB), nh = ArraySize(eng.thB);
+      if(nl >= 2 && eng.tlB[nl - 1] != lastTlB) { lastTlB = eng.tlB[nl - 1]; NewLine(eng.tlP, eng.tlB, false, tsB, tsP, tsM, tsE); }
+      if(nh >= 2 && eng.thB[nh - 1] != lastThB) { lastThB = eng.thB[nh - 1]; NewLine(eng.thP, eng.thB, true, trB, trP, trM, trE); }
+      double tsV = tsB < 0 ? 0 : tsP + tsM * (k - tsB), trV = trB < 0 ? 0 : trP + trM * (k - trB);
+      if(tsB >= 0 && C0 < tsV - 0.15 * a) tsB = -1;
+      if(trB >= 0 && C0 > trV + 0.15 * a) trB = -1;
+      if(live && (!mStrict || tfSecs >= 900) && !spkBlock && k - tlTK > 10)
+        {
+         bool rjB = C0 > O0 || MathMin(O0, C0) - L0 >= 0.4 * (H0 - L0), rjS = C0 < O0 || H0 - MathMax(O0, C0) >= 0.4 * (H0 - L0);
+         int td = 0; double tv = 0;
+         if(trend == 1 && alB && !busyB && okBuy && RsiOk(1, 2, rsiBuy, rsiSell, momUp, momDn) && tsB >= 0 && k > tsE + 2 && L0 <= tsV + 0.1 * a && C0 > tsV && rjB) { td = 1; tv = tsV; }
+         else if(trend == -1 && alS && !busyS && okSell && RsiOk(-1, 2, rsiBuy, rsiSell, momUp, momDn) && trB >= 0 && k > trE + 2 && H0 >= trV - 0.1 * a && C0 < trV && rjS) { td = -1; tv = trV; }
+         if(td != 0)
+           {
+            double dist = ClampSl(td > 0 ? C0 - (MathMin(L0, tv) - InpSlBuf * a) : (MathMax(H0, tv) + InpSlBuf * a) - C0, tfSecs, false, a);
+            tlTK = k;
+            if(MarketEntry(td, dist, 2, "T", 0, false, (tfSecs < 900 ? 0.5 : 1.0) * (td > 0 ? kRB : kRS))) { busyB = true; busyS = true; }
+           }
         }
      }
    //--- remove pendings of zones that no longer exist
@@ -1236,6 +1378,13 @@ void CheckDay(void)
 int OnInit()
   {
    if(InpSwLen < 2 || InpStL < 1) return INIT_PARAMETERS_INCORRECT;
+   if(InpSlAtrA <= 0 || InpSlAtrB < InpSlAtrA || InpLot1a <= 0 || InpLot1b < InpLot1a) return INIT_PARAMETERS_INCORRECT;
+   mStrict = InpMode == MODE_STRICT; mBal = InpMode == MODE_BAL; mOpen = InpMode == MODE_OPEN; mCust = InpMode == MODE_CUSTOM;
+   gDir    = mStrict ? DIR_TREND : mCust ? InpDir : DIR_FIRST;
+   gELvl   = mOpen ? ELVL_START : mCust ? InpELvl : ELVL_MID;
+   gRoom   = mOpen ? ROOM_STRONG_HALF : mCust ? InpRoomMode : ROOM_STRONG_BLOCK;
+   gCtHalf = mCust ? InpCtHalf : true;
+   sDnK = -1; sUpK = -1; brkUpK = -1; brkDnK = -1; tlTK = -1000; tsB = -1; trB = -1; lastTlB = -1; lastThB = -1;
    { string pp[]; int np = StringSplit(InpPartPct, ',', pp); ArrayResize(gPart, np); for(int i = 0; i < np; i++) gPart[i] = StringToDouble(pp[i]); }
    gMagic = InpMagicByTf ? InpMagic + PeriodSeconds(_Period) / 60 : InpMagic;
    trade.SetExpertMagicNumber((ulong)gMagic);

@@ -36,7 +36,7 @@
 
 //@version=6
 indicator("FOXREX · Wave Retracement Zones", shorttitle = "FOXREX Waves", overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500, max_bars_back = 500)
-string VER = "3.23"
+string VER = "3.24"
 
 // ───────────────────────────── Inputs
 string G_TR   = "1 · Trading & simulation"
@@ -65,7 +65,7 @@ string trMode  = input.string("Waves: up while above the last higher low", "Tren
 int    rngBars = input.int(0, "Range: no break of a swing high / low for (bars, 0 = auto)", minval = 0, group = G_WAV, tooltip = "Trend = direction of the last close beyond a swing high (up) or swing low (down). If neither side breaks for this long the market is a range. Auto: 1m 30 min · 2–5m 30 min · 6–15m 1 hour · higher 6 bars. A zone made by a fresh break can still trade in a range while it is younger than this.", display = display.none)
 
 string G_ENT  = "3 · Entry, direction & reinforcement"
-string modeIn  = input.string("Balanced", "Trading mode", options = ["Strict", "Balanced", "Open", "Custom (use the settings below)"], group = G_ENT, tooltip = "Strict: with the trend only, ★★ minimum, no counter-trend, major zones only when this chart and the major trend agree, trend lines from 15m. Balanced (default): trend first; counter-trend only at a major zone whose own trend agrees; RSI stretch allowed while the MACD momentum is still building. Open: also counter-trend wave zones with ★★ (half size, TP1), limit at the zone start to catch shallow pullbacks in strong trends, room filter half size. Custom: every setting below as set.", display = display.none)
+string modeIn  = input.string("Strict", "Trading mode", options = ["Strict", "Balanced", "Open", "Custom (use the settings below)"], group = G_ENT, tooltip = "Strict (default): with the trend only, ★★ minimum, no counter-trend, major zones only when this chart and the major trend agree, trend lines from 15m. Balanced: trend first; counter-trend only at a major zone whose own trend agrees; RSI stretch allowed while the MACD momentum is still building. Open: also counter-trend wave zones with ★★ (half size, TP1), limit at the zone start to catch shallow pullbacks in strong trends, room filter half size. Custom: every setting below as set.", display = display.none)
 string dirMode = input.string("Both sides · trend first", "Trade direction", options = ["Both sides · trend first", "With the trend only", "Both directions (full size)", "Buy only", "Sell only"], group = G_ENT, tooltip = "Both sides · trend first (default): in a range only break / fresh zones (as 3.13), in a trend both sides trade (size of the counter-trend side below). With the trend only = 3.13. Both directions = every zone at full size.", display = display.none)
 string ctSize  = input.string("Half size", "…counter-trend trades (TP1 only, ★★ and MACD turned)", options = ["Full size", "Half size"], group = G_ENT, display = display.none)
 string trig    = input.string("Limit or rejection", "Entry type", options = ["Limit or rejection", "Limit only", "Rejection candle only"], group = G_ENT, tooltip = "Limit: filled the moment price reaches the entry level below. Rejection: a candle that touches the zone and closes back out of it, entered at its close (never more than one zone-height away from the zone). Limit or rejection: whichever comes first.", display = display.none)
