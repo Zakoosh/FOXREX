@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.11.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.12.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.11"
-#property description "FOXREX Waves EA v3.11: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.12"
+#property description "FOXREX Waves EA v3.12: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -40,18 +40,30 @@ enum ENUM_FXW_PROTECT { PROT_NEAR = 0,         // After TP2: stop to entry, then
                         PROT_STEP = 2,         // Step: entry after TP1, then previous target
                         PROT_TP1 = 3,          // Entry after TP1 only
                         PROT_OFF = 4 };        // Off (keep the original stop)
-enum ENUM_FXW_ENTRY   { ENTRY_MID_REJ = 0,     // Middle limit or rejection
-                        ENTRY_MID = 1,         // Limit at zone middle
-                        ENTRY_EDGE = 2,        // Limit at zone start (first touch)
-                        ENTRY_REJ = 3 };       // Rejection candle
+enum ENUM_FXW_ENTRY   { ENTRY_LIM_REJ = 0,     // Limit or rejection
+                        ENTRY_LIM = 1,         // Limit only
+                        ENTRY_REJ = 2 };       // Rejection candle only
+enum ENUM_FXW_ELVL    { ELVL_MID = 0,          // Zone middle (50%)
+                        ELVL_START = 1,        // Zone start (first touch)
+                        ELVL_END = 2,          // Zone end (deep)
+                        ELVL_CUSTOM = 3 };     // Custom retracement
+enum ENUM_FXW_DIR     { DIR_TREND = 0,         // With the trend (buy up, sell down, none in a range)
+                        DIR_BOTH = 1,          // Both directions
+                        DIR_BUY = 2,           // Buy only
+                        DIR_SELL = 3 };        // Sell only
+enum ENUM_FXW_LOT     { LOT_FIXED = 0,         // Fixed lot (base lot × stars)
+                        LOT_RISK = 1 };        // Risk % of equity per trade (× stars)
 enum ENUM_FXW_MAJFLT  { MAJ_STRUCT_ZONE = 0,   // Major structure + active zone
                         MAJ_ZONE = 1,          // Active major zone only
                         MAJ_OFF = 2 };         // Off
 
 //--- inputs
 input group "Trading"
-input double InpBaseLot     = 0.01;   // Base lot (1 star)
-input bool   InpLotByStars  = true;   // Size by confidence (1 / 1.5 / 2 / 2.5 × base lot)
+input ENUM_FXW_LOT InpLotMode = LOT_FIXED; // Position size
+input double InpBaseLot     = 0.01;   // Base lot (1 star, fixed mode)
+input double InpRiskPct     = 0.25;   // Risk per trade, % of equity (1 star, risk mode)
+input bool   InpLotByStars  = true;   // Size by confidence (1 / 1.5 / 2 / 2.5 ×)
+input double InpMaxLot      = 0;      // Max lot per trade (0 = broker max)
 input int    InpMaxOpen     = 0;      // Max open trades in the same direction (0 = no limit)
 input long   InpMagic       = 260929; // Magic number
 input int    InpMaxSpread   = 0;      // Max spread in points (0 = off)
@@ -93,10 +105,12 @@ input double InpFZone   = 0.618;  // Zone end (retracement)
 input double InpFInv    = 0.786;  // Invalidation (retracement)
 input double InpMinLeg  = 1.5;    // Minimum leg size (× ATR)
 input int    InpMaxWait = 300;    // Zone life (bars after the leg end)
-input ENUM_FXW_ENTRY InpEntry = ENTRY_MID_REJ; // Entry
+input ENUM_FXW_ENTRY InpEntry = ENTRY_LIM_REJ; // Entry type
+input ENUM_FXW_ELVL InpELvl = ELVL_MID;        // Entry level (where the limit fills)
+input double InpECust   = 0.5;    // Custom retracement
 input int    InpMaxEnt  = 2;      // Max entries per zone
 input int    InpReCool  = 3;      // Bars between entries in the same zone
-input bool   InpWithTr  = true;   // Trend filter (buy up, sell down, nothing in a range)
+input ENUM_FXW_DIR InpDir = DIR_TREND; // Trade direction
 input bool   InpUseRsi  = true;   // RSI filter
 input int    InpRsiLen  = 14;     // RSI length
 input double InpRsiOS   = 30;     // No sell below
@@ -129,10 +143,11 @@ input int    InpSpkLook = 3;      // Look back (bars)
 
 input group "Display"
 input bool   InpDraw    = true;   // Draw zones and daily levels
+input bool   InpLogSkip = true;   // Journal: why a touched zone gave no trade
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.11"
+#define FXW_VER   "3.12"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -153,6 +168,7 @@ struct SZone
    bool     hold;
    bool     brk;
    bool     tchChart;   // major zone touched on the chart timeframe
+   int      skK;        // last bar a touch without a trade was logged
   };
 
 //+------------------------------------------------------------------+
@@ -285,7 +301,7 @@ public:
       SZone nz;
       nz.id = nextId++; nz.dir = dir; nz.p0 = p0; nz.p1 = p1; nz.b0 = b0; nz.b1 = b1; nz.bB = n - 1;
       nz.state = 0; nz.touched = false; nz.entries = 0; nz.lastE = -1000; nz.armed = true;
-      nz.stars = 1; nz.hold = true; nz.brk = (trend == dir); nz.tchChart = false;
+      nz.stars = 1; nz.hold = true; nz.brk = (trend == dir); nz.tchChart = false; nz.skK = -10;
       int s = ArraySize(zones); ArrayResize(zones, s + 1); zones[s] = nz;
      }
 
@@ -659,13 +675,21 @@ ulong FindPending(string cmt)
    return 0;
   }
 
-double LotsFor(int stars)
+double LotsFor(int stars, double dist)
   {
    int sc = stars < 1 ? 1 : (stars > 4 ? 4 : stars);
    double f = InpLotByStars ? 1.0 + 0.5 * (sc - 1) : 1.0;
    double v = InpBaseLot * f;
+   if(InpLotMode == LOT_RISK)
+     {
+      double tv = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE_LOSS), ts = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+      if(tv <= 0) tv = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+      double lossPerLot = (ts > 0 && tv > 0) ? dist / ts * tv : 0;
+      if(lossPerLot > 0) v = AccountInfoDouble(ACCOUNT_EQUITY) * InpRiskPct / 100.0 * f / lossPerLot;
+     }
    double st = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP), mn = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN), mx = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
    if(st > 0) v = NormalizeDouble(MathFloor(v / st + 1e-9) * st, (int)MathMax(0, MathCeil(-MathLog10(st))));
+   if(InpMaxLot > 0) mx = MathMin(mx, InpMaxLot);
    return MathMin(MathMax(v, mn), mx);
   }
 
@@ -690,7 +714,7 @@ bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp
    dist = MathMax(dist, stopsLvl + _Point);
    double tps[7]; TpArr(px, dir, tfSecs, imp, a, tps);
    double sl = NormalizeDouble(px - dir * dist, _Digits), tp = NormalizeDouble(tps[6], _Digits);
-   double lots = LotsFor(stars);
+   double lots = LotsFor(stars, dist);
    string c = Cmt(kind, zid, stars, imp, a);
    bool ok = dir > 0 ? trade.Buy(lots, _Symbol, 0, sl, tp, c) : trade.Sell(lots, _Symbol, 0, sl, tp, c);
    return ok;
@@ -716,7 +740,7 @@ bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, st
    if(dir > 0 ? ask - level < stopsLvl : level - bid < stopsLvl) return false;
    double tps[7]; TpArr(level, dir, tfSecs, imp, a, tps);
    double price = NormalizeDouble(level, _Digits), sl = NormalizeDouble(level - dir * dist, _Digits), tp = NormalizeDouble(tps[6], _Digits);
-   double lots = LotsFor(stars);
+   double lots = LotsFor(stars, dist);
    if(t > 0)
      {
       if(OrderSelect(t) && MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - price) < _Point && MathAbs(OrderGetDouble(ORDER_SL) - sl) < _Point) return false;
@@ -878,8 +902,9 @@ void OnNewBar(bool live)
    bool okBuy  = !(InpMajFlt != MAJ_OFF && majSellAct) && !(strF && maj.trend < 0) && rsiBuy && roomBuy;
    bool okSell = !(InpMajFlt != MAJ_OFF && majBuyAct) && !(strF && maj.trend > 0) && rsiSell && roomSell;
    int trend = eng.trend;
-   bool okBuyZ = okBuy && (!InpWithTr || trend >= 0), okSellZ = okSell && (!InpWithTr || trend <= 0);
-   if(live) Dashboard(okBuy && (!InpWithTr || trend > 0), okSell && (!InpWithTr || trend < 0));
+   bool trOn = InpDir == DIR_TREND, alB = InpDir != DIR_SELL, alS = InpDir != DIR_BUY;
+   bool okBuyZ = okBuy && (trOn ? trend >= 0 : alB), okSellZ = okSell && (trOn ? trend <= 0 : alS);
+   if(live) Dashboard(okBuy && (trOn ? trend > 0 : alB), okSell && (trOn ? trend < 0 : alS));
    bool busyB = true, busyS = true;
    if(live) Busy(busyB, busyS);
    int rb = eng.RangeBars();
@@ -893,7 +918,7 @@ void OnNewBar(bool live)
       if(rvBull || rvBear)
         {
          int d = rvBull ? 1 : -1;
-         bool okR = d > 0 ? (!busyB && rsiBuy && roomBuy && !(InpMajFlt != MAJ_OFF && majSellAct)) : (!busyS && rsiSell && roomSell && !(InpMajFlt != MAJ_OFF && majBuyAct));
+         bool okR = d > 0 ? (alB && !busyB && rsiBuy && roomBuy && !(InpMajFlt != MAJ_OFF && majSellAct)) : (alS && !busyS && rsiSell && roomSell && !(InpMajFlt != MAJ_OFF && majBuyAct));
          int hitIx = -1, hitMz = -1;
          if(okR)
             for(int j = 0; j < ArraySize(dZLo) && hitIx < 0; j++)
@@ -960,12 +985,14 @@ void OnNewBar(bool live)
          double zA, zB, zI;
          if(pass == 0) { CapZ(eng.Lvl(zz, InpFEntry), eng.Lvl(zz, InpFZone), capS, zA, zB); zI = eng.Lvl(zz, InpFInv); }
          else          { CapZ(maj.Lvl(zz, InpFEntry), maj.Lvl(zz, InpFZone), capS, zA, zB); zI = maj.Lvl(zz, InpFInv); }
-         double zM = (zA + zB) / 2;
+         double zCu = pass == 0 ? eng.Lvl(zz, InpECust) : maj.Lvl(zz, InpECust);
+         double level = InpELvl == ELVL_START ? zA : InpELvl == ELVL_END ? zB : InpELvl == ELVL_CUSTOM ? zCu : (zA + zB) / 2;
          int d = zz.dir;
          bool valid = MathAbs(zz.p0 - zz.p1) >= InpMinLeg * (pass == 0 ? a : maj.Atr());
          bool trendOk;
-         if(pass == 1) trendOk = !InpWithTr || (d > 0 ? trend >= 0 : trend <= 0);
-         else          trendOk = !InpWithTr || d == trend || (trend == 0 && (zz.brk || k - zz.bB <= rb));
+         if(!trOn)          trendOk = d > 0 ? alB : alS;
+         else if(pass == 1) trendOk = d > 0 ? trend >= 0 : trend <= 0;
+         else               trendOk = d == trend || (trend == 0 && (zz.brk || k - zz.bB <= rb));
          bool filt = d > 0 ? (pass == 0 ? okBuy : okBuyZ) : (pass == 0 ? okSell : okSellZ);
          int st = pass == 0 ? zz.stars : 2;
          st = (int)MathMin(st + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
@@ -974,7 +1001,7 @@ void OnNewBar(bool live)
          //--- warm-up: simulate fills so old zones are not traded again
          if(!live)
            {
-            bool lvlHit = InpEntry == ENTRY_EDGE ? (d < 0 ? H0 >= zA : L0 <= zA) : (d < 0 ? H0 >= zM : L0 <= zM);
+            bool lvlHit = d < 0 ? H0 >= level : L0 <= level;
             if(zz.state <= 1 && valid && zz.armed && lvlHit && InpEntry != ENTRY_REJ && (pass == 0 || eng.T[k] >= maj.T[zz.b1] + maj.secs))
               {
                if(pass == 0) { eng.zones[z].entries++; eng.zones[z].lastE = k; eng.zones[z].armed = false; }
@@ -987,15 +1014,29 @@ void OnNewBar(bool live)
          bool rej = (d < 0 ? C0 < zB : C0 > zB) && (d > 0 ? (C0 > O0 || MathMin(O0, C0) - L0 >= 0.4 * (H0 - L0)) : (C0 < O0 || H0 - MathMax(O0, C0) >= 0.4 * (H0 - L0)));
          bool near = d < 0 ? C0 >= zA - MathAbs(zA - zB) : C0 <= zA + MathAbs(zA - zB);
          bool invalid = d < 0 ? C0 > zI : C0 < zI;
-         bool hitLvl = d < 0 ? H0 >= zM : L0 <= zM;
-         if(can && (InpEntry == ENTRY_MID_REJ || InpEntry == ENTRY_REJ) && inZone && rej && near && !invalid && !(InpEntry == ENTRY_MID_REJ && hitLvl))
+         bool hitLvl = d < 0 ? H0 >= level : L0 <= level;
+         //--- journal: the entry level (or a rejection) was reached but the rules gave no trade
+         if(InpLogSkip && !can && zz.state <= 1 && valid && !invalid && (pass == 1 || k > zz.b1) && ((InpEntry != ENTRY_REJ && hitLvl) || (InpEntry != ENTRY_LIM && inZone && rej && near)) && k - zz.skK > 1)
+           {
+            string w = "";
+            if(!trendOk) w += trOn ? (trend == 0 ? " range;" : " against trend;") : " direction setting;";
+            if(!filt) w += (d > 0 ? !rsiBuy : !rsiSell) ? " RSI " + DoubleToString(rsiV, 1) + ";" : (d > 0 ? !roomBuy : !roomSell) ? " room;" : " major filter;";
+            if(d > 0 ? busyB : busyS) w += " other trade open;";
+            if(spkBlock) w += " abnormal candle;";
+            if(pass == 0 && zz.stars < MinStars(tfSecs)) w += " stars " + IntegerToString(zz.stars) + ";";
+            if(!zz.armed) w += " not armed;";
+            if(zz.entries >= InpMaxEnt) w += " zone used;";
+            if(k - zz.lastE < InpReCool) w += " cooldown;";
+            PrintFormat("FOXREX %s %s zone %d: level %s reached, no trade:%s", pass == 0 ? "local" : "major", d > 0 ? "BUY" : "SELL", zz.id, DoubleToString(level, _Digits), w);
+            if(pass == 0) eng.zones[z].skK = k; else maj.zones[z].skK = k;
+           }
+         if(can && InpEntry != ENTRY_LIM && inZone && rej && near && !invalid && !(InpEntry == ENTRY_LIM_REJ && hitLvl))
            {
             double dist = ClampSl(MathAbs(C0 - ((d < 0 ? MathMax(zI, H0) : MathMin(zI, L0)) - d * InpSlBuf * a)), tfSecs, imp, a);
             if(MarketEntry(d, dist, st, kind, zz.id, imp)) { busyB = true; busyS = true; can = false; }
            }
          //--- pending limit at 50% (or the zone start)
          bool wantPend = can && InpEntry != ENTRY_REJ;
-         double level = InpEntry == ENTRY_EDGE ? zA : zM;
          if(SyncPending(wantPend, d, level, zI - d * InpSlBuf * a, st, kind, zz.id, imp)) { busyB = true; busyS = true; }
         }
      }
