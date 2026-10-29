@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.13.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.14.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.13"
-#property description "FOXREX Waves EA v3.13: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.14"
+#property description "FOXREX Waves EA v3.14: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -43,10 +43,19 @@ enum ENUM_FXW_PROTECT { PROT_NEAR = 0,         // After TP2: stop to entry, then
 enum ENUM_FXW_ENTRY   { ENTRY_LIM_REJ = 0,     // Limit or rejection
                         ENTRY_LIM = 1,         // Limit only
                         ENTRY_REJ = 2 };       // Rejection candle only
-enum ENUM_FXW_ELVL    { ELVL_MID = 0,          // Zone middle (50%)
-                        ELVL_START = 1,        // Zone start (first touch)
-                        ELVL_END = 2,          // Zone end (deep)
-                        ELVL_CUSTOM = 3 };     // Custom retracement
+enum ENUM_FXW_ELVL    { ELVL_FIB = 0,          // Fib level (entry fib below)
+                        ELVL_MID = 1,          // Zone middle
+                        ELVL_START = 2,        // Zone start (first touch)
+                        ELVL_END = 3 };        // Zone end (deep)
+enum ENUM_FXW_ROOM    { ROOM_STRONG_HALF = 0,  // Strong zones only · half size
+                        ROOM_STRONG_BLOCK = 1, // Strong zones only · block
+                        ROOM_ALL_BLOCK = 2,    // All daily zones · block
+                        ROOM_OFF = 3 };        // Off
+enum ENUM_FXW_RANGE   { RNG_HALF = 0,          // Wave trades both ways · half size
+                        RNG_STRICT = 1 };      // No wave trades (strict)
+enum ENUM_FXW_PART    { PART_ALL = 0,          // All timeframes
+                        PART_M1 = 1,           // 1m only
+                        PART_OFF = 2 };        // Off
 enum ENUM_FXW_DIR     { DIR_TREND = 0,         // With the trend (buy up, sell down, none in a range)
                         DIR_BOTH = 1,          // Both directions
                         DIR_BUY = 2,           // Buy only
@@ -81,7 +90,9 @@ input double InpSlMaxC = 10.0; // Custom stop max
 input double InpSlBuf  = 0.1;  // Stop buffer beyond the zone (× ATR)
 input int    InpNoProg = 15;   // No-progress exit (bars without TP1, 0 = off)
 input int    InpMaxBars = 60;  // Maximum life before TP2 (bars)
-input ENUM_FXW_PROTECT InpProtect = PROT_NEAR; // Profit protection
+input ENUM_FXW_PROTECT InpProtect = PROT_STEP; // Profit protection (EA: stop to entry at TP1, then the previous target)
+input ENUM_FXW_PART InpPartMode = PART_ALL; // Partial close at each target
+input string InpPartPct = "25,25,25,10,5,5";  // % of the original size closed at TP1, TP2, TP3, TP4, TP5, TP6 (rest at TP7)
 
 input group "Stop per timeframe (price units, auto profile)"
 input double InpSl1Mn  = 1.5;  // 1m · min
@@ -101,23 +112,26 @@ input int    InpMs1     = 1;      // Minimum stars to trade · 1m
 input int    InpMs5     = 1;      // Minimum stars to trade · 2–5m
 input int    InpMs15    = 1;      // Minimum stars to trade · 6–30m
 input int    InpMsH     = 1;      // Minimum stars to trade · above
-input double InpFEntry  = 0.382;  // Zone start (retracement)
-input double InpFZone   = 0.618;  // Zone end (retracement)
+input double InpFEntry  = 0.50;   // Zone start (fib)
+input double InpFZone   = 0.657;  // Zone end (fib)
 input double InpFInv    = 0.786;  // Invalidation (retracement)
 input double InpMinLeg  = 1.5;    // Minimum leg size (× ATR)
 input int    InpMaxWait = 300;    // Zone life (bars after the leg end)
 input bool   InpOverlap = true;   // Buy and sell zones overlapping: keep only the stronger
 input ENUM_FXW_ENTRY InpEntry = ENTRY_LIM_REJ; // Entry type
-input ENUM_FXW_ELVL InpELvl = ELVL_MID;        // Entry level (where the limit fills)
-input double InpECust   = 0.5;    // Custom retracement
+input ENUM_FXW_ELVL InpELvl = ELVL_FIB;        // Entry level (where the limit fills)
+input double InpECust   = 0.559;  // Entry fib level
 input int    InpMaxEnt  = 2;      // Max entries per zone
 input int    InpReCool  = 3;      // Bars between entries in the same zone
 input ENUM_FXW_DIR InpDir = DIR_TREND; // Trade direction
+input ENUM_FXW_RANGE InpRange = RNG_HALF; // In a range (no confirmed break)
+input bool   InpBrkClose = true;  // Break confirmed by a close beyond the previous stall
+input bool   InpExh     = true;   // No trade at the end of an exhausted wave
 input bool   InpUseRsi  = true;   // RSI filter
 input int    InpRsiLen  = 14;     // RSI length
 input double InpRsiOS   = 30;     // No sell below
 input double InpRsiOB   = 70;     // No buy above
-input bool   InpUseRoom = true;   // Room filter
+input ENUM_FXW_ROOM InpRoomMode = ROOM_STRONG_HALF; // Room filter (support / resistance in the way)
 input int    InpSwLen   = 5;      // Structure swing length (bars each side)
 input int    InpRngBars = 0;      // Range: no break for (bars, 0 = auto)
 
@@ -131,6 +145,7 @@ input bool   InpTradeMj = true;   // Take trades at major zones
 input group "Daily zones"
 input bool   InpTradeDL = true;   // Take trades at daily zones (rejection)
 input bool   InpUseRev  = true;   // Reversal trades at strong zones
+input bool   InpRevLight = true;  // Wave-end reversal trades (light: 1 star, half size)
 input double InpDlRange = 3.0;    // Search range (× daily ATR)
 input double InpDlMerge = 0.8;    // Merge distance / zone height (× chart ATR)
 input double InpDlMinW  = 2.0;    // Minimum strength to trade a daily zone
@@ -149,7 +164,7 @@ input bool   InpLogSkip = true;   // Journal: why a touched zone gave no trade
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.13"
+#define FXW_VER   "3.14"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -270,18 +285,18 @@ public:
       if(PivotHigh(q, InpStL, 1))
         {
          int span = lHB < 0 ? 60 : (int)MathMin(MathMax(q - lHB, 1), 300);
-         double lo = L[q]; int lob = q;
-         for(int i = q; i >= MathMax(q - span, 0); i--) if(L[i] < lo) { lo = L[i]; lob = i; }
-         if(lHB < 0 || H[q] > lH)
+         double lo = L[q]; int lob = q; double hc = C[q];
+         for(int i = q; i >= MathMax(q - span, 0); i--) { if(L[i] < lo) { lo = L[i]; lob = i; } hc = MathMax(hc, C[i]); }
+         if(lHB < 0 || (H[q] > lH && (!InpBrkClose || hc > lH)))
             if(MathAbs(H[q] - lo) >= InpMinLeg * a) AddZone(1, lo, lob, H[q], q);
          lH = H[q]; lHB = q;
         }
       if(PivotLow(q, InpStL, 1))
         {
          int span = lLB < 0 ? 60 : (int)MathMin(MathMax(q - lLB, 1), 300);
-         double hi = H[q]; int hib = q;
-         for(int i = q; i >= MathMax(q - span, 0); i--) if(H[i] > hi) { hi = H[i]; hib = i; }
-         if(lLB < 0 || L[q] < lL)
+         double hi = H[q]; int hib = q; double lc = C[q];
+         for(int i = q; i >= MathMax(q - span, 0); i--) { if(H[i] > hi) { hi = H[i]; hib = i; } lc = MathMin(lc, C[i]); }
+         if(lLB < 0 || (L[q] < lL && (!InpBrkClose || lc < lL)))
             if(MathAbs(hi - L[q]) >= InpMinLeg * a) AddZone(-1, hi, hib, L[q], q);
          lL = L[q]; lLB = q;
         }
@@ -564,6 +579,20 @@ void BuildDaily(double px, double ca)
 //+------------------------------------------------------------------+
 //| Positions                                                        |
 //+------------------------------------------------------------------+
+double gPart[];
+//--- original size of a position (sum of its entry deals), so partial closes stay right after a restart
+double OrigVolume(long posId, double fallback)
+  {
+   if(!HistorySelectByPosition(posId)) return fallback;
+   double v = 0;
+   for(int i = 0; i < HistoryDealsTotal(); i++)
+     {
+      ulong d = HistoryDealGetTicket(i);
+      if(HistoryDealGetInteger(d, DEAL_ENTRY) == DEAL_ENTRY_IN) v += HistoryDealGetDouble(d, DEAL_VOLUME);
+     }
+   return v > 0 ? v : fallback;
+  }
+
 int FindPos(ulong t) { for(int i = 0; i < ArraySize(pos); i++) if(pos[i].ticket == t) return i; return -1; }
 
 //--- comment format: "FXW <kind><zid> s<stars> i<imp> a<atr>"
@@ -572,7 +601,7 @@ bool ParseComment(string c, string &kind, int &zid, int &stars, bool &imp, doubl
    if(StringFind(c, "FXW ") != 0) return false;
    string p[]; int np = StringSplit(c, ' ', p);
    if(np < 5) return false;
-   int o = np >= 6 ? 2 : 1;   // 3.13+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
+   int o = np >= 6 ? 2 : 1;   // 3.14+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
    kind = StringSubstr(p[o], 0, 1); zid = (int)StringToInteger(StringSubstr(p[o], 1));
    stars = (int)StringToInteger(StringSubstr(p[o + 1], 1)); imp = StringSubstr(p[o + 2], 1) == "1"; a = StringToDouble(StringSubstr(p[o + 3], 1));
    return true;
@@ -606,7 +635,7 @@ void ManagePositions(void)
          string kind; int zid, st; bool imp; double a;
          if(!ParseComment(PositionGetString(POSITION_COMMENT), kind, zid, st, imp, a)) { kind = "L"; zid = 0; st = 1; imp = false; a = eng.Atr(); }
          SPos np; np.ticket = t; np.dir = PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY ? 1 : -1;
-         np.entry = PositionGetDouble(POSITION_PRICE_OPEN); np.hits = 0; np.stars = st; np.lots = PositionGetDouble(POSITION_VOLUME);
+         np.entry = PositionGetDouble(POSITION_PRICE_OPEN); np.hits = 0; np.stars = st; np.lots = OrigVolume(PositionGetInteger(POSITION_IDENTIFIER), PositionGetDouble(POSITION_VOLUME));
          np.kind = kind; np.zid = zid; np.alive = true;
          TpArr(np.entry, np.dir, tfSecs, imp, a, np.tps);
          pi = ArraySize(pos); ArrayResize(pos, pi + 1); pos[pi] = np;
@@ -618,6 +647,16 @@ void ManagePositions(void)
       double px = pos[pi].dir > 0 ? bid : ask;
       int before = pos[pi].hits;
       while(pos[pi].hits < 7 && (pos[pi].dir > 0 ? px >= pos[pi].tps[pos[pi].hits] : px <= pos[pi].tps[pos[pi].hits])) pos[pi].hits++;
+      //--- partial close: after TPn the position keeps (1 − sum of the first n %) of its original size
+      if(pos[pi].hits >= 1 && (InpPartMode == PART_ALL || (InpPartMode == PART_M1 && tfSecs <= 60)))
+        {
+         double cum = 0; for(int j = 0; j < pos[pi].hits && j < ArraySize(gPart); j++) cum += gPart[j];
+         double st = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP), mn = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+         double want = MathMax(pos[pi].lots * (1.0 - MathMin(cum, 100.0) / 100.0), mn);
+         double cur = PositionGetDouble(POSITION_VOLUME);
+         double cut = st > 0 ? MathFloor((cur - want) / st + 1e-9) * st : cur - want;
+         if(cut >= mn && cur - cut >= mn - 1e-9) trade.PositionClosePartial(t, NormalizeDouble(cut, 2));
+        }
       if(pos[pi].hits >= 1)   // re-applied every tick until the broker accepts it
         {
          double sl = PositionGetDouble(POSITION_SL), tp = PositionGetDouble(POSITION_TP);
@@ -694,10 +733,11 @@ ulong FindPending(string cmt)
    return 0;
   }
 
-double LotsFor(int stars, double dist)
+double LotsFor(int stars, double dist, double kf)
   {
    int sc = stars < 1 ? 1 : (stars > 4 ? 4 : stars);
    double f = InpLotByStars ? 1.0 + 0.5 * (sc - 1) : 1.0;
+   f *= kf;
    double v = InpBaseLot * f;
    if(InpLotMode == LOT_RISK)
      {
@@ -724,7 +764,7 @@ string Cmt(string kind, int zid, int stars, bool imp, double a)
   }
 
 //--- market entry
-bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp)
+bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp, double kf = 1.0)
   {
    if(!SpreadOk()) return false;
    double a = eng.Atr();
@@ -733,14 +773,14 @@ bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp
    dist = MathMax(dist, stopsLvl + _Point);
    double tps[7]; TpArr(px, dir, tfSecs, imp, a, tps);
    double sl = NormalizeDouble(px - dir * dist, _Digits), tp = NormalizeDouble(tps[6], _Digits);
-   double lots = LotsFor(stars, dist);
+   double lots = LotsFor(stars, dist, kf);
    string c = Cmt(kind, zid, stars, imp, a);
    bool ok = dir > 0 ? trade.Buy(lots, _Symbol, 0, sl, tp, c) : trade.Sell(lots, _Symbol, 0, sl, tp, c);
    return ok;
   }
 
 //--- keep one pending limit per tradable zone (or enter at market if price is already beyond the level)
-bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, string kind, int zid, bool imp)
+bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, string kind, int zid, bool imp, double kf = 1.0)
   {
    string c = Cmt(kind, zid, stars, imp, eng.Atr());
    string key = "FXW " + TfLabel(tfSecs) + " " + kind + IntegerToString(zid) + " ";
@@ -754,12 +794,12 @@ bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, st
    if(beyond)
      {
       if(t > 0) trade.OrderDelete(t);
-      return MarketEntry(dir, dist, stars, kind, zid, imp);
+      return MarketEntry(dir, dist, stars, kind, zid, imp, kf);
      }
    if(dir > 0 ? ask - level < stopsLvl : level - bid < stopsLvl) return false;
    double tps[7]; TpArr(level, dir, tfSecs, imp, a, tps);
    double price = NormalizeDouble(level, _Digits), sl = NormalizeDouble(level - dir * dist, _Digits), tp = NormalizeDouble(tps[6], _Digits);
-   double lots = LotsFor(stars, dist);
+   double lots = LotsFor(stars, dist, kf);
    if(t > 0)
      {
       if(OrderSelect(t) && MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - price) < _Point && MathAbs(OrderGetDouble(ORDER_SL) - sl) < _Point) return false;
@@ -856,24 +896,34 @@ void Redraw(void)
 //+------------------------------------------------------------------+
 //| Daily results for the dashboard                                  |
 //+------------------------------------------------------------------+
-void TodayStats(int &trades, int &wins, double &profit)
+//--- today's closed trades of this timeframe, one per position (partial closes are summed), commission and swap included
+void TodayStats(int &trades, int &wins, double &profit, double &won, double &lost)
   {
-   trades = 0; wins = 0; profit = 0;
+   trades = 0; wins = 0; profit = 0; won = 0; lost = 0;
    datetime from = iTime(_Symbol, PERIOD_D1, 0);
-   if(!HistorySelect(from, TimeCurrent() + 60)) return;
+   if(!HistorySelect(from - 86400 * 3, TimeCurrent() + 60)) return;
+   long ids[]; double sum[]; bool closed[];
    for(int i = 0; i < HistoryDealsTotal(); i++)
      {
       ulong d = HistoryDealGetTicket(i);
       if(HistoryDealGetString(d, DEAL_SYMBOL) != _Symbol || HistoryDealGetInteger(d, DEAL_MAGIC) != gMagic) continue;
-      if(HistoryDealGetInteger(d, DEAL_ENTRY) != DEAL_ENTRY_OUT) continue;
-      double pr = HistoryDealGetDouble(d, DEAL_PROFIT) + HistoryDealGetDouble(d, DEAL_COMMISSION) + HistoryDealGetDouble(d, DEAL_SWAP);
-      trades++; if(pr > 0) wins++; profit += pr;
+      long id = HistoryDealGetInteger(d, DEAL_POSITION_ID);
+      int x = -1; for(int j = 0; j < ArraySize(ids); j++) if(ids[j] == id) { x = j; break; }
+      if(x < 0) { x = ArraySize(ids); ArrayResize(ids, x + 1); ArrayResize(sum, x + 1); ArrayResize(closed, x + 1); ids[x] = id; sum[x] = 0; closed[x] = false; }
+      sum[x] += HistoryDealGetDouble(d, DEAL_PROFIT) + HistoryDealGetDouble(d, DEAL_COMMISSION) + HistoryDealGetDouble(d, DEAL_SWAP);
+      if(HistoryDealGetInteger(d, DEAL_ENTRY) == DEAL_ENTRY_OUT && (datetime)HistoryDealGetInteger(d, DEAL_TIME) >= from && !PositionSelectByTicket((ulong)id)) closed[x] = true;
+     }
+   for(int j = 0; j < ArraySize(ids); j++)
+     {
+      if(!closed[j]) continue;
+      trades++; profit += sum[j];
+      if(sum[j] > 0) { wins++; won += sum[j]; } else lost += -sum[j];
      }
   }
 
 void Dashboard(bool okB, bool okS)
   {
-   int tr, wn; double pr; TodayStats(tr, wn, pr);
+   int tr, wn; double pr, wo, lo; TodayStats(tr, wn, pr, wo, lo);
    double fl = 0; int op = 0; string lst = "";
    for(int i = PositionsTotal() - 1; i >= 0; i--)
      {
@@ -898,7 +948,8 @@ void Dashboard(bool okB, bool okS)
            "\nTrades allowed: " + al +
            "\nMagic " + IntegerToString(gMagic) + " · open on this timeframe: " + IntegerToString(op) + "   floating " + DoubleToString(fl, 2) +
            "\nFOXREX positions on " + _Symbol + ":" + (lst == "" ? " none" : lst) +
-           "\nToday: " + IntegerToString(tr) + " closed · " + IntegerToString(wn) + " won · " + DoubleToString(pr, 2));
+           "\nToday " + TfLabel(tfSecs) + ": " + IntegerToString(tr) + " closed · " + IntegerToString(wn) + " won · " + IntegerToString(tr - wn) + " lost · win " + (tr > 0 ? DoubleToString(100.0 * wn / tr, 0) + "%" : "–") +
+           "\n   won +" + DoubleToString(wo, 2) + " · lost −" + DoubleToString(lo, 2) + " · net " + DoubleToString(pr, 2) + " (after losses, commission and swap)");
   }
 
 //+------------------------------------------------------------------+
@@ -919,8 +970,10 @@ void OnNewBar(bool live)
    double rLo = 100, rHi = 0; for(int i = 0; i < 10 && k - i >= 0; i++) { rLo = MathMin(rLo, eng.RSI[k - i]); rHi = MathMax(rHi, eng.RSI[k - i]); }
    bool osRecent = rLo <= InpRsiOS, obRecent = rHi >= InpRsiOB;
    double supHi = 0, resLo = 0;
+   bool rmStrong = InpRoomMode == ROOM_STRONG_HALF || InpRoomMode == ROOM_STRONG_BLOCK, rmHalf = InpRoomMode == ROOM_STRONG_HALF;
    for(int j = 0; j < ArraySize(dZLo); j++)
      {
+      if(rmStrong && dZW[j] < InpDlMinW) continue;
       if(dZHi[j] < C0 && (supHi == 0 || dZHi[j] > supHi)) supHi = dZHi[j];
       if(dZLo[j] > C0 && (resLo == 0 || dZLo[j] < resLo)) resLo = dZLo[j];
      }
@@ -937,16 +990,26 @@ void OnNewBar(bool live)
          if(act) { if(maj.zones[z].dir > 0) majBuyAct = true; else majSellAct = true; }
         }
    double roomNeed = PTp(tfSecs, tfSecs <= 60 ? 1 : 0, a);
-   bool roomBuy  = !InpUseRoom || ((resLo == 0 || resLo - C0 >= roomNeed) && !majSellAct);
-   bool roomSell = !InpUseRoom || ((supHi == 0 || C0 - supHi >= roomNeed) && !majBuyAct);
+   bool nearRes = (resLo != 0 && resLo - C0 < roomNeed) || majSellAct, nearSup = (supHi != 0 && C0 - supHi < roomNeed) || majBuyAct;
+   bool roomBuy  = InpRoomMode == ROOM_OFF || rmHalf || !nearRes;
+   bool roomSell = InpRoomMode == ROOM_OFF || rmHalf || !nearSup;
+   double kRB = rmHalf && nearRes ? 0.5 : 1.0, kRS = rmHalf && nearSup ? 0.5 : 1.0;
+   //--- wave end: big move + RSI stretched → no trade in its direction near its extreme
+   double hh30 = 0, ll30 = DBL_MAX, hh10 = 0, ll10 = DBL_MAX;
+   for(int i = 0; i < 30 && k - i >= 0; i++) { hh30 = MathMax(hh30, eng.H[k - i]); ll30 = MathMin(ll30, eng.L[k - i]); if(i < 10) { hh10 = MathMax(hh10, eng.H[k - i]); ll10 = MathMin(ll10, eng.L[k - i]); } }
+   double lw3x = MathMin(L0, MathMin(eng.L[k - 1], eng.L[k - 2])), hg3x = MathMax(H0, MathMax(eng.H[k - 1], eng.H[k - 2]));
+   double mvDn = hh30 - ll10, mvUp = hh10 - ll30;
+   bool exhDn = InpExh && osRecent && mvDn >= 4 * a && C0 - ll10 <= 0.382 * mvDn;
+   bool exhUp = InpExh && obRecent && mvUp >= 4 * a && hh10 - C0 <= 0.382 * mvUp;
    bool rsiBuy = !InpUseRsi || rsiV <= InpRsiOB, rsiSell = !InpUseRsi || rsiV >= InpRsiOS;
    bool strF = InpMajFlt == MAJ_STRUCT_ZONE && majOn && maj.trend != 0;
-   bool okBuy  = !(InpMajFlt != MAJ_OFF && majSellAct) && !(strF && maj.trend < 0) && rsiBuy && roomBuy;
-   bool okSell = !(InpMajFlt != MAJ_OFF && majBuyAct) && !(strF && maj.trend > 0) && rsiSell && roomSell;
+   bool okBuy  = !(InpMajFlt != MAJ_OFF && majSellAct) && !(strF && maj.trend < 0) && rsiBuy && roomBuy && !exhUp;
+   bool okSell = !(InpMajFlt != MAJ_OFF && majBuyAct) && !(strF && maj.trend > 0) && rsiSell && roomSell && !exhDn;
    int trend = eng.trend;
    bool trOn = InpDir == DIR_TREND, alB = InpDir != DIR_SELL, alS = InpDir != DIR_BUY;
    bool okBuyZ = okBuy && (trOn ? trend >= 0 : alB), okSellZ = okSell && (trOn ? trend <= 0 : alS);
-   if(live) Dashboard(okBuy && (trOn ? trend > 0 : alB), okSell && (trOn ? trend < 0 : alS));
+   bool rngBoth = InpRange == RNG_HALF;
+   if(live) Dashboard(okBuy && (trOn ? (trend > 0 || (trend == 0 && rngBoth)) : alB), okSell && (trOn ? (trend < 0 || (trend == 0 && rngBoth)) : alS));
    bool busyB = true, busyS = true;
    if(live) Busy(busyB, busyS);
    int rb = eng.RangeBars();
@@ -960,7 +1023,7 @@ void OnNewBar(bool live)
       if(rvBull || rvBear)
         {
          int d = rvBull ? 1 : -1;
-         bool okR = d > 0 ? (alB && !busyB && rsiBuy && roomBuy && !(InpMajFlt != MAJ_OFF && majSellAct)) : (alS && !busyS && rsiSell && roomSell && !(InpMajFlt != MAJ_OFF && majBuyAct));
+         bool okR = d > 0 ? (alB && !busyB && rsiBuy && roomBuy && !exhUp && !(InpMajFlt != MAJ_OFF && majSellAct)) : (alS && !busyS && rsiSell && roomSell && !exhDn && !(InpMajFlt != MAJ_OFF && majBuyAct));
          int hitIx = -1, hitMz = -1;
          if(okR)
             for(int j = 0; j < ArraySize(dZLo) && hitIx < 0; j++)
@@ -983,7 +1046,24 @@ void OnNewBar(bool live)
             int st = (int)MathMin(3 + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
             if(hitIx >= 0) { dZT[hitIx] = k; if(d > 0) dZB[hitIx]++; else dZS[hitIx]++; }
             else           { maj.zones[hitMz].entries++; maj.zones[hitMz].lastE = k; }
-            if(MarketEntry(d, dist, st, "R", hitMz >= 0 ? maj.zones[hitMz].id : 0, true)) { busyB = true; busyS = true; }
+            if(MarketEntry(d, dist, st, "R", hitMz >= 0 ? maj.zones[hitMz].id : 0, true, d > 0 ? kRB : kRS)) { busyB = true; busyS = true; }
+           }
+        }
+     }
+
+   //--- 1b · wave-end reversal (light): exhausted wave + strong candle back
+   if(live && InpRevLight && !spkBlock)
+     {
+      double rsiP = eng.RSI[k - 1];
+      bool lrBull = osRecent && mvDn >= 4 * a && lw3x <= ll30 && C0 > O0 && C0 > eng.H[k - 1] && rsiV > rsiP;
+      bool lrBear = obRecent && mvUp >= 4 * a && hg3x >= hh30 && C0 < O0 && C0 < eng.L[k - 1] && rsiV < rsiP;
+      if(lrBull || lrBear)
+        {
+         int d = lrBull ? 1 : -1;
+         if(d > 0 ? (alB && !busyB) : (alS && !busyS))
+           {
+            double dist = ClampSl(d > 0 ? C0 - (lw3x - InpSlBuf * a) : (hg3x + InpSlBuf * a) - C0, tfSecs, false, a);
+            if(MarketEntry(d, dist, 1, "W", 0, false, 0.5)) { busyB = true; busyS = true; }
            }
         }
      }
@@ -1005,7 +1085,7 @@ void OnNewBar(bool live)
             double dist = ClampSl(d > 0 ? C0 - (MathMin(lo, L0) - InpSlBuf * a) : (MathMax(hi, H0) + InpSlBuf * a) - C0, tfSecs, true, a);
             int st = (int)MathMin((dZW[j] >= 4 ? 3 : 2) + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
             dZT[j] = k; if(d > 0) dZB[j]++; else dZS[j]++;
-            if(MarketEntry(d, dist, st, "D", j, true)) { busyB = true; busyS = true; }
+            if(MarketEntry(d, dist, st, "D", j, true, d > 0 ? kRB : kRS)) { busyB = true; busyS = true; }
             break;
            }
         }
@@ -1028,13 +1108,14 @@ void OnNewBar(bool live)
          if(pass == 0) { CapZ(eng.Lvl(zz, InpFEntry), eng.Lvl(zz, InpFZone), capS, zA, zB); zI = eng.Lvl(zz, InpFInv); }
          else          { CapZ(maj.Lvl(zz, InpFEntry), maj.Lvl(zz, InpFZone), capS, zA, zB); zI = maj.Lvl(zz, InpFInv); }
          double zCu = pass == 0 ? eng.Lvl(zz, InpECust) : maj.Lvl(zz, InpECust);
-         double level = InpELvl == ELVL_START ? zA : InpELvl == ELVL_END ? zB : InpELvl == ELVL_CUSTOM ? zCu : (zA + zB) / 2;
+         double level = InpELvl == ELVL_START ? zA : InpELvl == ELVL_END ? zB : InpELvl == ELVL_MID ? (zA + zB) / 2 : zCu;
          int d = zz.dir;
          bool valid = MathAbs(zz.p0 - zz.p1) >= InpMinLeg * (pass == 0 ? a : maj.Atr());
          bool trendOk;
          if(!trOn)          trendOk = d > 0 ? alB : alS;
          else if(pass == 1) trendOk = d > 0 ? trend >= 0 : trend <= 0;
-         else               trendOk = d == trend || (trend == 0 && (zz.brk || k - zz.bB <= rb));
+         else               trendOk = d == trend || (trend == 0 && (rngBoth || zz.brk || k - zz.bB <= rb));
+         double kf = (pass == 0 && trOn && trend == 0 && !(zz.brk || k - zz.bB <= rb) ? 0.5 : 1.0) * (d > 0 ? kRB : kRS);
          bool filt = d > 0 ? (pass == 0 ? okBuy : okBuyZ) : (pass == 0 ? okSell : okSellZ);
          int st = pass == 0 ? zz.stars : 2;
          st = (int)MathMin(st + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
@@ -1062,7 +1143,7 @@ void OnNewBar(bool live)
            {
             string w = "";
             if(!trendOk) w += trOn ? (trend == 0 ? " range;" : " against trend;") : " direction setting;";
-            if(!filt) w += (d > 0 ? !rsiBuy : !rsiSell) ? " RSI " + DoubleToString(rsiV, 1) + ";" : (d > 0 ? !roomBuy : !roomSell) ? " room;" : " major filter;";
+            if(!filt) w += (d > 0 ? !rsiBuy : !rsiSell) ? " RSI " + DoubleToString(rsiV, 1) + ";" : (d > 0 ? !roomBuy : !roomSell) ? " room;" : (d > 0 ? exhUp : exhDn) ? " end of wave;" : " major filter;";
             if(d > 0 ? busyB : busyS) w += " other trade open;";
             if(spkBlock) w += " abnormal candle;";
             if(pass == 0 && zz.stars < MinStars(tfSecs)) w += " stars " + IntegerToString(zz.stars) + ";";
@@ -1075,11 +1156,11 @@ void OnNewBar(bool live)
          if(can && InpEntry != ENTRY_LIM && inZone && rej && near && !invalid && !(InpEntry == ENTRY_LIM_REJ && hitLvl))
            {
             double dist = ClampSl(MathAbs(C0 - ((d < 0 ? MathMax(zI, H0) : MathMin(zI, L0)) - d * InpSlBuf * a)), tfSecs, imp, a);
-            if(MarketEntry(d, dist, st, kind, zz.id, imp)) { busyB = true; busyS = true; can = false; }
+            if(MarketEntry(d, dist, st, kind, zz.id, imp, kf)) { busyB = true; busyS = true; can = false; }
            }
          //--- pending limit at 50% (or the zone start)
          bool wantPend = can && InpEntry != ENTRY_REJ;
-         if(SyncPending(wantPend, d, level, zI - d * InpSlBuf * a, st, kind, zz.id, imp)) { busyB = true; busyS = true; }
+         if(SyncPending(wantPend, d, level, zI - d * InpSlBuf * a, st, kind, zz.id, imp, kf)) { busyB = true; busyS = true; }
         }
      }
    //--- remove pendings of zones that no longer exist
@@ -1131,6 +1212,7 @@ void CheckDay(void)
 int OnInit()
   {
    if(InpSwLen < 2 || InpStL < 1) return INIT_PARAMETERS_INCORRECT;
+   { string pp[]; int np = StringSplit(InpPartPct, ',', pp); ArrayResize(gPart, np); for(int i = 0; i < np; i++) gPart[i] = StringToDouble(pp[i]); }
    gMagic = InpMagicByTf ? InpMagic + PeriodSeconds(_Period) / 60 : InpMagic;
    trade.SetExpertMagicNumber((ulong)gMagic);
    trade.SetTypeFillingBySymbol(_Symbol);

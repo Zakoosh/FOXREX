@@ -88,3 +88,8 @@ Shows each data file with its last update and age, every stored quote with its s
 - Overlapping buy / sell zones keep only the stronger (indicator + EA, option on by default).
 - Scorecard: chosen period + 7 days + All (chart).
 - EA: timeframe in the position comment and magic (base + minutes), open FOXREX positions listed with their timeframe, TP1–TP4 lines, default 1.00 lot.
+
+### FOXREX Waves 3.14
+- Strategy defaults: zone 50–65.7%, entry 55.9%, break confirmed by a close, range = both ways at half size, exhaustion guard, light wave-end reversals.
+- Scorecard: closed trades only; won / lost / net in points and $ (net = after losses and commission).
+- EA: stop to entry at TP1 then previous target (default), partial closes 25/25/25/10/5/5% (editable, all TFs / 1m only / off), today stats per position with won / lost / net.
