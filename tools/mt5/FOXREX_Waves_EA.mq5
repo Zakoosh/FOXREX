@@ -1,7 +1,7 @@
 ﻿//+------------------------------------------------------------------+
 //| FOXREX Waves EA                                                  |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.18.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.19.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy (fixed):                                                |
@@ -26,8 +26,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.18"
-#property description "FOXREX Waves EA v3.18: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.19"
+#property description "FOXREX Waves EA v3.19: wave retracement zones, daily S/R and reversal trades."
 
 #include <Trade/Trade.mqh>
 
@@ -82,6 +82,7 @@ input bool   InpPush        = false;  // Push notification on entry / exit
 
 input group "2 · Direction & filters"
 input ENUM_FXW_DIR InpDir = DIR_FIRST; // Trade direction
+input bool   InpCtHalf  = false;  // …counter-trend trades at half size (trend first)
 input ENUM_FXW_RANGE InpRange = RNG_STRICT; // In a range (no confirmed break)
 input bool   InpBrkClose = false;  // Break confirmed by a close beyond the previous stall
 input bool   InpExh     = false;  // No trade at the end of an exhausted wave
@@ -141,8 +142,8 @@ input double InpSlDMn  = 10.0; // D / W / M · min
 input double InpSlDMx  = 25.0; // D / W / M · max
 
 input group "7 · Trade management"
-input ENUM_FXW_PROTECT InpProtect = PROT_STEP; // Profit protection
-input ENUM_FXW_PART InpPartMode = PART_ALL; // Partial closes at the targets
+input ENUM_FXW_PROTECT InpProtect = PROT_NEAR; // Profit protection
+input ENUM_FXW_PART InpPartMode = PART_OFF; // Partial closes at the targets
 input string InpPartPct = "25,25,25,10,5,5";  // % of the original size at TP1, TP2, TP3, TP4, TP5, TP6 (rest at TP7)
 input int    InpNoProg = 15;   // No-progress exit (bars without TP1, 0 = off)
 input int    InpMaxBars = 60;  // Maximum life before TP2 (bars)
@@ -174,7 +175,7 @@ input group "EA · start-up"
 input int    InpWarmup  = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.18"
+#define FXW_VER   "3.19"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -614,7 +615,7 @@ bool ParseComment(string c, string &kind, int &zid, int &stars, bool &imp, doubl
    if(StringFind(c, "FXW ") != 0) return false;
    string p[]; int np = StringSplit(c, ' ', p);
    if(np < 5) return false;
-   int o = np >= 6 ? 2 : 1;   // 3.18+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
+   int o = np >= 6 ? 2 : 1;   // 3.19+: "FXW M15 L12 s2 i0 a2.15" · older: "FXW L12 s2 i0 a2.15"
    kind = StringSubstr(p[o], 0, 1); zid = (int)StringToInteger(StringSubstr(p[o], 1));
    stars = (int)StringToInteger(StringSubstr(p[o + 1], 1)); imp = StringSubstr(p[o + 2], 1) == "1"; a = StringToDouble(StringSubstr(p[o + 3], 1));
    return true;
@@ -1134,7 +1135,7 @@ void OnNewBar(bool live)
          if(!trOn)          trendOk = d > 0 ? alB : alS;
          else if(pass == 1) trendOk = d > 0 ? trend >= 0 : trend <= 0;
          else               trendOk = d == trend || (trFirst && trend != 0) || (trend == 0 && (rngBoth || zz.brk || k - zz.bB <= rb));
-         bool ct = pass == 0 && trFirst && trend != 0 && d != trend;   // against the trend: half size
+         bool ct = pass == 0 && trFirst && InpCtHalf && trend != 0 && d != trend;   // against the trend: half size
          double kf = ((pass == 0 && trOn && trend == 0 && !(zz.brk || k - zz.bB <= rb)) || ct ? 0.5 : 1.0) * (d > 0 ? kRB : kRS);
          bool filt = d > 0 ? okBuy : okSell;
          int st = pass == 0 ? zz.stars : 2;
