@@ -61,14 +61,14 @@ enum ENUM_FXW_DIR     { DIR_FIRST = 0,         // Both sides · trend first
                         DIR_BOTH = 2,          // Both directions (full size)
                         DIR_BUY = 3,           // Buy only
                         DIR_SELL = 4 };        // Sell only
-enum ENUM_FXW_MODE    { MODE_STRICT = 0,       // Strict
-                        MODE_BAL = 1,          // Balanced
-                        MODE_OPEN = 2,         // Open
-                        MODE_CUSTOM = 3 };     // Custom (use the settings below)
+enum ENUM_FXW_MODE    { FXM_STRICT = 0,       // Strict
+                        FXM_BAL = 1,          // Balanced
+                        FXM_OPEN = 2,         // Open
+                        FXM_CUSTOM = 3 };     // Custom (use the settings below)
 enum ENUM_FXW_TRM     { TRM_WAVE = 0,          // Waves: up while above the last higher low
                         TRM_SWING = 1 };       // Swing breaks (3.13)
-enum ENUM_FXW_STOP    { STOP_ATR = 0,          // ATR: 1.5 – 2 × behind the zone
-                        STOP_POINTS = 1 };     // Points per timeframe (3.13)
+enum ENUM_FXW_STOP    { SLM_ATR = 0,          // ATR: 1.5 – 2 × behind the zone
+                        SLM_POINTS = 1 };     // Points per timeframe (3.13)
 enum ENUM_FXW_LOT     { LOT_FIXED = 0,         // Fixed lot (base lot × stars)
                         LOT_RISK = 1 };        // Risk % of equity per trade (× stars)
 enum ENUM_FXW_MAJFLT  { MAJ_STRUCT_ZONE = 0,   // Major structure + active zone
@@ -91,7 +91,7 @@ input int    InpMaxSpread   = 0;      // Max spread in points (0 = off)
 input bool   InpPush        = false;  // Push notification on entry / exit
 
 input group "2 · Direction & filters"
-input ENUM_FXW_MODE InpMode = MODE_STRICT; // Trading mode
+input ENUM_FXW_MODE InpMode = FXM_STRICT; // Trading mode
 input ENUM_FXW_DIR InpDir = DIR_FIRST; // Trade direction (Custom mode)
 input bool   InpCtHalf  = true;   // …counter-trend trades at half size (Custom mode)
 input ENUM_FXW_RANGE InpRange = RNG_STRICT; // In a range (no confirmed break)
@@ -135,7 +135,7 @@ input bool   InpReinf   = true;   // Reinforcement: add on the next zones of the
 
 input group "5 · Targets"
 input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Profile
-input ENUM_FXW_STOP InpStopMd = STOP_ATR; // Stop distance
+input ENUM_FXW_STOP InpStopMd = SLM_ATR; // Stop distance
 input double InpSlAtrA  = 1.5;    // …ATR min
 input double InpSlAtrB  = 2.0;    // …ATR max
 input double InpTp1 = 2.5;   // Custom TP1
@@ -507,7 +507,7 @@ double PTp(int s, int i, double a)
 
 double PSlMin(int s, double a)
   {
-   if(InpStopMd == STOP_ATR) return InpSlAtrA * a;
+   if(InpStopMd == SLM_ATR) return InpSlAtrA * a;
    if(InpProfile == PROFILE_AUTO_ATR) return 1.0 * a;
    if(InpProfile == PROFILE_CUSTOM)   return InpSlMinC;
    if(s <= 60) return InpSl1Mn; if(s <= 300) return InpSl5Mn; if(s < 3600) return InpSl15Mn; if(s < 86400) return InpSlHMn;
@@ -516,7 +516,7 @@ double PSlMin(int s, double a)
 
 double PSlMax(int s, double a)
   {
-   if(InpStopMd == STOP_ATR) return InpSlAtrB * a;
+   if(InpStopMd == SLM_ATR) return InpSlAtrB * a;
    if(InpProfile == PROFILE_AUTO_ATR) return 3.5 * a;
    if(InpProfile == PROFILE_CUSTOM)   return InpSlMaxC;
    if(s <= 60) return InpSl1Mx; if(s <= 300) return InpSl5Mx; if(s < 3600) return InpSl15Mx; if(s < 86400) return InpSlHMx;
@@ -1379,7 +1379,7 @@ int OnInit()
   {
    if(InpSwLen < 2 || InpStL < 1) return INIT_PARAMETERS_INCORRECT;
    if(InpSlAtrA <= 0 || InpSlAtrB < InpSlAtrA || InpLot1a <= 0 || InpLot1b < InpLot1a) return INIT_PARAMETERS_INCORRECT;
-   mStrict = InpMode == MODE_STRICT; mBal = InpMode == MODE_BAL; mOpen = InpMode == MODE_OPEN; mCust = InpMode == MODE_CUSTOM;
+   mStrict = InpMode == FXM_STRICT; mBal = InpMode == FXM_BAL; mOpen = InpMode == FXM_OPEN; mCust = InpMode == FXM_CUSTOM;
    gDir    = mStrict ? DIR_TREND : mCust ? InpDir : DIR_FIRST;
    gELvl   = mOpen ? ELVL_START : mCust ? InpELvl : ELVL_MID;
    gRoom   = mOpen ? ROOM_STRONG_HALF : mCust ? InpRoomMode : ROOM_STRONG_BLOCK;
