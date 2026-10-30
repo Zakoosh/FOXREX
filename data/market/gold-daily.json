@@ -8,13 +8,6 @@
  "note": "Completed daily sessions only. Spot levels on the admin desk = futures level + live spot-futures basis (XAUUSD - GCFUT in data/quotes.json).",
  "bars": [
   {
-   "date": "2026-05-08",
-   "open": 4682.5,
-   "high": 4760.4,
-   "low": 4671.0,
-   "close": 4730.7
-  },
-  {
    "date": "2026-05-11",
    "open": 4690.0,
    "high": 4758.4,
@@ -846,8 +839,15 @@
    "high": 4097.2,
    "low": 4036.9,
    "close": 4051.6
+  },
+  {
+   "date": "2026-10-29",
+   "open": 4081.4,
+   "high": 4081.7,
+   "low": 4016.3,
+   "close": 4031.4
   }
  ],
  "basis": null,
- "updatedAt": "2026-10-29T06:32:14Z"
+ "updatedAt": "2026-10-30T09:52:38Z"
 }
