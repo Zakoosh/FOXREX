@@ -1,0 +1,105 @@
+{
+  "runId": "run-20261028-0930-foxrex-daily",
+  "date": "2026-10-28",
+  "theme": "Fed decision day + 72-hour policy map",
+  "audience": "Arabic and English retail forex/gold learners",
+  "platformStrategy": {
+    "instagram": "visual education: carousel + reel, different hooks",
+    "facebook": "link-driven schedule post",
+    "telegram": "fast factual brief + gated post-event checklist"
+  },
+  "complianceRules": [
+    "No predictions, probabilities, entries/SL/TP or performance claims",
+    "Risk line on every item",
+    "Western digits in Inter for market data",
+    "No publishing performed by this routine"
+  ],
+  "items": [
+    {
+      "contentId": "IG-CAR-001",
+      "platform": "instagram",
+      "format": "carousel",
+      "title": "Fed Day: 3 things gold traders watch",
+      "scheduleSuggestionUtc": "2026-10-28T11:30:00Z",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S4"
+      ],
+      "files": [
+        "en/IG-CAR-001.md",
+        "ar/IG-CAR-001.md",
+        "carousels/IG-CAR-001.json"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publish": false
+    },
+    {
+      "contentId": "IG-REEL-001",
+      "platform": "instagram",
+      "format": "reel",
+      "title": "The first candle trap",
+      "scheduleSuggestionUtc": "2026-10-28T15:00:00Z",
+      "sourceIds": [
+        "S2"
+      ],
+      "files": [
+        "en/IG-REEL-001.md",
+        "ar/IG-REEL-001.md",
+        "reels/IG-REEL-001.json"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publish": false
+    },
+    {
+      "contentId": "FB-POST-001",
+      "platform": "facebook",
+      "format": "image-post",
+      "title": "The 72-hour policy map",
+      "scheduleSuggestionUtc": "2026-10-28T12:00:00Z",
+      "sourceIds": [
+        "S2"
+      ],
+      "files": [
+        "en/FB-POST-001.md",
+        "ar/FB-POST-001.md"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publish": false
+    },
+    {
+      "contentId": "TG-001",
+      "platform": "telegram",
+      "format": "text+card",
+      "title": "Fed day pre-decision brief",
+      "scheduleSuggestionUtc": "2026-10-28T09:45:00Z",
+      "sourceIds": [
+        "S1",
+        "S2"
+      ],
+      "files": [
+        "en/TG-001.md",
+        "ar/TG-001.md"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publish": false
+    },
+    {
+      "contentId": "TG-002",
+      "platform": "telegram",
+      "format": "text",
+      "title": "Post-decision checklist (gated template)",
+      "scheduleSuggestionUtc": "2026-10-28T18:35:00Z",
+      "sourceIds": [
+        "S2"
+      ],
+      "files": [
+        "en/TG-002.md",
+        "ar/TG-002.md"
+      ],
+      "status": "DRAFT_FOR_REVIEW",
+      "publish": false,
+      "gate": "Do not publish before 18:30 UTC and human fill-in from official text"
+    }
+  ]
+}

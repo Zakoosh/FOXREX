@@ -1,0 +1,89 @@
+{
+  "runId": "run-20261028-0930-foxrex-daily",
+  "date": "2026-10-28",
+  "createdAt": "2026-10-28T09:30:00Z",
+  "branch": "claude/nifty-volta-a2xssf",
+  "contentIds": [
+    "IG-CAR-001",
+    "IG-REEL-001",
+    "FB-POST-001",
+    "TG-001",
+    "TG-002"
+  ],
+  "files": [
+    {
+      "path": "ar/FB-POST-001.md",
+      "sha256": "ce50ce978b5315cfd6e299b106b52763be88bfde3159097aee762e3fd1b71abc"
+    },
+    {
+      "path": "ar/IG-CAR-001.md",
+      "sha256": "7a760177f1a6fe12487292748d859885b04e788941ceaa0217c659600aa4abb6"
+    },
+    {
+      "path": "ar/IG-REEL-001.md",
+      "sha256": "fa715f6759cadb0c4ad736683619ef889f877d88270a8e1592aa6ad50ce99ddf"
+    },
+    {
+      "path": "ar/TG-001.md",
+      "sha256": "b18d54446b1d92ae7ce0f8aee758c1f758ea4e325002d27f5380ff27a7e2fca6"
+    },
+    {
+      "path": "ar/TG-002.md",
+      "sha256": "26d1bdedd70ba44a7dbf50af053685cb3b125183c696ace8a3cc49db41e7046a"
+    },
+    {
+      "path": "carousels/IG-CAR-001.json",
+      "sha256": "504da591dd0f7514037a4af52dd3e0359bf1b360a567719c67d132aa7e1f9129"
+    },
+    {
+      "path": "content-plan.json",
+      "sha256": "4f80d6419a792e940ff6e7baa85b7e16fe62c676d4a200cc114b6597cf15a135"
+    },
+    {
+      "path": "en/FB-POST-001.md",
+      "sha256": "c453ebe29d57098d27000ccd59bddc4b3c444de0cb41b72f83d879b2d8df4a24"
+    },
+    {
+      "path": "en/IG-CAR-001.md",
+      "sha256": "b84ff24c5876bcd2352253e646cb4908bd99ce866d3b3d2ea02a0b5ed3bfb333"
+    },
+    {
+      "path": "en/IG-REEL-001.md",
+      "sha256": "c1039a1e71363dcc5d198829bb196587bf2703f1361718d4c4253182db29cd76"
+    },
+    {
+      "path": "en/TG-001.md",
+      "sha256": "852663a4ce61b5a8342730a239ed4225c8ddb51550b9cf45b57fa52938de0cb1"
+    },
+    {
+      "path": "en/TG-002.md",
+      "sha256": "97a63ab4a12184cbc220b25c38067c649e935bf3f3362101b40424c7950dcb93"
+    },
+    {
+      "path": "market-brief.md",
+      "sha256": "2c4da48daa405668b6115f0b8d06639b11d897ce438a377fe4d6517385b1dc23"
+    },
+    {
+      "path": "reels/IG-REEL-001.json",
+      "sha256": "9e7010d612a08f317ea68c49dfb4f2cc5379fe026032d85b113b48d73864dcb2"
+    },
+    {
+      "path": "sources.json",
+      "sha256": "1348fa57b1c313200f3d45d3aeca9d2a02a867429f0416076e9ceafb65419f75"
+    }
+  ],
+  "validation": {
+    "status": "PASS",
+    "checkedAt": "2026-10-28T09:40:00Z",
+    "checks": [
+      "all JSON parses",
+      "all referenced files exist",
+      "EN+AR risk line present on every item",
+      "all sourceIds resolve",
+      "no publish flags set",
+      "no credentials/PII"
+    ]
+  },
+  "packageStatus": "DRAFT",
+  "note": "Becomes CONTENT_PLAN_READY only after commit and fresh-read verification (see PR)."
+}
