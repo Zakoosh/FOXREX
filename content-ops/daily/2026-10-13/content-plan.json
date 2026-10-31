@@ -1,0 +1,294 @@
+{
+  "runId": "run-20261013-daily-01",
+  "date": "2026-10-13",
+  "timezone": "Europe/Istanbul",
+  "ideas": [
+    {
+      "ideaId": "C1",
+      "title": "CPI tomorrow",
+      "rationale": "Highest-impact scheduled event of the week; frames dollar and gold risk. Slot: Event of the Day / Morning Brief derivative.",
+      "editorialType": "EVENT",
+      "platforms": [
+        "instagram",
+        "facebook",
+        "telegram"
+      ]
+    },
+    {
+      "ideaId": "C2",
+      "title": "REX Explains: strong dollar vs gold",
+      "rationale": "Dollar at 18-month high and gold under pressure; REX Note is the strongest social format per editorial system.",
+      "editorialType": "REX_EXPLAINS",
+      "platforms": [
+        "instagram",
+        "facebook",
+        "telegram"
+      ]
+    },
+    {
+      "ideaId": "C3",
+      "title": "Week map",
+      "rationale": "Compact dated calendar for the Telegram audience.",
+      "editorialType": "MORNING_BRIEF",
+      "platforms": [
+        "telegram"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "contentId": "FX-20261013-C1-IG-EN",
+      "ideaId": "C1",
+      "platform": "instagram",
+      "language": "en",
+      "format": "carousel",
+      "file": "en/FX-20261013-C1-IG-EN.md",
+      "factRefs": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "title": "CPI tomorrow",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false,
+      "assets": [
+        "carousels/FX-20261013-C1-carousel.json"
+      ]
+    },
+    {
+      "contentId": "FX-20261013-C1-IG-AR",
+      "ideaId": "C1",
+      "platform": "instagram",
+      "language": "ar",
+      "format": "carousel",
+      "file": "ar/FX-20261013-C1-IG-AR.md",
+      "factRefs": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "title": "CPI tomorrow",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false,
+      "assets": [
+        "carousels/FX-20261013-C1-carousel.json"
+      ]
+    },
+    {
+      "contentId": "FX-20261013-C1-FB-EN",
+      "ideaId": "C1",
+      "platform": "facebook",
+      "language": "en",
+      "format": "post",
+      "file": "en/FX-20261013-C1-FB-EN.md",
+      "factRefs": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "title": "CPI tomorrow",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C1-FB-AR",
+      "ideaId": "C1",
+      "platform": "facebook",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/FX-20261013-C1-FB-AR.md",
+      "factRefs": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "title": "CPI tomorrow",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C1-TG-EN",
+      "ideaId": "C1",
+      "platform": "telegram",
+      "language": "en",
+      "format": "post",
+      "file": "en/FX-20261013-C1-TG-EN.md",
+      "factRefs": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "title": "CPI tomorrow",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C1-TG-AR",
+      "ideaId": "C1",
+      "platform": "telegram",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/FX-20261013-C1-TG-AR.md",
+      "factRefs": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6"
+      ],
+      "title": "CPI tomorrow",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C2-IG-EN",
+      "ideaId": "C2",
+      "platform": "instagram",
+      "language": "en",
+      "format": "reel",
+      "file": "en/FX-20261013-C2-IG-EN.md",
+      "factRefs": [
+        "F2",
+        "F3",
+        "F6"
+      ],
+      "title": "REX Explains: strong dollar vs gold",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false,
+      "assets": [
+        "reels/FX-20261013-C2-reel.json"
+      ]
+    },
+    {
+      "contentId": "FX-20261013-C2-IG-AR",
+      "ideaId": "C2",
+      "platform": "instagram",
+      "language": "ar",
+      "format": "reel",
+      "file": "ar/FX-20261013-C2-IG-AR.md",
+      "factRefs": [
+        "F2",
+        "F3",
+        "F6"
+      ],
+      "title": "REX Explains: strong dollar vs gold",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false,
+      "assets": [
+        "reels/FX-20261013-C2-reel.json"
+      ]
+    },
+    {
+      "contentId": "FX-20261013-C2-FB-EN",
+      "ideaId": "C2",
+      "platform": "facebook",
+      "language": "en",
+      "format": "post",
+      "file": "en/FX-20261013-C2-FB-EN.md",
+      "factRefs": [
+        "F2",
+        "F3",
+        "F6"
+      ],
+      "title": "REX Explains: strong dollar vs gold",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C2-FB-AR",
+      "ideaId": "C2",
+      "platform": "facebook",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/FX-20261013-C2-FB-AR.md",
+      "factRefs": [
+        "F2",
+        "F3",
+        "F6"
+      ],
+      "title": "REX Explains: strong dollar vs gold",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C2-TG-EN",
+      "ideaId": "C2",
+      "platform": "telegram",
+      "language": "en",
+      "format": "post",
+      "file": "en/FX-20261013-C2-TG-EN.md",
+      "factRefs": [
+        "F2",
+        "F3",
+        "F6"
+      ],
+      "title": "REX Explains: strong dollar vs gold",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C2-TG-AR",
+      "ideaId": "C2",
+      "platform": "telegram",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/FX-20261013-C2-TG-AR.md",
+      "factRefs": [
+        "F2",
+        "F3",
+        "F6"
+      ],
+      "title": "REX Explains: strong dollar vs gold",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C3-TG-EN",
+      "ideaId": "C3",
+      "platform": "telegram",
+      "language": "en",
+      "format": "post",
+      "file": "en/FX-20261013-C3-TG-EN.md",
+      "factRefs": [
+        "F3",
+        "F4",
+        "F5"
+      ],
+      "title": "Week map",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    },
+    {
+      "contentId": "FX-20261013-C3-TG-AR",
+      "ideaId": "C3",
+      "platform": "telegram",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/FX-20261013-C3-TG-AR.md",
+      "factRefs": [
+        "F3",
+        "F4",
+        "F5"
+      ],
+      "title": "Week map",
+      "status": "DRAFT_FOR_REVIEW",
+      "publishAllowed": false
+    }
+  ],
+  "guardrails": [
+    "No publishing",
+    "No entries/stops/targets",
+    "No invented prices or performance",
+    "All facts need human confirmation (search-snippet verification only)"
+  ]
+}

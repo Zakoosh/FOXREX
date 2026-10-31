@@ -1,0 +1,106 @@
+{
+  "contentId": "FX-20261013-C2-IG-REEL",
+  "canvas": "1080x1920",
+  "durationSec": 30,
+  "safeMarginPx": {
+    "top": 250,
+    "bottom": 300
+  },
+  "character": "REX mascot — use supplied reference assets/rex/rex-arms.jpg unchanged; do not redesign or invent new poses without a reference.",
+  "audio": "Voiceover EN and AR recorded by a human or approved voice; no music licensing assumed — choose licensed track at production.",
+  "scenes": [
+    {
+      "n": 1,
+      "sec": "0-3",
+      "en": {
+        "vo": "Why does a stronger dollar often hit gold?",
+        "onScreen": "Strong dollar = weak gold?"
+      },
+      "ar": {
+        "vo": "لماذا يضغط الدولار القوي على الذهب غالبًا؟",
+        "onScreen": "دولار أقوى... ذهب أضعف؟"
+      },
+      "visual": "REX looking at a split screen, dark navy, teal accent.",
+      "imagePrompt": "Cartoon fox mascot (match the supplied reference exactly) standing in front of an abstract dark navy backdrop with a faint teal glow, thoughtful pose, lots of empty space top and bottom for captions, no text"
+    },
+    {
+      "n": 2,
+      "sec": "3-9",
+      "en": {
+        "vo": "Gold is priced in dollars. When the dollar rises, gold gets more expensive for buyers who hold other currencies.",
+        "onScreen": "Gold is priced in USD"
+      },
+      "ar": {
+        "vo": "الذهب يُسعَّر بالدولار. وعندما يرتفع الدولار يصبح الذهب أغلى على من يحملون عملات أخرى.",
+        "onScreen": "الذهب يُسعَّر بالدولار"
+      },
+      "visual": "Gold bar icon beside a dollar sign sliding right; other-currency icons.",
+      "imagePrompt": "Minimal flat illustration on dark navy: abstract golden bar shape beside a plain circle, teal accent lines, space for text, no letters or digits"
+    },
+    {
+      "n": 3,
+      "sec": "9-16",
+      "en": {
+        "vo": "Gold pays no interest. When yields rise, holding it costs you more in what you give up.",
+        "onScreen": "No yield on gold"
+      },
+      "ar": {
+        "vo": "الذهب لا يدفع فائدة. وعندما ترتفع العوائد يصبح الاحتفاظ به أكثر كلفة من حيث الفرصة الضائعة.",
+        "onScreen": "الذهب بلا عائد"
+      },
+      "visual": "Two simple bars: one flat, one rising.",
+      "imagePrompt": "Dark navy backdrop, two minimal abstract bars (one flat muted gold, one rising teal), no axis labels, no text"
+    },
+    {
+      "n": 4,
+      "sec": "16-23",
+      "en": {
+        "vo": "On 12 October the dollar hit an 18-month high. Gold has been trading under pressure.",
+        "onScreen": "Dollar: 18-month high (12 Oct)"
+      },
+      "ar": {
+        "vo": "الدولار بلغ أعلى مستوى في 18 شهرًا يوم 12 أكتوبر، والذهب يتداول تحت ضغط.",
+        "onScreen": "الدولار: أعلى مستوى في 18 شهرًا (12 أكتوبر)"
+      },
+      "visual": "Plain text card with date stamp; sourced fact F2/F6.",
+      "imagePrompt": "Dark navy plain backdrop with soft teal vignette, large empty centre for text, no text"
+    },
+    {
+      "n": 5,
+      "sec": "23-28",
+      "en": {
+        "vo": "It is a tendency, not a rule. Other forces can outweigh it. CPI tomorrow is the next test.",
+        "onScreen": "A tendency, not a rule"
+      },
+      "ar": {
+        "vo": "هي ميل عام وليست قاعدة. قد تتغلب عليها عوامل أخرى. وتقرير CPI غدًا هو الاختبار التالي.",
+        "onScreen": "ميل عام... وليس قاعدة"
+      },
+      "visual": "REX shrugging gently; calendar chip 'CPI 15:30'.",
+      "imagePrompt": "Cartoon fox mascot (match supplied reference exactly) with a calm explanatory gesture on dark navy, space for captions, no text"
+    },
+    {
+      "n": 6,
+      "sec": "28-30",
+      "en": {
+        "vo": "REX explains. He does not advise.",
+        "onScreen": "REX explains. He does not advise.\nEducational market commentary, not investment advice or a signal. Trading leveraged products carries a high risk of loss."
+      },
+      "ar": {
+        "vo": "ريكس يشرح ولا ينصح.",
+        "onScreen": "ريكس يشرح ولا ينصح.\nمحتوى تعليمي عن الأسواق وليس نصيحة استثمارية ولا توصية. التداول بالمنتجات ذات الرافعة المالية ينطوي على مخاطر خسارة عالية."
+      },
+      "visual": "End card with FOXREX mark.",
+      "imagePrompt": "Dark navy end-card backdrop, empty centre for the FOXREX mark added in post, no text"
+    }
+  ],
+  "factRefs": [
+    "F2",
+    "F3",
+    "F6"
+  ],
+  "cover": {
+    "en": "Strong dollar = weak gold?",
+    "ar": "دولار أقوى... ذهب أضعف؟"
+  }
+}

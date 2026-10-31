@@ -1,0 +1,63 @@
+{
+  "runId": "run-20261013-daily-01",
+  "date": "2026-10-13",
+  "generatedAt": "2026-10-13T06:39:32Z",
+  "timezone": "Europe/Istanbul",
+  "branch": "claude/nifty-volta-9xf747",
+  "contentIds": [
+    "FX-20261013-C1-IG-EN",
+    "FX-20261013-C1-IG-AR",
+    "FX-20261013-C1-FB-EN",
+    "FX-20261013-C1-FB-AR",
+    "FX-20261013-C1-TG-EN",
+    "FX-20261013-C1-TG-AR",
+    "FX-20261013-C2-IG-EN",
+    "FX-20261013-C2-IG-AR",
+    "FX-20261013-C2-FB-EN",
+    "FX-20261013-C2-FB-AR",
+    "FX-20261013-C2-TG-EN",
+    "FX-20261013-C2-TG-AR",
+    "FX-20261013-C3-TG-EN",
+    "FX-20261013-C3-TG-AR"
+  ],
+  "contentCount": 14,
+  "files": [
+    "ar/FX-20261013-C1-FB-AR.md",
+    "ar/FX-20261013-C1-IG-AR.md",
+    "ar/FX-20261013-C1-TG-AR.md",
+    "ar/FX-20261013-C2-FB-AR.md",
+    "ar/FX-20261013-C2-IG-AR.md",
+    "ar/FX-20261013-C2-TG-AR.md",
+    "ar/FX-20261013-C3-TG-AR.md",
+    "carousels/FX-20261013-C1-carousel.json",
+    "content-plan.json",
+    "en/FX-20261013-C1-FB-EN.md",
+    "en/FX-20261013-C1-IG-EN.md",
+    "en/FX-20261013-C1-TG-EN.md",
+    "en/FX-20261013-C2-FB-EN.md",
+    "en/FX-20261013-C2-IG-EN.md",
+    "en/FX-20261013-C2-TG-EN.md",
+    "en/FX-20261013-C3-TG-EN.md",
+    "market-brief.md",
+    "reels/FX-20261013-C2-reel.json",
+    "sources.json"
+  ],
+  "validation": {
+    "localChecks": "PASSED",
+    "errors": [],
+    "checks": [
+      "unique content IDs",
+      "JSON parses",
+      "fact refs exist",
+      "risk line on every post",
+      "no entry/SL/TP/guarantee language",
+      "no Eastern Arabic digits in AR",
+      "publishAllowed=false"
+    ],
+    "factVerification": "SECONDARY_SEARCH_SUMMARIES_ONLY — human confirmation required before publishing",
+    "githubVerification": "PASSED — fresh read via GitHub API of commit 4cb260967e843eac6354aeb0b3f7767280e1055e"
+  },
+  "status": "CONTENT_PLAN_READY",
+  "published": false,
+  "verifiedCommit": "4cb260967e843eac6354aeb0b3f7767280e1055e"
+}
