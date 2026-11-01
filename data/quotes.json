@@ -1,28 +1,28 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-10-31T21:39:17Z",
+  "updatedAt": "2026-11-01T01:14:32Z",
   "quotes": [
     {
       "symbol": "XAUUSD",
       "price": 3876.399902,
-      "asOf": "2026-10-31T21:39:00Z",
+      "asOf": "2026-11-01T01:14:31Z",
       "source": "Gold API",
       "sourceUrl": "https://api.gold-api.com/price/XAU",
       "timeBasis": "provider-fetch",
       "currency": "USD",
       "unit": "USD per troy ounce",
-      "fetchedAt": "2026-10-31T21:39:16Z"
+      "fetchedAt": "2026-11-01T01:14:31Z"
     },
     {
       "symbol": "XAGUSD",
       "price": 49.254002,
-      "asOf": "2026-10-31T21:38:59Z",
+      "asOf": "2026-11-01T01:14:30Z",
       "source": "Gold API",
       "sourceUrl": "https://api.gold-api.com/price/XAG",
       "timeBasis": "provider-fetch",
       "currency": "USD",
       "unit": "USD per troy ounce",
-      "fetchedAt": "2026-10-31T21:39:16Z"
+      "fetchedAt": "2026-11-01T01:14:31Z"
     },
     {
       "symbol": "EURUSD",
@@ -41,13 +41,13 @@
     {
       "symbol": "GBPUSD",
       "price": 1.3393,
-      "asOf": "2026-10-31T17:24:27Z",
+      "asOf": "2026-11-01T00:49:29Z",
       "source": "Yahoo Finance",
       "sourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d",
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "USD per GBP",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": 0.138,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GBPUSD%3DX?interval=1d&range=5d"
@@ -61,21 +61,21 @@
       "timeBasis": "market-observation",
       "currency": "JPY",
       "unit": "JPY per USD",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -0.0825,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/JPY%3DX?interval=1d&range=5d"
     },
     {
       "symbol": "BTCUSD",
-      "price": 77371.226562,
-      "asOf": "2026-10-31T21:39:00Z",
+      "price": 77556.617188,
+      "asOf": "2026-11-01T01:14:01Z",
       "source": "Gold API",
       "sourceUrl": "https://api.gold-api.com/price/BTC",
       "timeBasis": "provider-fetch",
       "currency": "USD",
       "unit": "USD per BTC",
-      "fetchedAt": "2026-10-31T21:39:16Z"
+      "fetchedAt": "2026-11-01T01:14:31Z"
     },
     {
       "symbol": "SPX",
@@ -86,7 +86,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "index points",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -1.818,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?interval=1d&range=5d"
@@ -100,7 +100,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "index points",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -3.461,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/%5ENDX?interval=1d&range=5d"
@@ -114,7 +114,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "index points",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -1.093,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/%5EDJI?interval=1d&range=5d"
@@ -128,7 +128,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "index points",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": 0.083,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?interval=1d&range=5d"
@@ -142,7 +142,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "percent yield",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -1.203,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=1d&range=5d"
@@ -156,7 +156,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "index points",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": 12.907,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1d&range=5d"
@@ -170,7 +170,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "USD per barrel",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": 2.078,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/CL%3DF?interval=1d&range=5d"
@@ -184,7 +184,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "USD per barrel",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": 2.374,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?interval=1d&range=5d"
@@ -198,7 +198,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "futures index points",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -1.809,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/ES%3DF?interval=1d&range=5d"
@@ -212,7 +212,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "futures index points",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -3.477,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/NQ%3DF?interval=1d&range=5d"
@@ -226,7 +226,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "USD per troy ounce (COMEX front-month futures)",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -3.287,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?interval=1d&range=5d"
@@ -240,7 +240,7 @@
       "timeBasis": "market-observation",
       "currency": "USD",
       "unit": "futures index points (CBOT mini Dow)",
-      "fetchedAt": "2026-10-31T21:39:16Z",
+      "fetchedAt": "2026-11-01T01:14:31Z",
       "dailyChangePct": -1.131,
       "changeBasis": "provider regular-session change",
       "changeSourceUrl": "https://query1.finance.yahoo.com/v8/finance/chart/YM%3DF?interval=1d&range=5d"
