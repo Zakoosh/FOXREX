@@ -1,23 +1,19 @@
 ﻿//+------------------------------------------------------------------+
-//| FOXREX Waves EA                                                  |
+//| FOXREX Waves EA v3.25                                            |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.23.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.25.   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
-//| Strategy (fixed):                                                |
-//|  • A wave runs from its start to the first price stall. A buy    |
-//|    wave must make a higher high than the previous stall high, a  |
-//|    sell wave a lower low.                                        |
-//|  • Zone = 38.2–61.8% of the wave (height capped by timeframe).   |
-//|    Entry at 50% (pending limit) or on a rejection candle in the  |
-//|    zone; stop beyond 78.6%, clamped per timeframe.               |
-//|  • Trend from swings (last break); range = no break for a while. |
-//|  • Daily support / resistance zones: rejection trades (twice per |
-//|    zone per day) and reversal trades (sweep + strong close).     |
-//|  • Major zones from a higher timeframe: trades at their middle.  |
-//|  • Stars 1–4 = confidence, size 1 / 1.5 / 2 / 2.5 × base lot.    |
-//|  • Seven targets; stop to entry after TP2, then one target       |
-//|    behind. Time exits: no TP1 in 15 bars, no TP2 in 60 bars.     |
+//| Strategy: a wave runs from its start to the first price stall.   |
+//| Its 38.2–61.8% retracement is the trade zone: buy the pullbacks  |
+//| of an up trend, sell the pullbacks of a down trend, add on the   |
+//| next pullbacks of the same wave (reinforcement).                 |
+//| Trend: up while price holds above the last higher low (mirror).  |
+//| Modes: Strict (default) · Balanced · Open · Custom.              |
+//| Stop behind the zone, 1.5–2 × ATR. Seven targets, 25% at TP1,    |
+//| stop to entry after TP1, then one target behind.                 |
+//| Higher-timeframe guide: zones of 5m / 15m / 1H / 4H drawn on the |
+//| chart and their trend / RSI / MACD in the panel (no trades).     |
 //|                                                                  |
 //| Prices and "points" in the inputs are price units (gold: 1.0 =   |
 //| a $1 move of the price), the same as on TradingView.             |
@@ -26,8 +22,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.23"
-#property description "FOXREX Waves EA v3.23: wave retracement zones, daily S/R and reversal trades."
+#property version   "3.25"
+#property description "FOXREX Waves EA v3.25: wave retracement zones with a higher-timeframe guide."
 
 #include <Trade/Trade.mqh>
 
@@ -50,7 +46,8 @@ enum ENUM_FXW_ELVL    { ELVL_FIB = 0,          // Fib level (entry fib below)
 enum ENUM_FXW_ROOM    { ROOM_STRONG_HALF = 0,  // Strong zones only · half size
                         ROOM_STRONG_BLOCK = 1, // Strong zones only · block
                         ROOM_ALL_BLOCK = 2,    // All daily zones · block
-                        ROOM_OFF = 3 };        // Off
+                        ROOM_OFF = 3,          // Off
+                        ROOM_AUTO = 4 };       // Auto (by mode)
 enum ENUM_FXW_RANGE   { RNG_HALF = 0,          // Wave trades both ways · half size
                         RNG_STRICT = 1 };      // No wave trades (strict)
 enum ENUM_FXW_PART    { PART_ALL = 0,          // All timeframes
@@ -75,109 +72,116 @@ enum ENUM_FXW_MAJFLT  { MAJ_STRUCT_ZONE = 0,   // Major structure + active zone
                         MAJ_ZONE = 1,          // Active major zone only
                         MAJ_OFF = 2 };         // Off
 
-//--- inputs
-input group "1 · Trading & simulation"
-input ENUM_FXW_LOT InpLotMode = LOT_FIXED; // Position size
-input double InpBaseLot     = 1.0;    // Base lot (1 star, fixed mode) = the indicator simulation
-input double InpRiskPct     = 0.25;   // Risk per trade, % of equity (1 star, risk mode)
-input bool   InpLotByStars  = true;   // Size by confidence (1 / 1.5 / 2 / 2.5 ×)
-input double InpMaxLot      = 0;      // Max lot per trade (0 = broker max)
-input double InpLot1a       = 3.0;    // 1m lots · ★ (fixed mode)
-input double InpLot1b       = 5.0;    // 1m lots · ★★★★ (fixed mode)
-input int    InpMaxOpen     = 0;      // Max open trades in the same direction (0 = no limit)
-input long   InpMagic       = 260929; // Magic number (base)
-input bool   InpMagicByTf   = true;   // Add the timeframe in minutes to the magic (M1 260930, M15 260944 …)
-input int    InpMaxSpread   = 0;      // Max spread in points (0 = off)
-input bool   InpPush        = false;  // Push notification on entry / exit
+//--- inputs (most important first, same order as the indicator)
+input group "⭐ 1 · Quick setup — size · stop · targets · conditions · blockers"
+input ENUM_FXW_MODE InpMode = FXM_STRICT;   // Trading mode
+input ENUM_FXW_LOT InpLotMode = LOT_FIXED;  // Size · position size
+input double InpLot1a       = 3.0;    // Size · 1m lots ★ (fixed mode)
+input double InpLot1b       = 5.0;    // Size · 1m lots ★★★★ (fixed mode)
+input double InpBaseLot     = 1.0;    // Size · base lot, other timeframes (1 star, fixed mode)
+input bool   InpLotByStars  = true;   // Size · by stars (1 / 1.5 / 2 / 2.5 ×)
+input double InpRiskPct     = 0.25;   // Size · risk per trade, % of equity (1 star, risk mode)
+input double InpMaxLot      = 0;      // Size · max lot per trade (0 = broker max)
+input ENUM_FXW_STOP InpStopMd = SLM_ATR; // Stop · distance
+input double InpSlAtrA  = 1.5;    // Stop · ATR min
+input double InpSlAtrB  = 2.0;    // Stop · ATR max
+input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Targets · profile
+input string InpPartPct = "25";   // Targets · % closed at TP1, TP2, … (rest runs to TP7)
+input ENUM_FXW_PROTECT InpProtect = PROT_STEP; // Targets · profit protection
+input int    InpMs1     = 1;      // Conditions · min stars 1m (Strict: at least 2)
+input int    InpMs5     = 1;      // Conditions · min stars 2–5m
+input int    InpMs15    = 1;      // Conditions · min stars 6–30m
+input int    InpMsH     = 1;      // Conditions · min stars above
+input int    InpMaxOpen = 3;      // Conditions · max open trades (reinforcement, 0 = no limit)
+input bool   InpUseRsi  = true;   // Blocker · RSI (no buy overbought / sell oversold unless ★★★)
+input ENUM_FXW_ROOM InpRoomMode = ROOM_AUTO; // Blocker · room (strong S/R in the way)
+input bool   InpSmOn    = true;   // Blocker · no S/R trade against a strong move
+input bool   InpUseSpk  = true;   // Blocker · skip signals after an abnormal candle
+input int    InpMaxSpread = 0;    // Blocker · max spread in points (0 = off)
 
-input group "2 · Direction & filters"
-input ENUM_FXW_MODE InpMode = FXM_STRICT; // Trading mode
-input ENUM_FXW_DIR InpDir = DIR_FIRST; // Trade direction (Custom mode)
-input bool   InpCtHalf  = true;   // …counter-trend trades at half size (Custom mode)
-input ENUM_FXW_RANGE InpRange = RNG_STRICT; // In a range (no confirmed break)
-input bool   InpBrkClose = false;  // Break confirmed by a close beyond the previous stall
-input bool   InpExh     = false;  // No trade at the end of an exhausted wave
-input ENUM_FXW_TRM InpTrMode = TRM_WAVE; // Trend
-input bool   InpSmOn    = true;   // No support / resistance trade against a strong move
-input bool   InpUseRsi  = true;   // RSI filter
-input int    InpRsiLen  = 14;     // RSI length
-input double InpRsiOS   = 30;     // No sell below
-input double InpRsiOB   = 70;     // No buy above
-input ENUM_FXW_ROOM InpRoomMode = ROOM_STRONG_BLOCK; // Room filter (support / resistance in the way)
-input bool   InpRoomMaj = false;  // Room filter: also the edges of live major zones
-input bool   InpSlSkip  = false;  // Skip a zone trade when its structural stop is wider than the max stop
-input int    InpSwLen   = 5;      // Structure swing length (bars each side)
-input int    InpRngBars = 0;      // Range: no break for (bars, 0 = auto)
-input bool   InpUseSpk  = true;   // Skip signals after an abnormal candle
-input double InpSpkK    = 2.5;    // Abnormal = range above (× ATR)
-input int    InpSpkLook = 3;      // Look back (bars)
+input group "2 · Higher-timeframe guide (zones + panel)"
+input bool   InpGuide   = true;   // Show the higher-timeframe guide
+input bool   InpG5      = true;   // …5m
+input bool   InpG15     = true;   // …15m
+input bool   InpG60     = true;   // …1H
+input bool   InpG240    = true;   // …4H
+input double InpGDist   = 1.0;    // Show zones within (× daily ATR of price)
 
-input group "3 · Waves & zones"
+input group "3 · Strategy: wave + stall + fib"
 input int    InpStL     = 3;      // Stall: bars before the turn
-input int    InpMs1     = 1;      // Minimum stars to trade · 1m
-input int    InpMs5     = 1;      // Minimum stars to trade · 2–5m
-input int    InpMs15    = 1;      // Minimum stars to trade · 6–30m
-input int    InpMsH     = 1;      // Minimum stars to trade · above
 input double InpFEntry  = 0.382;  // Zone start (fib)
 input double InpFZone   = 0.618;  // Zone end (fib)
 input double InpFInv    = 0.786;  // Invalidation (retracement)
 input double InpMinLeg  = 1.5;    // Minimum leg size (× ATR)
 input int    InpMaxWait = 300;    // Zone life (bars after the leg end)
+input ENUM_FXW_TRM InpTrMode = TRM_WAVE; // Trend
+input bool   InpBrkClose = false; // Break confirmed by a close beyond the previous stall
 input bool   InpOverlap = true;   // Buy and sell zones overlapping: keep only the stronger
+input int    InpSwLen   = 5;      // Structure swing length (bars each side)
+input int    InpRngBars = 0;      // Range: no break for (bars, 0 = auto; swing-break trend only)
 
-input group "4 · Entry"
+input group "4 · Entry & direction (Custom mode) · reinforcement"
+input ENUM_FXW_DIR InpDir = DIR_FIRST; // Trade direction (Custom)
+input bool   InpCtHalf  = true;   // …counter-trend trades at half size (Custom)
+input ENUM_FXW_ELVL InpELvl = ELVL_MID; // Entry level (Custom)
+input double InpECust   = 0.559;  // …fib level (Entry level = Fib level)
 input ENUM_FXW_ENTRY InpEntry = ENTRY_LIM_REJ; // Entry type
-input ENUM_FXW_ELVL InpELvl = ELVL_MID;        // Entry level (where the limit fills)
-input double InpECust   = 0.559;  // Entry fib level
 input int    InpMaxEnt  = 2;      // Max entries per zone
 input int    InpReCool  = 3;      // Bars between entries in the same zone
 input bool   InpReinf   = true;   // Reinforcement: add on the next zones of the same wave
 
-input group "5 · Targets"
-input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Profile
-input ENUM_FXW_STOP InpStopMd = SLM_ATR; // Stop distance
-input double InpSlAtrA  = 1.5;    // …ATR min
-input double InpSlAtrB  = 2.0;    // …ATR max
+input group "5 · Targets & stop — details"
 input double InpTp1 = 2.5;   // Custom TP1
 input double InpTp2 = 5.0;   // Custom TP2
 input double InpTp3 = 10.0;  // Custom TP3
 input double InpTp4 = 20.0;  // Custom TP4
-input double InpSlMinC = 3.0;  // Custom stop min
-input double InpSlMaxC = 10.0; // Custom stop max
+input double InpSlMinC = 3.0;  // Custom stop min (points mode)
+input double InpSlMaxC = 10.0; // Custom stop max (points mode)
 input double InpSlBuf  = 0.1;  // Stop buffer beyond the zone (× ATR)
+input bool   InpSlSkip = false; // Skip a trade when its structural stop is wider than the max stop
 
-input group "6 · Stop per timeframe (points, auto profile)"
+input group "6 · Stop per timeframe (points mode only)"
 input double InpSl1Mn  = 1.5;  // 1m · min
 input double InpSl1Mx  = 5.0;  // 1m · max
 input double InpSl5Mn  = 3.0;  // 2–5m · min
 input double InpSl5Mx  = 10.0; // 2–5m · max
 input double InpSl15Mn = 4.0;  // 6–59m · min
 input double InpSl15Mx = 10.0; // 6–59m · max
-input double InpSlHMn  = 5.0;  // 1H–4H · min
-input double InpSlHMx  = 15.0; // 1H–4H · max
+input double InpSlHMn  = 5.0;  // 1H–12H · min
+input double InpSlHMx  = 15.0; // 1H–12H · max
 input double InpSlDMn  = 10.0; // D / W / M · min
 input double InpSlDMx  = 25.0; // D / W / M · max
 
-input group "7 · Trade management"
-input ENUM_FXW_PROTECT InpProtect = PROT_STEP; // Profit protection
-input ENUM_FXW_PART InpPartMode = PART_ALL; // Partial closes at the targets
-input string InpPartPct = "25";  // % of the original size at TP1, TP2, TP3, TP4, TP5, TP6 (rest at TP7)
+input group "7 · Trade management — details"
+input ENUM_FXW_PART InpPartMode = PART_ALL; // Partial closes
 input int    InpNoProg = 15;   // No-progress exit (bars without TP1, 0 = off)
 input int    InpMaxBars = 60;  // Maximum life before TP2 (bars)
 
-input group "8 · Major timeframe"
-input bool   InpUseMaj  = true;   // Use a major timeframe
-input bool   InpMajAuto = true;   // Auto (1m→15m, 5m→1H, 15m→4H, 1H→D)
-input ENUM_TIMEFRAMES InpMajTf = PERIOD_M15; // Major timeframe when not auto
-input ENUM_FXW_MAJFLT InpMajFlt = MAJ_OFF;   // Direction filter
-input bool   InpTradeMj = true;   // Take trades at major zones
+input group "8 · Filters — details"
+input ENUM_FXW_RANGE InpRange = RNG_STRICT; // In a range (swing-break trend only)
+input int    InpRsiLen  = 14;     // RSI length
+input double InpRsiOS   = 30;     // RSI oversold (no sell below)
+input double InpRsiOB   = 70;     // RSI overbought (no buy above)
+input bool   InpRoomMaj = false;  // Room filter: also the edges of live major zones
+input bool   InpExh     = false;  // No trade at the end of an exhausted wave
+input double InpSpkK    = 2.5;    // Abnormal candle = range above (× ATR)
+input int    InpSpkLook = 3;      // …look back (bars)
+input ENUM_FXW_MAJFLT InpMajFlt = MAJ_OFF; // Major direction filter
 
-input group "9 · Daily zones & reversals"
-input bool   InpTradeDL = true;   // Take trades at daily zones (rejection)
-input bool   InpTlTrade = true;   // Trend-line touches as entries (with the trend)
+input group "9 · Extra entries (outside the wave rule)"
+input bool   InpTradeDL = true;   // Trades at daily zones (rejection)
 input int    InpDlOnce  = 1;      // …trades per strong zone per side per day
+input bool   InpTlTrade = true;   // Trend-line touches as entries (with the trend)
 input bool   InpUseRev  = false;  // Reversal trades at strong zones
 input bool   InpRevLight = false; // Wave-end reversal trades (light: 1 star, half size)
+
+input group "10 · Major timeframe (trades on this chart)"
+input bool   InpUseMaj  = true;   // Use a major timeframe
+input bool   InpMajAuto = true;   // Auto (1m→15m, 5m→15m, 15m→4H, 1H→D)
+input ENUM_TIMEFRAMES InpMajTf = PERIOD_M15; // Major timeframe when not auto
+input bool   InpTradeMj = true;   // Take trades at major zones
+
+input group "11 · Daily support / resistance"
 input double InpDlRange = 3.0;    // Search range (× daily ATR)
 input double InpDlMerge = 0.8;    // Merge distance / zone height (× chart ATR)
 input double InpDlMinW  = 2.0;    // Minimum strength to trade a daily zone
@@ -185,15 +189,18 @@ input bool   InpDlSwing = true;   // Include daily swing highs / lows
 input double InpDlStep  = 0.0;    // Round-number step (0 = auto)
 input string InpDlAn    = "";     // Analyst levels (comma separated)
 
-input group "11 · Display"
+input group "12 · Display & journal"
 input bool   InpDraw    = true;   // Draw zones and daily levels
 input bool   InpLogSkip = true;   // Journal: why a touched zone gave no trade
+input bool   InpPush    = false;  // Push notification on entry / exit
 
-input group "EA · start-up"
-input int    InpWarmup  = 1500;   // History bars used to build the state at start
+input group "13 · Account & start-up"
+input long   InpMagic     = 260929; // Magic number (base)
+input bool   InpMagicByTf = true;   // Add the timeframe in minutes to the magic (M1 260930, M15 260944 …)
+input int    InpWarmup    = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.23"
+#define FXW_VER   "3.25"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -484,6 +491,13 @@ bool        gCtHalf = true;
 int         sDnK = -1, sUpK = -1, brkUpK = -1, brkDnK = -1, tlTK = -1000;
 double      tsB = -1, tsP = 0, tsM = 0, trB = -1, trP = 0, trM = 0;
 int         tsE = 0, trE = 0, lastTlB = -1, lastThB = -1;
+//--- higher-timeframe guide: one wave engine per timeframe (map only, no trades)
+CWaveEngine     gE[4];
+bool            gOnE[4];
+datetime        gLast[4];
+ENUM_TIMEFRAMES gTfs[4] = {PERIOD_M5, PERIOD_M15, PERIOD_H1, PERIOD_H4};
+string          gNmE[4] = {"M5", "M15", "H1", "H4"};
+double          gDAtr = 0;
 string ModeName(void) { return mStrict ? "Strict" : mBal ? "Balanced" : mOpen ? "Open" : "Custom"; }
 
 //+------------------------------------------------------------------+
@@ -598,6 +612,7 @@ void BuildDaily(double px, double ca)
    //--- daily ATR(14), EMA 20/50, 20-day range
    double atrD = 0; for(int i = last - 13; i <= last; i++) atrD += MathMax(d[i].high - d[i].low, MathMax(MathAbs(d[i].high - d[i - 1].close), MathAbs(d[i].low - d[i - 1].close)));
    atrD /= 14.0;
+   gDAtr = atrD;
    double e20 = d[0].close, e50 = d[0].close;
    for(int i = 1; i <= last; i++) { e20 += (d[i].close - e20) * 2.0 / 21.0; e50 += (d[i].close - e50) * 2.0 / 51.0; }
    double h20 = 0, l20 = DBL_MAX;
@@ -956,6 +971,41 @@ void Redraw(void)
          DrawLine(nm + "m", maj.T[maj.zones[z].b1], (zA + zB) / 2, tR, maj.zones[z].dir > 0 ? cBuy : cSell, 3, STYLE_SOLID);
          DrawText(nm + "t", tR, MathMax(zA, zB), TfLabel(maj.secs) + (maj.zones[z].dir > 0 ? " BUY ZONE · MAJOR" : " SELL ZONE · MAJOR"), maj.zones[z].dir > 0 ? cBuy : cSell);
         }
+   //--- higher-timeframe guide: thicker border = higher timeframe; a lower zone inside a higher one is not drawn twice
+   ObjectsDeleteAll(0, FXW_PFX + "G");
+   double aTop[], aBot[]; int aDir[];
+   double pxG = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   for(int ii = 0; ii < 4; ii++)
+     {
+      int i = 3 - ii;
+      if(!gOnE[i] || (majOn && gTfs[i] == majTf)) continue;
+      for(int side = 0; side < 2; side++)
+        {
+         int d = side == 0 ? -1 : 1, best = -1;
+         for(int z = 0; z < ArraySize(gE[i].zones); z++)
+            if(gE[i].zones[z].dir == d && gE[i].zones[z].state <= 1 && MathAbs(gE[i].zones[z].p0 - gE[i].zones[z].p1) >= InpMinLeg * gE[i].Atr())
+               if(best < 0 || gE[i].zones[z].id > gE[i].zones[best].id) best = z;
+         if(best < 0) continue;
+         double zA, zB; CapZ(gE[i].Lvl(gE[i].zones[best], InpFEntry), gE[i].Lvl(gE[i].zones[best], InpFZone), gE[i].secs, zA, zB);
+         double top = MathMax(zA, zB), bot = MathMin(zA, zB);
+         double dst = pxG > top ? pxG - top : pxG < bot ? bot - pxG : 0;
+         if(gDAtr > 0 && dst > InpGDist * gDAtr) continue;
+         bool dup = false;
+         for(int j = 0; j < ArraySize(aTop); j++) if(aDir[j] == d && MathMin(top, aTop[j]) - MathMax(bot, aBot[j]) >= 0.5 * (top - bot)) dup = true;
+         if(dup) continue;
+         int na = ArraySize(aTop); ArrayResize(aTop, na + 1); ArrayResize(aBot, na + 1); ArrayResize(aDir, na + 1);
+         aTop[na] = top; aBot[na] = bot; aDir[na] = d;
+         color c = d > 0 ? cBuy : cSell;
+         string nm = FXW_PFX + "G" + gNmE[i] + (d > 0 ? "B" : "S");
+         datetime tL = gE[i].T[gE[i].zones[best].bB];
+         if(ObjectFind(0, nm) < 0) ObjectCreate(0, nm, OBJ_RECTANGLE, 0, tL, top, tR, bot);
+         ObjectSetInteger(0, nm, OBJPROP_COLOR, c); ObjectSetInteger(0, nm, OBJPROP_FILL, false);
+         ObjectSetInteger(0, nm, OBJPROP_WIDTH, i == 3 ? 3 : i == 2 ? 2 : 1);
+         ObjectSetInteger(0, nm, OBJPROP_STYLE, i == 0 ? STYLE_DOT : STYLE_SOLID);
+         ObjectSetInteger(0, nm, OBJPROP_BACK, true); ObjectSetInteger(0, nm, OBJPROP_SELECTABLE, false);
+         DrawText(nm + "t", tR, d > 0 ? bot : top, gNmE[i] + (d > 0 ? " BUY ZONE" : " SELL ZONE") + (gE[i].zones[best].state == 1 ? " · touched" : ""), c);
+        }
+     }
    //--- open trades of this timeframe: entry and TP1–TP4 (the broker draws SL and the TP7 order)
    for(int pi = 0; pi < ArraySize(pos); pi++)
      {
@@ -1011,6 +1061,30 @@ void TodayStats(int &trades, int &wins, double &profit, double &won, double &los
      }
   }
 
+//--- higher-timeframe panel lines: trend · RSI · MACD · zone
+string GuideText(void)
+  {
+   string r = "";
+   double px = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+   for(int i = 0; i < 4; i++)
+     {
+      if(!gOnE[i] || gE[i].n < 30) continue;
+      int k = gE[i].n - 1;
+      double mh = gE[i].MH[k], m1 = gE[i].MH[k - 1];
+      string zt = "-"; double best = -1;
+      for(int z = 0; z < ArraySize(gE[i].zones); z++)
+        {
+         if(gE[i].zones[z].state > 1) continue;
+         double zA, zB; CapZ(gE[i].Lvl(gE[i].zones[z], InpFEntry), gE[i].Lvl(gE[i].zones[z], InpFZone), gE[i].secs, zA, zB);
+         double top = MathMax(zA, zB), bot = MathMin(zA, zB), dst = px > top ? px - top : px < bot ? bot - px : 0;
+         if(best < 0 || dst < best) { best = dst; zt = dst == 0 ? "in " + (gE[i].zones[z].dir > 0 ? "BUY" : "SELL") : (gE[i].zones[z].dir > 0 ? "BUY " : "SELL ") + DoubleToString(dst, 1) + " away"; }
+        }
+      r += "\n   " + gNmE[i] + "  " + (gE[i].trend > 0 ? "UP  " : gE[i].trend < 0 ? "DOWN" : "none") + "  RSI " + DoubleToString(gE[i].RSI[k], 0) +
+           "  MACD " + (mh > 0 ? (mh >= m1 ? "up strong" : "up weak") : (mh <= m1 ? "down strong" : "down weak")) + "  zone " + zt;
+     }
+   return r == "" ? "" : "\nHigher timeframes:" + r;
+  }
+
 void Dashboard(bool okB, bool okS)
   {
    int tr, wn; double pr, wo, lo; TodayStats(tr, wn, pr, wo, lo);
@@ -1035,7 +1109,7 @@ void Dashboard(bool okB, bool okS)
    string al = okB && !okS ? "BUY only" : okS && !okB ? "SELL only" : okB && okS ? "both" : "S/R zones only";
    Comment("FOXREX Waves EA v" + FXW_VER + "  ·  " + ModeName() + "  ·  " + _Symbol + " " + TfLabel(tfSecs) +
            "\nDirection: " + TfLabel(tfSecs) + " " + tt + "   major " + (majOn ? TfLabel(maj.secs) : "") + " " + mt +
-           "\nTrades allowed: " + al +
+           "\nTrades allowed: " + al + GuideText() +
            "\nMagic " + IntegerToString(gMagic) + " · open on this timeframe: " + IntegerToString(op) + "   floating " + DoubleToString(fl, 2) +
            "\nFOXREX positions on " + _Symbol + ":" + (lst == "" ? " none" : lst) +
            "\nToday " + TfLabel(tfSecs) + ": " + IntegerToString(tr) + " closed · " + IntegerToString(wn) + " won · " + IntegerToString(tr - wn) + " lost · win " + (tr > 0 ? DoubleToString(100.0 * wn / tr, 0) + "%" : "–") +
@@ -1213,6 +1287,7 @@ void OnNewBar(bool live)
          int dSt = dZW[j] >= 4 ? 3 : 2;
          bool bR = !busyB && okBuyZ && !noSupBuy && RsiOk(1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZB[j] < InpDlOnce && lo < C0 && hc12 > hi && lw3 <= hi && C0 > hi && C0 > O0;
          bool sR = !busyS && okSellZ && !noResSell && RsiOk(-1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZS[j] < InpDlOnce && hi > C0 && lc12 < lo && hg3 >= lo && C0 < lo && C0 < O0;
+         if((bR || sR) && InpSlSkip && (bR ? C0 - (MathMin(lo, L0) - InpSlBuf * a) : (MathMax(hi, H0) + InpSlBuf * a) - C0) > PSlMax(tfSecs, a)) { bR = false; sR = false; }
          if(bR || sR)
            {
             int d = bR ? 1 : -1;
@@ -1258,15 +1333,15 @@ void OnNewBar(bool live)
          st = (int)MathMin(st + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
          bool rOk = RsiOk(d, st, rsiBuy, rsiSell, momUp, momDn);
          bool filt = (d > 0 ? okBuy : okSell) && rOk && !ctNo;
-         bool can = zz.state <= 1 && valid && (pass == 1 || k > zz.b1) && zz.armed && (pass == 1 || zz.stars >= MinStars(tfSecs))
+         bool can = zz.state <= 1 && valid && (pass == 1 || k > zz.bB) && zz.armed && (pass == 1 || zz.stars >= MinStars(tfSecs))
                     && zz.entries < InpMaxEnt && k - zz.lastE >= InpReCool && trendOk && filt && !spkBlock && !(d > 0 ? busyB : busyS)
                     && !(live && ZoneOpen(pass == 0 ? "L" : "M", zz.id));
-         if(InpSlSkip && pass == 0 && MathAbs(level - (zI - d * InpSlBuf * a)) > PSlMax(tfSecs, a)) can = false;
+         if(InpSlSkip && MathAbs(level - (zI - d * InpSlBuf * a)) > PSlMax(tfSecs, a)) can = false;
          //--- warm-up: simulate fills so old zones are not traded again
          if(!live)
            {
             bool lvlHit = d < 0 ? H0 >= level : L0 <= level;
-            if(zz.state <= 1 && valid && zz.armed && lvlHit && InpEntry != ENTRY_REJ && (pass == 0 || eng.T[k] >= maj.T[zz.b1] + maj.secs))
+            if(zz.state <= 1 && valid && zz.armed && lvlHit && InpEntry != ENTRY_REJ && (pass == 0 ? k > zz.bB : eng.T[k] >= maj.T[zz.bB] + maj.secs))
               {
                if(pass == 0) { eng.zones[z].entries++; eng.zones[z].lastE = k; eng.zones[z].armed = false; }
                else          { maj.zones[z].entries++; maj.zones[z].lastE = k; maj.zones[z].armed = false; }
@@ -1280,7 +1355,7 @@ void OnNewBar(bool live)
          bool invalid = d < 0 ? C0 > zI : C0 < zI;
          bool hitLvl = d < 0 ? H0 >= level : L0 <= level;
          //--- journal: the entry level (or a rejection) was reached but the rules gave no trade
-         if(InpLogSkip && !can && zz.state <= 1 && valid && !invalid && (pass == 1 || k > zz.b1) && ((InpEntry != ENTRY_REJ && hitLvl) || (InpEntry != ENTRY_LIM && inZone && rej && near)) && k - zz.skK > 1)
+         if(InpLogSkip && !can && zz.state <= 1 && valid && !invalid && (pass == 1 || k > zz.bB) && ((InpEntry != ENTRY_REJ && hitLvl) || (InpEntry != ENTRY_LIM && inZone && rej && near)) && k - zz.skK > 1)
            {
             string w = "";
             if(!trendOk) w += trOn ? (trend == 0 ? " range;" : " against trend;") : " direction setting;";
@@ -1321,6 +1396,7 @@ void OnNewBar(bool live)
          int td = 0; double tv = 0;
          if(trend == 1 && alB && !busyB && okBuy && RsiOk(1, 2, rsiBuy, rsiSell, momUp, momDn) && tsB >= 0 && k > tsE + 2 && L0 <= tsV + 0.1 * a && C0 > tsV && rjB) { td = 1; tv = tsV; }
          else if(trend == -1 && alS && !busyS && okSell && RsiOk(-1, 2, rsiBuy, rsiSell, momUp, momDn) && trB >= 0 && k > trE + 2 && H0 >= trV - 0.1 * a && C0 < trV && rjS) { td = -1; tv = trV; }
+         if(td != 0 && InpSlSkip && (td > 0 ? C0 - (MathMin(L0, tv) - InpSlBuf * a) : (MathMax(H0, tv) + InpSlBuf * a) - C0) > PSlMax(tfSecs, a)) td = 0;
          if(td != 0)
            {
             double dist = ClampSl(td > 0 ? C0 - (MathMin(L0, tv) - InpSlBuf * a) : (MathMax(H0, tv) + InpSlBuf * a) - C0, tfSecs, false, a);
@@ -1358,6 +1434,19 @@ void FeedMajor(void)
    for(int i = 0; i < got; i++) if(r[i].time > lastMajBar) { maj.AddBar(r[i]); lastMajBar = r[i].time; }
   }
 
+void FeedGuide(void)
+  {
+   for(int i = 0; i < 4; i++)
+     {
+      if(!gOnE[i]) continue;
+      datetime t = iTime(_Symbol, gTfs[i], 1);
+      if(t == 0 || t <= gLast[i]) continue;
+      MqlRates r[]; ArraySetAsSeries(r, false);
+      int got = CopyRates(_Symbol, gTfs[i], 1, gLast[i] == 0 ? 600 : 50, r);
+      for(int j = 0; j < got; j++) if(r[j].time > gLast[i]) { gE[i].AddBar(r[j]); gLast[i] = r[j].time; }
+     }
+  }
+
 int DayKey(datetime t) { MqlDateTime s; TimeToStruct(t, s); return s.year * 10000 + s.mon * 100 + s.day; }
 
 void CheckDay(void)
@@ -1382,7 +1471,7 @@ int OnInit()
    mStrict = InpMode == FXM_STRICT; mBal = InpMode == FXM_BAL; mOpen = InpMode == FXM_OPEN; mCust = InpMode == FXM_CUSTOM;
    gDir    = mStrict ? DIR_TREND : mCust ? InpDir : DIR_FIRST;
    gELvl   = mOpen ? ELVL_START : mCust ? InpELvl : ELVL_MID;
-   gRoom   = mOpen ? ROOM_STRONG_HALF : mCust ? InpRoomMode : ROOM_STRONG_BLOCK;
+   gRoom   = InpRoomMode == ROOM_AUTO ? (mOpen ? ROOM_STRONG_HALF : ROOM_STRONG_BLOCK) : InpRoomMode;
    gCtHalf = mCust ? InpCtHalf : true;
    sDnK = -1; sUpK = -1; brkUpK = -1; brkDnK = -1; tlTK = -1000; tsB = -1; trB = -1; lastTlB = -1; lastThB = -1;
    { string pp[]; int np = StringSplit(InpPartPct, ',', pp); ArrayResize(gPart, np); for(int i = 0; i < np; i++) gPart[i] = StringToDouble(pp[i]); }
@@ -1392,11 +1481,20 @@ int OnInit()
    tfSecs = PeriodSeconds(_Period);
    eng.Init(_Period, 2);
    //--- major timeframe
-   ENUM_TIMEFRAMES autoTf = tfSecs <= 60 ? PERIOD_M15 : tfSecs <= 300 ? PERIOD_H1 : tfSecs <= 900 ? PERIOD_H4 : tfSecs <= 3600 ? PERIOD_D1 : PERIOD_W1;
+   ENUM_TIMEFRAMES autoTf = tfSecs <= 60 ? PERIOD_M15 : tfSecs <= 300 ? PERIOD_M15 : tfSecs <= 900 ? PERIOD_H4 : tfSecs <= 3600 ? PERIOD_D1 : PERIOD_W1;
    majTf = InpMajAuto ? autoTf : InpMajTf;
    majOn = InpUseMaj && PeriodSeconds(majTf) > tfSecs;
    maj.Init(majOn ? majTf : _Period, 1);
    FeedMajor();
+   //--- higher-timeframe guide (only timeframes above this chart)
+   bool gSel[4]; gSel[0] = InpG5; gSel[1] = InpG15; gSel[2] = InpG60; gSel[3] = InpG240;
+   for(int i = 0; i < 4; i++)
+     {
+      gOnE[i] = InpGuide && gSel[i] && PeriodSeconds(gTfs[i]) > tfSecs;
+      gLast[i] = 0;
+      gE[i].Init(gOnE[i] ? gTfs[i] : _Period, 1);
+     }
+   FeedGuide();
    //--- warm-up on history (no trading)
    MqlRates r[]; ArraySetAsSeries(r, false);
    int got = CopyRates(_Symbol, _Period, 1, (int)MathMax(InpWarmup, 200), r);
@@ -1435,6 +1533,7 @@ void OnTick()
       int got = CopyRates(_Symbol, _Period, 1, 20, r);
       for(int i = 0; i < got; i++) if(r[i].time > lastBar) { eng.AddBar(r[i]); lastBar = r[i].time; }
       FeedMajor();
+      FeedGuide();
       CheckDay();
       TimeExits();
       OnNewBar(true);
