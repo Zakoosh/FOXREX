@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
+const root=new URL('../../',import.meta.url),read=p=>fs.readFileSync(new URL(p,root),'utf8');
+test('curated social assets use truthful profile destinations',()=>{const d=JSON.parse(read('data/social-posts.json'));assert.equal(d.automaticSync,false);assert.equal(d.posts.length,3);for(const p of d.posts){assert.equal(p.url,'https://www.instagram.com/foxrextrade/');assert.equal(p.destination,'profile');assert.ok(fs.existsSync(new URL(p.image,root)));assert.ok(p.cropY>0&&p.cropY<50);}});
+test('each language has accessible social images and archive context',()=>{for(const lang of ['','ar/','tr/']){const html=read(lang+'index.html');assert.equal((html.match(/class="social-post"/g)||[]).length,3);assert.match(html,/noopener noreferrer/);assert.match(html,/class="social-post__image"/);if(lang==='tr/')assert.match(html,/güncel piyasa fiyatı/);}});

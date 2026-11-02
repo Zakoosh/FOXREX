@@ -1,0 +1,463 @@
+{
+  "authorization": "owner-authorized-2026-10-25",
+  "date": "2026-11-03",
+  "educationOnly": true,
+  "records": [
+    {
+      "type": "REX_EXPLAINS",
+      "language": "en",
+      "slug": "forex-spread-cost",
+      "title": "Forex spread explained: bid, ask and the real cost of a trade",
+      "summary": "Learn to calculate the bid–ask spread, distinguish pips from points and include commissions when evaluating a hypothetical forex trade.",
+      "body": "Why a trade can start below zero\nA spread is the distance between the price available to a buyer and the price available to a seller. Buying and immediately selling at unchanged quotes crosses that gap. A directionally correct view can still fail to cover transaction costs. This guide uses invented arithmetic examples, never current quotes or a recommended trade.\n\nA worked EUR/USD example\nAssume a hypothetical bid of 1.1000 and ask of 1.1002. The difference is 0.0002. With a pip defined as 0.0001 for this example, the spread is two pips. On 10,000 EUR, that gap corresponds to USD 2 before commission. A fifth decimal is a fractional pip; two screen points are not necessarily two pips.\n\nBuild a complete cost worksheet\nWrite down the instrument, unit, position size and both quote timestamps. Then separate spread, opening and closing commissions, any financing and currency conversion. If a hypothetical round trip adds USD 1 commission, the unchanged-price cost becomes USD 3 in this example. Do not add spread twice: it is already reflected by using the actual buy and sell prices.\n\nComparing two providers fairly\nCompare the same product at comparable times and the same size. A midpoint chart is not necessarily an executable bid or ask. A spot currency, a CFD and a futures contract are distinct instruments. A lower advertised spread alone cannot establish lower total cost; inspect the contract and fee schedule.\n\nBefore reading a breakout\nRecord whether the chart uses bid, ask or midpoint and which quote triggers an order. An apparent touch on one price series may not reproduce execution on another. Use the FOXREX economic calendar to identify scheduled risk, and the leverage and position-size lessons to separate cost from exposure. All content is educational, not an investment recommendation; trading involves risk.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "SEC Investor.gov — forex costs and quotations",
+          "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/foreign",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-spread-cost.webp",
+        "alt": "Two separated quote panels illustrating the spread"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "Learn to calculate the bid–ask spread, distinguish pips from points and include commissions when evaluating a hypothetical forex trade."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "ar",
+      "slug": "forex-spread-cost",
+      "title": "ما هو السبريد في الفوركس؟ حساب الفرق بين سعر الشراء والبيع",
+      "summary": "شرح السبريد والنقطة والبيب بأمثلة حسابية تعليمية، مع طريقة جمع العمولات وتكاليف الصفقة دون احتسابها مرتين.",
+      "body": "لماذا تبدأ الصفقة بخسارة ظاهرة؟\nالسبريد هو الفارق بين السعر المتاح للمشتري والسعر المتاح للبائع. الشراء ثم البيع مباشرة عند أسعار ثابتة يعبر هذا الفارق. لذلك قد تصح قراءة الاتجاه ولا تكفي الحركة لتغطية التكلفة. الأرقام التالية افتراضية لتوضيح الحساب، وليست أسعارًا حالية أو توصية بصفقة.\n\nمثال حسابي على اليورو والدولار\nلنفترض سعر بيع Bid يساوي 1.1000 وسعر شراء Ask يساوي 1.1002. الفارق 0.0002، أي بيبان إذا عرّفنا البيب في المثال بأنه 0.0001. عند حجم 10,000 يورو تعادل الفجوة دولارين قبل العمولة. الخانة العشرية الخامسة جزء من البيب؛ نقطتان على شاشة المنصة لا تعنيان دائمًا بيبين.\n\nورقة تكلفة واضحة\nدوّن الأداة ووحدة التسعير والحجم وتوقيت السعرين. افصل السبريد عن عمولة الفتح والإغلاق والتمويل وتحويل العملة. إذا أضفنا عمولة افتراضية مقدارها دولار واحد للدورة الكاملة تصبح تكلفة المثال ثلاثة دولارات عند ثبات الأسعار. لا تضف السبريد مرتين؛ استخدام سعر الشراء والبيع الفعليين يتضمن أثره أصلًا.\n\nكيف تقارن بين منصتين؟\nقارن المنتج نفسه والحجم نفسه في وقتين متقاربين. سعر المنتصف في الشارت ليس بالضرورة سعر تنفيذ. العملة الفورية وعقد الفروقات والعقد الآجل أدوات مختلفة، حتى لو ظهرت بأسماء متشابهة. الإعلان عن سبريد أقل لا يثبت انخفاض التكلفة الإجمالية؛ راجع مواصفات العقد وجدول الرسوم.\n\nقبل تفسير الاختراق\nاعرف هل الشارت يعرض Bid أم Ask أم المنتصف، وأي سعر يفعّل الأمر. لمس المستوى على سلسلة سعرية لا يثبت إمكانية تنفيذه على سلسلة أخرى. راجع تقويم FOXREX للمخاطر المجدولة، ثم دليل الرافعة وحجم الصفقة للفصل بين التكلفة والتعرّض. المحتوى تعليمي وليس توصية استثمارية، والتداول ينطوي على مخاطر.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "SEC Investor.gov — forex costs and quotations",
+          "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/foreign",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-spread-cost.webp",
+        "alt": "لوحتا تسعير منفصلتان لتوضيح السبريد"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "شرح السبريد والنقطة والبيب بأمثلة حسابية تعليمية، مع طريقة جمع العمولات وتكاليف الصفقة دون احتسابها مرتين."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "tr",
+      "slug": "forex-spread-cost",
+      "title": "Forex spread nedir? Alış, satış ve gerçek işlem maliyeti",
+      "summary": "Varsayımsal EUR/USD örneğiyle spread, pip ve puan farkını öğrenin; komisyonu maliyete iki kez saymadan ekleyin.",
+      "body": "İşlem neden eksi başlayabilir?\nSpread, alıcının ödeyebildiği fiyat ile satıcının alabildiği fiyat arasındaki farktır. Fiyatlar değişmeden alıp hemen satmak bu aralığı aşmak demektir. Yönü doğru yorumlamak maliyetin karşılanacağını garanti etmez. Buradaki sayılar güncel kotasyon veya işlem önerisi değil, hesaplama örneğidir.\n\nEUR/USD ile hesaplama\nVarsayımsal satış fiyatı Bid 1.1000, alış fiyatı Ask 1.1002 olsun. Fark 0.0002’dir. Bu örnekte bir pip 0.0001 kabul edildiğinde spread iki piptir. 10,000 EUR büyüklükte fark komisyon öncesi USD 2 eder. Beşinci ondalık pipin kesridir; ekrandaki iki puan her zaman iki pip değildir.\n\nToplam maliyet tablosu\nEnstrümanı, kotasyon birimini, büyüklüğü ve iki fiyatın zamanını kaydedin. Spread, açılış/kapanış komisyonları, finansman ve döviz dönüşümünü ayırın. Varsayımsal gidiş-dönüş komisyonu USD 1 eklenirse sabit fiyatlı örneğin toplamı USD 3 olur. Gerçek alış ve satış fiyatlarını kullandığınızda spread zaten hesaba girer; ikinci kez eklemeyin.\n\nSağlayıcıları doğru karşılaştırmak\nAynı ürün, büyüklük ve yakın zamanları karşılaştırın. Grafikteki orta fiyat uygulanabilir alış veya satış fiyatı olmayabilir. Spot döviz, CFD ve vadeli sözleşme farklı ürünlerdir. Düşük ilan edilen spread tek başına düşük toplam maliyet göstermez; sözleşme şartlarını ve ücret tablosunu inceleyin.\n\nKırılma yorumundan önce\nGrafiğin Bid, Ask veya orta fiyatı gösterip göstermediğini ve emri hangi fiyatın tetiklediğini kontrol edin. Bir seride seviyeye temas diğer seride gerçekleşmiş işlem sayılmaz. Planlı riskler için FOXREX ekonomik takvimini, büyüklük için kaldıraç ve pozisyon derslerini inceleyin. İçerik eğitim amaçlıdır, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "SEC Investor.gov — forex costs and quotations",
+          "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/foreign",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-spread-cost.webp",
+        "alt": "Spreadi açıklayan iki ayrı fiyat paneli"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "Varsayımsal EUR/USD örneğiyle spread, pip ve puan farkını öğrenin; komisyonu maliyete iki kez saymadan ekleyin."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "en",
+      "slug": "forex-leverage-margin",
+      "title": "Forex leverage and margin: exposure is not your deposit",
+      "summary": "A practical explanation of notional exposure, margin and effective leverage, with a hypothetical loss example and a pre-trade checklist.",
+      "body": "Three amounts that must stay separate\nPosition value is the exposure to price changes. Margin is collateral set aside under the provider’s terms. Account equity is the account’s current value, including floating results. None of these amounts is automatically a maximum loss. This lesson explains mechanics, not a suitable leverage level.\n\nCalculate effective leverage\nAssume an account has USD 2,000 equity and a hypothetical position worth USD 20,000. Effective leverage is 20,000 divided by 2,000, or 10 times. If the margin requirement in this invented example is 5%, USD 1,000 is required as collateral. These assumptions are not current legal or broker requirements.\n\nFollow the exposure, not just the margin\nA 1% adverse movement on USD 20,000 corresponds approximately to USD 200 before costs, or 10% of the starting equity. Changing the collateral percentage does not change that price sensitivity if the position remains identical. Increasing the position does. Financing, conversion and other positions can alter the full account outcome.\n\nWhy liquidation is a separate question\nProviders can require additional funds or close positions under their rules. The threshold and protections depend on the contract and jurisdiction; do not infer them from the leverage headline. An ordinary stop is not a promise of an exact execution price. Read the product terms instead of treating the displayed margin as an account safety buffer.\n\nREX’s exposure check\nList every position and group exposures by currency: several pairs can concentrate a dollar view. Record equity, notional size, collateral, close-out terms and stress assumptions separately. Explore the spread lesson for costs and the position-size lesson for arithmetic. Calendar events help locate scheduled uncertainty, not predict its result. Education only, not investment recommendations; trading involves risk.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "CFTC — OTC forex margin and counterparty risks",
+          "url": "https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/CustomerAdvisory_MustKnowForex.html",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-leverage-margin.webp",
+        "alt": "A lever balancing collateral against larger exposure"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "A practical explanation of notional exposure, margin and effective leverage, with a hypothetical loss example and a pre-trade checklist."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "ar",
+      "slug": "forex-leverage-margin",
+      "title": "الرافعة والهامش في الفوركس: حجم التعرّض ليس مبلغ الإيداع",
+      "summary": "افهم الفرق بين قيمة الصفقة والهامش وحقوق الحساب، واحسب الرافعة الفعلية بأمثلة افتراضية دون توصيات تداول.",
+      "body": "ثلاثة مبالغ مختلفة\nقيمة المركز هي التعرّض لتغيّر السعر. الهامش ضمان يُحجز وفق شروط مقدم الخدمة، وحقوق الحساب قيمته الحالية بما فيها النتائج العائمة. لا يعني أي منها تلقائيًا الحد الأقصى للخسارة. الهدف فهم الآلية، وليس اختيار رافعة مناسبة لشخص بعينه.\n\nحساب الرافعة الفعلية\nلنفترض حقوق حساب 2,000 دولار ومركزًا افتراضيًا قيمته 20,000 دولار. الرافعة الفعلية تساوي 20,000 مقسومة على 2,000، أي عشرة أضعاف. إذا كان الهامش المفترض 5%، فالضمان المطلوب 1,000 دولار. هذه افتراضات حسابية وليست متطلبات قانونية أو شروط وسيط حالي.\n\nراقب التعرّض لا الهامش وحده\nحركة معاكسة بنسبة 1% على 20,000 دولار تعادل تقريبًا 200 دولار قبل التكاليف، أي 10% من حقوق البداية. تغيير نسبة الضمان لا يغير حساسية السعر إذا بقي المركز نفسه؛ زيادة الحجم تغيّرها. التمويل والتحويل والمراكز الأخرى قد تغير النتيجة الكاملة للحساب.\n\nالتصفية مسألة منفصلة\nقد يطلب مقدم الخدمة أموالًا إضافية أو يغلق مراكز حسب قواعده. حد الإغلاق والحماية يعتمدان على العقد والولاية التنظيمية، ولا يمكن استنتاجهما من رقم الرافعة الإعلاني. أمر الوقف العادي لا يضمن سعر تنفيذ دقيقًا. راجع الشروط بدل اعتبار الهامش الظاهر حاجز أمان للحساب.\n\nفحص ريكس للتعرّض\nاجمع المراكز حسب العملة؛ امتلاك أزواج متعددة قد يركز الرأي نفسه تجاه الدولار. دوّن الحقوق والحجم والضمان وشروط الإغلاق وافتراضات الضغط بشكل منفصل. انتقل لدليل السبريد لفهم التكلفة ودليل حجم الصفقة لفهم الحساب. التقويم يحدد مخاطر مجدولة ولا يتنبأ بنتيجتها. المحتوى تعليمي وليس توصية استثمارية، والتداول ينطوي على مخاطر.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "CFTC — OTC forex margin and counterparty risks",
+          "url": "https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/CustomerAdvisory_MustKnowForex.html",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-leverage-margin.webp",
+        "alt": "رافعة توضّح الفرق بين الضمان والتعرّض"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "افهم الفرق بين قيمة الصفقة والهامش وحقوق الحساب، واحسب الرافعة الفعلية بأمثلة افتراضية دون توصيات تداول."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "tr",
+      "slug": "forex-leverage-margin",
+      "title": "Forex kaldıraç ve teminat: risk yalnızca yatırdığınız para değildir",
+      "summary": "Nominal pozisyon, teminat ve hesap özkaynağını ayırın; varsayımsal örnekle etkin kaldıracı ve fiyat duyarlılığını hesaplayın.",
+      "body": "Üç ayrı tutar\nNominal pozisyon fiyat değişimine maruz kalan büyüklüktür. Teminat sağlayıcının koşullarıyla ayrılan güvencedir. Özkaynak, açık sonuçlar dahil hesabın güncel değeridir. Bu tutarlardan hiçbiri kendiliğinden azami kayıp değildir. Ders bir kaldıraç tavsiyesi değil, mekanizma açıklamasıdır.\n\nEtkin kaldıraç hesabı\nHesap özkaynağı USD 2,000, varsayımsal pozisyon değeri USD 20,000 olsun. Etkin kaldıraç 20,000 / 2,000 = 10 kattır. Bu örnekte teminat oranı %5 kabul edilirse USD 1,000 güvence gerekir. Sayılar güncel mevzuat veya aracı kurum koşulu değildir.\n\nTeminattan önce büyüklük\nUSD 20,000 üzerinde %1 ters hareket, masraflardan önce yaklaşık USD 200; başlangıç özkaynağının %10’u demektir. Pozisyon aynıysa teminat yüzdesini değiştirmek fiyat duyarlılığını değiştirmez; büyüklüğü artırmak değiştirir. Finansman, dönüşüm ve diğer pozisyonlar toplam hesap sonucunu etkileyebilir.\n\nZorunlu kapanış farklı bir konudur\nSağlayıcı kendi kurallarıyla ek fon isteyebilir veya pozisyon kapatabilir. Eşikler ve korumalar sözleşmeye ve ülkeye bağlıdır; reklamda görülen kaldıraçtan çıkarılamaz. Normal stop emri kesin gerçekleşme fiyatı sözü değildir. Ekrandaki teminatı hesap için güvenlik sınırı saymadan şartları okuyun.\n\nREX’in maruziyet kontrolü\nPozisyonları para birimine göre gruplayın: farklı pariteler aynı dolar görüşünü yoğunlaştırabilir. Özkaynak, nominal büyüklük, teminat, kapanış şartları ve stres varsayımlarını ayırın. Maliyet için spread, hesap için pozisyon büyüklüğü dersini okuyun. Takvim planlı belirsizliği gösterir, sonucu öngörmez. Eğitim amaçlıdır, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "CFTC — OTC forex margin and counterparty risks",
+          "url": "https://www.cftc.gov/LearnAndProtect/AdvisoriesAndArticles/CustomerAdvisory_MustKnowForex.html",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-leverage-margin.webp",
+        "alt": "Teminat ve maruziyet farkını anlatan kaldıraç"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "Nominal pozisyon, teminat ve hesap özkaynağını ayırın; varsayımsal örnekle etkin kaldıracı ve fiyat duyarlılığını hesaplayın."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "en",
+      "slug": "forex-position-size",
+      "title": "Forex position sizing: calculate units before choosing a lot",
+      "summary": "Use an explicit EUR/USD example to connect risk budget, stop distance and units, then check conversion, contract size and execution limits.",
+      "body": "Start with a stated assumption\nA position-size calculation turns a hypothetical loss budget and a price distance into units. It does not prove that the budget is appropriate or that an order will fill at the assumed level. Establish the contract specification and account currency before using a lot label.\n\nA transparent EUR/USD worksheet\nAssume a USD account, an illustrative USD 50 loss budget and a 0.0020 distance between entry and stop on EUR/USD. Ignoring costs and assuming exact execution, units = 50 / 0.0020 = 25,000 EUR. If, and only if, the contract defines a standard lot as 100,000 EUR, that equals 0.25 lot. These are invented educational inputs, not trade levels.\n\nWhat happens when the distance doubles?\nKeeping the same USD 50 budget while doubling the assumed distance to 0.0040 produces 12,500 EUR. Size falls because each euro carries twice the assumed price risk. Moving a stop solely to obtain a larger position reverses the logic: the analytical invalidation should be considered separately from the chosen budget.\n\nCosts, conversion and contract steps\nIf a simplified example reserves USD 5 for estimated costs, only USD 45 remains for the assumed price movement: 45 / 0.0020 = 22,500 EUR. Real commissions can depend on size, requiring recalculation. Where the quote currency differs from the account currency, convert the per-unit loss using a stated rate. Respect minimum size and volume increments; never round up without checking the resulting exposure.\n\nWhy the worksheet is not a loss guarantee\nSlippage, gaps and conversion changes can make realized loss exceed the calculation. Multiple positions can share the same risk driver. For gold CFDs, verify ounces per lot and dollar move per ounce; do not carry the EUR/USD lot convention into XAU/USD. Read the leverage and spread lessons, then check the calendar before interpreting a scenario. Educational only, not investment recommendations; trading involves risk.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "ASIC Moneysmart — forex risk and execution",
+          "url": "https://moneysmart.gov.au/complex-investment-products/forex-trading",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-position-size.webp",
+        "alt": "A sizing worksheet and a risk dial"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "Use an explicit EUR/USD example to connect risk budget, stop distance and units, then check conversion, contract size and execution limits."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "ar",
+      "slug": "forex-position-size",
+      "title": "حساب حجم الصفقة في الفوركس: من ميزانية الخسارة إلى اللوت",
+      "summary": "مثال EUR/USD يشرح الوحدات ومسافة الوقف وقيمة اللوت، مع أثر التكاليف وتحويل العملة وحدود التنفيذ.",
+      "body": "ابدأ بافتراض معلن\nحساب الحجم يحوّل ميزانية خسارة افتراضية ومسافة سعرية إلى وحدات. لا يثبت أن الميزانية مناسبة لك أو أن التنفيذ سيكون عند المستوى المفترض. تأكد من مواصفات العقد وعملة الحساب قبل الاعتماد على كلمة لوت.\n\nمثال واضح على EUR/USD\nنفترض حسابًا بالدولار وميزانية خسارة تعليمية 50 دولارًا ومسافة 0.0020 بين الدخول والوقف. بإهمال التكاليف وافتراض التنفيذ الدقيق، الوحدات = 50 / 0.0020 = 25,000 يورو. إذا كان العقد يعرّف اللوت القياسي بأنه 100,000 يورو، فهذا يعادل 0.25 لوت. هذه مدخلات مختلقة للحساب فقط وليست مستويات تداول.\n\nماذا لو تضاعفت المسافة؟\nمع إبقاء ميزانية 50 دولارًا ومضاعفة المسافة المفترضة إلى 0.0040 تصبح النتيجة 12,500 يورو. ينخفض الحجم لأن كل يورو يحمل ضعف المخاطرة السعرية المفترضة. تغيير الوقف لمجرد تكبير الصفقة يعكس المنطق؛ ناقش بطلان الفكرة التحليلية بشكل منفصل عن الميزانية.\n\nالتكلفة والتحويل وخطوة الحجم\nإذا حجزنا في مثال مبسط خمسة دولارات للتكاليف يبقى 45 دولارًا للحركة المفترضة: 45 / 0.0020 = 22,500 يورو. قد تعتمد العمولة الحقيقية على الحجم فتحتاج إعادة الحساب. إذا اختلفت عملة التسعير عن عملة الحساب، حوّل خسارة الوحدة بسعر تحويل معلن. احترم الحد الأدنى وخطوات الحجم، ولا تقرّب للأعلى دون مراجعة التعرّض الناتج.\n\nلماذا ليست ضمانًا للخسارة؟\nقد تجعل الفجوات والانزلاق وتغيّر التحويل الخسارة الفعلية أكبر من الحساب. وقد تشترك مراكز متعددة بمحرك المخاطرة نفسه. في عقود فروقات الذهب تحقق من الأونصات لكل لوت وأثر الدولار لكل أونصة؛ لا تنقل تعريف لوت EUR/USD إلى XAU/USD. اقرأ دليل الرافعة والسبريد وراجع التقويم قبل تفسير السيناريو. المحتوى تعليمي وليس توصية استثمارية، والتداول ينطوي على مخاطر.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "ASIC Moneysmart — forex risk and execution",
+          "url": "https://moneysmart.gov.au/complex-investment-products/forex-trading",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-position-size.webp",
+        "alt": "ورقة حساب حجم ومؤشر للمخاطرة"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "مثال EUR/USD يشرح الوحدات ومسافة الوقف وقيمة اللوت، مع أثر التكاليف وتحويل العملة وحدود التنفيذ."
+      }
+    },
+    {
+      "type": "REX_EXPLAINS",
+      "language": "tr",
+      "slug": "forex-position-size",
+      "title": "Forex pozisyon büyüklüğü hesaplama: lottan önce birimler",
+      "summary": "EUR/USD örneğiyle kayıp bütçesi, stop mesafesi ve birimleri hesaplayın; maliyet, döviz dönüşümü ve sözleşme adımlarını kontrol edin.",
+      "body": "Varsayımı açık yazın\nPozisyon hesabı, varsayımsal kayıp bütçesi ile fiyat mesafesini birimlere dönüştürür. Bütçenin size uygun olduğunu veya emrin varsayılan seviyede gerçekleşeceğini kanıtlamaz. Lot etiketinden önce sözleşme özelliklerini ve hesap para birimini belirleyin.\n\nŞeffaf EUR/USD örneği\nUSD hesap, eğitim amaçlı USD 50 kayıp bütçesi ve giriş-stop arasında 0.0020 fiyat mesafesi varsayın. Masrafsız ve tam gerçekleşme kabulüyle birim = 50 / 0.0020 = 25,000 EUR. Yalnızca sözleşme bir standart lotu 100,000 EUR tanımlıyorsa sonuç 0.25 lottur. Bunlar gerçek işlem seviyeleri değil, hesaplama girdileridir.\n\nMesafe iki katına çıkarsa\nAynı USD 50 bütçede mesafe 0.0040 olursa sonuç 12,500 EUR olur. Her euronun varsayılan fiyat riski iki katına çıktığı için büyüklük düşer. Sırf pozisyonu artırmak için stopu değiştirmek mantığı tersine çevirir; analitik geçersizlik bütçeden ayrı değerlendirilmelidir.\n\nMasraf, dönüşüm ve hacim adımı\nBasitleştirilmiş örnekte USD 5 masraf ayrılırsa fiyat hareketine USD 45 kalır: 45 / 0.0020 = 22,500 EUR. Gerçek komisyon büyüklüğe bağlı olabilir ve yeniden hesap gerekir. Kotasyon para birimi hesaptan farklıysa birim kaybını belirtilen kurla dönüştürün. Minimum büyüklük ve hacim adımlarını kontrol edin; maruziyeti incelemeden yukarı yuvarlamayın.\n\nNeden kayıp garantisi değildir?\nKayma, boşluklar ve dönüşüm hareketi gerçek kaybı hesabın üzerine çıkarabilir. Birden fazla pozisyon aynı risk etkenini paylaşabilir. Altın CFD’sinde lot başına onsu ve ons başına dolar hareketini doğrulayın; EUR/USD lot tanımını XAU/USD’ye taşımayın. Kaldıraç ve spread derslerini okuyup senaryodan önce takvime bakın. İçerik eğitim amaçlıdır, yatırım tavsiyesi değildir; işlem yapmak risk içerir.",
+      "tags": [
+        "forex-foundations",
+        "forex-education"
+      ],
+      "sourceReferences": [
+        {
+          "name": "ASIC Moneysmart — forex risk and execution",
+          "url": "https://moneysmart.gov.au/complex-investment-products/forex-trading",
+          "retrievedAt": "2026-11-02T22:46:25Z",
+          "sourceType": "official"
+        }
+      ],
+      "image": {
+        "src": "assets/media/forex-position-size.webp",
+        "alt": "Büyüklük hesaplama tablosu ve risk göstergesi"
+      },
+      "fields": {
+        "format": "lesson",
+        "takeaway": "EUR/USD örneğiyle kayıp bütçesi, stop mesafesi ve birimleri hesaplayın; maliyet, döviz dönüşümü ve sözleşme adımlarını kontrol edin."
+      }
+    }
+  ],
+  "calendar": {
+    "schemaVersion": 1,
+    "updatedAt": "2026-10-26T10:00:23.570Z",
+    "timezone": "Europe/Istanbul",
+    "coverage": {
+      "en": "Selected verified German, US and euro-area events for 26 October–2 November. Selective coverage, not a full global calendar. No verified consensus or unreleased actuals are supplied.",
+      "ar": "أحداث ألمانية وأمريكية وأوروبية مختارة وموثقة للفترة 26 أكتوبر–2 نوفمبر. التغطية انتقائية وليست تقويمًا عالميًا شاملًا. لا تُدرج توقعات غير موثقة أو نتائج قبل صدورها.",
+      "tr": "26 Ekim–2 Kasım için Almanya, ABD ve euro bölgesinden seçilmiş doğrulanmış olaylar. Küresel takvimin tamamı değildir. Doğrulanmamış beklentiler ve açıklanmamış sonuçlar verilmez."
+    },
+    "events": [
+      {
+        "id": "fomc-2026-10-28",
+        "at": "2026-10-28T18:00:00Z",
+        "title": {
+          "en": "FOMC policy decision",
+          "ar": "قرار السياسة النقدية للفيدرالي",
+          "tr": "Fed faiz kararı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/fed-decision-october-28-2026/"
+      },
+      {
+        "id": "fomc-press-2026-10-28",
+        "at": "2026-10-28T18:30:00Z",
+        "title": {
+          "en": "FOMC press conference",
+          "ar": "المؤتمر الصحفي للفيدرالي",
+          "tr": "Fed basın toplantısı"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "Federal Reserve — October calendar",
+          "url": "https://www.federalreserve.gov/newsevents/2026-october.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/fed-decision-october-28-2026/"
+      },
+      {
+        "id": "gdp-q3-advance-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "US GDP — Q3 advance estimate",
+          "ar": "الناتج المحلي الأمريكي — التقدير الأول للربع الثالث",
+          "tr": "ABD GSYH — 3. çeyrek ilk tahmin"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/us-gdp-q3-october-29-2026/"
+      },
+      {
+        "id": "pce-2026-10-29",
+        "at": "2026-10-29T12:30:00Z",
+        "title": {
+          "en": "Personal Income and Outlays — September (PCE)",
+          "ar": "الدخل والإنفاق الشخصي — سبتمبر (PCE)",
+          "tr": "Kişisel gelir ve harcamalar — Eylül (PCE)"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BEA — release schedule",
+          "url": "https://www.bea.gov/news/schedule",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/pce-september-october-29-2026/"
+      },
+      {
+        "id": "ecb-2026-10-29",
+        "at": "2026-10-29T13:15:00Z",
+        "title": {
+          "en": "ECB monetary policy decision",
+          "ar": "قرار السياسة النقدية للبنك المركزي الأوروبي",
+          "tr": "ECB para politikası kararı"
+        },
+        "currency": "EUR",
+        "country": {
+          "en": "Euro area",
+          "ar": "منطقة اليورو",
+          "tr": "Euro bölgesi"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "ECB — meeting calendar",
+          "url": "https://www.ecb.europa.eu/press/calendars/mgcgc/html/index.en.html",
+          "checkedAt": "2026-10-26T05:46:32Z",
+          "timeUrl": "https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html"
+        },
+        "analysisPath": "news/ecb-decision-october-29-2026/"
+      },
+      {
+        "id": "eci-2026-10-30",
+        "at": "2026-10-30T12:30:00Z",
+        "title": {
+          "en": "Employment Cost Index — Q3",
+          "ar": "مؤشر تكلفة التوظيف — الربع الثالث",
+          "tr": "İstihdam Maliyeti Endeksi — 3. çeyrek"
+        },
+        "currency": "USD",
+        "country": {
+          "en": "United States",
+          "ar": "الولايات المتحدة",
+          "tr": "Amerika Birleşik Devletleri"
+        },
+        "impact": "HIGH",
+        "status": "scheduled",
+        "previous": null,
+        "forecast": null,
+        "actual": null,
+        "source": {
+          "name": "BLS — October releases",
+          "url": "https://www.bls.gov/schedule/2026/10_sched.htm",
+          "checkedAt": "2026-10-26T05:46:32Z"
+        },
+        "analysisPath": "news/employment-cost-q3-october-30-2026/"
+      },
+      {
+        "id": "ifo-business-climate-2026-10-26",
+        "at": "2026-10-26T09:30:00Z",
+        "title": {
+          "en": "Germany ifo Business Climate — October",
+          "ar": "مناخ الأعمال الألماني إيفو — أكتوبر",
+          "tr": "Almanya ifo İş Ortamı — Ekim"
+        },
+        "currency": "EUR",
+        "country": {
+          "en": "Germany",
+          "ar": "ألمانيا",
+          "tr": "Almanya"
+        },
+        "impact": "MEDIUM",
+        "status": "released",
+        "previous": null,
+        "forecast": null,
+        "actual": {
+          "value": "90.2",
+          "sourceUrl": "https://www.ifo.de/en/facts/2026-10-26/ifo-business-climate-rises-october-2026",
+          "reportingPeriod": "2026-10",
+          "sourcePublishedDate": "2026-10-26",
+          "scheduledReleaseAt": "2026-10-26T09:30:00Z",
+          "postingTime": "Not separately supplied by source",
+          "verifiedAt": "2026-10-26T10:00:23Z"
+        },
+        "source": {
+          "name": "ifo Institute — official release schedule",
+          "url": "https://www.ifo.de/en/ifo-business-climate-index-germany-october-2026",
+          "timeUrl": "https://www.ifo.de/en/survey/ifo-business-climate-index-germany",
+          "checkedAt": "2026-10-26T10:00:23.570Z"
+        },
+        "analysisPath": "news/ifo-survey-versus-output-2026-10-26/"
+      }
+    ]
+  }
+}

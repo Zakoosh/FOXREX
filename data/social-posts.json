@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "profile": "https://www.instagram.com/foxrextrade/",
+  "mode": "curated-owner-screenshots",
+  "automaticSync": false,
+  "posts": [
+    {
+      "id": "trading-styles",
+      "image": "assets/media/social/trading-styles.jpeg",
+      "cropY": 33.4,
+      "title": {
+        "en": "Which trading style fits your schedule?",
+        "ar": "أي نوع متداول يناسب وقتك؟",
+        "tr": "Zamanınıza hangi işlem tarzı uyuyor?"
+      },
+      "kind": "educational",
+      "url": "https://www.instagram.com/foxrextrade/",
+      "destination": "profile",
+      "assetOrigin": "Owner-supplied screenshot, original file retained; CSS viewport shows post artwork only."
+    },
+    {
+      "id": "nfp-explainer",
+      "image": "assets/media/social/nfp-explainer.jpeg",
+      "cropY": 32.4,
+      "title": {
+        "en": "Understanding the US jobs report",
+        "ar": "فهم تقرير الوظائف الأمريكية",
+        "tr": "ABD istihdam raporunu anlamak"
+      },
+      "kind": "historical-social",
+      "url": "https://www.instagram.com/foxrextrade/",
+      "destination": "profile",
+      "assetOrigin": "Owner-supplied screenshot, original file retained; CSS viewport shows post artwork only."
+    },
+    {
+      "id": "gold-october",
+      "image": "assets/media/social/gold-october.jpeg",
+      "cropY": 30.9,
+      "title": {
+        "en": "Gold in October: a social archive",
+        "ar": "الذهب في أكتوبر: من أرشيف المنصة",
+        "tr": "Ekim altını: sosyal medya arşivi"
+      },
+      "kind": "historical-social",
+      "url": "https://www.instagram.com/foxrextrade/",
+      "destination": "profile",
+      "assetOrigin": "Owner-supplied screenshot, original file retained; CSS viewport shows post artwork only."
+    }
+  ]
+}

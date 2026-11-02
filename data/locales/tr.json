@@ -552,5 +552,8 @@
   "Published · Istanbul time": "Yayın zamanı · İstanbul saati",
   "Connecting to market data…": "Piyasa verilerine bağlanılıyor…",
   "Prices refresh automatically: gold and Bitcoin every 20 seconds from Gold API, other markets from sourced snapshots updated every 15 minutes. Quotes are indicative, not an executable feed; a dimmed price is older than 30 minutes.": "Fiyatlar otomatik güncellenir: altın ve Bitcoin her 20 saniyede Gold API'den, diğer piyasalar her 15 dakikada güncellenen kaynaklı anlık görüntülerden. Fiyatlar gösterge niteliğindedir, işlem akışı değildir; soluk görünen fiyat 30 dakikadan eskidir.",
-  "Market feed unavailable": "Piyasa veri akışı kullanılamıyor"
+  "Market feed unavailable": "Piyasa veri akışı kullanılamıyor",
+  "From FOXREX on Instagram": "Instagram’da FOXREX",
+  "Selected Arabic posts from our social archive. Images retain their original dates and assumptions; they are not current market quotes or verified calendar results. Links open our Instagram profile.": "Sosyal arşivimizden seçilmiş Arapça paylaşımlar. Görseller kendi tarih ve varsayımlarını korur; güncel piyasa fiyatı veya doğrulanmış takvim sonucu değildir. Bağlantılar Instagram profilimizi açar.",
+  "Open Instagram profile": "Instagram profilini aç"
 }

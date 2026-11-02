@@ -28,3 +28,13 @@ technical audit; 154 Node regressions and 14 market-data tests passed. Nine orig
 AI-assisted instrument views (27 language pages) were included. Seven use completed
 H1 FX candles; spot metals retain explicitly dated D1 observations. These checks do
 not verify Google indexing or ranking. The hourly task remained paused.
+
+## Forex foundations expansion — 3 November 2026
+Three original lessons (spread, leverage/margin, position sizing), each fully EN/AR/TR,
+use permanent REX routes, distinct original conceptual artwork, explicit hypothetical
+arithmetic and primary regulator sources. Learning-hub links are rendered in static
+HTML as well as the existing progressive client enhancement.
+Educational-only daily imports accept only REX_EXPLAINS, preserve the exact existing
+calendar and its real checkedAt, and never claim a fresh macro/calendar verification.
+Do not add languages without a complete equivalent translation and checked alternates.
+Search Console is still unconfigured; no indexing, submission or rankings claimed.

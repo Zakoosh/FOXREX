@@ -15,7 +15,8 @@ export function preparePackage(input, previous, { now = new Date().toISOString()
   if (input.authorization !== 'owner-authorized-2026-10-25') throw new Error('Missing editorial mandate');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.date) || input.date !== CMS.editorialDate(now)) throw new Error('Package must use the current Istanbul date');
   if (!Array.isArray(input.records) || !input.records.length) throw new Error('No editorial records');
-  if (!input.calendar || CMS.editorialDate(input.calendar.updatedAt) !== input.date) throw new Error('Calendar must be verified on package day');
+  if (input.educationOnly && input.records.some(r=>r.type!=='REX_EXPLAINS')) throw new Error('Education-only package accepts REX_EXPLAINS only');
+  if (!input.calendar || (!input.educationOnly && CMS.editorialDate(input.calendar.updatedAt) !== input.date)) throw new Error('Calendar must be verified on package day');
   const ce = validateCalendar(input.calendar, Date.parse(now)); if (ce.length) throw new Error(ce.join('\n'));
   let feed = CMS.normalizeFeed(structuredClone(previous));
   const seen = new Set(), records = [];
@@ -53,7 +54,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const result = preparePackage(JSON.parse(fs.readFileSync(file,'utf8')), JSON.parse(fs.readFileSync(path.join(ROOT,'data/content.json'),'utf8')));
   if (process.argv.includes('--apply')) {
     const write = (rel, v) => { const f = path.join(ROOT,rel); fs.mkdirSync(path.dirname(f),{recursive:true}); fs.writeFileSync(f,JSON.stringify(v,null,2)+'\n'); };
-    write('data/content.json', result.feed); write('data/calendar.json',result.calendar);
+    write('data/content.json', result.feed); if (!JSON.parse(fs.readFileSync(file,'utf8')).educationOnly) write('data/calendar.json',result.calendar);
     if (result.receipt.records.length) write(`content-ops/daily/${result.receipt.date}/publication.json`,result.receipt);
   }
   console.log(JSON.stringify({ mode: process.argv.includes('--apply') ? 'applied' : 'dry-run', ...result.receipt },null,2));

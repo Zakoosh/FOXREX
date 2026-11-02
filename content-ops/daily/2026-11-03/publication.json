@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-03",
+  "at": "2026-11-02T22:46:46.819Z",
+  "authorization": "owner-authorized-2026-10-25",
+  "actor": "FOXREX Editorial Automation",
+  "records": [
+    {
+      "id": "daily-2026-11-03-forex-spread-cost-en",
+      "urlPath": "learn/forex-spread-cost/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-spread-cost-ar",
+      "urlPath": "learn/forex-spread-cost/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-spread-cost-tr",
+      "urlPath": "learn/forex-spread-cost/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-leverage-margin-en",
+      "urlPath": "learn/forex-leverage-margin/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-leverage-margin-ar",
+      "urlPath": "learn/forex-leverage-margin/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-leverage-margin-tr",
+      "urlPath": "learn/forex-leverage-margin/",
+      "language": "tr",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-position-size-en",
+      "urlPath": "learn/forex-position-size/",
+      "language": "en",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-position-size-ar",
+      "urlPath": "learn/forex-position-size/",
+      "language": "ar",
+      "publishVersion": 1
+    },
+    {
+      "id": "daily-2026-11-03-forex-position-size-tr",
+      "urlPath": "learn/forex-position-size/",
+      "language": "tr",
+      "publishVersion": 1
+    }
+  ]
+}
