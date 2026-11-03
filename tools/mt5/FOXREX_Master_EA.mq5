@@ -21,8 +21,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "1.01"
-#property description "FOXREX Master EA v1.01: break-of-structure engines on M1, M5, M15, H1 and H4 in one EA, settings per timeframe from the simulations."
+#property version   "1.02"
+#property description "FOXREX Master EA v1.02: break-of-structure engines on M1, M5, M15, H1 and H4 in one EA, settings per timeframe from the simulations."
 
 #include <Trade/Trade.mqh>
 
@@ -233,6 +233,58 @@ bool Protected()
 
 void Notify(string m) { Print(m); if(InpPush) SendNotification(_Symbol + " " + m); }
 
+//--- one running copy per symbol + magic: a second chart with the same EA would place every order twice
+string LockName() { return "FXM_LOCK_" + _Symbol + "_" + IntegerToString(InpMagic); }
+bool   lockOwner = false;
+
+bool TakeLock()
+  {
+   string n = LockName();
+   double me = (double)(ChartID() % 1000000000);
+   if(GlobalVariableCheck(n))
+     {
+      double v = GlobalVariableGet(n);
+      bool fresh = TimeLocal() - GlobalVariableTime(n) < 30;      // the other copy refreshes it every tick / second
+      if(v != me && fresh) return false;
+     }
+   GlobalVariableSet(n, me);
+   return true;
+  }
+
+bool KeepLock()
+  {
+   string n = LockName();
+   double me = (double)(ChartID() % 1000000000);
+   if(GlobalVariableCheck(n) && GlobalVariableGet(n) != me && TimeLocal() - GlobalVariableTime(n) < 30) return false;
+   GlobalVariableSet(n, me);
+   return true;
+  }
+
+// more than one limit order of an engine (e.g. left by a second copy) → keep the oldest, delete the rest
+void Dedupe(long magic)
+  {
+   ulong keep = 0;
+   for(int i = 0; i < OrdersTotal(); i++)
+     {
+      ulong tk = OrderGetTicket(i);
+      if(tk == 0) continue;
+      if(OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != magic) continue;
+      long ty = OrderGetInteger(ORDER_TYPE);
+      if(ty != ORDER_TYPE_BUY_LIMIT && ty != ORDER_TYPE_SELL_LIMIT) continue;
+      if(keep == 0 || tk < keep) keep = tk;
+     }
+   if(keep == 0) return;
+   for(int i = OrdersTotal() - 1; i >= 0; i--)
+     {
+      ulong tk = OrderGetTicket(i);
+      if(tk == 0 || tk == keep) continue;
+      if(OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != magic) continue;
+      long ty = OrderGetInteger(ORDER_TYPE);
+      if(ty != ORDER_TYPE_BUY_LIMIT && ty != ORDER_TYPE_SELL_LIMIT) continue;
+      if(trade.OrderDelete(tk)) Print("FXM: duplicate order #", tk, " deleted");
+     }
+  }
+
 //+------------------------------------------------------------------+
 //| one closed bar (shift s) of the engine's timeframe               |
 //+------------------------------------------------------------------+
@@ -382,6 +434,7 @@ void Sync(Eng &e)
    bool want = e.S.ok && e.S.armed && !pos && !e.block[now.hour] && !guard
                && ((e.S.d > 0 && InpBuy) || (e.S.d < 0 && InpSell));
    if(want && InpMaxOpen > 0 && Busy(e.magic) >= InpMaxOpen) want = false;   // limit counts open trades and the other engines' orders
+   Dedupe(e.magic);
    ulong tk = PendingTicket(e.magic);
    datetime bar0 = iTime(_Symbol, e.tf, 0);
    if(e.failBar == bar0) return;                                          // after a refused request: nothing more on this bar
@@ -545,7 +598,7 @@ void DrawSetup()
 void Status()
   {
    bool algo = TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) && MQLInfoInteger(MQL_TRADE_ALLOWED);
-   string txt = "FOXREX Master v1.01 · " + _Symbol + (algo ? "" : "   ⚠ Algo Trading is OFF") + (guard ? "   ⚠ stopped by account protection" : "");
+   string txt = "FOXREX Master v1.02 · " + _Symbol + (algo ? "" : "   ⚠ Algo Trading is OFF") + (guard ? "   ⚠ stopped by account protection" : "");
    for(int i = 0; i < 5; i++)
      {
       if(!E[i].on) continue;
@@ -572,6 +625,14 @@ int OnInit()
    SetEng(3, InpOnH1,  PERIOD_H1,  "H1",  InpLotH1,  4,  0.5,    -0.30, 2, 0,   1,   12,  false);
    SetEng(4, InpOnH4,  PERIOD_H4,  "H4",  InpLotH4,  3,  0.5785,  0.00, 2, 0,   1,   24,  false);
 
+   //--- only one copy may run per symbol (all five timeframes run inside it)
+   if(!MQLInfoInteger(MQL_TESTER) && !TakeLock())
+     {
+      Alert("FOXREX Master is already running on another ", _Symbol, " chart. Use ONE chart only — it trades M1, M5, M15, H1 and H4 by itself.");
+      return INIT_FAILED;
+     }
+   lockOwner = true;
+
    //--- several engines need a hedging account (each engine holds its own position)
    int onCount = 0;
    for(int i = 0; i < 5; i++) if(E[i].on) onCount++;
@@ -597,6 +658,7 @@ int OnInit()
 void OnDeinit(const int reason)
   {
    Comment("");
+   if(lockOwner && GlobalVariableCheck(LockName()) && GlobalVariableGet(LockName()) == (double)(ChartID() % 1000000000)) GlobalVariableDel(LockName());
    if(reason == REASON_REMOVE || reason == REASON_PARAMETERS)
       for(int i = 0; i < 5; i++) if(E[i].on) DeletePending(E[i].magic);
    ObjectsDeleteAll(0, "FXM_S_");
@@ -604,6 +666,11 @@ void OnDeinit(const int reason)
 
 void OnTick()
   {
+   if(!MQLInfoInteger(MQL_TESTER) && !KeepLock())
+     {
+      Comment("FOXREX Master: another chart runs this EA — this copy is idle. Remove it.");
+      return;
+     }
    guard = Protected();                   // every tick, so the day-start balance is taken at the day start
    bool nb[5];
    ArrayInitialize(nb, false);
