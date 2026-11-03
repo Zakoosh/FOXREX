@@ -113,6 +113,27 @@ void SetEng(int i, bool on, ENUM_TIMEFRAMES tf, string tag, double lot, int piv,
 //| helpers                                                          |
 //+------------------------------------------------------------------+
 int EngByMagic(long m) { for(int i = 0; i < 5; i++) if(E[i].on && E[i].magic == m) return i; return -1; }
+int EngAny(long m)     { for(int i = 0; i < 5; i++) if(E[i].magic == m) return i; return -1; }   // also engines switched off (their open trades are still managed)
+
+// open positions of all engines + pending orders of the other engines
+int Busy(long self)
+  {
+   int n = 0;
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+     {
+      ulong tk = PositionGetTicket(i);
+      if(tk == 0) continue;
+      if(PositionGetString(POSITION_SYMBOL) == _Symbol && EngAny(PositionGetInteger(POSITION_MAGIC)) >= 0) n++;
+     }
+   for(int i = OrdersTotal() - 1; i >= 0; i--)
+     {
+      ulong tk = OrderGetTicket(i);
+      if(tk == 0) continue;
+      long m = OrderGetInteger(ORDER_MAGIC);
+      if(OrderGetString(ORDER_SYMBOL) == _Symbol && m != self && EngByMagic(m) >= 0) n++;
+     }
+   return n;
+  }
 
 bool HasPosition(long magic)
   {
@@ -123,18 +144,6 @@ bool HasPosition(long magic)
       if(PositionGetString(POSITION_SYMBOL) == _Symbol && PositionGetInteger(POSITION_MAGIC) == magic) return true;
      }
    return false;
-  }
-
-int OpenCount()
-  {
-   int n = 0;
-   for(int i = PositionsTotal() - 1; i >= 0; i--)
-     {
-      ulong tk = PositionGetTicket(i);
-      if(tk == 0) continue;
-      if(PositionGetString(POSITION_SYMBOL) == _Symbol && EngByMagic(PositionGetInteger(POSITION_MAGIC)) >= 0) n++;
-     }
-   return n;
   }
 
 ulong PendingTicket(long magic)
@@ -303,7 +312,7 @@ void ReplayBar(Eng &e, int s)
   {
    ENUM_TIMEFRAMES tf = e.tf;
    double o = iOpen(_Symbol, tf, s), h = iHigh(_Symbol, tf, s), l = iLow(_Symbol, tf, s);
-   double sp = iSpread(_Symbol, tf, s) * _Point;
+   double sp = MathMax(iSpread(_Symbol, tf, s) * _Point, 0.15);   // same spread floor as the simulations
    datetime t = iTime(_Symbol, tf, s);
    if(e.V.on && t > e.V.t0)
      {
@@ -359,7 +368,7 @@ void Sync(Eng &e)
    bool want = e.S.ok && e.S.armed && !pos && !e.block[now.hour] && !guard
                && ((e.S.d > 0 && InpBuy) || (e.S.d < 0 && InpSell));
    ulong tk = PendingTicket(e.magic);
-   if(want && !tk && InpMaxOpen > 0 && OpenCount() >= InpMaxOpen) want = false;
+   if(want && InpMaxOpen > 0 && Busy(e.magic) >= InpMaxOpen) want = false;   // limit counts open trades and the other engines' orders
    if(!want) { if(tk) DeletePending(e.magic); return; }
 
    double lim = NormPx(e.S.lim), sl = NormPx(e.S.sl), tp = NormPx(e.S.tp);
@@ -413,7 +422,7 @@ void Manage(bool &newBar[])
       if(tk == 0) continue;
       if(PositionGetString(POSITION_SYMBOL) != _Symbol) continue;
       long mg = PositionGetInteger(POSITION_MAGIC);
-      int ei = EngByMagic(mg);
+      int ei = EngAny(mg);
       if(ei < 0) continue;
       trade.SetExpertMagicNumber(mg);
       ulong pid = (ulong)PositionGetInteger(POSITION_IDENTIFIER);
