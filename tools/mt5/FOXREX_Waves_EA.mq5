@@ -1,7 +1,9 @@
 ﻿//+------------------------------------------------------------------+
-//| FOXREX Waves EA v3.25                                            |
+//| FOXREX Waves EA v3.28                                            |
 //| Expert Advisor for MetaTrader 5, same rules and settings as the  |
-//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.25.   |
+//| TradingView indicator "FOXREX · Wave Retracement Zones" v3.28.   |
+//| Default = the 3.13 rules (mode "3.13 / Custom"); the modes       |
+//| Strict / Balanced / Open are the 3.25 presets.                   |
 //| © FOXREX — foxrex.co · Mozilla Public License 2.0                |
 //|                                                                  |
 //| Strategy: a wave runs from its start to the first price stall.   |
@@ -22,8 +24,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "3.25"
-#property description "FOXREX Waves EA v3.25: wave retracement zones with a higher-timeframe guide."
+#property version   "3.28"
+#property description "FOXREX Waves EA v3.28: 3.13 rules by default, presets, account guards, higher-timeframe guide."
 
 #include <Trade/Trade.mqh>
 
@@ -61,41 +63,51 @@ enum ENUM_FXW_DIR     { DIR_FIRST = 0,         // Both sides · trend first
 enum ENUM_FXW_MODE    { FXM_STRICT = 0,       // Strict
                         FXM_BAL = 1,          // Balanced
                         FXM_OPEN = 2,         // Open
-                        FXM_CUSTOM = 3 };     // Custom (use the settings below)
+                        FXM_CUSTOM = 3 };     // 3.13 / Custom (use the settings below)
 enum ENUM_FXW_TRM     { TRM_WAVE = 0,          // Waves: up while above the last higher low
                         TRM_SWING = 1 };       // Swing breaks (3.13)
 enum ENUM_FXW_STOP    { SLM_ATR = 0,          // ATR: 1.5 – 2 × behind the zone
                         SLM_POINTS = 1 };     // Points per timeframe (3.13)
 enum ENUM_FXW_LOT     { LOT_FIXED = 0,         // Fixed lot (base lot × stars)
-                        LOT_RISK = 1 };        // Risk % of equity per trade (× stars)
+                        LOT_RISK = 1,          // Risk % of equity per trade (× stars)
+                        LOT_PER10K = 2 };      // Lots per 10,000 of equity (× stars)
+enum ENUM_FXW_MAJR    { MAJR_CHART = 0,        // Chart trend not against it (3.13)
+                        MAJR_EITHER = 1,       // Chart OR major trend not against it
+                        MAJR_BOTH = 2 };       // Chart AND major trend not against it
 enum ENUM_FXW_MAJFLT  { MAJ_STRUCT_ZONE = 0,   // Major structure + active zone
                         MAJ_ZONE = 1,          // Active major zone only
                         MAJ_OFF = 2 };         // Off
 
 //--- inputs (most important first, same order as the indicator)
 input group "⭐ 1 · Quick setup — size · stop · targets · conditions · blockers"
-input ENUM_FXW_MODE InpMode = FXM_STRICT;   // Trading mode
+input ENUM_FXW_MODE InpMode = FXM_CUSTOM;   // Trading mode (3.13 / Custom = every setting below)
 input ENUM_FXW_LOT InpLotMode = LOT_FIXED;  // Size · position size
+input bool   InpLot1m       = false;  // Size · 1m: own lots ★ → ★★★★ below (3.22+; off = base lot × stars as 3.13)
 input double InpLot1a       = 3.0;    // Size · 1m lots ★ (fixed mode)
 input double InpLot1b       = 5.0;    // Size · 1m lots ★★★★ (fixed mode)
 input double InpBaseLot     = 1.0;    // Size · base lot, other timeframes (1 star, fixed mode)
 input bool   InpLotByStars  = true;   // Size · by stars (1 / 1.5 / 2 / 2.5 ×)
 input double InpRiskPct     = 0.25;   // Size · risk per trade, % of equity (1 star, risk mode)
+input double InpLotPer10k   = 0.10;   // Size · lots per 10,000 of equity (1 star, per-10k mode)
 input double InpMaxLot      = 0;      // Size · max lot per trade (0 = broker max)
-input ENUM_FXW_STOP InpStopMd = SLM_ATR; // Stop · distance
+input bool   InpSkipMinLot  = true;   // Size · skip a trade when the risk-based lot is below the broker minimum
+input ENUM_FXW_STOP InpStopMd = SLM_POINTS; // Stop · distance (3.13: points per timeframe)
 input double InpSlAtrA  = 1.5;    // Stop · ATR min
 input double InpSlAtrB  = 2.0;    // Stop · ATR max
 input ENUM_FXW_PROFILE InpProfile = PROFILE_AUTO_TF; // Targets · profile
 input string InpPartPct = "25";   // Targets · % closed at TP1, TP2, … (rest runs to TP7)
-input ENUM_FXW_PROTECT InpProtect = PROT_STEP; // Targets · profit protection
+input ENUM_FXW_PROTECT InpProtect = PROT_NEAR; // Targets · profit protection (3.13: after TP2)
 input int    InpMs1     = 1;      // Conditions · min stars 1m (Strict: at least 2)
 input int    InpMs5     = 1;      // Conditions · min stars 2–5m
 input int    InpMs15    = 1;      // Conditions · min stars 6–30m
 input int    InpMsH     = 1;      // Conditions · min stars above
-input int    InpMaxOpen = 3;      // Conditions · max open trades (reinforcement, 0 = no limit)
-input bool   InpUseRsi  = true;   // Blocker · RSI (no buy overbought / sell oversold unless ★★★)
-input ENUM_FXW_ROOM InpRoomMode = ROOM_AUTO; // Blocker · room (strong S/R in the way)
-input bool   InpSmOn    = true;   // Blocker · no S/R trade against a strong move
+input int    InpMaxOpen = 0;      // Conditions · max open trades (reinforcement, 0 = no limit)
+input bool   InpUseRsi  = true;   // Blocker · RSI (no buy above 70 / sell below 30)
+input bool   InpRsiEx   = false;  // …exceptions: ★★★, strong level broken, MACD momentum (3.22+)
+input ENUM_FXW_ROOM InpRoomMode = ROOM_ALL_BLOCK; // Blocker · room: S/R in the way (3.13: all daily zones)
+input bool   InpRoom1m  = true;   // …room needed TP1 (TP2 on 1m, as 3.13)
+input bool   InpSmOn    = false;  // Blocker · no S/R trade against a strong move (3.22+)
+input bool   InpMacdHalf = false; // Blocker · MACD against the trade = half size (3.22+)
 input bool   InpUseSpk  = true;   // Blocker · skip signals after an abnormal candle
 input int    InpMaxSpread = 0;    // Blocker · max spread in points (0 = off)
 
@@ -114,14 +126,14 @@ input double InpFZone   = 0.618;  // Zone end (fib)
 input double InpFInv    = 0.786;  // Invalidation (retracement)
 input double InpMinLeg  = 1.5;    // Minimum leg size (× ATR)
 input int    InpMaxWait = 300;    // Zone life (bars after the leg end)
-input ENUM_FXW_TRM InpTrMode = TRM_WAVE; // Trend
+input ENUM_FXW_TRM InpTrMode = TRM_SWING; // Trend for the trades (3.13: swing breaks; waves always shown)
 input bool   InpBrkClose = false; // Break confirmed by a close beyond the previous stall
 input bool   InpOverlap = true;   // Buy and sell zones overlapping: keep only the stronger
 input int    InpSwLen   = 5;      // Structure swing length (bars each side)
 input int    InpRngBars = 0;      // Range: no break for (bars, 0 = auto; swing-break trend only)
 
 input group "4 · Entry & direction (Custom mode) · reinforcement"
-input ENUM_FXW_DIR InpDir = DIR_FIRST; // Trade direction (Custom)
+input ENUM_FXW_DIR InpDir = DIR_TREND; // Trade direction (3.13: with the trend)
 input bool   InpCtHalf  = true;   // …counter-trend trades at half size (Custom)
 input ENUM_FXW_ELVL InpELvl = ELVL_MID; // Entry level (Custom)
 input double InpECust   = 0.559;  // …fib level (Entry level = Fib level)
@@ -153,7 +165,7 @@ input double InpSlDMn  = 10.0; // D / W / M · min
 input double InpSlDMx  = 25.0; // D / W / M · max
 
 input group "7 · Trade management — details"
-input ENUM_FXW_PART InpPartMode = PART_ALL; // Partial closes
+input ENUM_FXW_PART InpPartMode = PART_OFF; // Partial closes (3.13: off, full size to the exit)
 input int    InpNoProg = 15;   // No-progress exit (bars without TP1, 0 = off)
 input int    InpMaxBars = 60;  // Maximum life before TP2 (bars)
 
@@ -170,14 +182,16 @@ input ENUM_FXW_MAJFLT InpMajFlt = MAJ_OFF; // Major direction filter
 
 input group "9 · Extra entries (outside the wave rule)"
 input bool   InpTradeDL = true;   // Trades at daily zones (rejection)
-input int    InpDlOnce  = 1;      // …trades per strong zone per side per day
-input bool   InpTlTrade = true;   // Trend-line touches as entries (with the trend)
-input bool   InpUseRev  = false;  // Reversal trades at strong zones
+input int    InpDlOnce  = 2;      // …trades per strong zone per side per day
+input bool   InpTlTrade = false;  // Trend-line touches as entries (3.22+)
+input bool   InpUseRev  = true;   // Reversal trades at strong zones (3.13)
 input bool   InpRevLight = false; // Wave-end reversal trades (light: 1 star, half size)
 
 input group "10 · Major timeframe (trades on this chart)"
 input bool   InpUseMaj  = true;   // Use a major timeframe
-input bool   InpMajAuto = true;   // Auto (1m→15m, 5m→15m, 15m→4H, 1H→D)
+input bool   InpMajAuto = true;   // Auto (1m→15m, 5m→1H or 15m, 15m→4H, 1H→D)
+input bool   InpMaj5H   = true;   // …5m chart: major = 1H (3.13); off = 15m
+input ENUM_FXW_MAJR InpMajRule = MAJR_CHART; // Major zone trades allowed when
 input ENUM_TIMEFRAMES InpMajTf = PERIOD_M15; // Major timeframe when not auto
 input bool   InpTradeMj = true;   // Take trades at major zones
 
@@ -194,13 +208,25 @@ input bool   InpDraw    = true;   // Draw zones and daily levels
 input bool   InpLogSkip = true;   // Journal: why a touched zone gave no trade
 input bool   InpPush    = false;  // Push notification on entry / exit
 
-input group "13 · Account & start-up"
+input group "13 · Account protection (any account)"
+input int    InpDeviation   = 30;     // Max slippage for market orders (points)
+input double InpMaxTotalLots = 0;     // Max total lots open by this EA on the symbol (0 = off)
+input int    InpMaxDayTrades = 0;     // Max new trades per day on this chart (0 = off)
+input double InpDayLossPct  = 0;      // Daily loss limit, % of the balance at the day start (0 = off)
+input double InpDayLossMoney = 0;     // Daily loss limit, money (0 = off)
+input double InpDayProfitMoney = 0;   // Daily profit target, money: stop for the day (0 = off)
+input bool   InpDayStopClose = false; // …when a daily limit is hit, also close this EA's positions
+input string InpTimeFrom    = "00:00"; // Trade only from (server time, HH:MM)
+input string InpTimeTo      = "23:59"; // …to (server time, HH:MM)
+input int    InpFriCloseHour = -1;    // Friday: close and stop from this hour (server time, -1 = off)
+
+input group "14 · Account & start-up"
 input long   InpMagic     = 260929; // Magic number (base)
 input bool   InpMagicByTf = true;   // Add the timeframe in minutes to the magic (M1 260930, M15 260944 …)
 input int    InpWarmup    = 1500;   // History bars used to build the state at start
 
 //--- constants
-#define FXW_VER   "3.25"
+#define FXW_VER   "3.28"
 #define FXW_PFX   "FXW_"
 
 //+------------------------------------------------------------------+
@@ -227,6 +253,7 @@ struct SZone
 //+------------------------------------------------------------------+
 //| Wave engine for one timeframe                                    |
 //+------------------------------------------------------------------+
+bool gTrSwing = true;   // trades follow the swing-break trend (3.13); false = waves
 class CWaveEngine
   {
 public:
@@ -358,7 +385,7 @@ public:
       if(dN) { wBot = dP1; if(wT <= 0) { wT = -1; wLH = dP0; } }
       if(wT == 1 && wHL > 0 && C[k] < wHL)       { turnLvl = wHL; wT = -1; wLH = wTop > 0 ? wTop : H[k]; lastTurn = -1; turnDnK = k; }
       else if(wT == -1 && wLH > 0 && C[k] > wLH) { turnLvl = wLH; wT = 1;  wHL = wBot > 0 ? wBot : L[k]; lastTurn = 1;  turnUpK = k; }
-      trend = InpTrMode == TRM_SWING ? swTrend : wT;
+      trend = gTrSwing ? swTrend : wT;
       if(dN && MathAbs(dP0 - dP1) >= InpMinLeg * a) AddZone(-1, dP0, dB0, dP1, dB1);
       if(uN && MathAbs(uP0 - uP1) >= InpMinLeg * a) AddZone(1, uP0, uB0, uP1, uB1);
       //--- zones: stars, touch, invalidation, arming, life
@@ -487,6 +514,16 @@ ENUM_FXW_DIR  gDir  = DIR_TREND;
 ENUM_FXW_ELVL gELvl = ELVL_MID;
 ENUM_FXW_ROOM gRoom = ROOM_STRONG_BLOCK;
 bool        gCtHalf = true;
+ENUM_FXW_PROTECT gProt = PROT_NEAR;
+ENUM_FXW_PART gPartMode = PART_OFF;
+ENUM_FXW_STOP gStopMd = SLM_POINTS;
+ENUM_FXW_MAJR gMajRule = MAJR_CHART;
+bool        gLot1m = false, gSm = false, gTl = false, gRev = true, gRsiEx = false, gMacdHalf = false, gRoom1m = true;
+int         gMaxOpen = 0, gDlOnce = 2;
+bool        gNetting = false;
+double      gDayBal = 0;
+bool        gDayStop = false;
+string      gGuard = "";
 //--- strong-move guard, recent breaks of strong daily zones, trend lines
 int         sDnK = -1, sUpK = -1, brkUpK = -1, brkDnK = -1, tlTK = -1000;
 double      tsB = -1, tsP = 0, tsM = 0, trB = -1, trP = 0, trM = 0;
@@ -498,7 +535,7 @@ datetime        gLast[4];
 ENUM_TIMEFRAMES gTfs[4] = {PERIOD_M5, PERIOD_M15, PERIOD_H1, PERIOD_H4};
 string          gNmE[4] = {"M5", "M15", "H1", "H4"};
 double          gDAtr = 0;
-string ModeName(void) { return mStrict ? "Strict" : mBal ? "Balanced" : mOpen ? "Open" : "Custom"; }
+string ModeName(void) { return mStrict ? "Strict" : mBal ? "Balanced" : mOpen ? "Open" : "3.13 / Custom"; }
 
 //+------------------------------------------------------------------+
 //| Profile helpers                                                  |
@@ -521,7 +558,7 @@ double PTp(int s, int i, double a)
 
 double PSlMin(int s, double a)
   {
-   if(InpStopMd == SLM_ATR) return InpSlAtrA * a;
+   if(gStopMd == SLM_ATR) return InpSlAtrA * a;
    if(InpProfile == PROFILE_AUTO_ATR) return 1.0 * a;
    if(InpProfile == PROFILE_CUSTOM)   return InpSlMinC;
    if(s <= 60) return InpSl1Mn; if(s <= 300) return InpSl5Mn; if(s < 3600) return InpSl15Mn; if(s < 86400) return InpSlHMn;
@@ -530,7 +567,7 @@ double PSlMin(int s, double a)
 
 double PSlMax(int s, double a)
   {
-   if(InpStopMd == SLM_ATR) return InpSlAtrB * a;
+   if(gStopMd == SLM_ATR) return InpSlAtrB * a;
    if(InpProfile == PROFILE_AUTO_ATR) return 3.5 * a;
    if(InpProfile == PROFILE_CUSTOM)   return InpSlMaxC;
    if(s <= 60) return InpSl1Mx; if(s <= 300) return InpSl5Mx; if(s < 3600) return InpSl15Mx; if(s < 86400) return InpSlHMx;
@@ -572,11 +609,11 @@ int MinStars(int s)
 
 double ProtSl(int dir, double en, double sl, int hits, const double &tps[])
   {
-   if(InpProtect == PROT_OFF || hits < 1) return sl;
+   if(gProt == PROT_OFF || hits < 1) return sl;
    double ns = EMPTY_VALUE;
-   if(InpProtect == PROT_NEAR)      ns = hits >= 3 ? tps[hits - 2] : (hits >= 2 ? en : EMPTY_VALUE);
-   else if(InpProtect == PROT_LATE) ns = hits >= 3 ? tps[hits - 3] : (hits >= 2 ? en : EMPTY_VALUE);
-   else if(InpProtect == PROT_STEP) ns = hits >= 2 ? tps[hits - 2] : en;
+   if(gProt == PROT_NEAR)      ns = hits >= 3 ? tps[hits - 2] : (hits >= 2 ? en : EMPTY_VALUE);
+   else if(gProt == PROT_LATE) ns = hits >= 3 ? tps[hits - 3] : (hits >= 2 ? en : EMPTY_VALUE);
+   else if(gProt == PROT_STEP) ns = hits >= 2 ? tps[hits - 2] : en;
    else                             ns = en;
    if(ns != EMPTY_VALUE && dir * (ns - sl) > 0) return ns;
    return sl;
@@ -752,7 +789,7 @@ void ManagePositions(void)
       int before = pos[pi].hits;
       while(pos[pi].hits < 7 && (pos[pi].dir > 0 ? px >= pos[pi].tps[pos[pi].hits] : px <= pos[pi].tps[pos[pi].hits])) pos[pi].hits++;
       //--- partial close: after TPn the position keeps (1 − sum of the first n %) of its original size
-      if(pos[pi].hits >= 1 && (InpPartMode == PART_ALL || (InpPartMode == PART_M1 && tfSecs <= 60)))
+      if(pos[pi].hits >= 1 && (gPartMode == PART_ALL || (gPartMode == PART_M1 && tfSecs <= 60)))
         {
          double cum = 0; for(int j = 0; j < pos[pi].hits && j < ArraySize(gPart); j++) cum += gPart[j];
          double st = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP), mn = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
@@ -810,8 +847,10 @@ void Busy(bool &busyB, bool &busyS)
       openN++; openDir = d;
       if(sl == 0 || d * (sl - en) < 0) unprot = true;
      }
-   busyB = unprot || (InpMaxOpen > 0 && openN >= InpMaxOpen) || (openN > 0 && (openDir < 0 || !InpReinf));
-   busyS = unprot || (InpMaxOpen > 0 && openN >= InpMaxOpen) || (openN > 0 && (openDir > 0 || !InpReinf));
+   int mo = gNetting ? 1 : gMaxOpen;   // a netting account holds one position per symbol
+   busyB = unprot || (mo > 0 && openN >= mo) || (openN > 0 && (openDir < 0 || !InpReinf));
+   busyS = unprot || (mo > 0 && openN >= mo) || (openN > 0 && (openDir > 0 || !InpReinf));
+   if(gDayStop || !TimeOk()) { busyB = true; busyS = true; }
   }
 
 void DeletePendings(int dir)   // dir 0 = all
@@ -843,7 +882,8 @@ double LotsFor(int stars, double dist, double kf)
    double f = InpLotByStars ? 1.0 + 0.5 * (sc - 1) : 1.0;
    f *= kf;
    double v = InpBaseLot * f;
-   if(tfSecs <= 60 && InpLotMode == LOT_FIXED) v = (InpLotByStars ? InpLot1a + (InpLot1b - InpLot1a) * (sc - 1) / 3.0 : InpLot1a) * kf;
+   if(InpLotMode == LOT_PER10K) v = AccountInfoDouble(ACCOUNT_EQUITY) / 10000.0 * InpLotPer10k * f;
+   if(gLot1m && tfSecs <= 60 && InpLotMode == LOT_FIXED) v = (InpLotByStars ? InpLot1a + (InpLot1b - InpLot1a) * (sc - 1) / 3.0 : InpLot1a) * kf;
    if(InpLotMode == LOT_RISK)
      {
       double tv = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE_LOSS), ts = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
@@ -854,7 +894,67 @@ double LotsFor(int stars, double dist, double kf)
    double st = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP), mn = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN), mx = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
    if(st > 0) v = NormalizeDouble(MathFloor(v / st + 1e-9) * st, (int)MathMax(0, MathCeil(-MathLog10(st))));
    if(InpMaxLot > 0) mx = MathMin(mx, InpMaxLot);
+   if(v < mn - 1e-9 && InpSkipMinLot && InpLotMode != LOT_FIXED) return 0;   // the account is too small for this risk: no trade
    return MathMin(MathMax(v, mn), mx);
+  }
+
+//--- lot 0 (account too small) or over the total-lot cap → no trade
+bool LotsOk(double lots)
+  {
+   if(lots <= 0) return false;
+   if(InpMaxTotalLots <= 0) return true;
+   double tot = 0;
+   for(int i = PositionsTotal() - 1; i >= 0; i--)
+     {
+      ulong t = PositionGetTicket(i);
+      if(t == 0 || !PositionSelectByTicket(t)) continue;
+      if(PositionGetString(POSITION_SYMBOL) == _Symbol && StringFind(PositionGetString(POSITION_COMMENT), "FXW ") == 0) tot += PositionGetDouble(POSITION_VOLUME);
+     }
+   return tot + lots <= InpMaxTotalLots + 1e-9;
+  }
+
+//--- trading hours (server time) and the Friday cut-off
+int HhMm(string t) { string p[]; if(StringSplit(t, ':', p) < 2) return -1; return (int)StringToInteger(p[0]) * 60 + (int)StringToInteger(p[1]); }
+bool TimeOk(void)
+  {
+   MqlDateTime m; TimeToStruct(TimeCurrent(), m);
+   if(InpFriCloseHour >= 0 && m.day_of_week == 5 && m.hour >= InpFriCloseHour) return false;
+   int now = m.hour * 60 + m.min, a = HhMm(InpTimeFrom), b = HhMm(InpTimeTo);
+   if(a < 0 || b < 0) return true;
+   return a <= b ? (now >= a && now <= b) : (now >= a || now <= b);
+  }
+
+//--- daily guards: loss limit, profit target, number of trades (checked on every tick)
+void Guards(void)
+  {
+   double eq = AccountInfoDouble(ACCOUNT_EQUITY);
+   if(gDayBal <= 0) gDayBal = AccountInfoDouble(ACCOUNT_BALANCE);
+   double dd = gDayBal - eq;
+   string why = "";
+   if(InpDayLossPct > 0 && dd >= gDayBal * InpDayLossPct / 100.0) why = "daily loss " + DoubleToString(InpDayLossPct, 1) + "%";
+   if(InpDayLossMoney > 0 && dd >= InpDayLossMoney) why = "daily loss " + DoubleToString(InpDayLossMoney, 0);
+   if(InpDayProfitMoney > 0 && -dd >= InpDayProfitMoney) why = "daily target " + DoubleToString(InpDayProfitMoney, 0);
+   if(InpMaxDayTrades > 0)
+     {
+      int tr, wn; double pr, wo, lo; TodayStats(tr, wn, pr, wo, lo);
+      int op = 0; for(int i = PositionsTotal() - 1; i >= 0; i--) { ulong t = PositionGetTicket(i); if(t > 0 && PositionSelectByTicket(t) && PositionGetInteger(POSITION_MAGIC) == gMagic && PositionGetString(POSITION_SYMBOL) == _Symbol) op++; }
+      if(tr + op >= InpMaxDayTrades) why = why == "" ? "max trades today" : why;
+     }
+   bool hit = why != "" && why != "max trades today";
+   if(why != "" && !gDayStop) { gDayStop = true; PrintFormat("FOXREX: no new trades today (%s)", why); DeletePendings(0); }
+   bool fri = InpFriCloseHour >= 0 && !TimeOk();
+   if((hit && InpDayStopClose) || (fri && InpFriCloseHour >= 0))
+     {
+      MqlDateTime m; TimeToStruct(TimeCurrent(), m);
+      if((hit && InpDayStopClose) || m.day_of_week == 5)
+         for(int i = PositionsTotal() - 1; i >= 0; i--)
+           {
+            ulong t = PositionGetTicket(i);
+            if(t > 0 && PositionSelectByTicket(t) && PositionGetInteger(POSITION_MAGIC) == gMagic && PositionGetString(POSITION_SYMBOL) == _Symbol) trade.PositionClose(t);
+           }
+      if(m.day_of_week == 5 && fri) DeletePendings(0);
+     }
+   gGuard = gDayStop ? "stopped today: " + why : !TimeOk() ? "outside trading hours" : "ok";
   }
 
 bool SpreadOk(void)
@@ -879,6 +979,7 @@ bool MarketEntry(int dir, double dist, int stars, string kind, int zid, bool imp
    double tps[7]; TpArr(px, dir, tfSecs, imp, a, tps);
    double sl = NormalizeDouble(px - dir * dist, _Digits), tp = NormalizeDouble(tps[ct ? 0 : 6], _Digits);
    double lots = LotsFor(stars, dist, kf);
+   if(!LotsOk(lots)) return false;
    string c = Cmt(kind, zid, stars, imp, a);
    bool ok = dir > 0 ? trade.Buy(lots, _Symbol, 0, sl, tp, c) : trade.Sell(lots, _Symbol, 0, sl, tp, c);
    return ok;
@@ -905,6 +1006,7 @@ bool SyncPending(bool want, int dir, double level, double zSlBase, int stars, st
    double tps[7]; TpArr(level, dir, tfSecs, imp, a, tps);
    double price = NormalizeDouble(level, _Digits), sl = NormalizeDouble(level - dir * dist, _Digits), tp = NormalizeDouble(tps[ct ? 0 : 6], _Digits);
    double lots = LotsFor(stars, dist, kf);
+   if(!LotsOk(lots)) { if(t > 0) trade.OrderDelete(t); return false; }
    if(t > 0)
      {
       if(OrderSelect(t) && MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - price) < _Point && MathAbs(OrderGetDouble(ORDER_SL) - sl) < _Point && MathAbs(OrderGetDouble(ORDER_TP) - tp) < _Point) return false;
@@ -1079,10 +1181,10 @@ string GuideText(void)
          double top = MathMax(zA, zB), bot = MathMin(zA, zB), dst = px > top ? px - top : px < bot ? bot - px : 0;
          if(best < 0 || dst < best) { best = dst; zt = dst == 0 ? "in " + (gE[i].zones[z].dir > 0 ? "BUY" : "SELL") : (gE[i].zones[z].dir > 0 ? "BUY " : "SELL ") + DoubleToString(dst, 1) + " away"; }
         }
-      r += "\n   " + gNmE[i] + "  " + (gE[i].trend > 0 ? "UP  " : gE[i].trend < 0 ? "DOWN" : "none") + "  RSI " + DoubleToString(gE[i].RSI[k], 0) +
+      r += "\n   " + gNmE[i] + "  " + (gE[i].wT > 0 ? "UP  " : gE[i].wT < 0 ? "DOWN" : "none") + "  RSI " + DoubleToString(gE[i].RSI[k], 0) +
            "  MACD " + (mh > 0 ? (mh >= m1 ? "up strong" : "up weak") : (mh <= m1 ? "down strong" : "down weak")) + "  zone " + zt;
      }
-   return r == "" ? "" : "\nHigher timeframes:" + r;
+   return r == "" ? "" : "\nHigher timeframes (wave trend):" + r;
   }
 
 void Dashboard(bool okB, bool okS)
@@ -1104,12 +1206,12 @@ void Dashboard(bool okB, bool okS)
              DoubleToString(PositionGetDouble(POSITION_VOLUME), 2) + " @ " + DoubleToString(PositionGetDouble(POSITION_PRICE_OPEN), _Digits) +
              "  SL " + DoubleToString(PositionGetDouble(POSITION_SL), _Digits) + "  " + DoubleToString(PositionGetDouble(POSITION_PROFIT), 2);
      }
-   string tt = eng.trend > 0 ? "UP" : eng.trend < 0 ? "DOWN" : "RANGE";
+   string tt = (eng.trend > 0 ? "UP" : eng.trend < 0 ? "DOWN" : "RANGE") + (gTrSwing ? " (swing) · waves " + (eng.wT > 0 ? "UP" : eng.wT < 0 ? "DOWN" : "-") : "");
    string mt = majOn ? (maj.trend > 0 ? "UP" : maj.trend < 0 ? "DOWN" : "RANGE") : "off";
    string al = okB && !okS ? "BUY only" : okS && !okB ? "SELL only" : okB && okS ? "both" : "S/R zones only";
    Comment("FOXREX Waves EA v" + FXW_VER + "  ·  " + ModeName() + "  ·  " + _Symbol + " " + TfLabel(tfSecs) +
            "\nDirection: " + TfLabel(tfSecs) + " " + tt + "   major " + (majOn ? TfLabel(maj.secs) : "") + " " + mt +
-           "\nTrades allowed: " + al + GuideText() +
+           "\nTrades allowed: " + al + "   ·   account guard: " + gGuard + (gNetting ? " · netting" : "") + GuideText() +
            "\nMagic " + IntegerToString(gMagic) + " · open on this timeframe: " + IntegerToString(op) + "   floating " + DoubleToString(fl, 2) +
            "\nFOXREX positions on " + _Symbol + ":" + (lst == "" ? " none" : lst) +
            "\nToday " + TfLabel(tfSecs) + ": " + IntegerToString(tr) + " closed · " + IntegerToString(wn) + " won · " + IntegerToString(tr - wn) + " lost · win " + (tr > 0 ? DoubleToString(100.0 * wn / tr, 0) + "%" : "–") +
@@ -1119,7 +1221,7 @@ void Dashboard(bool okB, bool okS)
 //--- RSI stretched: allowed for ★★★ and up, after a strong break, or (not Strict) while MACD momentum builds
 bool RsiOk(int dir, int stars, bool rB, bool rS, bool mU, bool mD)
   {
-   return (dir > 0 ? rB : rS) || stars >= 3 || (!mStrict && (dir > 0 ? mU : mD));
+   return (dir > 0 ? rB : rS) || (gRsiEx && (stars >= 3 || (!mStrict && (dir > 0 ? mU : mD))));
   }
 
 //--- newest swing against up to 5 earlier ones: the first that makes a respected line
@@ -1177,7 +1279,7 @@ void OnNewBar(bool live)
          bool act = (maj.zones[z].state == 1 || maj.zones[z].tchChart) && (maj.zones[z].dir > 0 ? (C0 > zI && C0 < maj.zones[z].p1) : (C0 < zI && C0 > maj.zones[z].p1));
          if(act) { if(maj.zones[z].dir > 0) majBuyAct = true; else majSellAct = true; }
         }
-   double roomNeed = PTp(tfSecs, 0, a);   // TP1: short timeframes, small targets
+   double roomNeed = PTp(tfSecs, gRoom1m && tfSecs <= 60 ? 1 : 0, a);   // TP1 (TP2 on 1m as 3.13)
    bool nearRes = (resLo != 0 && resLo - C0 < roomNeed) || majSellAct || inMajS, nearSup = (supHi != 0 && C0 - supHi < roomNeed) || majBuyAct || inMajB;
    bool roomBuy  = gRoom == ROOM_OFF || rmHalf || !nearRes;
    bool roomSell = gRoom == ROOM_OFF || rmHalf || !nearSup;
@@ -1196,15 +1298,15 @@ void OnNewBar(bool live)
       if(C0 > dZHi[j] && eng.C[k - 1] <= dZHi[j]) brkUpK = k;
       if(C0 < dZLo[j] && eng.C[k - 1] >= dZLo[j]) brkDnK = k;
      }
-   bool rsiBuy  = !InpUseRsi || rsiV <= InpRsiOB || (brkUpK >= 0 && k - brkUpK <= 10);
-   bool rsiSell = !InpUseRsi || rsiV >= InpRsiOS || (brkDnK >= 0 && k - brkDnK <= 10);
+   bool rsiBuy  = !InpUseRsi || rsiV <= InpRsiOB || (gRsiEx && brkUpK >= 0 && k - brkUpK <= 10);
+   bool rsiSell = !InpUseRsi || rsiV >= InpRsiOS || (gRsiEx && brkDnK >= 0 && k - brkDnK <= 10);
    //--- MACD momentum
    double mh = eng.MH[k], mh1 = eng.MH[k - 1];
    bool momUp = mh > 0 && mh >= mh1, momDn = mh < 0 && mh <= mh1;
    //--- strong move: no support buy after a strong fall (no resistance sell after a strong rise) until the trend turns
    double hh20 = 0, ll20 = DBL_MAX; for(int i = 0; i < 20 && k - i >= 0; i++) { hh20 = MathMax(hh20, eng.H[k - i]); ll20 = MathMin(ll20, eng.L[k - i]); }
-   if(InpSmOn && hh20 - C0 >= 3 * a && mh < 0 && mh < mh1) sDnK = k;
-   if(InpSmOn && C0 - ll20 >= 3 * a && mh > 0 && mh > mh1) sUpK = k;
+   if(gSm && hh20 - C0 >= 3 * a && mh < 0 && mh < mh1) sDnK = k;
+   if(gSm && C0 - ll20 >= 3 * a && mh > 0 && mh > mh1) sUpK = k;
    int trend = eng.trend;
    bool noSupBuy  = sDnK >= 0 && (eng.turnUpK < 0 || sDnK > eng.turnUpK) && trend <= 0;
    bool noResSell = sUpK >= 0 && (eng.turnDnK < 0 || sUpK > eng.turnDnK) && trend >= 0;
@@ -1222,7 +1324,7 @@ void OnNewBar(bool live)
    int rb = eng.RangeBars();
 
    //--- 1 · reversal at strong zones
-   if(live && InpUseRev && !spkBlock)
+   if(live && gRev && !spkBlock)
      {
       double lo10 = DBL_MAX, hi10 = 0; for(int i = 1; i <= 10 && k - i >= 0; i++) { lo10 = MathMin(lo10, eng.L[k - i]); hi10 = MathMax(hi10, eng.H[k - i]); }
       bool rvBull = L0 < lo10 && C0 > O0 && (C0 > eng.H[k - 1] || MathMin(O0, C0) - L0 >= 0.5 * (H0 - L0));
@@ -1230,12 +1332,12 @@ void OnNewBar(bool live)
       if(rvBull || rvBear)
         {
          int d = rvBull ? 1 : -1;
-         bool okR = d > 0 ? (alB && !busyB && !noSupBuy && roomBuy && !exhUp && !(InpMajFlt != MAJ_OFF && majSellAct)) : (alS && !busyS && !noResSell && roomSell && !exhDn && !(InpMajFlt != MAJ_OFF && majBuyAct));
+         bool okR = d > 0 ? (alB && !busyB && !noSupBuy && rsiBuy && roomBuy && !exhUp && !(InpMajFlt != MAJ_OFF && majSellAct)) : (alS && !busyS && !noResSell && rsiSell && roomSell && !exhDn && !(InpMajFlt != MAJ_OFF && majBuyAct));
          int hitIx = -1, hitMz = -1;
          if(okR)
             for(int j = 0; j < ArraySize(dZLo) && hitIx < 0; j++)
               {
-               if(dZW[j] < InpDlMinW || (d > 0 ? dZB[j] >= InpDlOnce : dZS[j] >= InpDlOnce)) continue;
+               if(dZW[j] < InpDlMinW || (d > 0 ? dZB[j] >= gDlOnce : dZS[j] >= gDlOnce)) continue;
                double lo = dZLo[j], hi = dZHi[j];
                if(d > 0 ? (L0 <= hi && L0 >= lo - a && C0 > (lo + hi) / 2) : (H0 >= lo && H0 <= hi + a && C0 < (lo + hi) / 2)) hitIx = j;
               }
@@ -1285,8 +1387,8 @@ void OnNewBar(bool live)
          if(dZW[j] < InpDlMinW || k - dZT[j] < 10) continue;
          double lo = dZLo[j], hi = dZHi[j];
          int dSt = dZW[j] >= 4 ? 3 : 2;
-         bool bR = !busyB && okBuyZ && !noSupBuy && RsiOk(1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZB[j] < InpDlOnce && lo < C0 && hc12 > hi && lw3 <= hi && C0 > hi && C0 > O0;
-         bool sR = !busyS && okSellZ && !noResSell && RsiOk(-1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZS[j] < InpDlOnce && hi > C0 && lc12 < lo && hg3 >= lo && C0 < lo && C0 < O0;
+         bool bR = !busyB && okBuyZ && !noSupBuy && RsiOk(1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZB[j] < gDlOnce && lo < C0 && hc12 > hi && lw3 <= hi && C0 > hi && C0 > O0;
+         bool sR = !busyS && okSellZ && !noResSell && RsiOk(-1, dSt, rsiBuy, rsiSell, momUp, momDn) && dZS[j] < gDlOnce && hi > C0 && lc12 < lo && hg3 >= lo && C0 < lo && C0 < O0;
          if((bR || sR) && InpSlSkip && (bR ? C0 - (MathMin(lo, L0) - InpSlBuf * a) : (MathMax(hi, H0) + InpSlBuf * a) - C0) > PSlMax(tfSecs, a)) { bR = false; sR = false; }
          if(bR || sR)
            {
@@ -1322,13 +1424,13 @@ void OnNewBar(bool live)
          bool valid = MathAbs(zz.p0 - zz.p1) >= InpMinLeg * (pass == 0 ? a : maj.Atr());
          bool trendOk;
          if(!trOn)          trendOk = d > 0 ? alB : alS;
-         else if(pass == 1) trendOk = mStrict ? (d > 0 ? trend >= 0 && mTr >= 0 : trend <= 0 && mTr <= 0) : (d > 0 ? trend >= 0 || mTr >= 0 : trend <= 0 || mTr <= 0);
+         else if(pass == 1) trendOk = gMajRule == MAJR_BOTH ? (d > 0 ? trend >= 0 && mTr >= 0 : trend <= 0 && mTr <= 0) : gMajRule == MAJR_EITHER ? (d > 0 ? trend >= 0 || mTr >= 0 : trend <= 0 || mTr <= 0) : (d > 0 ? trend >= 0 : trend <= 0);
          else               trendOk = d == trend || (trFirst && trend != 0) || (trend == 0 && (rngBoth || zz.brk || k - zz.bB <= rb));
          //--- against the trend: Balanced never; Open ★★ and up; Custom ★★ with MACD on its side. Half size, closes at TP1
          bool ctZ  = pass == 0 && trFirst && trend != 0 && d != trend;
          bool ctNo = ctZ && (mBal || (mOpen && zz.stars < 2) || (mCust && (zz.stars < 2 || mh * d <= 0)));
          bool ct   = ctZ && gCtHalf;
-         double kf = ((pass == 0 && trOn && trend == 0 && !(zz.brk || k - zz.bB <= rb)) || ct || (!ctZ && mh * d < 0) ? 0.5 : 1.0) * (d > 0 ? kRB : kRS);
+         double kf = ((pass == 0 && trOn && trend == 0 && !(zz.brk || k - zz.bB <= rb)) || ct || (gMacdHalf && !ctZ && mh * d < 0) ? 0.5 : 1.0) * (d > 0 ? kRB : kRS);
          int st = pass == 0 ? zz.stars : 2;
          st = (int)MathMin(st + (d > 0 ? (osRecent ? 1 : 0) : (obRecent ? 1 : 0)), 4);
          bool rOk = RsiOk(d, st, rsiBuy, rsiSell, momUp, momDn);
@@ -1382,7 +1484,7 @@ void OnNewBar(bool live)
      }
 
    //--- 4 · trend lines: a touch and rejection with the trend (Strict: 15m and up; half size below 15m)
-   if(InpTlTrade)
+   if(gTl)
      {
       int nl = ArraySize(eng.tlB), nh = ArraySize(eng.thB);
       if(nl >= 2 && eng.tlB[nl - 1] != lastTlB) { lastTlB = eng.tlB[nl - 1]; NewLine(eng.tlP, eng.tlB, false, tsB, tsP, tsM, tsE); }
@@ -1456,6 +1558,7 @@ void CheckDay(void)
    int dk = DayKey(d0);
    if(dk != dayKeyNow)
      {
+      gDayBal = AccountInfoDouble(ACCOUNT_BALANCE); gDayStop = false;
       BuildDaily(iOpen(_Symbol, PERIOD_D1, 0), eng.Atr());
       if(ArraySize(dZLo) > 0) dayKeyNow = dk;   // retried on the next bar if D1 data was not ready
      }
@@ -1471,8 +1574,29 @@ int OnInit()
    mStrict = InpMode == FXM_STRICT; mBal = InpMode == FXM_BAL; mOpen = InpMode == FXM_OPEN; mCust = InpMode == FXM_CUSTOM;
    gDir    = mStrict ? DIR_TREND : mCust ? InpDir : DIR_FIRST;
    gELvl   = mOpen ? ELVL_START : mCust ? InpELvl : ELVL_MID;
-   gRoom   = InpRoomMode == ROOM_AUTO ? (mOpen ? ROOM_STRONG_HALF : ROOM_STRONG_BLOCK) : InpRoomMode;
+   gRoom   = InpRoomMode == ROOM_AUTO ? (mOpen ? ROOM_STRONG_HALF : ROOM_STRONG_BLOCK) : mCust ? InpRoomMode : (mOpen ? ROOM_STRONG_HALF : ROOM_STRONG_BLOCK);
    gCtHalf = mCust ? InpCtHalf : true;
+   //--- 3.13 / Custom: every input as set (defaults = 3.13). Strict / Balanced / Open: the 3.25 presets
+   gProt     = mCust ? InpProtect  : PROT_STEP;
+   gPartMode = mCust ? InpPartMode : PART_ALL;
+   gStopMd   = mCust ? InpStopMd   : SLM_ATR;
+   gMajRule  = mCust ? InpMajRule  : mStrict ? MAJR_BOTH : MAJR_EITHER;
+   gLot1m    = mCust ? InpLot1m    : true;
+   gSm       = mCust ? InpSmOn     : true;
+   gTl       = mCust ? InpTlTrade  : true;
+   gRev      = mCust ? InpUseRev   : false;
+   gRsiEx    = mCust ? InpRsiEx    : true;
+   gMacdHalf = mCust ? InpMacdHalf : true;
+   gRoom1m   = mCust ? InpRoom1m   : false;
+   gMaxOpen  = mCust ? InpMaxOpen  : 3;
+   gDlOnce   = mCust ? InpDlOnce   : 1;
+   gTrSwing  = mCust ? InpTrMode == TRM_SWING : false;
+   if(!mCust && gRoom == ROOM_ALL_BLOCK) gRoom = mOpen ? ROOM_STRONG_HALF : ROOM_STRONG_BLOCK;
+   if(mCust && gRoom == ROOM_AUTO) gRoom = ROOM_STRONG_BLOCK;
+   gNetting  = AccountInfoInteger(ACCOUNT_MARGIN_MODE) != ACCOUNT_MARGIN_MODE_RETAIL_HEDGING;
+   gDayBal   = AccountInfoDouble(ACCOUNT_BALANCE); gDayStop = false;
+   trade.SetDeviationInPoints(InpDeviation);
+   if(gNetting) Print("FOXREX: netting account — one position per symbol (reinforcement off)");
    sDnK = -1; sUpK = -1; brkUpK = -1; brkDnK = -1; tlTK = -1000; tsB = -1; trB = -1; lastTlB = -1; lastThB = -1;
    { string pp[]; int np = StringSplit(InpPartPct, ',', pp); ArrayResize(gPart, np); for(int i = 0; i < np; i++) gPart[i] = StringToDouble(pp[i]); }
    gMagic = InpMagicByTf ? InpMagic + PeriodSeconds(_Period) / 60 : InpMagic;
@@ -1481,7 +1605,7 @@ int OnInit()
    tfSecs = PeriodSeconds(_Period);
    eng.Init(_Period, 2);
    //--- major timeframe
-   ENUM_TIMEFRAMES autoTf = tfSecs <= 60 ? PERIOD_M15 : tfSecs <= 300 ? PERIOD_M15 : tfSecs <= 900 ? PERIOD_H4 : tfSecs <= 3600 ? PERIOD_D1 : PERIOD_W1;
+   ENUM_TIMEFRAMES autoTf = tfSecs <= 60 ? PERIOD_M15 : tfSecs <= 300 ? ((mCust && InpMaj5H) ? PERIOD_H1 : PERIOD_M15) : tfSecs <= 900 ? PERIOD_H4 : tfSecs <= 3600 ? PERIOD_D1 : PERIOD_W1;
    majTf = InpMajAuto ? autoTf : InpMajTf;
    majOn = InpUseMaj && PeriodSeconds(majTf) > tfSecs;
    maj.Init(majOn ? majTf : _Period, 1);
@@ -1520,6 +1644,7 @@ void OnDeinit(const int reason)
 
 void OnTick()
   {
+   Guards();
    ManagePositions();
    //--- protect the rule "new trades only when the open ones are protected"
    bool bB, bS; Busy(bB, bS);
