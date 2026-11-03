@@ -1,7 +1,7 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX — foxrex.co
 //
-// FOXREX · Wave Retracement Zones · version 3.25 (see tools/tradingview/CHANGELOG.md)
+// FOXREX · Wave Retracement Zones · version 3.26 (see tools/tradingview/CHANGELOG.md)
 // Strategy: a wave runs from its start to the first price stall. Its retracement (38.2%–61.8%) is the trade zone —
 // buy the pullbacks of an up trend, sell the pullbacks of a down trend, add on the next pullbacks of the same wave.
 // Trend (default): up while price holds above the last higher low; a close below it turns the trend down (mirror).
@@ -19,8 +19,8 @@
 // Educational tool, not investment advice.
 
 //@version=6
-indicator("FOXREX · Wave Retracement Zones", shorttitle = "FOXREX Waves", overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500, max_bars_back = 500)
-string VER = "3.25"
+indicator("FOXREX · Wave Retracement Zones", shorttitle = "FX Waves", overlay = true, max_boxes_count = 500, max_lines_count = 500, max_labels_count = 500, max_bars_back = 500)
+string VER = "3.26"
 
 // ───────────────────────────── Inputs (most important first)
 string G_Q    = "⭐ 1 · Quick setup — size · stop · targets · conditions · blockers"
@@ -751,27 +751,18 @@ majorEngine() =>
     bool bV = not na(zBy) and math.abs(zBy.p0 - zBy.p1) >= minLeg * a
     [sV ? zS.p0 : na, sV ? zS.p1 : na, sV ? zS.t1 : na, sV ? zS.state : -1, sV ? zS.tB : na, bV ? zBy.p0 : na, bV ? zBy.p1 : na, bV ? zBy.t1 : na, bV ? zBy.state : -1, bV ? zBy.tB : na, tr, tDir, tEn, tSl, tHit, tT, tTp.get(0), tTp.get(3), cT0, cT1, cDr, cEn, cEx, cPt, cHt]
 
-// Values of the last closed major bar (no repainting).
-majorPack() =>
-    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7, e1, e2, e3, e4, e5, e6, e7] = majorEngine()
-    [a1[1], a2[1], a3[1], a4[1], a5[1], b1[1], b2[1], b3[1], b4[1], b5[1], c1[1], d1[1], d2[1], d3[1], d4[1], d5[1], d6[1], d7[1]]
-
-// The other timeframe of the 5m ↔ 15m pair: its last closed trade and its open trade.
-lowerPack() =>
-    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7, e1, e2, e3, e4, e5, e6, e7] = majorEngine()
-    [e1, e2, e3, e4, e5, e6, e7, d1, d2, d4, d5]
-
-// same, from the last closed bar (used when the other timeframe is higher than the chart)
-lowerPackH() =>
-    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7, e1, e2, e3, e4, e5, e6, e7] = majorEngine()
-    [e1[1], e2[1], e3[1], e4[1], e5[1], e6[1], e7[1], d1[1], d2[1], d4[1], d5[1]]
-
-// Higher-timeframe guide: live zones, trend, open trade, RSI and MACD of the last closed bar.
-guidePack() =>
+// One pack per higher timeframe (major + guide slots), from its last closed bar (no repainting):
+// zones, trend, open trade, RSI, MACD and the last closed trade.
+uPack() =>
     [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7, e1, e2, e3, e4, e5, e6, e7] = majorEngine()
     float r = ta.rsi(close, rsiLen)
     [mL, mS, mH] = ta.macd(close, 12, 26, 9)
-    [a1[1], a2[1], a4[1], a5[1], b1[1], b2[1], b4[1], b5[1], c1[1], d1[1], d2[1], d3[1], d4[1], d5[1], d6[1], r[1], mH[1], mH[2]]
+    [a1[1], a2[1], a4[1], a5[1], b1[1], b2[1], b4[1], b5[1], c1[1], d1[1], d2[1], d3[1], d4[1], d5[1], d6[1], d7[1], r[1], mH[1], mH[2], e1[1], e2[1], e3[1], e4[1], e5[1], e6[1], e7[1]]
+
+// 15m chart: the 5m trades inside it (lower timeframe, every 5m bar of the 15m candle).
+lowerPack() =>
+    [a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, c1, d1, d2, d3, d4, d5, d6, d7, e1, e2, e3, e4, e5, e6, e7] = majorEngine()
+    [e1, e2, e3, e4, e5, e6, e7, d1, d2, d4, d5]
 
 // Results of one intraday timeframe for the chart's period (day / week): trades closed, wins, losses, points, $ (1 lot).
 dayPack() =>
@@ -805,61 +796,74 @@ string majAutoTf = tfSecs <= 60 ? "15" : tfSecs <= 300 ? "15" : tfSecs <= 900 ? 
 string majTf     = majAuto ? majAutoTf : majTfIn
 bool   majOn     = showMaj and tfSecs < timeframe.in_seconds(majTf)
 string mTf       = majOn ? majTf : timeframe.period
-[mSP0, mSP1, mST1, mSSt, mSId, mBP0, mBP1, mBT1, mBSt, mBId, mTr, mTDir, mTEn, mTSl, mTHit, mTT, mTTp1, mTTp4] = request.security(syminfo.tickerid, mTf, majorPack(), lookahead = barmerge.lookahead_on)
+int    majSecs = majOn ? timeframe.in_seconds(majTf) : -1
+[mSP0, mSP1, mSSt, mSId, mBP0, mBP1, mBSt, mBId, mTr, mTD, mTE, mTS, mTH, mTT, mTP1, mTP4, mRsi, mMh, mMh1, mcT0, mcT1, mcDr, mcEn, mcEx, mcPt, mcHt] = request.security(syminfo.tickerid, mTf, uPack(), lookahead = barmerge.lookahead_on)
 string mLbl = tfLabel(timeframe.in_seconds(majTf))
 string cLbl = tfLabel(tfSecs)
 
-// the timeframe just below this one: 5m ← 1m · 10m/15m ← 5m · 30m/1H ← 15m · 2H/4H ← 1H · D ← 4H
-// 5m and 15m show each other's trades; every other timeframe shows only its own
-string lowTf  = tfSecs == 300 ? "15" : "5"
-bool   low1On = showLow and (tfSecs == 300 or tfSecs == 900)
-string lLbl   = tfLabel(timeframe.in_seconds(lowTf))
+// 5m and 15m show each other's trades: the 5m chart reads its major (15m, closed bar); the 15m chart reads the 5m bars
+bool   low1On = showLow and ((tfSecs == 300 and majSecs == 900) or tfSecs == 900)
+string lLbl   = tfSecs == 300 ? "M15" : "M5"
 [laT0, laT1, laDr, laEn, laEx, laPt, laHt, laODr, laOEn, laOHt, laOT] = request.security(syminfo.tickerid, low1On and tfSecs == 900 ? "5" : timeframe.period, lowerPack())
-[lbT0, lbT1, lbDr, lbEn, lbEx, lbPt, lbHt, lbODr, lbOEn, lbOHt, lbOT] = request.security(syminfo.tickerid, low1On and tfSecs == 300 ? "15" : timeframe.period, lowerPackH(), lookahead = barmerge.lookahead_on)
 bool  lHi  = tfSecs == 300
-int   l1T0 = lHi ? lbT0 : laT0
-int   l1T1 = lHi ? lbT1 : laT1
-int   l1Dr = lHi ? lbDr : laDr
-float l1En = lHi ? lbEn : laEn
-float l1Ex = lHi ? lbEx : laEx
-float l1Pt = lHi ? lbPt : laPt
-int   l1Ht = lHi ? lbHt : laHt
-int   l1ODr = lHi ? lbODr : laODr
-float l1OEn = lHi ? lbOEn : laOEn
-int   l1OHt = lHi ? lbOHt : laOHt
-int   l1OT  = lHi ? lbOT : laOT
+int   l1T0 = lHi ? mcT0 : laT0
+int   l1T1 = lHi ? mcT1 : laT1
+int   l1Dr = lHi ? mcDr : laDr
+float l1En = lHi ? mcEn : laEn
+float l1Ex = lHi ? mcEx : laEx
+float l1Pt = lHi ? mcPt : laPt
+int   l1Ht = lHi ? mcHt : laHt
+int   l1ODr = lHi ? mTD : laODr
+float l1OEn = lHi ? mTE : laOEn
+int   l1OHt = lHi ? mTH : laOHt
+int   l1OT  = lHi ? mTT : laOT
 
-// ───────────────────────────── Higher-timeframe guide data (5m · 15m · 1H · 4H, only above this chart)
-bool gOn5   = gShow and g5 and tfSecs < 300
-bool gOn15  = gShow and g15 and tfSecs < 900
-bool gOn60  = gShow and g60 and tfSecs < 3600
-bool gOn240 = gShow and g240 and tfSecs < 14400
-[q0a, q0b, q0c, q0d, q0e, q0f, q0g, q0h, q0i, q0j, q0k, q0l, q0m, q0n, q0o, q0p, q0q, q0r] = request.security(syminfo.tickerid, gOn5 ? "5" : timeframe.period, guidePack(), lookahead = barmerge.lookahead_on)
-[q1a, q1b, q1c, q1d, q1e, q1f, q1g, q1h, q1i, q1j, q1k, q1l, q1m, q1n, q1o, q1p, q1q, q1r] = request.security(syminfo.tickerid, gOn15 ? "15" : timeframe.period, guidePack(), lookahead = barmerge.lookahead_on)
-[q2a, q2b, q2c, q2d, q2e, q2f, q2g, q2h, q2i, q2j, q2k, q2l, q2m, q2n, q2o, q2p, q2q, q2r] = request.security(syminfo.tickerid, gOn60 ? "60" : timeframe.period, guidePack(), lookahead = barmerge.lookahead_on)
-[q3a, q3b, q3c, q3d, q3e, q3f, q3g, q3h, q3i, q3j, q3k, q3l, q3m, q3n, q3o, q3p, q3q, q3r] = request.security(syminfo.tickerid, gOn240 ? "240" : timeframe.period, guidePack(), lookahead = barmerge.lookahead_on)
-// per timeframe (index 0 = 5m … 3 = 4H)
-array<bool>   gOn  = array.from(gOn5, gOn15, gOn60, gOn240)
-array<int>    gSec = array.from(300, 900, 3600, 14400)
-array<string> gNm  = array.from("M5", "M15", "H1", "H4")
-array<float>  gSP0 = array.from(q0a, q1a, q2a, q3a)
-array<float>  gSP1 = array.from(q0b, q1b, q2b, q3b)
-array<int>    gSSt = array.from(q0c, q1c, q2c, q3c)
-array<int>    gSId = array.from(q0d, q1d, q2d, q3d)
-array<float>  gBP0 = array.from(q0e, q1e, q2e, q3e)
-array<float>  gBP1 = array.from(q0f, q1f, q2f, q3f)
-array<int>    gBSt = array.from(q0g, q1g, q2g, q3g)
-array<int>    gBId = array.from(q0h, q1h, q2h, q3h)
-array<int>    gTr  = array.from(q0i, q1i, q2i, q3i)
-array<int>    gTD  = array.from(q0j, q1j, q2j, q3j)
-array<float>  gTE  = array.from(q0k, q1k, q2k, q3k)
-array<float>  gTS  = array.from(q0l, q1l, q2l, q3l)
-array<int>    gTH  = array.from(q0m, q1m, q2m, q3m)
-array<int>    gTT  = array.from(q0n, q1n, q2n, q3n)
-array<float>  gTP1 = array.from(q0o, q1o, q2o, q3o)
-array<float>  gRsi = array.from(q0p, q1p, q2p, q3p)
-array<float>  gMh  = array.from(q0q, q1q, q2q, q3q)
-array<float>  gMh1 = array.from(q0r, q1r, q2r, q3r)
+// ───────────────────────────── Higher-timeframe guide data: slot 0 = the major timeframe, slots 1–3 = the other
+// guide timeframes above this chart (5m · 15m · 1H · 4H; with four candidates the 5m is left out)
+bool   c5   = gShow and g5 and tfSecs < 300 and majSecs != 300
+bool   c15  = gShow and g15 and tfSecs < 900 and majSecs != 900
+bool   c60  = gShow and g60 and tfSecs < 3600 and majSecs != 3600
+bool   c240 = gShow and g240 and tfSecs < 14400 and majSecs != 14400
+int    k5   = c5 ? 1 : 0
+int    k15  = k5 + (c15 ? 1 : 0)
+int    k60  = k15 + (c60 ? 1 : 0)
+int    k240 = k60 + (c240 ? 1 : 0)
+int    kOff = k240 > 3 ? 1 : 0
+gLvOf(int sec) =>
+    sec >= 14400 ? 3 : sec >= 3600 ? 2 : sec >= 900 ? 1 : 0
+gTfN(int n) =>
+    c5 and k5 == n ? "5" : c15 and k15 == n ? "15" : c60 and k60 == n ? "60" : c240 and k240 == n ? "240" : ""
+string gS1 = gTfN(1 + kOff)
+string gS2 = gTfN(2 + kOff)
+string gS3 = gTfN(3 + kOff)
+[u1SP0, u1SP1, u1SSt, u1SId, u1BP0, u1BP1, u1BSt, u1BId, u1Tr, u1TD, u1TE, u1TS, u1TH, u1TT, u1TP1, u1TP4, u1Rsi, u1Mh, u1Mh1, u1cT0, u1cT1, u1cDr, u1cEn, u1cEx, u1cPt, u1cHt] = request.security(syminfo.tickerid, gS1 == "" ? timeframe.period : gS1, uPack(), lookahead = barmerge.lookahead_on)
+[u2SP0, u2SP1, u2SSt, u2SId, u2BP0, u2BP1, u2BSt, u2BId, u2Tr, u2TD, u2TE, u2TS, u2TH, u2TT, u2TP1, u2TP4, u2Rsi, u2Mh, u2Mh1, u2cT0, u2cT1, u2cDr, u2cEn, u2cEx, u2cPt, u2cHt] = request.security(syminfo.tickerid, gS2 == "" ? timeframe.period : gS2, uPack(), lookahead = barmerge.lookahead_on)
+[u3SP0, u3SP1, u3SSt, u3SId, u3BP0, u3BP1, u3BSt, u3BId, u3Tr, u3TD, u3TE, u3TS, u3TH, u3TT, u3TP1, u3TP4, u3Rsi, u3Mh, u3Mh1, u3cT0, u3cT1, u3cDr, u3cEn, u3cEx, u3cPt, u3cHt] = request.security(syminfo.tickerid, gS3 == "" ? timeframe.period : gS3, uPack(), lookahead = barmerge.lookahead_on)
+gSecOf(string t) =>
+    t == "5" ? 300 : t == "15" ? 900 : t == "60" ? 3600 : t == "240" ? 14400 : 0
+bool   gM   = gShow and majOn and (majSecs == 300 ? g5 : majSecs == 900 ? g15 : majSecs == 3600 ? g60 : majSecs == 14400 ? g240 : true)
+array<bool>   gOn  = array.from(gM, gS1 != "", gS2 != "", gS3 != "")
+array<int>    gSec = array.from(majSecs, gSecOf(gS1), gSecOf(gS2), gSecOf(gS3))
+array<string> gNm  = array.from(mLbl, tfLabel(gSecOf(gS1)), tfLabel(gSecOf(gS2)), tfLabel(gSecOf(gS3)))
+array<float> gSP0 = array.from(mSP0, u1SP0, u2SP0, u3SP0)
+array<float> gSP1 = array.from(mSP1, u1SP1, u2SP1, u3SP1)
+array<int>   gSSt = array.from(mSSt, u1SSt, u2SSt, u3SSt)
+array<int>   gSId = array.from(mSId, u1SId, u2SId, u3SId)
+array<float> gBP0 = array.from(mBP0, u1BP0, u2BP0, u3BP0)
+array<float> gBP1 = array.from(mBP1, u1BP1, u2BP1, u3BP1)
+array<int>   gBSt = array.from(mBSt, u1BSt, u2BSt, u3BSt)
+array<int>   gBId = array.from(mBId, u1BId, u2BId, u3BId)
+array<int>   gTr = array.from(mTr, u1Tr, u2Tr, u3Tr)
+array<int>   gTD = array.from(mTD, u1TD, u2TD, u3TD)
+array<float> gTE = array.from(mTE, u1TE, u2TE, u3TE)
+array<float> gTS = array.from(mTS, u1TS, u2TS, u3TS)
+array<int>   gTH = array.from(mTH, u1TH, u2TH, u3TH)
+array<int>   gTT = array.from(mTT, u1TT, u2TT, u3TT)
+array<float> gTP1 = array.from(mTP1, u1TP1, u2TP1, u3TP1)
+array<float> gTP4 = array.from(mTP4, u1TP4, u2TP4, u3TP4)
+array<float> gRsi = array.from(mRsi, u1Rsi, u2Rsi, u3Rsi)
+array<float> gMh = array.from(mMh, u1Mh, u2Mh, u3Mh)
+array<float> gMh1 = array.from(mMh1, u1Mh1, u2Mh1, u3Mh1)
 
 // ───────────────────────────── Daily data (previous completed sessions → no repaint)
 dailyPack() =>
@@ -1224,8 +1228,8 @@ mzDraw(MajView v, int dir, float p0, float p1, int t1, int st, int id) =>
         v.mid := na
     live
 
-bool mSLive = mzDraw(mvS, -1, mSP0, mSP1, mST1, mSSt, mSId)
-bool mBLive = mzDraw(mvB, 1, mBP0, mBP1, mBT1, mBSt, mBId)
+bool mSLive = mzDraw(mvS, -1, mSP0, mSP1, mSId, mSSt, mSId)
+bool mBLive = mzDraw(mvB, 1, mBP0, mBP1, mBId, mBSt, mBId)
 
 // A major zone is "active" while price reacts inside it: touched, not invalidated, leg extreme not yet broken.
 bool majSellAct = mSLive and (mSSt == 1 or mvS.tch) and close < mSP1 + fInv * (mSP0 - mSP1) and close > mSP1
@@ -1322,19 +1326,19 @@ bool okSellM    = okSell and (trOn ? trend <= 0 or mTr <= 0 : alS)
 var line  mTln = na
 var label mTlb = na
 var int   mTid = na
-if majOn and showMjT and mTDir != 0 and not na(mTT)
-    color c = mTDir < 0 ? cSell : cBuy
+if majOn and showMjT and mTD != 0 and not na(mTT)
+    color c = mTD < 0 ? cSell : cBuy
     if na(mTid) or mTid != mTT
         line.delete(mTln)
         label.delete(mTlb)
         mTid := mTT
-        mTln := line.new(mTT, mTEn, time, mTEn, xloc = xloc.bar_time, color = color.new(c, 30), style = line.style_dashed, width = 1)
-        mTlb := label.new(time, mTEn, "", xloc = xloc.bar_time, style = label.style_label_left, color = color.new(c, 75), textcolor = color.white, size = size.tiny)
+        mTln := line.new(mTT, mTE, time, mTE, xloc = xloc.bar_time, color = color.new(c, 30), style = line.style_dashed, width = 1)
+        mTlb := label.new(time, mTE, "", xloc = xloc.bar_time, style = label.style_label_left, color = color.new(c, 75), textcolor = color.white, size = size.tiny)
     int rx = time + 10 * tfSecs * 1000
     mTln.set_x2(rx)
     mTlb.set_x(rx)
-    mTlb.set_text(mLbl + (mTDir < 0 ? " SELL " : " BUY ") + fmtP(mTEn) + (mTHit > 0 ? " ✓TP" + str.tostring(mTHit) : "") + " · open")
-    mTlb.set_tooltip("Major " + mLbl + " trade (shown while open)\nSL " + fmtP(mTSl) + "\nTP1 " + fmtP(mTTp1) + " … TP4 " + fmtP(mTTp4))
+    mTlb.set_text(mLbl + (mTD < 0 ? " SELL " : " BUY ") + fmtP(mTE) + (mTH > 0 ? " ✓TP" + str.tostring(mTH) : "") + " · open")
+    mTlb.set_tooltip("Major " + mLbl + " trade (shown while open)\nSL " + fmtP(mTS) + "\nTP1 " + fmtP(mTP1) + " … TP4 " + fmtP(mTP4))
 else if not na(mTid)
     line.delete(mTln)
     label.delete(mTlb)
@@ -1876,7 +1880,6 @@ var array<line>  gOpL = array.new<line>()
 var array<label> gOpT = array.new<label>()
 var array<label> gMk  = array.new<label>()
 var array<int>   gLastT = array.new<int>(4, 0)
-int majSecs = majOn ? timeframe.in_seconds(majTf) : -1
 
 // entry markers of the higher timeframes (where their trade opened)
 if gShow and gSig
@@ -1886,7 +1889,7 @@ if gShow and gSig
             gLastT.set(i, tt)
             int   d  = gTD.get(i)
             color c  = d < 0 ? cSell : cBuy
-            gMk.push(label.new(tt, gTE.get(i), "◆ " + gNm.get(i) + (d < 0 ? " SELL" : " BUY"), xloc = xloc.bar_time, style = d < 0 ? label.style_label_down : label.style_label_up, color = color.new(c, i >= 2 ? 15 : 45), textcolor = color.white, size = i >= 2 ? size.small : size.tiny, tooltip = gNm.get(i) + " wave-zone entry @ " + fmtP(gTE.get(i)) + "\nSL " + fmtP(gTS.get(i)) + " · TP1 " + fmtP(gTP1.get(i)) + "\nHigher-timeframe signal — a guide, not a trade on this chart"))
+            gMk.push(label.new(tt, gTE.get(i), "◆ " + gNm.get(i) + (d < 0 ? " SELL" : " BUY"), xloc = xloc.bar_time, style = d < 0 ? label.style_label_down : label.style_label_up, color = color.new(c, gLvOf(gSec.get(i)) >= 2 ? 15 : 45), textcolor = color.white, size = gLvOf(gSec.get(i)) >= 2 ? size.small : size.tiny, tooltip = gNm.get(i) + " wave-zone entry @ " + fmtP(gTE.get(i)) + "\nSL " + fmtP(gTS.get(i)) + " · TP1 " + fmtP(gTP1.get(i)) + "\nHigher-timeframe signal — a guide, not a trade on this chart"))
             while gMk.size() > 12
                 label.delete(gMk.shift())
 
@@ -1909,7 +1912,8 @@ if barstate.islast
         array<int>   aDir = array.new<int>()
         int rx = time + 8 * tfSecs * 1000
         for ii = 0 to 3
-            int i = 3 - ii   // highest timeframe first
+            int i  = gSec.sort_indices(order.descending).get(ii)   // highest timeframe first
+            int lv = gLvOf(gSec.get(i))
             if gOn.get(i) and gSec.get(i) != majSecs
                 for k = 0 to 1
                     int   d   = k == 0 ? -1 : 1
@@ -1932,17 +1936,17 @@ if barstate.islast
                             aBot.push(bot)
                             aDir.push(d)
                             color c  = d < 0 ? cSell : cBuy
-                            int   w  = i == 3 ? 3 : i == 2 ? 2 : 1
+                            int   w  = lv == 3 ? 3 : lv == 2 ? 2 : 1
                             float zM = entryLvl(zA, zB, p0, p1)
-                            gBx.push(box.new(id, top, rx, bot, xloc = xloc.bar_time, border_color = color.new(c, i == 3 ? 0 : i == 2 ? 20 : i == 1 ? 45 : 60), border_width = w, border_style = i == 0 ? line.style_dotted : line.style_solid, bgcolor = color.new(c, i == 3 ? 86 : i == 2 ? 89 : i == 1 ? 92 : 95), text = gNm.get(i) + (d < 0 ? " SELL ZONE" : " BUY ZONE") + (stt == 1 ? " · touched" : ""), text_size = i >= 2 ? size.small : size.tiny, text_color = color.new(c, i >= 2 ? 0 : 30), text_halign = text.align_right, text_valign = d < 0 ? text.align_top : text.align_bottom))
-                            gLn.push(line.new(id, zM, rx, zM, xloc = xloc.bar_time, color = color.new(c, i >= 2 ? 20 : 50), width = w, style = line.style_dotted))
+                            gBx.push(box.new(id, top, rx, bot, xloc = xloc.bar_time, border_color = color.new(c, lv == 3 ? 0 : lv == 2 ? 20 : lv == 1 ? 45 : 60), border_width = w, border_style = lv == 0 ? line.style_dotted : line.style_solid, bgcolor = color.new(c, lv == 3 ? 86 : lv == 2 ? 89 : lv == 1 ? 92 : 95), text = gNm.get(i) + (d < 0 ? " SELL ZONE" : " BUY ZONE") + (stt == 1 ? " · touched" : ""), text_size = lv >= 2 ? size.small : size.tiny, text_color = color.new(c, lv >= 2 ? 0 : 30), text_halign = text.align_right, text_valign = d < 0 ? text.align_top : text.align_bottom))
+                            gLn.push(line.new(id, zM, rx, zM, xloc = xloc.bar_time, color = color.new(c, lv >= 2 ? 20 : 50), width = w, style = line.style_dotted))
         // open trades of the higher timeframes: entry line from their entry to the right edge
         if gSig
             for i = 0 to 3
                 int d = gTD.get(i)
                 if gOn.get(i) and d != 0 and not na(gTT.get(i)) and not (showMjT and gSec.get(i) == majSecs)
                     color c = d < 0 ? cSell : cBuy
-                    gOpL.push(line.new(gTT.get(i), gTE.get(i), rx, gTE.get(i), xloc = xloc.bar_time, color = color.new(c, 30), style = line.style_dashed, width = i >= 2 ? 2 : 1))
+                    gOpL.push(line.new(gTT.get(i), gTE.get(i), rx, gTE.get(i), xloc = xloc.bar_time, color = color.new(c, 30), style = line.style_dashed, width = gLvOf(gSec.get(i)) >= 2 ? 2 : 1))
                     gOpT.push(label.new(rx, gTE.get(i), "◆ " + gNm.get(i) + (d < 0 ? " SELL " : " BUY ") + fmtP(gTE.get(i)) + (gTH.get(i) > 0 ? " ✓TP" + str.tostring(gTH.get(i)) : "") + " · open", xloc = xloc.bar_time, style = label.style_label_left, color = color.new(c, 55), textcolor = color.white, size = size.tiny, tooltip = gNm.get(i) + " trade (wave engine of that timeframe)\nSL " + fmtP(gTS.get(i)) + " · TP1 " + fmtP(gTP1.get(i))))
 
 // ───────────────────────────── Trend lines (last bar): lines that price has respected since their first point.
@@ -2159,7 +2163,8 @@ if barstate.islast and showTb
     int    gU = 0
     int    gD = 0
     string gTx = ""
-    for i = 0 to 3
+    for ii = 0 to 3
+        int i = gSec.sort_indices(order.ascending).get(ii)
         if gOn.get(i)
             gU  += gTr.get(i) > 0 ? 1 : 0
             gD  += gTr.get(i) < 0 ? 1 : 0
@@ -2178,7 +2183,8 @@ if barstate.islast and gShow and gTb
         table.cell(gt, c0, 0, h, text_color = cH, text_size = size.small, text_halign = c0 == 0 ? text.align_left : text.align_center)
         c0 += 1
     int r = 1
-    for i = 0 to 3
+    for ii = 0 to 3
+        int i = gSec.sort_indices(order.ascending).get(ii)
         if gOn.get(i)
             int   tr = gTr.get(i)
             float rv = gRsi.get(i)
