@@ -1,0 +1,277 @@
+// This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © FOXREX · foxrex.co
+// FOXREX Break v1.0 — break of structure + retracement limit (same rules as FOXREX_Break_EA.mq5 and break_sim.py)
+//@version=6
+indicator("FOXREX Break v1.0", "FX Break", overlay = true, max_bars_back = 2000, max_lines_count = 500, max_labels_count = 500, max_boxes_count = 300)
+
+// ───────── 1 · Quick setup
+g1 = "⭐ 1 · Quick setup"
+preset   = input.string("v3-5m · best profit (5m)", "Preset", options = ["v3-5m · best profit (5m)", "v3-5m · high win rate (5m)", "v2 · 1m", "Custom"], group = g1)
+lotsIn   = input.float(1.0, "Lots for the $ result", minval = 0.01, group = g1)
+sprd     = input.float(0.3, "Spread (price units)", minval = 0, step = 0.05, group = g1)
+commLot  = input.float(6.0, "Commission per lot ($)", minval = 0, group = g1)
+ptVal    = input.float(100.0, "$ per 1.00 move per lot (gold = 100)", group = g1)
+tzOff    = input.int(0, "Broker server UTC offset (blocked hours)", minval = -12, maxval = 14, group = g1)
+
+// ───────── 2 · Custom
+g2 = "2 · Custom settings (Preset = Custom)"
+cPiv   = input.int(5, "Swing: bars on each side", minval = 1, group = g2)
+cMinW  = input.float(1.0, "Minimum wave (× ATR 14)", step = 0.5, group = g2)
+cEntry = input.float(0.5785, "Entry fib (0 = start, 1 = extreme)", step = 0.01, group = g2)
+cStop  = input.float(-0.15, "Stop fib (negative = beyond the start)", step = 0.01, group = g2)
+cBuf   = input.float(0.05, "Stop buffer (× ATR)", step = 0.01, group = g2)
+cTp    = input.float(3.0, "Target (R)", step = 0.5, group = g2)
+cP1    = input.float(0.0, "Partial close fraction (0 = off)", minval = 0, maxval = 0.9, step = 0.1, group = g2)
+cP1R   = input.float(1.0, "…at (R)", step = 0.1, group = g2)
+cWait  = input.int(144, "Setup life (bars)", minval = 1, group = g2)
+cHold  = input.int(144, "Time exit (bars in trade)", minval = 1, group = g2)
+cBlk   = input.string("", "Blocked fill hours (server, e.g. 20,21,22,23)", group = g2)
+
+// ───────── 3 · Display
+g3 = "3 · Display"
+showPast  = input.bool(true, "Show past trades", group = g3)
+showBreak = input.bool(true, "Show breaks", group = g3)
+showTbl   = input.bool(true, "Show scorecard", group = g3)
+colBuy    = input.color(color.new(#2f80ed, 0), "Buy / sell colours", group = g3, inline = "c")
+colSell   = input.color(color.new(#eb5757, 0), "", group = g3, inline = "c")
+
+// ───────── effective parameters
+int   piv   = preset == "v3-5m · best profit (5m)" ? 5 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 15 : cPiv
+float minW  = preset == "v3-5m · best profit (5m)" ? 1 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 1 : cMinW
+float fEnt  = preset == "v3-5m · best profit (5m)" ? 0.5785 : preset == "v3-5m · high win rate (5m)" ? 0.657 : preset == "v2 · 1m" ? 0.5 : cEntry
+float fStop = preset == "Custom" ? cStop : -0.15
+float buf   = preset == "Custom" ? cBuf : 0.05
+float tpR   = preset == "v3-5m · best profit (5m)" ? 3 : preset == "Custom" ? cTp : 2
+float p1    = preset == "v3-5m · best profit (5m)" ? 0 : preset == "Custom" ? cP1 : 0.5
+float p1r   = preset == "v3-5m · best profit (5m)" ? 1 : preset == "Custom" ? cP1R : 0.7
+int   maxW  = preset == "v2 · 1m" ? 240 : preset == "Custom" ? cWait : 144
+int   maxH  = preset == "v2 · 1m" ? 240 : preset == "Custom" ? cHold : 144
+string blk  = preset == "v3-5m · high win rate (5m)" ? "20,21,22,23" : preset == "Custom" ? cBlk : ""
+
+tz  = tzOff >= 0 ? "GMT+" + str.tostring(tzOff) : "GMT" + str.tostring(tzOff)
+hr  = hour(time, tz)
+blocked = blk != "" and str.contains("," + str.replace_all(blk, " ", "") + ",", "," + str.tostring(hr) + ",")
+
+// ───────── ATR (same smoothing as the EA / simulator)
+var float atr = na
+trv = na(close[1]) ? high - low : math.max(high - low, math.abs(high - close[1]), math.abs(low - close[1]))
+atr := na(atr) ? trv : (atr * 13 + trv) / 14
+
+// ───────── state
+var float swHp = na
+var int   swHi = na
+var float swLp = na
+var int   swLi = na
+var int   sd = 0                     // active setup direction (0 = none)
+var float sSt = na
+var float sEx = na
+var int   sI0 = na
+var bool  sArm = false
+var float sLim = na
+var float sSl = na
+var float sTp = na
+var int   pd = 0                     // open trade direction (0 = none)
+var float pE = na
+var float pSl = na
+var float pSl0 = na
+var float pTp = na
+var int   pI0 = na
+var bool  pPart = false
+var float pReal = 0.0
+var float pRem = 1.0
+var int   nT = 0
+var int   nW = 0
+var float gp = 0.0
+var float gl = 0.0
+var float netR = 0.0
+var float dayUsd = 0.0
+var int   dayK = na
+var box   bx = na
+var line  lE = na
+var line  lS = na
+var line  lT = na
+var line  tE = na
+var line  tS = na
+var line  tT = na
+
+k = year(time, tz) * 400 + month(time, tz) * 32 + dayofmonth(time, tz)
+if k != dayK
+    dayK := k
+    dayUsd := 0.0
+
+// result of a closed trade: [points, $, R]
+tradeResult(float px, int d, float e, float sl0, float real, float rem) =>
+    float pts = real + rem * d * (px - e)
+    float usd = pts * ptVal * lotsIn - commLot * lotsIn
+    float r   = math.abs(e - sl0)
+    [pts, usd, r > 0 ? pts / r : 0.0]
+
+float xPx = na
+string xWhy = ""
+
+// ───────── 1. open trade: stop first, then target, then partial (from the bar after the fill)
+if pd != 0 and bar_index > pI0
+    if (pd < 0 and high + sprd >= pSl) or (pd > 0 and low <= pSl)
+        xPx := pd < 0 ? math.max(pSl, open + sprd) : math.min(pSl, open)
+        xWhy := pSl == pE ? "BE" : "SL"
+    else if (pd < 0 and low + sprd <= pTp) or (pd > 0 and high >= pTp)
+        xPx := pTp
+        xWhy := "TP"
+    else if p1 > 0 and not pPart
+        float r = math.abs(pE - pSl0)
+        float l1 = pE + pd * p1r * r
+        if (pd < 0 and low + sprd <= l1) or (pd > 0 and high >= l1)
+            pPart := true
+            pReal := p1 * pd * (l1 - pE)
+            pRem  := 1 - p1
+            pSl   := pE
+            if showPast
+                line.set_x2(tS, bar_index)
+                tS := line.new(bar_index, pE, bar_index, pE, color = color.gray, style = line.style_dashed)
+    if na(xPx) and bar_index - pI0 >= maxH
+        xPx := pd > 0 ? close : close + sprd
+        xWhy := "time"
+if not na(xPx)
+    [xPts, xUsd, xR] = tradeResult(xPx, pd, pE, pSl0, pReal, pRem)
+    nT += 1
+    if xUsd > 0
+        nW += 1
+        gp += xUsd
+    else
+        gl -= xUsd
+    netR += xR
+    dayUsd += xUsd
+    if showPast
+        line.set_x2(tE, bar_index), line.set_x2(tS, bar_index), line.set_x2(tT, bar_index)
+        label.new(bar_index, xPx, (xR >= 0 ? "+" : "") + str.tostring(xR, "#.#") + "R · " + xWhy, style = pd > 0 ? label.style_label_down : label.style_label_up, color = xUsd > 0 ? color.new(color.green, 20) : color.new(color.red, 20), textcolor = color.white, size = size.tiny, tooltip = "Entry " + str.tostring(pE, format.mintick) + "\nExit " + str.tostring(xPx, format.mintick) + "\n$ " + str.tostring(xUsd, "#,###"))
+    pd := 0
+    xPx := na
+
+// ───────── 2. pending limit of the armed setup
+if sd != 0 and pd == 0 and sArm and not blocked
+    hit = sd < 0 ? high >= sLim : low + sprd <= sLim
+    if hit
+        pd := sd
+        pE := sd < 0 ? math.max(sLim, open) : math.min(sLim, open + sprd)
+        pSl := sSl, pSl0 := sSl, pTp := sTp, pI0 := bar_index
+        pPart := false, pReal := 0.0, pRem := 1.0
+        sd := 0
+        if showPast
+            tE := line.new(bar_index, pE, bar_index, pE, color = pd > 0 ? colBuy : colSell, width = 2)
+            tS := line.new(bar_index, pSl, bar_index, pSl, color = color.red, style = line.style_dashed)
+            tT := line.new(bar_index, pTp, bar_index, pTp, color = color.green, style = line.style_dashed)
+        if (pd < 0 and high + sprd >= pSl) or (pd > 0 and low <= pSl)
+            xPx := pSl
+            xWhy := "SL"
+if not na(xPx)
+    [xPts, xUsd, xR] = tradeResult(xPx, pd, pE, pSl0, pReal, pRem)
+    nT += 1
+    if xUsd > 0
+        nW += 1
+        gp += xUsd
+    else
+        gl -= xUsd
+    netR += xR
+    dayUsd += xUsd
+    if showPast
+        line.set_x2(tE, bar_index), line.set_x2(tS, bar_index), line.set_x2(tT, bar_index)
+        label.new(bar_index, xPx, (xR >= 0 ? "+" : "") + str.tostring(xR, "#.#") + "R · " + xWhy, style = pd > 0 ? label.style_label_down : label.style_label_up, color = xUsd > 0 ? color.new(color.green, 20) : color.new(color.red, 20), textcolor = color.white, size = size.tiny, tooltip = "Entry " + str.tostring(pE, format.mintick) + "\nExit " + str.tostring(xPx, format.mintick) + "\n$ " + str.tostring(xUsd, "#,###"))
+    pd := 0
+    xPx := na
+
+// ───────── 3. confirmed swings (pivot piv bars back)
+if bar_index >= 2 * piv
+    bool isH = true
+    bool isL = true
+    for j = 1 to piv
+        if not (high[piv] > high[piv + j]) or not (high[piv] >= high[piv - j])
+            isH := false
+        if not (low[piv] < low[piv + j]) or not (low[piv] <= low[piv - j])
+            isL := false
+    if isH
+        swHp := high[piv], swHi := bar_index - piv
+    if isL
+        swLp := low[piv], swLi := bar_index - piv
+
+// ───────── 4. break of the latest swing (sell side first)
+for side = 0 to 1
+    int d = side == 0 ? -1 : 1
+    float lvl = side == 0 ? swLp : swHp
+    int   b   = side == 0 ? swLi : swHi
+    if not na(lvl) and ((d < 0 and close < lvl) or (d > 0 and close > lvl))
+        float hi = high
+        float lo = low
+        for j = 0 to math.min(bar_index - b, 1999)
+            hi := math.max(hi, high[j])
+            lo := math.min(lo, low[j])
+        if pd == 0
+            if not na(bx)
+                box.set_bgcolor(bx, color.new(color.gray, 94)), box.set_border_color(bx, color.new(color.gray, 80))
+            sd := d, sSt := d < 0 ? hi : lo, sEx := d < 0 ? lo : hi, sI0 := bar_index, sArm := false
+            bx := box.new(bar_index, sSt + (sEx - sSt) * 0.5, bar_index, sSt + (sEx - sSt) * 0.657, border_color = color.new(d > 0 ? colBuy : colSell, 50), bgcolor = color.new(d > 0 ? colBuy : colSell, 85))
+            if showBreak
+                label.new(bar_index, lvl, d < 0 ? "▼" : "▲", style = label.style_none, textcolor = d > 0 ? colBuy : colSell, size = size.small, tooltip = d < 0 ? "Break down" : "Break up")
+        if side == 0
+            swLp := na
+        else
+            swHp := na
+
+// ───────── 5. setup at the close: new extreme or a stall
+if sd != 0 and pd == 0
+    bool newx = false
+    if bar_index > sI0
+        newx := sd < 0 ? low < sEx : high > sEx
+        if newx
+            sEx := sd < 0 ? low : high
+            sArm := false
+    if math.abs(sSt - sEx) >= minW * atr
+        bool stall = bar_index > sI0 and not newx
+        if stall or sArm
+            float e  = sSt + (sEx - sSt) * fEnt
+            float sl = sSt + (sEx - sSt) * fStop - sd * buf * atr
+            float tp = e + sd * tpR * math.abs(e - sl)
+            if (sd < 0 and close < e) or (sd > 0 and close > e)
+                sArm := true, sLim := e, sSl := sl, sTp := tp
+    if sArm and ((sd < 0 and close > sSl) or (sd > 0 and close < sSl))
+        sd := 0
+    else if bar_index - sI0 > maxW
+        sd := 0
+    if not na(bx)
+        box.set_right(bx, bar_index), box.set_top(bx, sSt + (sEx - sSt) * 0.5), box.set_bottom(bx, sSt + (sEx - sSt) * 0.657)
+
+// ───────── live setup lines
+line.delete(lE), line.delete(lS), line.delete(lT)
+if sd != 0 and sArm and pd == 0
+    lE := line.new(sI0, sLim, bar_index + 5, sLim, color = sd > 0 ? colBuy : colSell, width = 2)
+    lS := line.new(sI0, sSl, bar_index + 5, sSl, color = color.red, style = line.style_dashed)
+    lT := line.new(sI0, sTp, bar_index + 5, sTp, color = color.green, style = line.style_dashed)
+if pd != 0 and showPast
+    line.set_x2(tE, bar_index), line.set_x2(tS, bar_index), line.set_x2(tT, bar_index)
+
+// ───────── scorecard
+var table tb = table.new(position.top_right, 2, 9, bgcolor = color.new(#0b0f19, 10), border_color = color.new(color.gray, 70), border_width = 1)
+if showTbl and barstate.islast
+    net = gp - gl
+    table.cell(tb, 0, 0, "FOXREX Break", text_color = color.orange, text_size = size.small)
+    table.cell(tb, 1, 0, preset, text_color = color.white, text_size = size.small)
+    table.cell(tb, 0, 1, "Trades", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 1, str.tostring(nT), text_color = color.white, text_size = size.small)
+    table.cell(tb, 0, 2, "Won / lost", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 2, str.tostring(nW) + " / " + str.tostring(nT - nW) + "  (" + str.tostring(nT > 0 ? 100.0 * nW / nT : 0, "#") + "%)", text_color = color.white, text_size = size.small)
+    table.cell(tb, 0, 3, "Profit factor", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 3, gl > 0 ? str.tostring(gp / gl, "#.##") : "—", text_color = color.white, text_size = size.small)
+    table.cell(tb, 0, 4, "Net (R)", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 4, str.tostring(netR, "#.#") + "R", text_color = netR >= 0 ? color.lime : color.red, text_size = size.small)
+    table.cell(tb, 0, 5, "Net $ (" + str.tostring(lotsIn) + " lot)", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 5, str.tostring(net, "#,###"), text_color = net >= 0 ? color.lime : color.red, text_size = size.small)
+    table.cell(tb, 0, 6, "Today $", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 6, str.tostring(dayUsd, "#,###"), text_color = dayUsd >= 0 ? color.lime : color.red, text_size = size.small)
+    table.cell(tb, 0, 7, "Now", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 7, pd != 0 ? (pd > 0 ? "In BUY @ " : "In SELL @ ") + str.tostring(pE, format.mintick) : sd != 0 and sArm ? (sd > 0 ? "Buy limit " : "Sell limit ") + str.tostring(sLim, format.mintick) : sd != 0 ? "Waiting for a stall" : "No setup", text_color = color.white, text_size = size.small)
+    table.cell(tb, 0, 8, "Blocked now", text_color = color.silver, text_size = size.small)
+    table.cell(tb, 1, 8, blocked ? "yes (" + str.tostring(hr) + ":00)" : "no", text_color = color.white, text_size = size.small)
+
+// ───────── alerts
+alertcondition(sd != 0 and sArm and not sArm[1], "Limit armed", "FOXREX Break: limit armed")
+alertcondition(pd != 0 and pd[1] == 0, "Trade opened", "FOXREX Break: trade opened")
+alertcondition(pd == 0 and pd[1] != 0, "Trade closed", "FOXREX Break: trade closed")

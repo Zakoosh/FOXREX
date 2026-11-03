@@ -33,3 +33,11 @@ The version is shown in the dashboard title ("FOXREX Waves v3.9"). Every release
 | 3.26 | wave-zones-v3.26.pine | 3.25 did not load on TradingView (compiled code over the 100k token limit: every higher-timeframe request compiled its own engine). The major timeframe now doubles as guide slot 0, the 5m ↔ 15m trades come from it, and three slots cover the other guide timeframes (6 engine copies instead of 8). Short title "FX Waves" (10 characters max). Logic and settings unchanged. |
 | 3.27 | wave-zones-v3.27.pine | Still over the token limit in 3.26 (103,355 / 100,256). Removed code that was off by default or unused on intraday charts: reversal entries (REV and wave-end), D / W / M intraday results, "highest target" accounting, swing-break trend option, trend-line channels, faded finished zones and the leg line. Signals and settings of the default (Strict) unchanged. Older versions keep these options in versions/. |
 | 3.28 | wave-zones-v3.28.pine | The 3.13 strategy and settings (signals, structure trend for the trades, entries, targets, stops, management, daily zones and reversals as in 3.13) + later additions: real result (full size to the real exit, spread 0.3 and commission, win / loss by $; the 3.13 counts stay as options), scorecard with won / lost / net in points and $, wave trend shown on the chart and in the tables (display only), higher-timeframe guide (zones, entry markers, open trades, panel with trend / RSI / MACD / zone / trade). D/W intraday results reset per day fixed. |
+
+# FOXREX Break — versions
+
+New indicator `foxrex-break.pine` (shorttitle "FX Break") and EA `tools/mt5/FOXREX_Break_EA.mq5`: break of structure + retracement limit, same rules as the simulator `tools/mt5/sim/break_sim.py`.
+
+| Version | File in `versions/` | Changes |
+|---|---|---|
+| 1.0 | break-v1.0.pine | Presets from the simulations: v3-5m best profit (5m, swing 5, entry 57.85%, stop −15% beyond the start, 3R), v3-5m high win rate (5m, swing 3, wave ≥ 3 ATR, entry 65.7%, 2R, 50% closed at 0.7R then stop to entry, no fills 20–23 server time), v2 (1m). Scorecard in R and $, live setup lines, alerts. EA: risk % sizing, same presets, day-loss / min-equity guards. |
