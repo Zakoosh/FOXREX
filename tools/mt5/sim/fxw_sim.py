@@ -278,7 +278,7 @@ class Engine:
 # ---------------------------------------------------------------- daily zones
 def build_daily(days, px, ca, tf):
     """days: completed D1 bars (oldest first) before today. Returns list of [lo, hi, w, B, S, T]."""
-    if len(days) < 25 or px <= 0:
+    if len(days) < S.get('min_days', 25) or px <= 0:
         return [], 0
     last = len(days) - 1
     dH, dL, dC = days[last][2], days[last][3], days[last][4]
@@ -286,7 +286,7 @@ def build_daily(days, px, ca, tf):
     e20 = e50 = days[0][4]
     for i in range(1, last + 1):
         e20 += (days[i][4] - e20) * 2 / 21; e50 += (days[i][4] - e50) * 2 / 51
-    h20 = max(d[2] for d in days[last - 19:last + 1]); l20 = min(d[3] for d in days[last - 19:last + 1])
+    h20 = max(d[2] for d in days[max(0, last - 19):last + 1]); l20 = min(d[3] for d in days[max(0, last - 19):last + 1])
     # previous week (Mon–Sun before the current week)
     today = days[last][0] + dt.timedelta(days=1)
     wk0 = today - dt.timedelta(days=today.weekday())
@@ -655,9 +655,22 @@ if __name__ == '__main__':
     ap.add_argument('--csv', default='trades.csv')
     ar = ap.parse_args()
     S['room'] = {'strong': 'STRONG_BLOCK', 'all': 'ALL_BLOCK', 'off': 'OFF'}[ar.room]
-    m1 = load_mt5(ar.m1); d1 = [(r[0].date(),) + r[1:5] for r in load_mt5(ar.d1)]
+    m1 = load_mt5(ar.m1)
+    if ar.d1 == 'from-m1':
+        # daily bars built from the M1 file (server days); fewer days than a D1 export
+        agg = {}
+        for t, o, h, l, c, _ in m1:
+            d = t.date()
+            if d not in agg: agg[d] = [d, o, h, l, c]
+            else: a_ = agg[d]; a_[2] = max(a_[2], h); a_[3] = min(a_[3], l); a_[4] = c
+        d1 = [tuple(v) for v in sorted(agg.values())]
+        S['min_days'] = 15
+    else:
+        d1 = [(r[0].date(),) + r[1:5] for r in load_mt5(ar.d1)]
+    dec = max(len(str(r[4]).split('.')[-1]) for r in m1[:200])
+    point = 10 ** -min(dec, 3)
     start = dt.datetime.fromisoformat(ar.frm) if ar.frm else None
-    trades, openp = run(m1, d1, start)
+    trades, openp = run(m1, d1, start, point)
     rows = report(trades, 'EA simulation (room=%s)' % ar.room, start)
     with open(ar.csv, 'w', newline='') as f:
         wr = csv.writer(f)
