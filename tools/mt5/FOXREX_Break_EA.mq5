@@ -16,8 +16,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "1.01"
-#property description "FOXREX Break EA v1.01: break of structure, retracement limit, R targets. Presets from the 5m / 1m simulations."
+#property version   "1.02"
+#property description "FOXREX Break EA v1.02: break of structure, retracement limit, R targets. Presets from the 5m / 1m simulations."
 
 #include <Trade/Trade.mqh>
 
@@ -68,6 +68,7 @@ int    P_piv, P_maxw, P_hold;
 double P_minw, P_entry, P_stop, P_buf, P_tp, P_p1, P_p1r, P_p1be;
 bool   P_block[24];
 ENUM_TIMEFRAMES P_tf;
+ENUM_TIMEFRAMES TF = PERIOD_CURRENT;   // timeframe the strategy runs on (the preset's, whatever chart it is attached to)
 
 struct Swing { bool ok; double px; datetime t; };
 struct Setup
@@ -113,6 +114,7 @@ void SetPreset()
          P_piv = 15; P_minw = 1; P_entry = 0.5;    P_stop = -0.15; P_tp = 2; P_p1 = 0.5; P_p1r = 0.7; P_p1be = 0;
          P_maxw = 240; P_hold = 240; P_tf = PERIOD_M1; break;
       default:
+        {
          P_piv = (int)MathMax(1, InpPiv); P_minw = InpMinW; P_entry = InpEntry; P_stop = InpStop; P_buf = InpBuf;
          P_tp = InpTpR; P_p1 = InpP1; P_p1r = InpP1R; P_p1be = InpP1Be;
          P_maxw = InpMaxWait; P_hold = InpMaxHold; P_tf = PERIOD_CURRENT;
@@ -125,6 +127,7 @@ void SetPreset()
             int h = (int)StringToInteger(parts[i]);
             if(h >= 0 && h < 24) P_block[h] = true;
            }
+        }
      }
   }
 
@@ -221,24 +224,24 @@ bool Protected()
 //+------------------------------------------------------------------+
 void Step(int s, bool pos)
   {
-   double h = iHigh(_Symbol, _Period, s), l = iLow(_Symbol, _Period, s), c = iClose(_Symbol, _Period, s);
-   datetime t = iTime(_Symbol, _Period, s);
-   double pc = iClose(_Symbol, _Period, s + 1);
+   double h = iHigh(_Symbol, TF, s), l = iLow(_Symbol, TF, s), c = iClose(_Symbol, TF, s);
+   datetime t = iTime(_Symbol, TF, s);
+   double pc = iClose(_Symbol, TF, s + 1);
    double tr = MathMax(h - l, MathMax(MathAbs(h - pc), MathAbs(l - pc)));
    atr = atrOk ? (atr * 13 + tr) / 14 : tr; atrOk = true;
 
    //--- confirmed swing points (pivot at s + piv)
    int p = s + P_piv;
-   if(p + P_piv < Bars(_Symbol, _Period))
+   if(p + P_piv < Bars(_Symbol, TF))
      {
-      double ph = iHigh(_Symbol, _Period, p), pl = iLow(_Symbol, _Period, p);
+      double ph = iHigh(_Symbol, TF, p), pl = iLow(_Symbol, TF, p);
       bool isH = true, isL = true;
       for(int k = 1; k <= P_piv; k++)
         {
-         if(!(ph > iHigh(_Symbol, _Period, p + k)) || !(ph >= iHigh(_Symbol, _Period, p - k))) isH = false;
-         if(!(pl < iLow(_Symbol, _Period, p + k))  || !(pl <= iLow(_Symbol, _Period, p - k)))  isL = false;
+         if(!(ph > iHigh(_Symbol, TF, p + k)) || !(ph >= iHigh(_Symbol, TF, p - k))) isH = false;
+         if(!(pl < iLow(_Symbol, TF, p + k))  || !(pl <= iLow(_Symbol, TF, p - k)))  isL = false;
         }
-      datetime pt = iTime(_Symbol, _Period, p);
+      datetime pt = iTime(_Symbol, TF, p);
       if(isH) { swH.ok = true; swH.px = ph; swH.t = pt; }
       if(isL) { swL.ok = true; swL.px = pl; swL.t = pt; }
      }
@@ -252,11 +255,11 @@ void Step(int s, bool pos)
       if(!sw.ok) continue;
       if((d < 0 && c < sw.px) || (d > 0 && c > sw.px))
         {
-         int b = iBarShift(_Symbol, _Period, sw.t);
+         int b = iBarShift(_Symbol, TF, sw.t);
          int cnt = b - s + 1;
          if(b < 0 || cnt < 1) { if(side == 0) swL.ok = false; else swH.ok = false; continue; }
-         double hi = iHigh(_Symbol, _Period, iHighest(_Symbol, _Period, MODE_HIGH, cnt, s));
-         double lo = iLow(_Symbol, _Period, iLowest(_Symbol, _Period, MODE_LOW, cnt, s));
+         double hi = iHigh(_Symbol, TF, iHighest(_Symbol, TF, MODE_HIGH, cnt, s));
+         double lo = iLow(_Symbol, TF, iLowest(_Symbol, TF, MODE_LOW, cnt, s));
          if(!pos)
            {
             S.ok = true; S.d = d; S.t0 = t; S.armed = false;
@@ -292,7 +295,7 @@ void Step(int s, bool pos)
            }
         }
       if(S.armed && ((d < 0 && c > S.sl) || (d > 0 && c < S.sl))) S.ok = false;
-      else if(iBarShift(_Symbol, _Period, S.t0) - s > P_maxw) S.ok = false;
+      else if(iBarShift(_Symbol, TF, S.t0) - s > P_maxw) S.ok = false;
      }
   }
 
@@ -301,9 +304,9 @@ void Step(int s, bool pos)
 //+------------------------------------------------------------------+
 void ReplayBar(int s)
   {
-   double o = iOpen(_Symbol, _Period, s), h = iHigh(_Symbol, _Period, s), l = iLow(_Symbol, _Period, s), c = iClose(_Symbol, _Period, s);
-   double sp = iSpread(_Symbol, _Period, s) * _Point;
-   datetime t = iTime(_Symbol, _Period, s);
+   double o = iOpen(_Symbol, TF, s), h = iHigh(_Symbol, TF, s), l = iLow(_Symbol, TF, s), c = iClose(_Symbol, TF, s);
+   double sp = iSpread(_Symbol, TF, s) * _Point;
+   datetime t = iTime(_Symbol, TF, s);
    if(V.on && t > V.t0)
      {
       int d = V.d;
@@ -315,7 +318,7 @@ void ReplayBar(int s)
          double l1 = V.e + d * P_p1r * MathAbs(V.e - V.sl0);
          if((d < 0 && l + sp <= l1) || (d > 0 && h >= l1)) { V.part = true; V.sl = V.e + d * P_p1be * MathAbs(V.e - V.sl0); }
         }
-      if(!exitNow && iBarShift(_Symbol, _Period, V.t0) - s >= P_hold) exitNow = true;
+      if(!exitNow && iBarShift(_Symbol, TF, V.t0) - s >= P_hold) exitNow = true;
       if(exitNow) V.on = false;
      }
    MqlDateTime m; TimeToStruct(t, m);
@@ -334,15 +337,15 @@ void ReplayBar(int s)
 
 bool Warmup()
   {
-   if(!SeriesInfoInteger(_Symbol, _Period, SERIES_SYNCHRONIZED)) return false;
-   int n = MathMin(InpWarmup, Bars(_Symbol, _Period) - 2 * P_piv - 3);
+   if(!SeriesInfoInteger(_Symbol, TF, SERIES_SYNCHRONIZED)) return false;
+   int n = MathMin(InpWarmup, Bars(_Symbol, TF) - 2 * P_piv - 3);
    if(n < 2 * P_piv + 20) return false;
    swH.ok = swL.ok = false; S.ok = false; atrOk = false; V.on = false;
    for(int s = n; s >= 1; s--) { ReplayBar(s); Step(s, V.on); }
    if(HasPosition() || V.on) S.ok = false;    // a trade from this setup already happened
    V.on = false;
-   lastBar = iTime(_Symbol, _Period, 0);
-   PrintFormat("FOXREX Break v1.01 ready · %d bars · piv %d · minW %.1f ATR · entry %.4f · stop %.3f · TP %.1fR · partial %.0f%% at %.1fR · wait %d · hold %d",
+   lastBar = iTime(_Symbol, TF, 0);
+   PrintFormat("FOXREX Break v1.02 ready · %d bars · piv %d · minW %.1f ATR · entry %.4f · stop %.3f · TP %.1fR · partial %.0f%% at %.1fR · wait %d · hold %d",
                n, P_piv, P_minw, P_entry, P_stop, P_tp, P_p1 * 100, P_p1r, P_maxw, P_hold);
    return true;
   }
@@ -356,7 +359,7 @@ void Sync()
   {
    bool pos = HasPosition();
    if(pos && S.ok) S.ok = false;                 // filled → setup done
-   MqlDateTime now; TimeToStruct(iTime(_Symbol, _Period, 0), now);
+   MqlDateTime now; TimeToStruct(iTime(_Symbol, TF, 0), now);
    bool want = S.ok && S.armed && !pos && !P_block[now.hour] && !guard
                && ((S.d > 0 && InpBuy) || (S.d < 0 && InpSell));
    ulong tk = PendingTicket();
@@ -373,7 +376,7 @@ void Sync()
      }
    if(InpMaxSpread > 0 && SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) > InpMaxSpread) { DrawSetup(); return; }   // wait for a normal spread
    static datetime failBar = 0;
-   if(failBar == iTime(_Symbol, _Period, 0)) { DrawSetup(); return; }   // one try per bar after a failure
+   if(failBar == iTime(_Symbol, TF, 0)) { DrawSetup(); return; }   // one try per bar after a failure
    double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID), ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
    double lots;
    bool ok;
@@ -382,13 +385,13 @@ void Sync()
      {
       if(bid >= lim)                             // price already at / through the entry → fill now (as the simulator)
         {
-         lots = LotFor(-1, bid, sl); if(lots == 0) { failBar = iTime(_Symbol, _Period, 0); return; }
+         lots = LotFor(-1, bid, sl); if(lots == 0) { failBar = iTime(_Symbol, TF, 0); return; }
          trade.SetTypeFilling(fillMkt);
          ok = trade.Sell(lots, _Symbol, 0, sl, tp, "FXB sell");
         }
       else
         {
-         lots = LotFor(-1, lim, sl); if(lots == 0) { failBar = iTime(_Symbol, _Period, 0); return; }
+         lots = LotFor(-1, lim, sl); if(lots == 0) { failBar = iTime(_Symbol, TF, 0); return; }
          trade.SetTypeFilling(ORDER_FILLING_RETURN);
          ok = trade.SellLimit(lots, lim, _Symbol, sl, tp, nb > 0 ? ORDER_TIME_SPECIFIED : ORDER_TIME_GTC, nb, "FXB sell");
         }
@@ -397,19 +400,19 @@ void Sync()
      {
       if(ask <= lim)
         {
-         lots = LotFor(1, ask, sl); if(lots == 0) { failBar = iTime(_Symbol, _Period, 0); return; }
+         lots = LotFor(1, ask, sl); if(lots == 0) { failBar = iTime(_Symbol, TF, 0); return; }
          trade.SetTypeFilling(fillMkt);
          ok = trade.Buy(lots, _Symbol, 0, sl, tp, "FXB buy");
         }
       else
         {
-         lots = LotFor(1, lim, sl); if(lots == 0) { failBar = iTime(_Symbol, _Period, 0); return; }
+         lots = LotFor(1, lim, sl); if(lots == 0) { failBar = iTime(_Symbol, TF, 0); return; }
          trade.SetTypeFilling(ORDER_FILLING_RETURN);
          ok = trade.BuyLimit(lots, lim, _Symbol, sl, tp, nb > 0 ? ORDER_TIME_SPECIFIED : ORDER_TIME_GTC, nb, "FXB buy");
         }
      }
    trade.SetTypeFilling(fillMkt);
-   if(!ok) { failBar = iTime(_Symbol, _Period, 0); Print("FXB order failed: ", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription()); }
+   if(!ok) { failBar = iTime(_Symbol, TF, 0); Print("FXB order failed: ", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription()); }
    DrawSetup();
   }
 
@@ -436,7 +439,7 @@ void Manage(bool newBar)
       //--- time exit
       if(newBar && P_hold > 0)
         {
-         int held = iBarShift(_Symbol, _Period, (datetime)PositionGetInteger(POSITION_TIME)) - 1;
+         int held = iBarShift(_Symbol, TF, (datetime)PositionGetInteger(POSITION_TIME)) - 1;
          if(held >= P_hold)
            {
             if(trade.PositionClose(tk)) { Notify("FXB time exit " + (d > 0 ? "buy" : "sell")); continue; }
@@ -444,7 +447,7 @@ void Manage(bool newBar)
         }
 
       //--- partial close at x R, then stop to entry + p1be × R
-      bool afterFill = iBarShift(_Symbol, _Period, (datetime)PositionGetInteger(POSITION_TIME)) >= 1;   // from the bar after the fill
+      bool afterFill = iBarShift(_Symbol, TF, (datetime)PositionGetInteger(POSITION_TIME)) >= 1;   // from the bar after the fill
       if(P_p1 > 0 && r > 0 && afterFill && !GlobalVariableCheck(GvName(pid, "pd")))
         {
          double lvl = op + d * P_p1r * r;
@@ -480,7 +483,7 @@ void Notify(string m) { Print(m); if(InpPush) SendNotification(_Symbol + " " + m
 //+------------------------------------------------------------------+
 void HLine(string n, datetime t1, double p, color c, int style, string tip)
   {
-   datetime t2 = iTime(_Symbol, _Period, 0) + PeriodSeconds() * 10;
+   datetime t2 = iTime(_Symbol, TF, 0) + PeriodSeconds() * 10;
    if(ObjectFind(0, n) < 0) ObjectCreate(0, n, OBJ_TREND, 0, t1, p, t2, p);
    ObjectSetInteger(0, n, OBJPROP_TIME, 0, t1); ObjectSetDouble(0, n, OBJPROP_PRICE, 0, p);
    ObjectSetInteger(0, n, OBJPROP_TIME, 1, t2); ObjectSetDouble(0, n, OBJPROP_PRICE, 1, p);
@@ -530,11 +533,8 @@ void DrawBreak(int d, double px, datetime t)
 int OnInit()
   {
    SetPreset();
-   if(P_tf != PERIOD_CURRENT && P_tf != _Period)
-     {
-      Alert("FOXREX Break: this preset was tested on ", EnumToString(P_tf), ". Open that chart or use Custom.");
-      return INIT_PARAMETERS_INCORRECT;
-     }
+   TF = P_tf == PERIOD_CURRENT ? (ENUM_TIMEFRAMES)_Period : P_tf;   // e.g. the 5m preset runs on 5m bars even on a 1m chart
+   iTime(_Symbol, TF, 0);                                            // ask the terminal to load that timeframe
    trade.SetExpertMagicNumber(InpMagic);
    trade.SetDeviationInPoints(30);
    long fm = SymbolInfoInteger(_Symbol, SYMBOL_FILLING_MODE);
@@ -545,28 +545,44 @@ int OnInit()
    return INIT_SUCCEEDED;
   }
 
+void Status()
+  {
+   string st;
+   bool algo = TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) && MQLInfoInteger(MQL_TRADE_ALLOWED);
+   if(!ready) st = "loading history of " + EnumToString(TF) + " …";
+   else if(!algo) st = "Algo Trading is OFF — turn it on (toolbar button / EA settings › Allow Algo Trading)";
+   else if(guard) st = "stopped by account protection for today";
+   else if(HasPosition()) st = "in a trade";
+   else if(S.ok && S.armed) st = (S.d > 0 ? "BUY limit " : "SELL limit ") + DoubleToString(S.lim, _Digits) + "  SL " + DoubleToString(S.sl, _Digits) + "  TP " + DoubleToString(S.tp, _Digits);
+   else if(S.ok) st = (S.d > 0 ? "break up" : "break down") + " · waiting for a stall";
+   else st = "waiting for a break";
+   Comment("FOXREX Break v1.02 · ", EnumToString(InpPreset), " · runs on ", EnumToString(TF), "\n", st);
+  }
+
 void OnDeinit(const int reason)
   {
+   Comment("");
    if(reason == REASON_REMOVE || reason == REASON_PARAMETERS) DeletePending();
    ObjectsDeleteAll(0, "FXB_S_");
   }
 
 void OnTick()
   {
-   if(!ready) { ready = Warmup(); if(!ready) return; }
+   if(!ready) { ready = Warmup(); if(!ready) { Status(); return; } }
    guard = Protected();                   // every tick, so the day-start balance is taken at the day start
-   datetime b = iTime(_Symbol, _Period, 0);
+   datetime b = iTime(_Symbol, TF, 0);
    bool nb = b != lastBar;
    Manage(nb);
    if(nb)
      {
-      int from = lastBar > 0 ? iBarShift(_Symbol, _Period, lastBar) - 1 : 1;   // every closed bar since the last one (gaps, reconnects)
+      int from = lastBar > 0 ? iBarShift(_Symbol, TF, lastBar) - 1 : 1;   // every closed bar since the last one (gaps, reconnects)
       if(from < 1) from = 1;
       if(from > 500) from = 500;
       for(int s = from; s >= 1; s--) Step(s, HasPosition());
       lastBar = b;
      }
    Sync();
+   Status();
   }
 
 void OnTradeTransaction(const MqlTradeTransaction &tx, const MqlTradeRequest &rq, const MqlTradeResult &rs)
