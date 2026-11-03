@@ -81,6 +81,8 @@ def run(rows, P):
     setup = None                       # active setup dict
     pos = None
     trades = []
+    lastBrk = 0                        # direction of the previous break (structure trend)
+    TRN = P.get('trend', 0)            # 1 = only breaks that continue the previous break, -1 = only the first break against it
     for i in range(n):
         t, o, h, l, c, sp = rows[i]
         # ---------- open position: stop first, then target (from the bar after the fill)
@@ -133,7 +135,9 @@ def run(rows, P):
             if (d < 0 and c < lvl) or (d > 0 and c > lvl):
                 start = max(H[b:i + 1]) if d < 0 else min(L[b:i + 1])
                 ext = min(L[b:i + 1]) if d < 0 else max(H[b:i + 1])
-                if not pos and (setup is None or setup['d'] != d or P['newer']) and (BI is None or BI[i] == d):
+                okT = TRN == 0 or (TRN == 1 and lastBrk == d) or (TRN == -1 and lastBrk == -d)
+                lastBrk = d
+                if okT and not pos and (setup is None or setup['d'] != d or P['newer']) and (BI is None or BI[i] == d):
                     setup = dict(d=d, start=start, ext=ext, i0=i, lim=None, wave=(start, ext))
                 if d < 0: lastLow = None
                 else: lastHigh = None
