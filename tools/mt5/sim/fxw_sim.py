@@ -327,7 +327,7 @@ def build_daily(days, px, ca, tf):
 
 # ---------------------------------------------------------------- simulation
 class Pos:
-    __slots__ = ('d', 'entry', 'sl', 'tps', 'hits', 'lots', 'kind', 'zid', 'k0', 't0', 'exit', 't1', 'res', 'src', 'stars')
+    __slots__ = ('d', 'entry', 'sl', 'tps', 'hits', 'lots', 'kind', 'zid', 'k0', 't0', 'exit', 't1', 'res', 'src', 'stars', 'rem', 'real', 'pts')
 
 
 def lots_for(stars, kf):
@@ -385,6 +385,7 @@ def run(m1, d1, start=None, point=0.01):
 
     def close(p, px, t, res):
         p.exit, p.t1, p.res = px, t, res
+        p.pts = p.real + p.rem * p.d * (px - p.entry)
         positions.remove(p)
         trades.append(p)
         on_close(p.kind, p.zid, p.hits == 0)
@@ -395,6 +396,7 @@ def run(m1, d1, start=None, point=0.01):
         p.d, p.entry, p.sl = d, ep, ep - d * dist
         p.tps = tp_arr(ep, d, TF, imp, a)
         p.hits, p.lots, p.kind, p.zid, p.k0, p.t0, p.src, p.stars = 0, lots_for(stars, kf), kind, zid, k, t, src, stars
+        p.rem, p.real = 1.0, 0.0
         positions.append(p)
         on_fill(kind, zid, k)
         return p
@@ -428,7 +430,12 @@ def run(m1, d1, start=None, point=0.01):
                     continue
                 before = p.hits
                 while p.hits < 7 and (bid_hi >= p.tps[p.hits] if d > 0 else ask_lo <= p.tps[p.hits]):
+                    if S['part'] == 'ALL' and p.hits < len(S['part_pct']):
+                        f = min(S['part_pct'][p.hits] / 100.0, p.rem)
+                        p.real += f * d * (p.tps[p.hits] - p.entry); p.rem -= f
                     p.hits += 1
+                if p.rem <= 1e-9:
+                    close(p, p.tps[p.hits - 1], t, 'TP%d (all parts)' % p.hits); continue
                 if p.hits == 7:
                     close(p, p.tps[6], t, 'TP7'); continue
                 if p.hits > before:
@@ -636,7 +643,7 @@ def report(trades, label, start):
     rows = []
     won = lost = won_u = lost_u = 0.0; w = l_ = 0
     for p in tr:
-        pts = p.d * (p.exit - p.entry)
+        pts = p.pts
         usd = pts * S['lot_value'] * p.lots - S['commission'] * p.lots
         rows.append((p, pts, usd))
         if usd > 0: w += 1; won += pts; won_u += usd
