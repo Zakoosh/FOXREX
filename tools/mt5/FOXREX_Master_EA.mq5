@@ -21,8 +21,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "1.00"
-#property description "FOXREX Master EA v1.0: break-of-structure engines on M1, M5, M15, H1 and H4 in one EA, settings per timeframe from the simulations."
+#property version   "1.01"
+#property description "FOXREX Master EA v1.01: break-of-structure engines on M1, M5, M15, H1 and H4 in one EA, settings per timeframe from the simulations."
 
 #include <Trade/Trade.mqh>
 
@@ -84,7 +84,7 @@ struct Eng
    VPos     V;
    double   atr;
    bool     atrOk;
-   datetime lastBar, failBar;
+   datetime lastBar, failBar, placeBar;
    bool     ready;
   };
 
@@ -106,7 +106,7 @@ void SetEng(int i, bool on, ENUM_TIMEFRAMES tf, string tag, double lot, int piv,
    E[i].p1 = p1; E[i].p1r = p1r; E[i].p1be = 0; E[i].maxw = bars; E[i].hold = bars; E[i].reuse = reuse;
    ArrayInitialize(E[i].block, false);
    E[i].swH.ok = false; E[i].swL.ok = false; E[i].S.ok = false; E[i].V.on = false;
-   E[i].atr = 0; E[i].atrOk = false; E[i].lastBar = 0; E[i].failBar = 0; E[i].ready = false;
+   E[i].atr = 0; E[i].atrOk = false; E[i].lastBar = 0; E[i].failBar = 0; E[i].placeBar = 0; E[i].ready = false;
   }
 
 //+------------------------------------------------------------------+
@@ -152,9 +152,23 @@ ulong PendingTicket(long magic)
      {
       ulong tk = OrderGetTicket(i);
       if(tk == 0) continue;
-      if(OrderGetString(ORDER_SYMBOL) == _Symbol && OrderGetInteger(ORDER_MAGIC) == magic) return tk;
+      if(OrderGetString(ORDER_SYMBOL) != _Symbol || OrderGetInteger(ORDER_MAGIC) != magic) continue;
+      long ty = OrderGetInteger(ORDER_TYPE);
+      if(ty == ORDER_TYPE_BUY_LIMIT || ty == ORDER_TYPE_SELL_LIMIT) return tk;
      }
    return 0;
+  }
+
+// any order of this engine still in the terminal (also a market order being executed)
+bool AnyOrder(long magic)
+  {
+   for(int i = OrdersTotal() - 1; i >= 0; i--)
+     {
+      ulong tk = OrderGetTicket(i);
+      if(tk == 0) continue;
+      if(OrderGetString(ORDER_SYMBOL) == _Symbol && OrderGetInteger(ORDER_MAGIC) == magic) return true;
+     }
+   return false;
   }
 
 void DeletePending(long magic)
@@ -367,28 +381,57 @@ void Sync(Eng &e)
    MqlDateTime now; TimeToStruct(iTime(_Symbol, e.tf, 0), now);
    bool want = e.S.ok && e.S.armed && !pos && !e.block[now.hour] && !guard
                && ((e.S.d > 0 && InpBuy) || (e.S.d < 0 && InpSell));
-   ulong tk = PendingTicket(e.magic);
    if(want && InpMaxOpen > 0 && Busy(e.magic) >= InpMaxOpen) want = false;   // limit counts open trades and the other engines' orders
-   if(!want) { if(tk) DeletePending(e.magic); return; }
+   ulong tk = PendingTicket(e.magic);
+   datetime bar0 = iTime(_Symbol, e.tf, 0);
+   if(e.failBar == bar0) return;                                          // after a refused request: nothing more on this bar
+   trade.SetExpertMagicNumber(e.magic);
+
+   //--- no order wanted → remove ours (once; a refusal waits for the next bar)
+   if(!want)
+     {
+      if(tk && !trade.OrderDelete(tk))
+        {
+         e.failBar = bar0;
+         Print("FXM ", e.tag, " delete #", tk, " refused: ", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription());
+        }
+      return;
+     }
 
    double lim = NormPx(e.S.lim), sl = NormPx(e.S.sl), tp = NormPx(e.S.tp);
-   if(tk)
-     {
-      if(OrderSelect(tk) && MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - lim) < _Point / 2
-         && MathAbs(OrderGetDouble(ORDER_SL) - sl) < _Point / 2 && MathAbs(OrderGetDouble(ORDER_TP) - tp) < _Point / 2)
-         return;
-      DeletePending(e.magic);
-     }
-   if(InpMaxSpread > 0 && SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) > InpMaxSpread) return;   // wait for a normal spread
-   datetime bar0 = iTime(_Symbol, e.tf, 0);
-   if(e.failBar == bar0) return;                                                            // one try per bar after a failure
-   trade.SetExpertMagicNumber(e.magic);
-   double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID), ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+   double ts = MathMax(SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE), _Point);
    datetime nb = NextBlock(e);
    ENUM_ORDER_TYPE_TIME tt = nb > 0 ? ORDER_TIME_SPECIFIED : ORDER_TIME_GTC;
+
+   //--- our limit is there: move it only when the setup's levels changed (at most once per bar)
+   if(tk)
+     {
+      if(!OrderSelect(tk)) return;
+      bool same = MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - lim) <= 2 * ts && MathAbs(OrderGetDouble(ORDER_SL) - sl) <= 2 * ts
+                  && MathAbs(OrderGetDouble(ORDER_TP) - tp) <= 2 * ts;
+      long ty = OrderGetInteger(ORDER_TYPE);
+      bool sideOk = (e.S.d < 0 && ty == ORDER_TYPE_SELL_LIMIT) || (e.S.d > 0 && ty == ORDER_TYPE_BUY_LIMIT);
+      if(same && sideOk) return;
+      if(e.placeBar == bar0) return;
+      e.placeBar = bar0;
+      bool ok = sideOk ? trade.OrderModify(tk, lim, sl, tp, tt, nb) : trade.OrderDelete(tk);
+      if(!ok)
+        {
+         e.failBar = bar0;
+         Print("FXM ", e.tag, (sideOk ? " move #" : " delete #"), tk, " refused: ", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription(),
+               " · limit ", DoubleToString(lim, _Digits), " SL ", DoubleToString(sl, _Digits), " TP ", DoubleToString(tp, _Digits));
+        }
+      return;
+     }
+
+   //--- new order: one per engine per bar, never while another order of this engine is still in the terminal
+   if(AnyOrder(e.magic) || e.placeBar == bar0) return;
+   if(InpMaxSpread > 0 && SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) > InpMaxSpread) return;   // wait for a normal spread
+   double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID), ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
    string cm = "FXM " + e.tag;
    bool ok = false;
    double lots;
+   e.placeBar = bar0;
    if(e.S.d < 0)
      {
       bool mkt = bid >= lim;                                   // already at / through the entry → fill now (as the simulator)
@@ -406,7 +449,7 @@ void Sync(Eng &e)
       else    { trade.SetTypeFilling(ORDER_FILLING_RETURN); ok = trade.BuyLimit(lots, lim, _Symbol, sl, tp, tt, nb, cm); }
      }
    trade.SetTypeFilling(fillMkt);
-   if(!ok) { e.failBar = bar0; Print("FXM ", e.tag, " order failed: ", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription()); }
+   if(!ok) { e.failBar = bar0; Print("FXM ", e.tag, " order refused: ", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription()); }
   }
 
 //+------------------------------------------------------------------+
@@ -502,7 +545,7 @@ void DrawSetup()
 void Status()
   {
    bool algo = TerminalInfoInteger(TERMINAL_TRADE_ALLOWED) && MQLInfoInteger(MQL_TRADE_ALLOWED);
-   string txt = "FOXREX Master v1.0 · " + _Symbol + (algo ? "" : "   ⚠ Algo Trading is OFF") + (guard ? "   ⚠ stopped by account protection" : "");
+   string txt = "FOXREX Master v1.01 · " + _Symbol + (algo ? "" : "   ⚠ Algo Trading is OFF") + (guard ? "   ⚠ stopped by account protection" : "");
    for(int i = 0; i < 5; i++)
      {
       if(!E[i].on) continue;
