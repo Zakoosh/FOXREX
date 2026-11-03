@@ -77,6 +77,8 @@ def run(rows, P):
     lossDay, lossN = None, 0
     H = [r[2] for r in rows]; L = [r[3] for r in rows]; C = [r[4] for r in rows]; O = [r[1] for r in rows]
     piv = P['piv']
+    SPMIN = P.get('spmin', 0.0)        # spread floor (price units): the files hold the bar's lowest spread, often 0
+    REUSE = P.get('reuse', False)      # after a trade, the same break can arm again on the next stall
     lastLow = lastHigh = None          # (price, bar) of the latest unbroken swing
     setup = None                       # active setup dict
     pos = None
@@ -85,6 +87,7 @@ def run(rows, P):
     TRN = P.get('trend', 0)            # 1 = only breaks that continue the previous break, -1 = only the first break against it
     for i in range(n):
         t, o, h, l, c, sp = rows[i]
+        sp = max(sp, SPMIN)
         # ---------- open position: stop first, then target (from the bar after the fill)
         if pos and i > pos['i0']:
             d = pos['d']
@@ -116,7 +119,10 @@ def run(rows, P):
                 ep = max(lim, o) if d < 0 else min(lim, o + sp)
                 pos = dict(d=d, entry=ep, sl=setup['sl'], sl0=setup['sl'], tp=setup['tp'], i0=i, t0=t, be=False,
                            wave=setup['wave'])
-                setup = None
+                if REUSE:
+                    setup['lim'] = None
+                else:
+                    setup = None
                 # stopped inside the fill bar
                 if (d < 0 and h + sp >= pos['sl']) or (d > 0 and l <= pos['sl']):
                     trades.append(dict(pos, t1=t, exit=pos['sl'], res='SL')); pos = None
@@ -157,7 +163,11 @@ def run(rows, P):
                 if stall or setup['lim'] is not None:
                     e = lv(P['entry'])
                     sl = lv(P['stop']) - d * P['buf'] * A[i]
-                    if P['tp_mode'] == 'R':
+                    if P.get('slp'):                     # fixed stop in points
+                        sl = e - d * P['slp']
+                    if P['tp_mode'] == 'P':              # fixed target in points
+                        tp = e + d * P['tp']
+                    elif P['tp_mode'] == 'R':
                         tp = e + d * P['tp'] * abs(e - sl)
                     else:
                         tp = lv(P['tp'])
