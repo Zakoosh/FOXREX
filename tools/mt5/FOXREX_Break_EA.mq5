@@ -16,14 +16,15 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "1.02"
-#property description "FOXREX Break EA v1.02: break of structure, retracement limit, R targets. Presets from the 5m / 1m simulations."
+#property version   "1.03"
+#property description "FOXREX Break EA v1.03: break of structure, retracement limit, R targets. Presets from the 5m / 1m simulations."
 
 #include <Trade/Trade.mqh>
 
 enum ENUM_FXB_PRESET
   {
-   FXB_V3_5M = 0,   // v3-5m · best profit (5m chart)
+   FXB_V4_5M = 4,   // v4-5m · best overall, held up on unseen weeks (5m)
+   FXB_V3_5M = 0,   // v3-5m · previous 5m preset
    FXB_V3_HW = 1,   // v3-5m · high win rate (5m chart)
    FXB_V2_1M = 2,   // v2 · 1m chart
    FXB_CUSTOM = 3   // Custom (section 3)
@@ -31,7 +32,7 @@ enum ENUM_FXB_PRESET
 
 //--- inputs: most important first
 input group "⭐ 1 · Quick setup"
-input ENUM_FXB_PRESET InpPreset = FXB_V3_5M; // Preset
+input ENUM_FXB_PRESET InpPreset = FXB_V4_5M; // Preset
 input double InpRiskPct   = 1.0;   // Size · risk per trade, % of equity
 input double InpFixedLot  = 0;     // Size · fixed lot instead (0 = use risk %)
 input double InpMaxLot    = 0;     // Size · max lot per trade (0 = broker max)
@@ -102,6 +103,9 @@ void SetPreset()
    P_buf = 0.05;
    switch(InpPreset)
      {
+      case FXB_V4_5M:
+         P_piv = 4;  P_minw = 1; P_entry = 0.5;    P_stop = -0.30; P_tp = 2; P_p1 = 0;   P_p1r = 1;   P_p1be = 0;
+         P_maxw = 144; P_hold = 144; P_tf = PERIOD_M5; break;
       case FXB_V3_5M:
          P_piv = 5;  P_minw = 1; P_entry = 0.5785; P_stop = -0.15; P_tp = 3; P_p1 = 0;   P_p1r = 1;   P_p1be = 0;
          P_maxw = 144; P_hold = 144; P_tf = PERIOD_M5; break;
@@ -345,7 +349,7 @@ bool Warmup()
    if(HasPosition() || V.on) S.ok = false;    // a trade from this setup already happened
    V.on = false;
    lastBar = iTime(_Symbol, TF, 0);
-   PrintFormat("FOXREX Break v1.02 ready · %d bars · piv %d · minW %.1f ATR · entry %.4f · stop %.3f · TP %.1fR · partial %.0f%% at %.1fR · wait %d · hold %d",
+   PrintFormat("FOXREX Break v1.03 ready · %d bars · piv %d · minW %.1f ATR · entry %.4f · stop %.3f · TP %.1fR · partial %.0f%% at %.1fR · wait %d · hold %d",
                n, P_piv, P_minw, P_entry, P_stop, P_tp, P_p1 * 100, P_p1r, P_maxw, P_hold);
    return true;
   }
@@ -556,7 +560,7 @@ void Status()
    else if(S.ok && S.armed) st = (S.d > 0 ? "BUY limit " : "SELL limit ") + DoubleToString(S.lim, _Digits) + "  SL " + DoubleToString(S.sl, _Digits) + "  TP " + DoubleToString(S.tp, _Digits);
    else if(S.ok) st = (S.d > 0 ? "break up" : "break down") + " · waiting for a stall";
    else st = "waiting for a break";
-   Comment("FOXREX Break v1.02 · ", EnumToString(InpPreset), " · runs on ", EnumToString(TF), "\n", st);
+   Comment("FOXREX Break v1.03 · ", EnumToString(InpPreset), " · runs on ", EnumToString(TF), "\n", st);
   }
 
 void OnDeinit(const int reason)

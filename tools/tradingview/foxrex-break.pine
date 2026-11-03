@@ -1,12 +1,12 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX · foxrex.co
-// FOXREX Break v1.01 — break of structure + retracement limit (same rules as FOXREX_Break_EA.mq5 and break_sim.py)
+// FOXREX Break v1.03 — break of structure + retracement limit (same rules as FOXREX_Break_EA.mq5 and break_sim.py)
 //@version=6
-indicator("FOXREX Break v1.01", "FX Break", overlay = true, max_bars_back = 2000, max_lines_count = 500, max_labels_count = 500, max_boxes_count = 300)
+indicator("FOXREX Break v1.03", "FX Break", overlay = true, max_bars_back = 2000, max_lines_count = 500, max_labels_count = 500, max_boxes_count = 300)
 
 // ───────── 1 · Quick setup
 g1 = "⭐ 1 · Quick setup"
-preset   = input.string("v3-5m · best profit (5m)", "Preset", options = ["v3-5m · best profit (5m)", "v3-5m · high win rate (5m)", "v2 · 1m", "Custom"], group = g1)
+preset   = input.string("v4-5m · best overall (5m)", "Preset", options = ["v4-5m · best overall (5m)", "v3-5m · best profit (5m)", "v3-5m · high win rate (5m)", "v2 · 1m", "Custom"], group = g1)
 lotsIn   = input.float(1.0, "Lots for the $ result", minval = 0.01, group = g1)
 sprd     = input.float(0.3, "Spread (price units)", minval = 0, step = 0.05, group = g1)
 commLot  = input.float(6.0, "Commission per lot ($)", minval = 0, group = g1)
@@ -37,13 +37,13 @@ colBuy    = input.color(color.new(#2f80ed, 0), "Buy / sell colours", group = g3,
 colSell   = input.color(color.new(#eb5757, 0), "", group = g3, inline = "c")
 
 // ───────── effective parameters
-int   piv   = preset == "v3-5m · best profit (5m)" ? 5 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 15 : cPiv
-float minW  = preset == "v3-5m · best profit (5m)" ? 1 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 1 : cMinW
-float fEnt  = preset == "v3-5m · best profit (5m)" ? 0.5785 : preset == "v3-5m · high win rate (5m)" ? 0.657 : preset == "v2 · 1m" ? 0.5 : cEntry
-float fStop = preset == "Custom" ? cStop : -0.15
+int   piv   = preset == "v4-5m · best overall (5m)" ? 4 : preset == "v3-5m · best profit (5m)" ? 5 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 15 : cPiv
+float minW  = preset == "v4-5m · best overall (5m)" ? 1 : preset == "v3-5m · best profit (5m)" ? 1 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 1 : cMinW
+float fEnt  = preset == "v4-5m · best overall (5m)" ? 0.5 : preset == "v3-5m · best profit (5m)" ? 0.5785 : preset == "v3-5m · high win rate (5m)" ? 0.657 : preset == "v2 · 1m" ? 0.5 : cEntry
+float fStop = preset == "v4-5m · best overall (5m)" ? -0.30 : preset == "Custom" ? cStop : -0.15
 float buf   = preset == "Custom" ? cBuf : 0.05
-float tpR   = preset == "v3-5m · best profit (5m)" ? 3 : preset == "Custom" ? cTp : 2
-float p1    = preset == "v3-5m · best profit (5m)" ? 0 : preset == "Custom" ? cP1 : 0.5
+float tpR   = preset == "v4-5m · best overall (5m)" ? 2 : preset == "v3-5m · best profit (5m)" ? 3 : preset == "Custom" ? cTp : 2
+float p1    = preset == "v4-5m · best overall (5m)" ? 0 : preset == "v3-5m · best profit (5m)" ? 0 : preset == "Custom" ? cP1 : 0.5
 float p1r   = preset == "v3-5m · best profit (5m)" ? 1 : preset == "Custom" ? cP1R : 0.7
 float p1be  = preset == "Custom" ? cP1Be : 0
 int   maxW  = preset == "v2 · 1m" ? 240 : preset == "Custom" ? cWait : 144
