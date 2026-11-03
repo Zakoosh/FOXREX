@@ -1,8 +1,8 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX · foxrex.co
-// FOXREX Break v1.0 — break of structure + retracement limit (same rules as FOXREX_Break_EA.mq5 and break_sim.py)
+// FOXREX Break v1.01 — break of structure + retracement limit (same rules as FOXREX_Break_EA.mq5 and break_sim.py)
 //@version=6
-indicator("FOXREX Break v1.0", "FX Break", overlay = true, max_bars_back = 2000, max_lines_count = 500, max_labels_count = 500, max_boxes_count = 300)
+indicator("FOXREX Break v1.01", "FX Break", overlay = true, max_bars_back = 2000, max_lines_count = 500, max_labels_count = 500, max_boxes_count = 300)
 
 // ───────── 1 · Quick setup
 g1 = "⭐ 1 · Quick setup"
@@ -23,6 +23,7 @@ cBuf   = input.float(0.05, "Stop buffer (× ATR)", step = 0.01, group = g2)
 cTp    = input.float(3.0, "Target (R)", step = 0.5, group = g2)
 cP1    = input.float(0.0, "Partial close fraction (0 = off)", minval = 0, maxval = 0.9, step = 0.1, group = g2)
 cP1R   = input.float(1.0, "…at (R)", step = 0.1, group = g2)
+cP1Be  = input.float(0.0, "…then stop to (R, 0 = break-even)", step = 0.1, group = g2)
 cWait  = input.int(144, "Setup life (bars)", minval = 1, group = g2)
 cHold  = input.int(144, "Time exit (bars in trade)", minval = 1, group = g2)
 cBlk   = input.string("", "Blocked fill hours (server, e.g. 20,21,22,23)", group = g2)
@@ -44,6 +45,7 @@ float buf   = preset == "Custom" ? cBuf : 0.05
 float tpR   = preset == "v3-5m · best profit (5m)" ? 3 : preset == "Custom" ? cTp : 2
 float p1    = preset == "v3-5m · best profit (5m)" ? 0 : preset == "Custom" ? cP1 : 0.5
 float p1r   = preset == "v3-5m · best profit (5m)" ? 1 : preset == "Custom" ? cP1R : 0.7
+float p1be  = preset == "Custom" ? cP1Be : 0
 int   maxW  = preset == "v2 · 1m" ? 240 : preset == "Custom" ? cWait : 144
 int   maxH  = preset == "v2 · 1m" ? 240 : preset == "Custom" ? cHold : 144
 string blk  = preset == "v3-5m · high win rate (5m)" ? "20,21,22,23" : preset == "Custom" ? cBlk : ""
@@ -113,7 +115,7 @@ string xWhy = ""
 if pd != 0 and bar_index > pI0
     if (pd < 0 and high + sprd >= pSl) or (pd > 0 and low <= pSl)
         xPx := pd < 0 ? math.max(pSl, open + sprd) : math.min(pSl, open)
-        xWhy := pSl == pE ? "BE" : "SL"
+        xWhy := pPart ? "BE" : "SL"
     else if (pd < 0 and low + sprd <= pTp) or (pd > 0 and high >= pTp)
         xPx := pTp
         xWhy := "TP"
@@ -124,7 +126,7 @@ if pd != 0 and bar_index > pI0
             pPart := true
             pReal := p1 * pd * (l1 - pE)
             pRem  := 1 - p1
-            pSl   := pE
+            pSl   := pE + pd * p1be * r
             if showPast
                 line.set_x2(tS, bar_index)
                 tS := line.new(bar_index, pE, bar_index, pE, color = color.gray, style = line.style_dashed)

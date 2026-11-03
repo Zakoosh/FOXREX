@@ -16,8 +16,8 @@
 //+------------------------------------------------------------------+
 #property copyright "FOXREX · foxrex.co"
 #property link      "https://foxrex.co"
-#property version   "1.00"
-#property description "FOXREX Break EA v1.0: break of structure, retracement limit, R targets. Presets from the 5m / 1m simulations."
+#property version   "1.01"
+#property description "FOXREX Break EA v1.01: break of structure, retracement limit, R targets. Presets from the 5m / 1m simulations."
 
 #include <Trade/Trade.mqh>
 
@@ -85,6 +85,10 @@ Setup   S;
 double  atr = 0;
 bool    atrOk = false;
 datetime lastBar = 0;
+bool    ready = false;
+// virtual trade used only while replaying history
+struct VPos { bool on; int d; double e, sl, sl0, tp; datetime t0; bool part; };
+VPos    V;
 CTrade  trade;
 ENUM_ORDER_TYPE_FILLING fillMkt = ORDER_FILLING_FOK;
 double  dayBal = 0;
@@ -109,7 +113,7 @@ void SetPreset()
          P_piv = 15; P_minw = 1; P_entry = 0.5;    P_stop = -0.15; P_tp = 2; P_p1 = 0.5; P_p1r = 0.7; P_p1be = 0;
          P_maxw = 240; P_hold = 240; P_tf = PERIOD_M1; break;
       default:
-         P_piv = MathMax(1, InpPiv); P_minw = InpMinW; P_entry = InpEntry; P_stop = InpStop; P_buf = InpBuf;
+         P_piv = (int)MathMax(1, InpPiv); P_minw = InpMinW; P_entry = InpEntry; P_stop = InpStop; P_buf = InpBuf;
          P_tp = InpTpR; P_p1 = InpP1; P_p1r = InpP1R; P_p1be = InpP1Be;
          P_maxw = InpMaxWait; P_hold = InpMaxHold; P_tf = PERIOD_CURRENT;
          string parts[];
@@ -155,6 +159,27 @@ void DeletePending()
       if(!trade.OrderDelete(tk)) break;
       tk = PendingTicket();
      }
+  }
+
+double NormPx(double p)
+  {
+   double ts = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+   if(ts <= 0) return NormalizeDouble(p, _Digits);
+   return NormalizeDouble(MathRound(p / ts) * ts, _Digits);
+  }
+
+// start of the next blocked hour (0 = none within 24 h)
+datetime NextBlock()
+  {
+   datetime t = TimeCurrent();
+   MqlDateTime m; TimeToStruct(t, m);
+   datetime h0 = t - m.min * 60 - m.sec;
+   for(int k = 1; k <= 24; k++)
+     {
+      MqlDateTime x; TimeToStruct(h0 + k * 3600, x);
+      if(P_block[x.hour]) return h0 + k * 3600;
+     }
+   return 0;
   }
 
 double NormLot(double v)
@@ -272,21 +297,73 @@ void Step(int s, bool pos)
   }
 
 //+------------------------------------------------------------------+
+//| history replay: the simulator's fill / exit rules on a closed bar |
+//+------------------------------------------------------------------+
+void ReplayBar(int s)
+  {
+   double o = iOpen(_Symbol, _Period, s), h = iHigh(_Symbol, _Period, s), l = iLow(_Symbol, _Period, s), c = iClose(_Symbol, _Period, s);
+   double sp = iSpread(_Symbol, _Period, s) * _Point;
+   datetime t = iTime(_Symbol, _Period, s);
+   if(V.on && t > V.t0)
+     {
+      int d = V.d;
+      bool exitNow = false;
+      if((d < 0 && h + sp >= V.sl) || (d > 0 && l <= V.sl)) exitNow = true;
+      else if((d < 0 && l + sp <= V.tp) || (d > 0 && h >= V.tp)) exitNow = true;
+      else if(P_p1 > 0 && !V.part)
+        {
+         double l1 = V.e + d * P_p1r * MathAbs(V.e - V.sl0);
+         if((d < 0 && l + sp <= l1) || (d > 0 && h >= l1)) { V.part = true; V.sl = V.e + d * P_p1be * MathAbs(V.e - V.sl0); }
+        }
+      if(!exitNow && iBarShift(_Symbol, _Period, V.t0) - s >= P_hold) exitNow = true;
+      if(exitNow) V.on = false;
+     }
+   MqlDateTime m; TimeToStruct(t, m);
+   if(S.ok && S.armed && !V.on && !P_block[m.hour])
+     {
+      int d = S.d;
+      if((d < 0 && h >= S.lim) || (d > 0 && l + sp <= S.lim))
+        {
+         V.on = true; V.d = d; V.e = d < 0 ? MathMax(S.lim, o) : MathMin(S.lim, o + sp);
+         V.sl = S.sl; V.sl0 = S.sl; V.tp = S.tp; V.t0 = t; V.part = false;
+         S.ok = false;
+         if((d < 0 && h + sp >= V.sl) || (d > 0 && l <= V.sl)) V.on = false;
+        }
+     }
+  }
+
+bool Warmup()
+  {
+   if(!SeriesInfoInteger(_Symbol, _Period, SERIES_SYNCHRONIZED)) return false;
+   int n = MathMin(InpWarmup, Bars(_Symbol, _Period) - 2 * P_piv - 3);
+   if(n < 2 * P_piv + 20) return false;
+   swH.ok = swL.ok = false; S.ok = false; atrOk = false; V.on = false;
+   for(int s = n; s >= 1; s--) { ReplayBar(s); Step(s, V.on); }
+   if(HasPosition() || V.on) S.ok = false;    // a trade from this setup already happened
+   V.on = false;
+   lastBar = iTime(_Symbol, _Period, 0);
+   PrintFormat("FOXREX Break v1.01 ready · %d bars · piv %d · minW %.1f ATR · entry %.4f · stop %.3f · TP %.1fR · partial %.0f%% at %.1fR · wait %d · hold %d",
+               n, P_piv, P_minw, P_entry, P_stop, P_tp, P_p1 * 100, P_p1r, P_maxw, P_hold);
+   return true;
+  }
+
+//+------------------------------------------------------------------+
 //| pending order = the armed setup (when allowed)                   |
 //+------------------------------------------------------------------+
+bool guard = false;
+
 void Sync()
   {
    bool pos = HasPosition();
    if(pos && S.ok) S.ok = false;                 // filled → setup done
    MqlDateTime now; TimeToStruct(iTime(_Symbol, _Period, 0), now);
-   bool want = S.ok && S.armed && !pos && !P_block[now.hour] && !Protected()
+   bool want = S.ok && S.armed && !pos && !P_block[now.hour] && !guard
                && ((S.d > 0 && InpBuy) || (S.d < 0 && InpSell));
-   if(want && InpMaxSpread > 0 && SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) > InpMaxSpread) want = false;
    ulong tk = PendingTicket();
    if(!want) { if(tk) DeletePending(); DrawSetup(); return; }
 
    int dg = _Digits;
-   double lim = NormalizeDouble(S.lim, dg), sl = NormalizeDouble(S.sl, dg), tp = NormalizeDouble(S.tp, dg);
+   double lim = NormPx(S.lim), sl = NormPx(S.sl), tp = NormPx(S.tp);
    if(tk)
      {
       if(OrderSelect(tk) && MathAbs(OrderGetDouble(ORDER_PRICE_OPEN) - lim) < _Point / 2
@@ -294,11 +371,13 @@ void Sync()
         { DrawSetup(); return; }
       DeletePending();
      }
+   if(InpMaxSpread > 0 && SymbolInfoInteger(_Symbol, SYMBOL_SPREAD) > InpMaxSpread) { DrawSetup(); return; }   // wait for a normal spread
    static datetime failBar = 0;
    if(failBar == iTime(_Symbol, _Period, 0)) { DrawSetup(); return; }   // one try per bar after a failure
    double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID), ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
    double lots;
    bool ok;
+   datetime nb = NextBlock();          // a pending order expires when a blocked hour starts
    if(S.d < 0)
      {
       if(bid >= lim)                             // price already at / through the entry → fill now (as the simulator)
@@ -311,7 +390,7 @@ void Sync()
         {
          lots = LotFor(-1, lim, sl); if(lots == 0) { failBar = iTime(_Symbol, _Period, 0); return; }
          trade.SetTypeFilling(ORDER_FILLING_RETURN);
-         ok = trade.SellLimit(lots, lim, _Symbol, sl, tp, ORDER_TIME_GTC, 0, "FXB sell");
+         ok = trade.SellLimit(lots, lim, _Symbol, sl, tp, nb > 0 ? ORDER_TIME_SPECIFIED : ORDER_TIME_GTC, nb, "FXB sell");
         }
      }
    else
@@ -326,7 +405,7 @@ void Sync()
         {
          lots = LotFor(1, lim, sl); if(lots == 0) { failBar = iTime(_Symbol, _Period, 0); return; }
          trade.SetTypeFilling(ORDER_FILLING_RETURN);
-         ok = trade.BuyLimit(lots, lim, _Symbol, sl, tp, ORDER_TIME_GTC, 0, "FXB buy");
+         ok = trade.BuyLimit(lots, lim, _Symbol, sl, tp, nb > 0 ? ORDER_TIME_SPECIFIED : ORDER_TIME_GTC, nb, "FXB buy");
         }
      }
    trade.SetTypeFilling(fillMkt);
@@ -365,7 +444,8 @@ void Manage(bool newBar)
         }
 
       //--- partial close at x R, then stop to entry + p1be × R
-      if(P_p1 > 0 && r > 0 && !GlobalVariableCheck(GvName(pid, "pd")))
+      bool afterFill = iBarShift(_Symbol, _Period, (datetime)PositionGetInteger(POSITION_TIME)) >= 1;   // from the bar after the fill
+      if(P_p1 > 0 && r > 0 && afterFill && !GlobalVariableCheck(GvName(pid, "pd")))
         {
          double lvl = op + d * P_p1r * r;
          double px = d > 0 ? SymbolInfoDouble(_Symbol, SYMBOL_BID) : SymbolInfoDouble(_Symbol, SYMBOL_ASK);
@@ -373,9 +453,19 @@ void Manage(bool newBar)
            {
             double part = NormLot(vol * P_p1);
             double mn = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
-            if(part > 0 && vol - part >= mn - 1e-9) trade.PositionClosePartial(tk, part);
-            double nsl = NormalizeDouble(op + d * P_p1be * r, _Digits);
-            if(PositionSelectByTicket(tk)) trade.PositionModify(tk, nsl, tp);
+            if(part <= 0 || vol - part < mn - 1e-9)
+              {
+               GlobalVariableSet(GvName(pid, "pd"), 1);   // too small to split: keep the full trade as it is
+               Print("FXB: size too small for a partial close, trade left unchanged");
+               continue;
+              }
+            if(!GlobalVariableCheck(GvName(pid, "pc")))
+              {
+               if(!trade.PositionClosePartial(tk, part)) continue;          // retry next tick
+               GlobalVariableSet(GvName(pid, "pc"), 1);
+              }
+            double nsl = NormPx(op + d * P_p1be * r);
+            if(!PositionSelectByTicket(tk) || !trade.PositionModify(tk, nsl, tp)) continue;   // retry next tick
             GlobalVariableSet(GvName(pid, "pd"), 1);
             Notify("FXB partial " + DoubleToString(part, 2) + " at " + DoubleToString(P_p1r, 1) + "R, stop to " + DoubleToString(nsl, _Digits));
            }
@@ -451,15 +541,7 @@ int OnInit()
    fillMkt = (fm & SYMBOL_FILLING_FOK) ? ORDER_FILLING_FOK : (fm & SYMBOL_FILLING_IOC) ? ORDER_FILLING_IOC : ORDER_FILLING_RETURN;
    trade.SetTypeFilling(fillMkt);
 
-   //--- build the state from history (no trading)
-   swH.ok = swL.ok = false; S.ok = false; atrOk = false;
-   int n = MathMin(InpWarmup, Bars(_Symbol, _Period) - 2 * P_piv - 3);
-   for(int s = n; s >= 1; s--) Step(s, false);
-   if(HasPosition()) S.ok = false;
-   lastBar = iTime(_Symbol, _Period, 0);
-   Sync();
-   PrintFormat("FOXREX Break v1.0 ready · piv %d · minW %.1f ATR · entry %.4f · stop %.3f · TP %.1fR · partial %.0f%% at %.1fR · wait %d · hold %d",
-               P_piv, P_minw, P_entry, P_stop, P_tp, P_p1 * 100, P_p1r, P_maxw, P_hold);
+   ready = false;                         // history is replayed on the first tick, once the series is synchronized
    return INIT_SUCCEEDED;
   }
 
@@ -471,13 +553,18 @@ void OnDeinit(const int reason)
 
 void OnTick()
   {
+   if(!ready) { ready = Warmup(); if(!ready) return; }
+   guard = Protected();                   // every tick, so the day-start balance is taken at the day start
    datetime b = iTime(_Symbol, _Period, 0);
    bool nb = b != lastBar;
    Manage(nb);
    if(nb)
      {
+      int from = lastBar > 0 ? iBarShift(_Symbol, _Period, lastBar) - 1 : 1;   // every closed bar since the last one (gaps, reconnects)
+      if(from < 1) from = 1;
+      if(from > 500) from = 500;
+      for(int s = from; s >= 1; s--) Step(s, HasPosition());
       lastBar = b;
-      Step(1, HasPosition());
      }
    Sync();
   }
