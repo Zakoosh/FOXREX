@@ -1,0 +1,136 @@
+{
+  "runId": "run-20261008-daily-01",
+  "date": "2026-10-08",
+  "status": "PLANNED",
+  "publishing": "NOT_PUBLISHED — human review required",
+  "items": [
+    {
+      "contentId": "IG-CAR-EN-001",
+      "platform": "instagram",
+      "format": "carousel",
+      "language": "en",
+      "angle": "Gold near two-month low: levels snapshot",
+      "file": "carousels/ig-gold-two-month-low-en.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    },
+    {
+      "contentId": "IG-CAR-AR-001",
+      "platform": "instagram",
+      "format": "carousel",
+      "language": "ar",
+      "angle": "Gold near two-month low: levels snapshot",
+      "file": "carousels/ig-gold-two-month-low-ar.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    },
+    {
+      "contentId": "IG-REEL-EN-001",
+      "platform": "instagram",
+      "format": "reel",
+      "language": "en",
+      "angle": "Post-Fed-minutes calendar explainer",
+      "file": "reels/ig-fed-minutes-calendar-en.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    },
+    {
+      "contentId": "IG-REEL-AR-001",
+      "platform": "instagram",
+      "format": "reel",
+      "language": "ar",
+      "angle": "Post-Fed-minutes calendar explainer",
+      "file": "reels/ig-fed-minutes-calendar-ar.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    },
+    {
+      "contentId": "FB-EN-001",
+      "platform": "facebook",
+      "format": "post",
+      "language": "en",
+      "angle": "What matters next for gold",
+      "file": "en/facebook.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    },
+    {
+      "contentId": "FB-AR-001",
+      "platform": "facebook",
+      "format": "post",
+      "language": "ar",
+      "angle": "What matters next for gold",
+      "file": "ar/facebook.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    },
+    {
+      "contentId": "TG-EN-001",
+      "platform": "telegram",
+      "format": "post",
+      "language": "en",
+      "angle": "What matters next for gold",
+      "file": "en/telegram.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    },
+    {
+      "contentId": "TG-AR-001",
+      "platform": "telegram",
+      "format": "post",
+      "language": "ar",
+      "angle": "What matters next for gold",
+      "file": "ar/telegram.md",
+      "sourceIds": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S6"
+      ],
+      "status": "DRAFT"
+    }
+  ]
+}

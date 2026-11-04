@@ -1,0 +1,92 @@
+{
+  "runId": "run-20261008-daily-01",
+  "date": "2026-10-08",
+  "generatedAt": "2026-10-08T07:46:34Z",
+  "contentCount": 8,
+  "files": [
+    {
+      "path": "ar/facebook.md",
+      "sha256": "50b432430115882433d652e0d06eecae8712608f9a649b0af0ef6c97d81c13e8"
+    },
+    {
+      "path": "ar/telegram.md",
+      "sha256": "bf1d79656b2617562fb10068089c63acf7b587964163cff5a5947b7e50d76a74"
+    },
+    {
+      "path": "carousels/ig-gold-two-month-low-ar.md",
+      "sha256": "a79687d910520488a543a0ed057f97420a077dc902cf6d3d5c9fd57b70b759b1"
+    },
+    {
+      "path": "carousels/ig-gold-two-month-low-en.md",
+      "sha256": "be996579e4047417b498409ea0636a380956b38fdc3ec6de5a8f4b6fe7bf4a13"
+    },
+    {
+      "path": "content-plan.json",
+      "sha256": "4b3fd4b594e35c14497634405c4fde09f98465c3c2b2855922d5730111457f8e"
+    },
+    {
+      "path": "en/facebook.md",
+      "sha256": "094dfa7b1cc24ad246496f5eff996d77dc98120887ac7120c2f772d583532672"
+    },
+    {
+      "path": "en/telegram.md",
+      "sha256": "4def000c5a65242939003f8d54c1cdd9561d9ef31d47282f8ee08273e1e4b850"
+    },
+    {
+      "path": "market-brief.md",
+      "sha256": "04d2bbe95b4b68eef062364a2d3a25e1fa31d45bca483d5702abc6e24369b3c9"
+    },
+    {
+      "path": "reels/ig-fed-minutes-calendar-ar.md",
+      "sha256": "ebffaa42b456f287a7be9f2752cfe0bc1ad83ccbca0611741818e2922f7a9652"
+    },
+    {
+      "path": "reels/ig-fed-minutes-calendar-en.md",
+      "sha256": "e3cd76c19ff870303c0d38de88f34cd17484e9f42de055aae0bb0374315605ee"
+    },
+    {
+      "path": "sources.json",
+      "sha256": "e1a59890be19c1b793137a0b476750e6bac55b1046657cfa63eb9160b558eba6"
+    }
+  ],
+  "contentIds": [
+    "IG-CAR-EN-001",
+    "IG-CAR-AR-001",
+    "IG-REEL-EN-001",
+    "IG-REEL-AR-001",
+    "FB-EN-001",
+    "FB-AR-001",
+    "TG-EN-001",
+    "TG-AR-001"
+  ],
+  "mediaSpecs": {
+    "carousel": "1080x1350",
+    "reel": "1080x1920, 20-25s",
+    "facebook": "1200x630",
+    "telegram": "text"
+  },
+  "brandRefs": [
+    "styles/tokens.css",
+    "docs/ARABIC-BRAND-TYPOGRAPHY.md",
+    "assets/brand/foxrex-mark.png"
+  ],
+  "validation": {
+    "status": "VERIFIED_AFTER_COMMIT",
+    "checks": {
+      "bilingual_pairs": true,
+      "risk_disclosure_on_every_item": true,
+      "no_entries_stops_targets": true,
+      "no_performance_claims": true,
+      "facts_separated_from_interpretation": true,
+      "sources_primary_verified": false
+    },
+    "caveats": [
+      "Primary source pages not fetchable; figures from search summaries",
+      "US CPI date conflict (Oct 13 vs Oct 14)",
+      "Prices are snapshots, not live quotes"
+    ],
+    "verifiedCommit": "ee0f261a07a93b52d5dec93a9365b99cbc3985e5"
+  },
+  "packageStatus": "CONTENT_PLAN_READY",
+  "pullRequest": "https://github.com/Zakoosh/FOXREX/pull/10"
+}
