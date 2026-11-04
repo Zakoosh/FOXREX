@@ -8,13 +8,6 @@
  "note": "Completed daily sessions only. US30 CFD levels on the admin desk = futures level + cash basis (Dow cash index ^DJI - YM=F), measured while both quotes are within 20 minutes of each other.",
  "bars": [
   {
-   "date": "2026-05-13",
-   "open": 49860.0,
-   "high": 49911.0,
-   "low": 49534.0,
-   "close": 49792.0
-  },
-  {
    "date": "2026-05-14",
    "open": 49850.0,
    "high": 50292.0,
@@ -846,6 +839,13 @@
    "high": 52581.0,
    "low": 51970.0,
    "close": 52133.0
+  },
+  {
+   "date": "2026-11-03",
+   "open": 52156.0,
+   "high": 52186.0,
+   "low": 51631.0,
+   "close": 51895.0
   }
  ],
  "basis": {
@@ -854,5 +854,5 @@
   "futures": 52000.0,
   "at": "2026-11-03T18:38:29Z"
  },
- "updatedAt": "2026-11-03T18:38:30Z"
+ "updatedAt": "2026-11-04T11:15:09Z"
 }
