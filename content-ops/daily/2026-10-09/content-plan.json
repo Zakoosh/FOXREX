@@ -1,0 +1,119 @@
+{
+ "runId": "run-20261009-foxrex-daily-01",
+ "date": "2026-10-09",
+ "timezone": "Europe/Istanbul",
+ "items": [
+  {
+   "contentId": "C01",
+   "platform": "instagram",
+   "format": "carousel",
+   "factIds": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F8"
+   ],
+   "files": [
+    "carousels/C01-instagram-gold-yields-dollar.json",
+    "en/C01-instagram-caption.md",
+    "ar/C01-instagram-caption.md"
+   ],
+   "visualDirection": "Dark-first brand, REX interpreting, data tiles",
+   "status": "DRAFT_PENDING_HUMAN_REVIEW"
+  },
+  {
+   "contentId": "C02",
+   "platform": "instagram",
+   "format": "reel",
+   "factIds": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F8"
+   ],
+   "files": [
+    "reels/C02-instagram-why-gold-fell.json",
+    "en/C02-instagram-reel-caption.md",
+    "ar/C02-instagram-reel-caption.md"
+   ],
+   "visualDirection": "Short explainer, REX-led",
+   "status": "DRAFT_PENDING_HUMAN_REVIEW"
+  },
+  {
+   "contentId": "C03",
+   "platform": "facebook",
+   "format": "post",
+   "factIds": [
+    "F8",
+    "F9"
+   ],
+   "files": [
+    "en/C03-facebook-week-ahead.md",
+    "ar/C03-facebook-week-ahead.md"
+   ],
+   "visualDirection": "Single calendar graphic, 1200x630 landscape; clean table card",
+   "status": "DRAFT_PENDING_HUMAN_REVIEW"
+  },
+  {
+   "contentId": "C04",
+   "platform": "facebook",
+   "format": "post",
+   "factIds": [
+    "F4",
+    "F5",
+    "F6"
+   ],
+   "files": [
+    "en/C04-facebook-rex-explains.md",
+    "ar/C04-facebook-rex-explains.md"
+   ],
+   "visualDirection": "REX explainer card, simple lever illustration",
+   "status": "DRAFT_PENDING_HUMAN_REVIEW"
+  },
+  {
+   "contentId": "C05",
+   "platform": "telegram",
+   "format": "post",
+   "factIds": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F6"
+   ],
+   "files": [
+    "en/C05-telegram-brief.md",
+    "ar/C05-telegram-brief.md"
+   ],
+   "visualDirection": "Text only, optional small levels-free card",
+   "status": "DRAFT_PENDING_HUMAN_REVIEW"
+  },
+  {
+   "contentId": "C06",
+   "platform": "telegram",
+   "format": "poll",
+   "factIds": [
+    "F8"
+   ],
+   "files": [
+    "en/C06-telegram-poll.md",
+    "ar/C06-telegram-poll.md"
+   ],
+   "visualDirection": "Native Telegram poll, no image",
+   "status": "DRAFT_PENDING_HUMAN_REVIEW"
+  }
+ ],
+ "publishing": "NONE — nothing is published; operator review required",
+ "brandRefs": [
+  "styles/tokens.css",
+  "docs/ARABIC-BRAND-TYPOGRAPHY.md",
+  "docs/FOXREX-EDITORIAL-SYSTEM.md"
+ ],
+ "noFabrication": "No entries, SL/TP, signals, performance claims or support/resistance levels."
+}
