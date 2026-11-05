@@ -1,0 +1,86 @@
+{
+  "runId": "run-20261013-daily-01",
+  "date": "2026-10-13",
+  "retrievedAt": "2026-10-13T06:39:32Z",
+  "limitations": [
+    "Page fetches were blocked by the sandbox network policy (DNS/403); facts rest on web-search result summaries, not on opened pages.",
+    "No live price feed available. No price, level or percentage is quoted in any content piece.",
+    "Fed rate path was reported inconsistently by one calendar site; resolved to the Fed statement via multiple search results (S1)."
+  ],
+  "sources": [
+    {
+      "id": "S1",
+      "fact": "FOMC raised the fed funds target range by 25 bp to 3.75–4.00% on 16 Sep 2026 (vote 12-0).",
+      "publisher": "Federal Reserve / Atlanta Fed statement reprint / CNBC",
+      "urls": [
+        "https://www.federalreserve.gov/monetarypolicy/fomcminutes20260916.htm",
+        "https://www.atlantafed.org/news-and-events/2026/09/16/fomc-statement",
+        "https://www.cnbc.com/2026/09/16/fed-rate-decision-september-2026.html"
+      ],
+      "sourceTimestamp": "2026-09-16T18:00:00Z",
+      "kind": "primary+secondary",
+      "verification": "search_snippet_only"
+    },
+    {
+      "id": "S2",
+      "fact": "US Dollar Index reached an 18-month high on 12 Oct 2026, linked by Reuters/FXStreet to Middle East tension and oil.",
+      "publisher": "FXStreet (citing Reuters)",
+      "urls": [
+        "https://www.fxstreet.com/news/dollar-index-hits-an-18-month-high-as-the-energy-ceasefire-fails-202610121554",
+        "https://finance.yahoo.com/markets/currencies/articles/dollar-steady-near-18-month-045141835.html"
+      ],
+      "sourceTimestamp": "2026-10-12T15:54:00Z",
+      "kind": "secondary",
+      "verification": "search_snippet_only"
+    },
+    {
+      "id": "S3",
+      "fact": "US September CPI is due Wednesday 14 Oct 2026 at 08:30 ET (15:30 Istanbul).",
+      "publisher": "Kiplinger / fedratecalc / Admirals calendars",
+      "urls": [
+        "https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar",
+        "https://fedratecalc.com/us-economic-calendar/october-2026/"
+      ],
+      "sourceTimestamp": "2026-10-12T00:00:00Z",
+      "kind": "secondary",
+      "verification": "search_snippet_only",
+      "note": "Consensus values differ between calendars (headline y/y 3.6–3.7%); deliberately NOT used in content."
+    },
+    {
+      "id": "S4",
+      "fact": "US Beige Book Wed 14 Oct 14:00 ET; US retail sales and PPI Thu 15 Oct 08:30 ET.",
+      "publisher": "Kiplinger / fedratecalc",
+      "urls": [
+        "https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar"
+      ],
+      "sourceTimestamp": "2026-10-12T00:00:00Z",
+      "kind": "secondary",
+      "verification": "search_snippet_only"
+    },
+    {
+      "id": "S5",
+      "fact": "Next FOMC meeting 27–28 Oct 2026; Sept FOMC minutes already published 7 Oct, next minutes 18 Nov.",
+      "publisher": "fedratecalc / financecalendar",
+      "urls": [
+        "https://fedratecalc.com/us-economic-calendar/october-2026/",
+        "https://www.financecalendar.com/event/fomc-minutes-october-2026/"
+      ],
+      "sourceTimestamp": "2026-10-12T00:00:00Z",
+      "kind": "secondary",
+      "verification": "search_snippet_only"
+    },
+    {
+      "id": "S6",
+      "fact": "Gold (XAUUSD) was reported trading below the $4,200 area on 13 Oct, pressured by the stronger dollar and elevated Treasury yields. Quotes from different feeds disagree (about 4,155–4,182) so no price is used in content.",
+      "publisher": "VT Markets / Litefinance / Mitrade / Forex.com",
+      "urls": [
+        "https://vtmarkets.com/en-asia/analysis/gold-struggles-below-4200-as-cpi-and-ppi-could-trigger-the-next-big-move",
+        "https://forex.com/en-us/news-and-analysis/gold-forecast-dollar-strength-keeps-xau-under-pressure"
+      ],
+      "sourceTimestamp": "2026-10-13T00:00:00Z",
+      "kind": "secondary",
+      "verification": "search_snippet_only",
+      "note": "Broker marketing/analysis sites; qualitative use only."
+    }
+  ]
+}
