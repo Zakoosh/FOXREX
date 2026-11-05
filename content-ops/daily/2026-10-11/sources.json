@@ -1,0 +1,23 @@
+{
+  "runId": "foxrex-20261011-001",
+  "date": "2026-10-11",
+  "retrievedAtUtc": "2026-10-11T06:37:00Z",
+  "accessNote": "Direct page fetch blocked (DNS). All entries are web-search result summaries; no primary source opened. Verify primary items before publishing.",
+  "sources": [
+    {"id":"S1","title":"Gold rises toward $4,180 as Treasury yields ease from 24-year highs and dollar pauses","publisher":"investinglive","url":"https://investinglive.com/commodities/gold-rises-toward-4-180-as-treasury-yields-ease-from-24-year-highs-and-dollar-pauses/","sourceTimestamp":"2026-10-09","grade":"secondary","supports":["F1","F3"]},
+    {"id":"S2","title":"Gold Rebounds as US Treasury Yields Ease — October 9, 2026","publisher":"MQL5","url":"https://www.mql5.com/en/blogs/post/777149","sourceTimestamp":"2026-10-09","grade":"secondary","supports":["F1","F2"]},
+    {"id":"S3","title":"XAUUSD Gold","publisher":"Trading Economics","url":"https://tradingeconomics.com/xauusd:cur","sourceTimestamp":"2026-10-09","grade":"secondary","supports":["F2","F4"]},
+    {"id":"S4","title":"XAU (Gold) Spot Rate","publisher":"Bloomberg quote page","url":"https://www.bloomberg.com/quote/XAU:CUR","sourceTimestamp":"2026-10-09T20:59:00Z","grade":"secondary","supports":["F2"]},
+    {"id":"S5","title":"XAU to USD live rate","publisher":"Investing.com","url":"https://in.investing.com/currencies/xau-usd","sourceTimestamp":"2026-10-09","grade":"secondary","supports":["F2"]},
+    {"id":"S6","title":"Event pages: US CPI 14 Oct, PPI/retail sales 15 Oct, import prices 16 Oct","publisher":"akrostec.com","url":"https://www.akrostec.com/indices/AGOLD/events","sourceTimestamp":"2026-10-11","grade":"secondary-unofficial","supports":["F5","F6"],"verifyAt":"https://www.bls.gov/schedule/news_release/cpi.htm"},
+    {"id":"S7","title":"October 2026 U.S. Economic Calendar","publisher":"fedratecalc.com","url":"https://fedratecalc.com/us-economic-calendar/october-2026/","sourceTimestamp":"2026-10-11","grade":"secondary-unofficial","supports":["F5","F7"]},
+    {"id":"S8","title":"What to Look Out for in Economic Data This Week (October 12-16)","publisher":"Kiplinger","url":"https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar","sourceTimestamp":"2026-10-11","grade":"secondary","supports":["F5"]},
+    {"id":"S9","title":"FOMC meeting calendars","publisher":"Federal Reserve (primary, not opened)","url":"https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm","sourceTimestamp":null,"grade":"primary-unverified","supports":["F7"],"note":"Must be checked before any claim about the September decision."}
+  ],
+  "unverifiedClaimsExcluded": [
+    "Fed hiked to 3.75-4.00% on 2026-09-16 (conflicting sources)",
+    "82% market-implied probability of a December hike (single preview)",
+    "CPI consensus 0.6% m/m, 3.7% y/y (single preview)",
+    "Spot gold 4,456 (Il Sole 24 Ore item; inconsistent with all other sources)"
+  ]
+}
