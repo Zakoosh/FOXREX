@@ -1,0 +1,136 @@
+{
+  "date": "2026-10-14",
+  "run_id": "run-2026-10-14-ecd3ee01",
+  "risk_line_status": "DRAFT_pending_owner_approval",
+  "risk_line": {
+    "en": "Educational market commentary, not financial advice. Trading leveraged products carries a high risk of loss.",
+    "ar": "محتوى تعليمي وتحليلي وليس نصيحة مالية. التداول بالرافعة المالية ينطوي على مخاطر عالية بالخسارة."
+  },
+  "items": [
+    {
+      "id": "FX-20261014-001",
+      "type": "MORNING_BRIEF_DERIVATIVE",
+      "platform": "instagram",
+      "format": "carousel",
+      "facts": [
+        "F1",
+        "F2",
+        "F3"
+      ],
+      "suggested_slot_ist": "13:30",
+      "title_en": "CPI day: what the market is watching",
+      "title_ar": "يوم التضخم: ماذا يراقب السوق؟",
+      "status": "DRAFT",
+      "requires_post_release_check": true,
+      "files": [
+        "en/FX-20261014-001-instagram-carousel.md",
+        "ar/FX-20261014-001-instagram-carousel.md",
+        "carousels/FX-20261014-001-cpi-day.json"
+      ],
+      "image_prompt": "Dark navy #0B1320 background, subtle teal #00D4A7 glow, REX mascot (use approved asset assets/rex/rex-arms.jpg as reference; do not redraw or alter), clean empty top third for typography, no text, no numbers, no logos in pixels."
+    },
+    {
+      "id": "FX-20261014-002",
+      "type": "GOLD_FOCUS_DERIVATIVE",
+      "platform": "instagram",
+      "format": "reel",
+      "facts": [
+        "F4",
+        "F5"
+      ],
+      "suggested_slot_ist": "15:00",
+      "title_en": "Gold vs a strong dollar before CPI",
+      "title_ar": "الذهب أمام دولار قوي قبل التضخم",
+      "status": "DRAFT",
+      "requires_post_release_check": true,
+      "files": [
+        "en/FX-20261014-002-instagram-reel.md",
+        "ar/FX-20261014-002-instagram-reel.md",
+        "reels/FX-20261014-002-gold-vs-dollar.json"
+      ],
+      "image_prompt": "Macro shot of polished gold bar beside a dark glass surface, cool teal rim light, cinematic, vertical 9:16, no text, no currency symbols rendered, clean top/bottom space."
+    },
+    {
+      "id": "FX-20261014-003",
+      "type": "EVENT",
+      "platform": "facebook",
+      "format": "post",
+      "facts": [
+        "F1",
+        "F2",
+        "F3"
+      ],
+      "suggested_slot_ist": "14:00",
+      "title_en": "US CPI today at 15:30 Istanbul",
+      "title_ar": "التضخم الأمريكي اليوم 15:30 بتوقيت إسطنبول",
+      "status": "DRAFT",
+      "requires_post_release_check": true,
+      "files": [
+        "en/FX-20261014-003-facebook-post.md",
+        "ar/FX-20261014-003-facebook-post.md"
+      ],
+      "image_prompt": "Minimal dark card with abstract clock motif, teal accent, empty space for overlay of title and time; no text in image."
+    },
+    {
+      "id": "FX-20261014-004",
+      "type": "REX_EXPLAINS",
+      "platform": "facebook",
+      "format": "post",
+      "facts": [
+        "F5"
+      ],
+      "suggested_slot_ist": "19:00",
+      "title_en": "REX explains: why does a hot CPI weigh on gold?",
+      "title_ar": "ريكس يشرح: لماذا يضغط التضخم المرتفع على الذهب؟",
+      "status": "DRAFT",
+      "requires_post_release_check": true,
+      "files": [
+        "en/FX-20261014-004-facebook-post.md",
+        "ar/FX-20261014-004-facebook-post.md"
+      ],
+      "image_prompt": "REX mascot (approved asset reference) thoughtful pose in a dark studio with soft teal light, large empty area for caption overlay; no text."
+    },
+    {
+      "id": "FX-20261014-005",
+      "type": "EVENT",
+      "platform": "telegram",
+      "format": "message",
+      "facts": [
+        "F1",
+        "F2",
+        "F3"
+      ],
+      "suggested_slot_ist": "14:00",
+      "title_en": "CPI countdown",
+      "title_ar": "العد التنازلي للتضخم",
+      "status": "DRAFT",
+      "requires_post_release_check": true,
+      "files": [
+        "en/FX-20261014-005-telegram-message.md",
+        "ar/FX-20261014-005-telegram-message.md"
+      ],
+      "image_prompt": "Telegram card 1280x720: dark #0B1320 with teal grid lines, empty left space for text overlay; no text in image."
+    },
+    {
+      "id": "FX-20261014-006",
+      "type": "MORNING_BRIEF_DERIVATIVE",
+      "platform": "telegram",
+      "format": "message",
+      "facts": [
+        "F4",
+        "F5",
+        "F7"
+      ],
+      "suggested_slot_ist": "09:00",
+      "title_en": "Gold, dollar and the rest of the week",
+      "title_ar": "الذهب والدولار وبقية الأسبوع",
+      "status": "DRAFT",
+      "requires_post_release_check": true,
+      "files": [
+        "en/FX-20261014-006-telegram-message.md",
+        "ar/FX-20261014-006-telegram-message.md"
+      ],
+      "image_prompt": "Telegram card 1280x720: abstract gold-toned gradient vs dark teal, empty space for overlay; no text."
+    }
+  ]
+}

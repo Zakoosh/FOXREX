@@ -1,0 +1,57 @@
+{
+  "content_id": "FX-20261014-001",
+  "canvas": "1080x1350",
+  "fonts": {
+    "ar": "IBM Plex Sans Arabic",
+    "latin": "Inter"
+  },
+  "slides": [
+    {
+      "n": 1,
+      "role": "hook",
+      "en": "CPI day. 15:30 Istanbul.",
+      "ar": "يوم التضخم. 15:30 بتوقيت إسطنبول.",
+      "visual": "REX in focused pose beside a clock reading 15:30; dark #0B1320, teal #00D4A7 accent. Leave clear space for typography."
+    },
+    {
+      "n": 2,
+      "role": "what",
+      "en": "US September CPI is due 08:30 ET (15:30 Istanbul).",
+      "ar": "يصدر مؤشر أسعار المستهلك الأمريكي لشهر سبتمبر 08:30 بتوقيت نيويورك (15:30 إسطنبول).",
+      "visual": "Clean clock/calendar graphic, LTR time in Inter."
+    },
+    {
+      "n": 3,
+      "role": "expectation",
+      "en": "Economists expect headline +0.6% m/m, 3.6% y/y.",
+      "ar": "يتوقع الاقتصاديون ارتفاع المؤشر العام 0.6% شهريًا و3.6% سنويًا.",
+      "visual": "Two big Inter numerals 0.6% / 3.6% on dark card. Source line: Dow Jones via CNBC, 13 Oct. UNVERIFIED - confirm."
+    },
+    {
+      "n": 4,
+      "role": "core",
+      "en": "Core is the focus: about +0.2% m/m expected. Energy lifts the headline.",
+      "ar": "التركيز على التضخم الأساسي: المتوقع نحو 0.2% شهريًا، بينما تدفع الطاقة المؤشر العام للأعلى.",
+      "visual": "Headline vs core as two bars (no invented values beyond forecasts)."
+    },
+    {
+      "n": 5,
+      "role": "why-it-matters",
+      "en": "Dollar and yields are already elevated. A surprise can move gold.",
+      "ar": "الدولار والعوائد مرتفعان أصلًا، وأي مفاجأة قد تحرّك الذهب.",
+      "visual": "Three icons: USD, yields, XAUUSD. Not mirrored."
+    },
+    {
+      "n": 6,
+      "role": "cta-risk",
+      "en": "Expect volatility around the release. Not advice.",
+      "ar": "توقّع تقلبات حول موعد الصدور. ليس نصيحة.",
+      "visual": "REX with risk line at bottom in caption style; FOXREX logo from assets/brand."
+    }
+  ],
+  "risk_line": {
+    "en": "Educational market commentary, not financial advice. Trading leveraged products carries a high risk of loss.",
+    "ar": "محتوى تعليمي وتحليلي وليس نصيحة مالية. التداول بالرافعة المالية ينطوي على مخاطر عالية بالخسارة."
+  },
+  "note": "Do not render Arabic text inside generated images; overlay in post-production."
+}

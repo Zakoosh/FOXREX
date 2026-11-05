@@ -1,0 +1,34 @@
+{
+  "content_id": "FX-20261014-002",
+  "aspect": "9:16 1080x1920",
+  "duration_s": 18,
+  "safe_zones": "250px top / 300px bottom",
+  "scenes": [
+    {
+      "t": "0-3",
+      "en_vo": "Gold is near $4,150 and the dollar is at an 18-month high.",
+      "ar_vo": "الذهب قرب 4,150 دولارًا، والدولار عند أعلى مستوى منذ 18 شهرًا.",
+      "visual": "Slow push-in on abstract gold bar surface vs dark glass dollar glyph; price ticker overlay added in post, labelled 'as of 13 Oct'."
+    },
+    {
+      "t": "3-8",
+      "en_vo": "The 10-year yield is around 5.24%. That raises the cost of holding gold.",
+      "ar_vo": "عائد السندات لعشر سنوات نحو 5.24%، وهذا يرفع كلفة الاحتفاظ بالذهب.",
+      "visual": "Yield line motif (illustrative, no real chart data) with teal highlight."
+    },
+    {
+      "t": "8-14",
+      "en_vo": "Today's US CPI lands at 15:30 Istanbul. Hot or soft, it can shift the picture.",
+      "ar_vo": "يصدر التضخم الأمريكي اليوم 15:30 بتوقيت إسطنبول، وقد يغيّر الصورة سواء جاء مرتفعًا أو أضعف.",
+      "visual": "REX looks at a clock; countdown 15:30."
+    },
+    {
+      "t": "14-18",
+      "en_vo": "We watch. We don't guess. Not advice.",
+      "ar_vo": "نراقب ولا نخمّن. وليس نصيحة.",
+      "visual": "End card: FOXREX logo + risk line + TRADE SMARTER. GO FURTHER."
+    }
+  ],
+  "audio": "Original/royalty-free only; no trending audio assumed.",
+  "on_screen_caveat": "Prices must be refreshed from a live feed before production; if stale, drop the numbers."
+}
