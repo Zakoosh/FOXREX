@@ -1,12 +1,12 @@
 // This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © FOXREX · foxrex.co
-// FOXREX Break v1.03 — break of structure + retracement limit (same rules as FOXREX_Break_EA.mq5 and break_sim.py)
+// FOXREX Break v1.04 — break of structure + retracement limit (same rules as FOXREX_Break_EA.mq5 and break_sim.py)
 //@version=6
-indicator("FOXREX Break v1.03", "FX Break", overlay = true, max_bars_back = 2000, max_lines_count = 500, max_labels_count = 500, max_boxes_count = 300)
+indicator("FOXREX Break v1.04", "FX Break", overlay = true, max_bars_back = 2000, max_lines_count = 500, max_labels_count = 500, max_boxes_count = 300)
 
 // ───────── 1 · Quick setup
 g1 = "⭐ 1 · Quick setup"
-preset   = input.string("v4-5m · best overall (5m)", "Preset", options = ["v4-5m · best overall (5m)", "v3-5m · best profit (5m)", "v3-5m · high win rate (5m)", "v2 · 1m", "Custom"], group = g1)
+preset   = input.string("Master · auto (chart timeframe)", "Preset", options = ["Master · auto (chart timeframe)", "v4-5m · best overall (5m)", "v3-5m · best profit (5m)", "v3-5m · high win rate (5m)", "v2 · 1m", "Custom"], group = g1)
 lotsIn   = input.float(1.0, "Lots for the $ result", minval = 0.01, group = g1)
 sprd     = input.float(0.3, "Spread (price units)", minval = 0, step = 0.05, group = g1)
 commLot  = input.float(6.0, "Commission per lot ($)", minval = 0, group = g1)
@@ -26,6 +26,7 @@ cP1R   = input.float(1.0, "…at (R)", step = 0.1, group = g2)
 cP1Be  = input.float(0.0, "…then stop to (R, 0 = break-even)", step = 0.1, group = g2)
 cWait  = input.int(144, "Setup life (bars)", minval = 1, group = g2)
 cHold  = input.int(144, "Time exit (bars in trade)", minval = 1, group = g2)
+cReuse = input.bool(false, "Re-entry: after a trade the same break can arm again", group = g2)
 cBlk   = input.string("", "Blocked fill hours (server, e.g. 20,21,22,23)", group = g2)
 
 // ───────── 3 · Display
@@ -37,18 +38,26 @@ colBuy    = input.color(color.new(#2f80ed, 0), "Buy / sell colours", group = g3,
 colSell   = input.color(color.new(#eb5757, 0), "", group = g3, inline = "c")
 
 // ───────── effective parameters
-int   piv   = preset == "v4-5m · best overall (5m)" ? 4 : preset == "v3-5m · best profit (5m)" ? 5 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 15 : cPiv
-float minW  = preset == "v4-5m · best overall (5m)" ? 1 : preset == "v3-5m · best profit (5m)" ? 1 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 1 : cMinW
-float fEnt  = preset == "v4-5m · best overall (5m)" ? 0.5 : preset == "v3-5m · best profit (5m)" ? 0.5785 : preset == "v3-5m · high win rate (5m)" ? 0.657 : preset == "v2 · 1m" ? 0.5 : cEntry
-float fStop = preset == "v4-5m · best overall (5m)" ? -0.30 : preset == "Custom" ? cStop : -0.15
+// Master = the FOXREX Master EA engines: M1 · M5 · M15 · H1 · H4 settings picked by the chart timeframe
+isM    = preset == "Master · auto (chart timeframe)"
+secTF  = timeframe.in_seconds()
+mPiv   = secTF <= 60 ? 15 : secTF <= 300 ? 4 : secTF <= 900 ? 3 : secTF <= 3600 ? 4 : 3
+mEnt   = secTF <= 300 ? 0.5 : secTF <= 900 ? 0.657 : secTF <= 3600 ? 0.5 : 0.5785
+mStop  = secTF <= 60 ? -0.15 : secTF <= 3600 ? -0.30 : 0.0
+mBars  = secTF <= 60 ? 240 : secTF <= 300 ? 144 : secTF <= 900 ? 48 : secTF <= 3600 ? 12 : 24
+int   piv   = isM ? mPiv : preset == "v4-5m · best overall (5m)" ? 4 : preset == "v3-5m · best profit (5m)" ? 5 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 15 : cPiv
+float minW  = isM ? 1 : preset == "v4-5m · best overall (5m)" ? 1 : preset == "v3-5m · best profit (5m)" ? 1 : preset == "v3-5m · high win rate (5m)" ? 3 : preset == "v2 · 1m" ? 1 : cMinW
+float fEnt  = isM ? mEnt : preset == "v4-5m · best overall (5m)" ? 0.5 : preset == "v3-5m · best profit (5m)" ? 0.5785 : preset == "v3-5m · high win rate (5m)" ? 0.657 : preset == "v2 · 1m" ? 0.5 : cEntry
+float fStop = isM ? mStop : preset == "v4-5m · best overall (5m)" ? -0.30 : preset == "Custom" ? cStop : -0.15
 float buf   = preset == "Custom" ? cBuf : 0.05
-float tpR   = preset == "v4-5m · best overall (5m)" ? 2 : preset == "v3-5m · best profit (5m)" ? 3 : preset == "Custom" ? cTp : 2
-float p1    = preset == "v4-5m · best overall (5m)" ? 0 : preset == "v3-5m · best profit (5m)" ? 0 : preset == "Custom" ? cP1 : 0.5
-float p1r   = preset == "v3-5m · best profit (5m)" ? 1 : preset == "Custom" ? cP1R : 0.7
+float tpR   = isM ? 2 : preset == "v4-5m · best overall (5m)" ? 2 : preset == "v3-5m · best profit (5m)" ? 3 : preset == "Custom" ? cTp : 2
+float p1    = isM ? (secTF <= 60 ? 0.5 : 0) : preset == "v4-5m · best overall (5m)" ? 0 : preset == "v3-5m · best profit (5m)" ? 0 : preset == "Custom" ? cP1 : 0.5
+float p1r   = isM ? 0.7 : preset == "v3-5m · best profit (5m)" ? 1 : preset == "Custom" ? cP1R : 0.7
 float p1be  = preset == "Custom" ? cP1Be : 0
-int   maxW  = preset == "v2 · 1m" ? 240 : preset == "Custom" ? cWait : 144
-int   maxH  = preset == "v2 · 1m" ? 240 : preset == "Custom" ? cHold : 144
-string blk  = preset == "v3-5m · high win rate (5m)" ? "20,21,22,23" : preset == "Custom" ? cBlk : ""
+int   maxW  = isM ? mBars : preset == "v2 · 1m" ? 240 : preset == "Custom" ? cWait : 144
+int   maxH  = isM ? mBars : preset == "v2 · 1m" ? 240 : preset == "Custom" ? cHold : 144
+bool  reuse = isM ? secTF <= 900 : preset == "Custom" ? cReuse : false
+string blk  = isM ? "" : preset == "v3-5m · high win rate (5m)" ? "20,21,22,23" : preset == "Custom" ? cBlk : ""
 
 tz  = tzOff >= 0 ? "GMT+" + str.tostring(tzOff) : "GMT" + str.tostring(tzOff)
 hr  = hour(time, tz)
@@ -157,7 +166,10 @@ if sd != 0 and pd == 0 and sArm and not blocked
         pE := sd < 0 ? math.max(sLim, open) : math.min(sLim, open + sprd)
         pSl := sSl, pSl0 := sSl, pTp := sTp, pI0 := bar_index
         pPart := false, pReal := 0.0, pRem := 1.0
-        sd := 0
+        if reuse
+            sArm := false       // the same break can arm again after this trade
+        else
+            sd := 0
         if showPast
             tE := line.new(bar_index, pE, bar_index, pE, color = pd > 0 ? colBuy : colSell, width = 2)
             tS := line.new(bar_index, pSl, bar_index, pSl, color = color.red, style = line.style_dashed)
