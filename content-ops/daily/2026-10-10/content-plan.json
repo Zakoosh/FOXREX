@@ -1,0 +1,139 @@
+{
+  "runId": "run-20261010-daily-01",
+  "date": "2026-10-10",
+  "theme": "CPI week: what to watch (educational, event-driven)",
+  "suggestedPublishWindow": "Sun 11 Oct from 20:00 IST (Weekly Outlook slot) — owner to confirm",
+  "published": false,
+  "items": [
+    {
+      "contentId": "ig-en-001",
+      "language": "en",
+      "platform": "instagram",
+      "format": "caption",
+      "file": "en/instagram-caption.md",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "fb-en-001",
+      "language": "en",
+      "platform": "facebook",
+      "format": "post",
+      "file": "en/facebook-post.md",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "tg-en-001",
+      "language": "en",
+      "platform": "telegram",
+      "format": "post",
+      "file": "en/telegram-post.md",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "car-en-001",
+      "language": "en",
+      "platform": "instagram",
+      "format": "carousel",
+      "file": "carousels/en-cpi-week.json",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "reel-en-001",
+      "language": "en",
+      "platform": "instagram_reels",
+      "format": "reel",
+      "file": "reels/en-cpi-week.json",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "ig-ar-001",
+      "language": "ar",
+      "platform": "instagram",
+      "format": "caption",
+      "file": "ar/instagram-caption.md",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "fb-ar-001",
+      "language": "ar",
+      "platform": "facebook",
+      "format": "post",
+      "file": "ar/facebook-post.md",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "tg-ar-001",
+      "language": "ar",
+      "platform": "telegram",
+      "format": "post",
+      "file": "ar/telegram-post.md",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "car-ar-001",
+      "language": "ar",
+      "platform": "instagram",
+      "format": "carousel",
+      "file": "carousels/ar-cpi-week.json",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    },
+    {
+      "contentId": "reel-ar-001",
+      "language": "ar",
+      "platform": "instagram_reels",
+      "format": "reel",
+      "file": "reels/ar-cpi-week.json",
+      "factIds": [
+        "F2",
+        "F3",
+        "F5"
+      ],
+      "status": "DRAFT_PENDING_REVIEW"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "contentId": "car-en-001",
+  "language": "en",
+  "platform": "instagram",
+  "size": "1080x1350",
+  "palette": {
+    "bg": "#0B1320",
+    "text": "#E5E7EB",
+    "accent": "#00D4A7",
+    "caution": "#F5B942"
+  },
+  "font": "Inter",
+  "rtl": false,
+  "title": "CPI Week: 5 things to know",
+  "slides": [
+    {
+      "n": 1,
+      "headline": "CPI week. Are you ready?",
+      "body": "Cover. Hook: 'CPI week... are you ready?'"
+    },
+    {
+      "n": 2,
+      "headline": "Wed 14 Oct: US CPI (Sept)",
+      "body": "The week's headline event. Inflation data feeds rate expectations."
+    },
+    {
+      "n": 3,
+      "headline": "Why gold cares",
+      "body": "Rate-hike expectations and yields can weigh on non-yielding gold. Context, not a prediction."
+    },
+    {
+      "n": 4,
+      "headline": "The rest of the week",
+      "body": "Thu: PPI, Retail Sales, Philly Fed. Fri: Import Prices, Industrial Production. Next FOMC: 28 Oct."
+    },
+    {
+      "n": 5,
+      "headline": "Prepare, don't predict",
+      "body": "Know the time of release, expect volatility, decide risk before the event. Educational content only, not financial advice. Trading carries a high risk of loss."
+    }
+  ],
+  "imageDirection": "Dark #0B1320 background, teal #00D4A7 accents, calendar-grid motif; leave clean space for typography (no AI-rendered text). Use only existing assets (assets/rex/rex-arms.jpg, brand mark); no invented brand assets."
+}

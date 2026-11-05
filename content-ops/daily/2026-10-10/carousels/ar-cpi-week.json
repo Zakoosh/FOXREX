@@ -1,0 +1,43 @@
+{
+  "contentId": "car-ar-001",
+  "language": "ar",
+  "platform": "instagram",
+  "size": "1080x1350",
+  "palette": {
+    "bg": "#0B1320",
+    "text": "#E5E7EB",
+    "accent": "#00D4A7",
+    "caution": "#F5B942"
+  },
+  "font": "IBM Plex Sans Arabic + Inter",
+  "rtl": true,
+  "title": "أسبوع CPI: 5 أشياء تعرفها",
+  "slides": [
+    {
+      "n": 1,
+      "headline": "أسبوع التضخم... هل أنت جاهز؟",
+      "body": "غلاف. تكسر الجملة عند «...»"
+    },
+    {
+      "n": 2,
+      "headline": "الأربعاء 14 أكتوبر: CPI الأمريكي",
+      "body": "حدث الأسبوع الأبرز. بيانات التضخم تغذي توقعات الفائدة."
+    },
+    {
+      "n": 3,
+      "headline": "لماذا يهتم الذهب؟",
+      "body": "توقعات رفع الفائدة والعوائد قد تضغط على الذهب الذي لا يدرّ عائداً. سياق وليس توقعاً."
+    },
+    {
+      "n": 4,
+      "headline": "بقية الأسبوع",
+      "body": "الخميس: PPI ومبيعات التجزئة وPhilly Fed. الجمعة: أسعار الواردات والإنتاج الصناعي. الفيدرالي القادم: 28 أكتوبر."
+    },
+    {
+      "n": 5,
+      "headline": "استعد ولا تتوقع",
+      "body": "اعرف وقت الإصدار، توقع التذبذب، وحدد مخاطرك قبل الحدث. محتوى تعليمي فقط وليس نصيحة مالية. التداول ينطوي على مخاطر عالية بالخسارة."
+    }
+  ],
+  "imageDirection": "Dark #0B1320 background, teal #00D4A7 accents, calendar-grid motif; leave clean space for typography (no AI-rendered text). Use only existing assets (assets/rex/rex-arms.jpg, brand mark); no invented brand assets."
+}
