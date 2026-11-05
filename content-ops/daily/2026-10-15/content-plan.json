@@ -1,0 +1,130 @@
+{
+  "run_id": "frx-run-20261015-01",
+  "date": "2026-10-15",
+  "ideas": [
+    {
+      "id": "gold-inflation-fed-calendar",
+      "summary": "Why gold reacts to inflation data; Fed Oct 28 countdown",
+      "grounded_in": [
+        "S1",
+        "S2"
+      ],
+      "excluded_unverified": [
+        "CPI print/surprise",
+        "DXY/yields/FX levels"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "content_id": "frx-20261015-in-ar-post",
+      "type": "post",
+      "platform": "instagram",
+      "language": "ar",
+      "file": "ar/ig-post.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "Dark FOXREX bg #0B1320, accent #00D4A7, REX mascot (assets/rex/rex-arms.jpg) as supplied only; minimal; no price figures.",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-in-en-post",
+      "type": "post",
+      "platform": "instagram",
+      "language": "en",
+      "file": "en/ig-post.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "Dark FOXREX bg #0B1320, accent #00D4A7, REX mascot (assets/rex/rex-arms.jpg) as supplied only; minimal; no price figures.",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-fa-ar-post",
+      "type": "post",
+      "platform": "facebook",
+      "language": "ar",
+      "file": "ar/fb-post.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "Landscape 1.91:1 week-calendar card, dark bg, three date chips (Oct 14, Oct 15, Oct 28).",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-fa-en-post",
+      "type": "post",
+      "platform": "facebook",
+      "language": "en",
+      "file": "en/fb-post.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "Landscape 1.91:1 week-calendar card, dark bg, three date chips (Oct 14, Oct 15, Oct 28).",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-te-ar-post",
+      "type": "post",
+      "platform": "telegram",
+      "language": "ar",
+      "file": "ar/tg-post.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "Text-first; optional small calendar card, same palette.",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-te-en-post",
+      "type": "post",
+      "platform": "telegram",
+      "language": "en",
+      "file": "en/tg-post.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "Text-first; optional small calendar card, same palette.",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-ig-en-carousel",
+      "type": "carousel",
+      "platform": "instagram",
+      "language": "en",
+      "file": "carousels/gold-inflation-en.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "6-slide educational carousel, dark minimal",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-ig-ar-carousel",
+      "type": "carousel",
+      "platform": "instagram",
+      "language": "ar",
+      "file": "carousels/gold-inflation-ar.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "6-slide educational carousel, dark minimal",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-ig-en-reel",
+      "type": "reel",
+      "platform": "instagram",
+      "language": "en",
+      "file": "reels/gold-inflation-en.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "4-beat explainer storyboard",
+      "status": "PLANNED",
+      "publish": false
+    },
+    {
+      "content_id": "frx-20261015-ig-ar-reel",
+      "type": "reel",
+      "platform": "instagram",
+      "language": "ar",
+      "file": "reels/gold-inflation-ar.md",
+      "idea": "gold-inflation-fed-calendar",
+      "creative_direction": "4-beat explainer storyboard",
+      "status": "PLANNED",
+      "publish": false
+    }
+  ]
+}
