@@ -1,0 +1,35 @@
+{
+  "id": "FXR-20261027-IG-REEL-EN-01",
+  "aspect": "9:16 (1080x1920)",
+  "duration": "~25s",
+  "language": "en",
+  "storyboard": [
+    {
+      "t": "0-3s",
+      "on_screen": "Gold near $4,000. Fed in 24 hours.",
+      "voiceover": "Gold is hovering near a big round number — and the Fed speaks tomorrow.",
+      "visual": "REX looking at camera, navy studio, emerald rim light"
+    },
+    {
+      "t": "3-10s",
+      "on_screen": "Pivot ≠ prediction",
+      "voiceover": "Analysts call four thousand a pivot. That's a view, not a signal.",
+      "visual": "Minimal round-number graphic; no invented levels"
+    },
+    {
+      "t": "10-18s",
+      "on_screen": "Statement, then press conference",
+      "voiceover": "Watch the statement. Then watch the press conference. They can tell different stories.",
+      "visual": "Split-screen timeline"
+    },
+    {
+      "t": "18-25s",
+      "on_screen": "Plan before the event",
+      "voiceover": "Write what changes your view — before, not after. FOXREX daily brief.",
+      "visual": "Logo lockup + disclaimer footer"
+    }
+  ],
+  "disclaimer": "Educational content only, not investment advice. Trading involves risk.",
+  "audio": "Voiceover to be recorded/approved by owner; no music licensed or selected here.",
+  "caption": "Pivot is not prediction. Plan before the Fed, not after. 🦊 #Forex #XAUUSD #FOMC\n\nEducational content only, not investment advice. Trading involves risk."
+}

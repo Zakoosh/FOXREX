@@ -1,0 +1,35 @@
+{
+  "id": "FXR-20261027-IG-REEL-AR-01",
+  "aspect": "9:16 (1080x1920)",
+  "duration": "~25s",
+  "language": "ar",
+  "storyboard": [
+    {
+      "t": "0-3s",
+      "on_screen": "الذهب قرب 4,000. والفيدرالي بعد 24 ساعة.",
+      "voiceover": "الذهب يحوم قرب رقم دائري كبير — والفيدرالي يتحدث غدًا.",
+      "visual": "REX looking at camera, navy studio, emerald rim light"
+    },
+    {
+      "t": "3-10s",
+      "on_screen": "نقطة محورية ≠ توقع",
+      "voiceover": "يسمّي محللون الأربعة آلاف نقطة محورية. هذا رأي وليس إشارة.",
+      "visual": "Minimal round-number graphic; no invented levels"
+    },
+    {
+      "t": "10-18s",
+      "on_screen": "البيان ثم المؤتمر الصحفي",
+      "voiceover": "راقب البيان. ثم راقب المؤتمر الصحفي. قد يرويان قصتين مختلفتين.",
+      "visual": "Split-screen timeline"
+    },
+    {
+      "t": "18-25s",
+      "on_screen": "خطّط قبل الحدث",
+      "voiceover": "اكتب ما يغيّر رأيك — قبل لا بعد. ملخص FOXREX اليومي.",
+      "visual": "Logo lockup + disclaimer footer"
+    }
+  ],
+  "disclaimer": "محتوى تعليمي فقط وليس توصية استثمارية. التداول ينطوي على مخاطر.",
+  "audio": "Voiceover to be recorded/approved by owner; no music licensed or selected here.",
+  "caption": "النقطة المحورية ليست توقعًا. خطّط قبل الفيدرالي لا بعده 🦊 #فوركس #الذهب #الفيدرالي\n\nمحتوى تعليمي فقط وليس توصية استثمارية. التداول ينطوي على مخاطر."
+}
