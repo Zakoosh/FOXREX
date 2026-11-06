@@ -1,0 +1,48 @@
+{
+  "contentId": "fxr-20261028-reel-01",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "duration": "20s",
+  "aspect": "9:16 1080x1920",
+  "status": "DRAFT_NOT_PUBLISHED",
+  "scenes": [
+    {
+      "t": "0-3s",
+      "visual": "REX turns to camera, navy studio",
+      "vo_en": "Fed day. Three things matter.",
+      "vo_ar": "يوم الفيدرالي. ثلاثة أشياء تهمّ.",
+      "onscreen": "FED DAY / يوم الفيدرالي"
+    },
+    {
+      "t": "3-9s",
+      "visual": "timeline: statement 18:00 UTC → press conference 18:30 UTC",
+      "vo_en": "First the statement, then the press conference.",
+      "vo_ar": "أولًا البيان ثم المؤتمر الصحفي.",
+      "onscreen": "18:00 → 18:30 UTC"
+    },
+    {
+      "t": "9-15s",
+      "visual": "abstract gold coin + dollar icon, no prices",
+      "vo_en": "Markets react to guidance versus expectations.",
+      "vo_ar": "السوق يتفاعل مع التوجيه مقابل التوقعات.",
+      "onscreen": "Expectations vs guidance / التوقعات مقابل التوجيه"
+    },
+    {
+      "t": "15-20s",
+      "visual": "REX smile + lockup",
+      "vo_en": "We explain. We don't predict. Learn with REX.",
+      "vo_ar": "نشرح ولا نتوقع. تعلّم مع REX.",
+      "onscreen": "foxrex.co/learn · Educational only / تعليمي فقط"
+    }
+  ],
+  "captions": {
+    "en": "Fed day, explained in 20 seconds. Educational content only — not investment advice. Markets carry risk.",
+    "ar": "يوم الفيدرالي في 20 ثانية. محتوى تعليمي فقط وليس توصية استثمارية. التداول ينطوي على مخاطر."
+  },
+  "audio": "no licensed music assumed; use platform-licensed or none",
+  "sourceIds": [
+    "src-fxcom-fomc"
+  ]
+}

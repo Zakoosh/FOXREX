@@ -1,0 +1,151 @@
+{
+  "runId": "run-20261028-0640Z-fxr",
+  "date": "2026-10-28",
+  "theme": "Fed decision day — educational framing",
+  "ideasConsidered": [
+    {
+      "idea": "Fed day: what to watch",
+      "selected": true,
+      "why": "Highest-attention scheduled event; safely framed around schedule not outcome"
+    },
+    {
+      "idea": "Gold $4,000 support level explainer",
+      "selected": false,
+      "why": "Levels only from secondary sources; risk of implied signal"
+    },
+    {
+      "idea": "EUR/USD vs France debt",
+      "selected": false,
+      "why": "Single secondary source; deferred"
+    },
+    {
+      "idea": "ECB + GDP Thursday preview",
+      "selected": false,
+      "why": "Covered as teaser; better as Thursday post"
+    }
+  ],
+  "platformStrategy": {
+    "instagram": "visual carousel + reel",
+    "facebook": "explainer with learn link",
+    "telegram": "concise desk note with UTC times"
+  },
+  "postingGuidance": "Publish before 18:00 UTC or rewrite as reaction using verified outcome; snapshot figures expire 17:30 UTC.",
+  "items": [
+    {
+      "contentId": "fxr-20261028-ig-en",
+      "platform": "instagram",
+      "language": "en",
+      "format": "carousel+caption",
+      "file": "en/instagram.md",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED",
+      "sourceIds": [
+        "src-fxcom-fomc",
+        "src-vantage-gold",
+        "src-fxs-eurusd"
+      ],
+      "dataAsOf": "2026-10-28T06:45:00Z",
+      "validUntil": "2026-10-28T17:30:00Z",
+      "carousel": "carousels/fed-day-carousel.json"
+    },
+    {
+      "contentId": "fxr-20261028-ig-ar",
+      "platform": "instagram",
+      "language": "ar",
+      "format": "carousel+caption",
+      "file": "ar/instagram.md",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED",
+      "sourceIds": [
+        "src-fxcom-fomc",
+        "src-vantage-gold",
+        "src-fxs-eurusd"
+      ],
+      "dataAsOf": "2026-10-28T06:45:00Z",
+      "validUntil": "2026-10-28T17:30:00Z",
+      "carousel": "carousels/fed-day-carousel.json"
+    },
+    {
+      "contentId": "fxr-20261028-fb-en",
+      "platform": "facebook",
+      "language": "en",
+      "format": "post",
+      "file": "en/facebook.md",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED",
+      "sourceIds": [
+        "src-fxcom-fomc",
+        "src-vantage-gold",
+        "src-fxs-eurusd"
+      ],
+      "dataAsOf": "2026-10-28T06:45:00Z",
+      "validUntil": "2026-10-28T17:30:00Z"
+    },
+    {
+      "contentId": "fxr-20261028-fb-ar",
+      "platform": "facebook",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/facebook.md",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED",
+      "sourceIds": [
+        "src-fxcom-fomc",
+        "src-vantage-gold",
+        "src-fxs-eurusd"
+      ],
+      "dataAsOf": "2026-10-28T06:45:00Z",
+      "validUntil": "2026-10-28T17:30:00Z"
+    },
+    {
+      "contentId": "fxr-20261028-tg-en",
+      "platform": "telegram",
+      "language": "en",
+      "format": "channel-post",
+      "file": "en/telegram.md",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED",
+      "sourceIds": [
+        "src-fxcom-fomc",
+        "src-vantage-gold",
+        "src-fxs-eurusd"
+      ],
+      "dataAsOf": "2026-10-28T06:45:00Z",
+      "validUntil": "2026-10-28T17:30:00Z"
+    },
+    {
+      "contentId": "fxr-20261028-tg-ar",
+      "platform": "telegram",
+      "language": "ar",
+      "format": "channel-post",
+      "file": "ar/telegram.md",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED",
+      "sourceIds": [
+        "src-fxcom-fomc",
+        "src-vantage-gold",
+        "src-fxs-eurusd"
+      ],
+      "dataAsOf": "2026-10-28T06:45:00Z",
+      "validUntil": "2026-10-28T17:30:00Z"
+    },
+    {
+      "contentId": "fxr-20261028-carousel-01",
+      "platform": "instagram",
+      "language": "ar+en",
+      "format": "carousel",
+      "file": "carousels/fed-day-carousel.json",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED"
+    },
+    {
+      "contentId": "fxr-20261028-reel-01",
+      "platform": "instagram,facebook",
+      "language": "ar+en",
+      "format": "reel",
+      "file": "reels/fed-day-reel.json",
+      "topic": "fed-decision-day",
+      "status": "DRAFT_NOT_PUBLISHED"
+    }
+  ]
+}
