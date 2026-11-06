@@ -1,0 +1,90 @@
+{
+  "run_id": "run-20261020-routine01",
+  "date": "2026-10-20",
+  "generated_at": "2026-10-20T00:00:00Z",
+  "branch": "claude/nifty-volta-8sitn0",
+  "content_count": 10,
+  "content_ids": [
+    "CT-20261020-IG-AR",
+    "CT-20261020-FB-AR",
+    "CT-20261020-TG-AR",
+    "CT-20261020-IG-EN",
+    "CT-20261020-FB-EN",
+    "CT-20261020-TG-EN",
+    "CT-20261020-CAR-AR",
+    "CT-20261020-CAR-EN",
+    "CT-20261020-REEL-AR",
+    "CT-20261020-REEL-EN"
+  ],
+  "files": [
+    {
+      "path": "content-ops/daily/2026-10-20/market-brief.md",
+      "sha256": "f8f6ec0126fa891b8347db6664a23aea3333538cc4ee681573fc6079fae2a5a5"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/sources.json",
+      "sha256": "13734ad6ec2fba128325f39fe63e719c67dd9aaddac749d67e74ba337965a16c"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/content-plan.json",
+      "sha256": "85b985bc684403384402724f9c8f5c580f98a9a564c27ffe9b0b6b66a3e322ed"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/ar/instagram-caption.md",
+      "sha256": "a602293b055e85d80b24c94ddeb60d8c65fd9d4a20cdbf656e454eac02ebc5e9"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/ar/facebook-post.md",
+      "sha256": "a8afbbac082d5fe1dc37012362539a1cb41ee0b73cdebe5caa398b8466761b42"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/ar/telegram-post.md",
+      "sha256": "b04cf538fee62d48584f26252805bcc105dfc5a5963502ec101dcc2b524626fd"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/en/instagram-caption.md",
+      "sha256": "f12894db62e9f4217e0b92be1ff1754e9afa36befd68a03ee6a8a33ea6e87638"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/en/facebook-post.md",
+      "sha256": "2eb716035f08a9c2220c770d80b800ff15c8009690c0a640ed1355eb4c5a8905"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/en/telegram-post.md",
+      "sha256": "c9a618e19fc3769c7d053241bba4b7a98c4cafa203d52977d0606d45690aa06e"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/carousels/ig-data-week-ar.json",
+      "sha256": "5a38889edb9ca3e7abee1212844eeba6ea192573dd7faab9d1e7b9995ba6b19a"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/carousels/ig-data-week-en.json",
+      "sha256": "2e82a05c8adab12896fa653ae8b19d50ffc15e4ffe4607d6561fac2a6da91068"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/reels/reel-data-week-ar.json",
+      "sha256": "c358699194aff97785fef63aef3a2855de5de77dab608845dc443759309e58a0"
+    },
+    {
+      "path": "content-ops/daily/2026-10-20/reels/reel-data-week-en.json",
+      "sha256": "aa3bda47443cf729be37867516cb911d9df6724c9240bd665bb8e9fd8383fa4f"
+    }
+  ],
+  "validation": {
+    "status": "PASS_WITH_WARNINGS",
+    "checks": {
+      "json_valid": true,
+      "no_invented_assets": true,
+      "no_signals_or_levels": true,
+      "risk_line_on_every_piece": true,
+      "ar_digits_western": true
+    },
+    "warnings": [
+      "Research from search snippets only; direct fetch failed",
+      "Prices are Oct 19, not today",
+      "Calendar days/times unverified vs primary sources"
+    ]
+  },
+  "package_status": "CONTENT_PLAN_READY",
+  "verified_commit": "d2d6a0137aa140c9d840d9158bb76cf48c7eb7d3"
+}

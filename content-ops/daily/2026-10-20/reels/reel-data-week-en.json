@@ -1,0 +1,33 @@
+{
+  "content_id": "CT-20261020-REEL-EN",
+  "platform": "instagram",
+  "format": "reel",
+  "lang": "en",
+  "duration_s": 20,
+  "aspect": "9:16",
+  "style": "FOXREX brand: accent #00D4A7, IBM Plex Sans Arabic for Arabic, Inter for Latin/digits, no letter-spacing on Arabic, Western digits. Use existing assets only (assets/brand/foxrex-mark.png, foxrex-lockup.jpg). No invented logos, no charts of real price data, no people/fake testimonials.",
+  "voiceover": "none; on-screen text only",
+  "scenes": [
+    {
+      "t": "0-4",
+      "on_screen": "Can gold move without the Fed?",
+      "visual": "Dark gradient, teal pulse"
+    },
+    {
+      "t": "4-12",
+      "on_screen": "Canada, UK, Japan inflation + flash PMIs",
+      "visual": "Three icons appearing in sequence"
+    },
+    {
+      "t": "12-20",
+      "on_screen": "Always cite source and time. Educational content, not investment advice. Trading involves risk.",
+      "visual": "FOXREX mark end card"
+    }
+  ],
+  "gate": [
+    "Refresh gold price and as-of time",
+    "Confirm calendar days/times in IST against primary sources",
+    "Confirm FOMC Oct 27–28 on federalreserve.gov",
+    "Human approval in Studio"
+  ]
+}
