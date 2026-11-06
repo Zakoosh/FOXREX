@@ -1,0 +1,156 @@
+{
+  "runId": "run-20261024-5325cb1b",
+  "date": "2026-10-24",
+  "marketContext": "weekend; weekly wrap + week-ahead",
+  "publishing": "NONE - drafts only; human review required",
+  "items": [
+    {
+      "contentId": "fx-20261024-ig-ar-weekahead",
+      "platform": "instagram",
+      "language": "ar",
+      "format": "caption",
+      "file": "ar/instagram.md",
+      "angle": "Save-worthy calendar with community question",
+      "facts": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    },
+    {
+      "contentId": "fx-20261024-ig-en-weekahead",
+      "platform": "instagram",
+      "language": "en",
+      "format": "caption",
+      "file": "en/instagram.md",
+      "angle": "Save-worthy calendar with community question",
+      "facts": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    },
+    {
+      "contentId": "fx-20261024-fa-ar-weekahead",
+      "platform": "facebook",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/facebook.md",
+      "angle": "Discussion question driving comments",
+      "facts": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    },
+    {
+      "contentId": "fx-20261024-fa-en-weekahead",
+      "platform": "facebook",
+      "language": "en",
+      "format": "post",
+      "file": "en/facebook.md",
+      "angle": "Discussion question driving comments",
+      "facts": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    },
+    {
+      "contentId": "fx-20261024-te-ar-weekahead",
+      "platform": "telegram",
+      "language": "ar",
+      "format": "post",
+      "file": "ar/telegram.md",
+      "angle": "Compact utility calendar, no links/hype",
+      "facts": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    },
+    {
+      "contentId": "fx-20261024-te-en-weekahead",
+      "platform": "telegram",
+      "language": "en",
+      "format": "post",
+      "file": "en/telegram.md",
+      "angle": "Compact utility calendar, no links/hype",
+      "facts": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    },
+    {
+      "contentId": "fx-20261024-ig-car-weekahead",
+      "platform": "instagram+facebook",
+      "language": "ar+en",
+      "format": "carousel",
+      "file": "carousels/week-ahead-carousel.json",
+      "angle": "Educational REX explainer / 5-date calendar",
+      "facts": [
+        "F1",
+        "F2",
+        "F3",
+        "F5",
+        "F6",
+        "F7",
+        "F8"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    },
+    {
+      "contentId": "fx-20261024-ig-reel-rex-cb",
+      "platform": "instagram+facebook",
+      "language": "ar+en",
+      "format": "reel",
+      "file": "reels/rex-central-bank-gold.json",
+      "angle": "Educational REX explainer / 5-date calendar",
+      "facts": [
+        "F5",
+        "F6"
+      ],
+      "status": "DRAFT",
+      "riskLineIncluded": true
+    }
+  ],
+  "differentiation": "Instagram: save/swipe; Facebook: question-led discussion; Telegram: terse utility list. Copy differs per platform and language (AR composed, not translated line by line)."
+}

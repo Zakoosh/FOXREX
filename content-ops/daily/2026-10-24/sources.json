@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-24",
+  "runId": "run-20261024-5325cb1b",
+  "retrievedAt": "2026-10-24T06:39:58Z",
+  "fetchLimitation": "Direct page fetches were blocked by the egress proxy; facts come from web search result summaries and are labelled with confidence. Verify before publishing.",
+  "sources": [
+    {
+      "id": "src-inv-xau",
+      "name": "Investing.com XAU/USD historical data",
+      "url": "https://www.investing.com/currencies/xau-usd-historical-data",
+      "claim": "Oct 23 close 4,006.14 (high 4,034.04, low 3,986.84); Oct 16 close ~4,165.50; Oct 22 daily decline ~2.8%",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "medium",
+      "note": "Aggregator; found via search snippet, page not fetched directly (egress blocked)."
+    },
+    {
+      "id": "src-twelve-xau",
+      "name": "Twelve Data XAU/USD daily data",
+      "url": "https://twelvedata.com/markets/300755/commodity/xau-usd/historical-data",
+      "claim": "Oct 23 close 4,028.8 (high 4,032.3, low 3,987.7)",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "medium",
+      "note": "Disagrees with Investing.com by ~22 USD; no single official close."
+    },
+    {
+      "id": "src-tv-xau",
+      "name": "TradingView XAUUSD",
+      "url": "https://www.tradingview.com/symbols/XAUUSD/",
+      "claim": "Snapshot ~4,016.67 as of Oct 23",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "low",
+      "note": "Snapshot, not confirmed close."
+    },
+    {
+      "id": "src-newsquawk-week",
+      "name": "Newsquawk Week in Focus 26-30 Oct 2026",
+      "url": "https://www.newsquawk.com/headlines/week-in-focus-26-30th-october-2026-fomc-boc-rbnz-ecb-boj-policy-decisions-us-pce",
+      "claim": "Week features FOMC, BoC, RBNZ, ECB, BoJ policy decisions and US PCE",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "medium",
+      "note": "Headline/snippet only."
+    },
+    {
+      "id": "src-fedratecalc-oct",
+      "name": "FedRateCalc October 2026 calendar",
+      "url": "https://fedratecalc.com/us-economic-calendar/october-2026/",
+      "claim": "FOMC decision Wed Oct 28 14:00 ET; advance Q3 GDP, Sep PCE and jobless claims Thu Oct 29 08:30 ET",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "medium",
+      "note": "Third-party calendar; verify against Fed and BEA."
+    },
+    {
+      "id": "src-fedratecalc-fomc",
+      "name": "FedRateCalc FOMC Meeting Schedule October 2026",
+      "url": "https://fedratecalc.com/fomc-meeting-schedule/october-2026/",
+      "claim": "Meeting Oct 27-28; decision Oct 28 14:00 ET; no projections at this meeting",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "medium",
+      "note": "Sources conflict on the current fed funds range (3.50-3.75% vs 3.75-4.00%); range is NOT used in content."
+    },
+    {
+      "id": "src-admiral-ecb",
+      "name": "Admiral Markets ECB Meeting October 2026",
+      "url": "https://admiralmarkets.com/analytics/traders-blog/ecb-meeting-october-2026",
+      "claim": "ECB meeting 28-29 Oct; decision 29 Oct (14:15 CET per one source, 13:45 CET per another)",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "low",
+      "note": "Time conflicts; date only is used in content."
+    },
+    {
+      "id": "src-days-boj",
+      "name": "days.to Bank of Japan decision October 2026",
+      "url": "https://days.to/bank-of-japan-interest-rate-decision",
+      "claim": "BoJ Policy Board 29-30 Oct; decision and Outlook Report on Fri 30 Oct",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "low",
+      "note": "Date only; current policy rate not used (sources conflict)."
+    },
+    {
+      "id": "src-brand",
+      "name": "FOXREX repo: docs/ARABIC-BRAND-TYPOGRAPHY.md, styles/tokens.css, docs/FOXREX-EDITORIAL-SYSTEM.md",
+      "url": "https://github.com/Zakoosh/FOXREX",
+      "claim": "Brand colours, typography, bidi, editorial rules",
+      "retrievedAt": "2026-10-24T06:39:58Z",
+      "publishedAt": null,
+      "confidence": "high",
+      "note": "Internal."
+    }
+  ]
+}
