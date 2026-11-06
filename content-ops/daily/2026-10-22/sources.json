@@ -1,0 +1,112 @@
+{
+  "date": "2026-10-22",
+  "runId": "run-20261022-daily-01",
+  "retrievedAt": "2026-10-22T06:38:44.993Z",
+  "note": "Direct page fetches failed (network ENOTFOUND). All facts come from web-search result summaries of the listed URLs and are unverified against the primary pages. Re-verify before publishing.",
+  "sources": [
+    {
+      "id": "S1",
+      "publisher": "FXStreet",
+      "title": "Gold flatlines below $4,150 as traders assess Fed rate path amid Middle East risk",
+      "url": "https://fxstreet.com/news/gold-flatlines-below-4-150-as-traders-assess-fed-rate-path-amid-middle-east-risk-202610212321",
+      "sourceTimestamp": "2026-10-21T23:21 (from URL slug; timezone not stated)",
+      "accessMethod": "web search summary (page fetch blocked: ENOTFOUND)",
+      "verification": "secondary-unfetched",
+      "claims": [
+        "Gold around $4,125 in early Asian session Thu Oct 22",
+        "Gold repeatedly failed to establish above $4,200 despite weaker USD",
+        "Fed hold probability for October ~84% (per article, as summarised)"
+      ]
+    },
+    {
+      "id": "S2",
+      "publisher": "Investing.com",
+      "title": "Gold falls near $4,115 as Saudi attacks fuel inflation, Fed outlook in focus",
+      "url": "https://www.investing.com/news/commodities-news/gold-falls-near-4115-as-saudi-attacks-fuel-inflation-fed-outlook-in-focus-4964496",
+      "sourceTimestamp": "2026-10-21 (date per search summary; time unknown)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": [
+        "XAU/USD fell 0.6% to $4,115.72/oz",
+        "Traders widely expect another Fed hike in December",
+        "Saudi attacks cited as inflation driver"
+      ]
+    },
+    {
+      "id": "S3",
+      "publisher": "FXEmpire",
+      "title": "XAUUSD Holds Near One-Week Low as Oil Keeps December Fed Risk Alive",
+      "url": "https://fxempire.com/forecasts/article/xauusd-holds-near-one-week-low-as-oil-keeps-december-fed-risk-alive-1639663",
+      "sourceTimestamp": "unknown (recent per search ranking)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": [
+        "First downside targets $4,073.55 and $4,066.54",
+        "Minor trend shifts up above $4,217.39"
+      ]
+    },
+    {
+      "id": "S4",
+      "publisher": "Trading Economics",
+      "title": "Economic Calendar (UK CPI Sep)",
+      "url": "https://tradingeconomics.com/calendar",
+      "sourceTimestamp": "2026-10-21 (release morning, UK)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": [
+        "UK Sep CPI 3.5% y/y vs 3.4% consensus",
+        "UK core CPI 2.8% vs 2.7% forecast"
+      ]
+    },
+    {
+      "id": "S5",
+      "publisher": "LiteFinance",
+      "title": "Weekly economic calendar 19.10.2026–25.10.2026",
+      "url": "https://www.litefinance.org/blog/analysts-opinions/weekly-economic-calendar-for-19102026-25102026/",
+      "sourceTimestamp": "week of 2026-10-19",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": [
+        "Fri Oct 23: UK retail sales, flash PMIs (DE, EZ, UK, US) described as main event of the week"
+      ]
+    },
+    {
+      "id": "S6",
+      "publisher": "LiteFinance",
+      "title": "Weekly economic calendar 26.10.2026–01.11.2026",
+      "url": "https://litefinance.org/blog/analysts-opinions/weekly-economic-calendar-for-26102026-01112026",
+      "sourceTimestamp": "week of 2026-10-26",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": [
+        "RBNZ, BoC and Fed meet Wed Oct 28; ECB Thu Oct 29; BoJ Fri Oct 30",
+        "US prelim Q3 GDP and PCE Thu Oct 29"
+      ]
+    },
+    {
+      "id": "S7",
+      "publisher": "Admiral Markets",
+      "title": "Central Bank Super Week: Fed, ECB, BoJ, BoC, RBNZ Guide",
+      "url": "https://admiralmarkets.com/analytics/traders-blog/central-bank-super-week-october-2026",
+      "sourceTimestamp": "October 2026 (day unknown)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched",
+      "claims": [
+        "Fed statement Oct 28 14:00 ET, press conference 14:30 ET"
+      ]
+    },
+    {
+      "id": "S8",
+      "publisher": "Various (NST, CryptoBriefing, Coingape)",
+      "title": "Fed October hike odds",
+      "url": "https://www.nst.com.my/amp/business/economy/2026/10/1545927/fed-policymakers-lean-against-october-rate-hike",
+      "sourceTimestamp": "October 2026 (varies)",
+      "accessMethod": "web search summary (page fetch blocked)",
+      "verification": "secondary-unfetched-CONFLICTING",
+      "claims": [
+        "FOMC meets Oct 27-28",
+        "Reported October hike odds conflict: ~16% hold-implied-84% (S1), 24.9% (CryptoBriefing), 50% (Polymarket via Coingape). NOT used numerically in content."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "runId": "run-20261022-daily-01",
+  "date": "2026-10-22",
+  "createdAt": "2026-10-22T06:38:44.993Z",
+  "branch": "claude/nifty-volta-2uybqp",
+  "status": "CONTENT_PLAN_READY",
+  "contentIds": [
+    "FX-20261022-C01",
+    "FX-20261022-C02",
+    "FX-20261022-C03",
+    "FX-20261022-C04"
+  ],
+  "contentCount": 4,
+  "files": [
+    {
+      "path": "content-ops/daily/2026-10-22/ar/facebook-C03.md",
+      "sha256": "3ec2a91245383ec6bfc89cea4d958237486e6ff2162a1c25f5b4a1a50e16f2c7",
+      "bytes": 1567
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/ar/instagram-C01-caption.md",
+      "sha256": "82a600f5fdb979a66dd29d9235759f29112c12d8739a0b0d4a723a65e174bc94",
+      "bytes": 1046
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/ar/instagram-C02-reel-caption.md",
+      "sha256": "5d36d64f95a65d69d51070289b414945aa3ff228d4d9d00604f0a2d222c75245",
+      "bytes": 709
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/ar/telegram-C04.md",
+      "sha256": "5b487590431c5a5395e2cb64dbf5007b65079d0929efe4de546ea2a0ff1fd0fe",
+      "bytes": 1100
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/carousels/C01-carousel-ar.md",
+      "sha256": "f66f62fde006daa15c75ebcd37c94d8bce81f514ddd7405332015d3a09538170",
+      "bytes": 2074
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/carousels/C01-carousel-en.md",
+      "sha256": "5068fbd7b7bbe802f4538a87467c504fe988ede361d7eab6fb8e34ed60a31d43",
+      "bytes": 1326
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/content-plan.json",
+      "sha256": "47d1d69c674b1d05c9f74253858121bd4c8746ad9f312a7aaed0d606dc0ca3d1",
+      "bytes": 2504
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/en/facebook-C03.md",
+      "sha256": "78430136b485275d01dd0d4d1dec052d697171acb2212e9f75c20f5e30775571",
+      "bytes": 996
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/en/instagram-C01-caption.md",
+      "sha256": "c7dd35b4f918710d20e45598a09dd5d0a314eee520ebb02d5083ae8878b75160",
+      "bytes": 710
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/en/instagram-C02-reel-caption.md",
+      "sha256": "425dd51cbf74829e60a68c375cc7125c3e1c87828b8d03b8b420d248ebccb8d1",
+      "bytes": 501
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/en/telegram-C04.md",
+      "sha256": "a211fb7fcde946b7dc289ac03840c1dcd0b50cdd81a0e6ea9fb9c05b4033e116",
+      "bytes": 629
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/market-brief.md",
+      "sha256": "2c247722d8a8ede49d1d44347d57c5eeb800fccd00bc31750d3135c4017f46a3",
+      "bytes": 2805
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/reels/C02-reel-ar.md",
+      "sha256": "541cf02db87227e2f21f519ff9bb13986bc6d90272430f3e7a54012ec6a6a5b0",
+      "bytes": 2075
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/reels/C02-reel-en.md",
+      "sha256": "875cfceafe0d047e6a0d049ee89ba0ab89777a59c715e705954d2256f27b878c",
+      "bytes": 1622
+    },
+    {
+      "path": "content-ops/daily/2026-10-22/sources.json",
+      "sha256": "e5aa2136a025b4dea77a5fed67a7a7073c74c12e07bd1dc06527f9d9df7659d8",
+      "bytes": 5041
+    }
+  ],
+  "validation": {
+    "brand": "pass (typography/colour/risk-line rules applied)",
+    "accuracy": "PASS_WITH_WARNINGS: facts from unfetched secondary search summaries; conflicting Fed odds excluded; no live prices",
+    "invented_data": "none",
+    "published": false,
+    "warnings": [
+      "Re-verify all figures against live feeds before publishing",
+      "Release times for Oct 23 PMIs not confirmed",
+      "Fed 21:00 Istanbul time computed, not sourced"
+    ]
+  },
+  "verification": {
+    "verifiedCommit": "ac167201a1a4869e9fdaa02c0e8659d9d4ce6bee",
+    "method": "fresh read via GitHub API of manifest and sample file at pushed commit",
+    "verifiedAt": "2026-10-22T06:39:05.341Z"
+  }
+}
