@@ -1,0 +1,55 @@
+{
+  "contentId": "IG-REEL-001",
+  "aspect": "9:16",
+  "size": "1080x1920",
+  "durationSec": 24,
+  "safeArea": {
+    "topPx": 250,
+    "bottomPx": 300
+  },
+  "illustrativeOnly": "Scenes depict a generic pattern, not a forecast or real result. No real price numbers on screen.",
+  "scenes": [
+    {
+      "t": "0-3",
+      "visual": "Abstract glowing candlestick shape spikes upward on navy",
+      "onScreenEn": "Fed night.",
+      "onScreenAr": "ليلة الفيدرالي",
+      "vo": "Fed night."
+    },
+    {
+      "t": "3-8",
+      "visual": "Same shape reverses downward with emerald flash",
+      "onScreenEn": "The first candle can lie.",
+      "onScreenAr": "الشمعة الأولى قد تخدعك",
+      "vo": "The statement drops, gold jumps, then it reverses."
+    },
+    {
+      "t": "8-14",
+      "visual": "Microphone silhouette, clock reading 18:30 UTC (text overlay in post)",
+      "onScreenEn": "Wait for the press conference — 18:30 UTC",
+      "onScreenAr": "انتظر المؤتمر الصحفي — 18:30 UTC",
+      "vo": "Wait for the press conference."
+    },
+    {
+      "t": "14-20",
+      "visual": "Two abstract lines (dollar, gold) compared side by side",
+      "onScreenEn": "Does the dollar agree?",
+      "onScreenAr": "هل يتفق الدولار؟",
+      "vo": "Check whether the dollar agrees."
+    },
+    {
+      "t": "20-24",
+      "visual": "REX reference image, calm; FOXREX mark; risk line",
+      "onScreenEn": "Patience is a position.",
+      "onScreenAr": "الصبر أيضًا مركز",
+      "vo": "Patience is a position."
+    }
+  ],
+  "imagePromptBase": "Premium dark editorial style, midnight navy #0B1320 background, emerald #00D4A7 accent lighting, no text, no logos, no numbers, no charts with values, clean negative space for post-production typography.",
+  "audio": "Original/royalty-free ambient track; no assumed trending sound",
+  "captionsRequired": true,
+  "riskLine": {
+    "en": "Educational content, not investment advice. Trading carries risk of loss.",
+    "ar": "محتوى تعليمي وليس نصيحة استثمارية. التداول ينطوي على مخاطر الخسارة."
+  }
+}

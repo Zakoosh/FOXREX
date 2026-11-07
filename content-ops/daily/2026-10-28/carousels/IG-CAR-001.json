@@ -1,0 +1,58 @@
+{
+  "contentId": "IG-CAR-001",
+  "size": "1080x1350",
+  "safeMarginPx": 96,
+  "typography": "docs/ARABIC-BRAND-TYPOGRAPHY.md",
+  "slides": [
+    {
+      "n": 1,
+      "role": "hook",
+      "textEn": "Fed day. Gold doesn't move on the headline alone.",
+      "textAr": "يوم الفيدرالي... الذهب لا يتحرك بالعنوان وحده",
+      "imagePrompt": "Gold bars and a glowing emerald clock face at dusk. Premium dark editorial style, midnight navy #0B1320 background, emerald #00D4A7 accent lighting, no text, no logos, no numbers, no charts with values, clean negative space for post-production typography."
+    },
+    {
+      "n": 2,
+      "role": "timing",
+      "textEn": "Tonight: decision 18:00 UTC, press conference 18:30 UTC.",
+      "textAr": "الليلة: القرار 18:00 UTC والمؤتمر الصحفي 18:30 UTC",
+      "imagePrompt": "Minimal abstract timeline of two glowing nodes on navy. Premium dark editorial style, midnight navy #0B1320 background, emerald #00D4A7 accent lighting, no text, no logos, no numbers, no charts with values, clean negative space for post-production typography."
+    },
+    {
+      "n": 3,
+      "role": "watch-1",
+      "textEn": "Watch 1 — Statement wording vs. what was expected.",
+      "textAr": "المراقبة 1 — صياغة البيان مقابل المتوقع",
+      "imagePrompt": "Abstract paper document with emerald highlight line. Premium dark editorial style, midnight navy #0B1320 background, emerald #00D4A7 accent lighting, no text, no logos, no numbers, no charts with values, clean negative space for post-production typography."
+    },
+    {
+      "n": 4,
+      "role": "watch-2",
+      "textEn": "Watch 2 — The dollar and Treasury yields moving with gold.",
+      "textAr": "المراقبة 2 — الدولار وعوائد السندات مع حركة الذهب",
+      "imagePrompt": "Three abstract luminous lines (no values) converging. Premium dark editorial style, midnight navy #0B1320 background, emerald #00D4A7 accent lighting, no text, no logos, no numbers, no charts with values, clean negative space for post-production typography."
+    },
+    {
+      "n": 5,
+      "role": "watch-3",
+      "textEn": "Watch 3 — The press conference can reverse the first reaction.",
+      "textAr": "المراقبة 3 — المؤتمر الصحفي قد يعكس رد الفعل الأول",
+      "imagePrompt": "Microphone silhouette with soft emerald rim light. Premium dark editorial style, midnight navy #0B1320 background, emerald #00D4A7 accent lighting, no text, no logos, no numbers, no charts with values, clean negative space for post-production typography."
+    },
+    {
+      "n": 6,
+      "role": "cta",
+      "textEn": "Don't treat the first candle as the trend. foxrex.co/calendar",
+      "textAr": "لا تعتبر الشمعة الأولى اتجاهًا. foxrex.co/ar/calendar",
+      "imagePrompt": "REX the FOXREX fox (use assets/rex/rex-educator-v2.webp as reference, do not redraw identity), waist-up, calm, arms folded. Premium dark editorial style, midnight navy #0B1320 background, emerald #00D4A7 accent lighting, no text, no logos, no numbers, no charts with values, clean negative space for post-production typography."
+    }
+  ],
+  "riskLine": {
+    "en": "Educational content, not investment advice. Trading carries risk of loss.",
+    "ar": "محتوى تعليمي وليس نصيحة استثمارية. التداول ينطوي على مخاطر الخسارة."
+  },
+  "brandAssetsToUse": [
+    "assets/brand/foxrex-mark.png",
+    "assets/rex/rex-educator-v2.webp"
+  ]
+}
